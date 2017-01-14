@@ -29,6 +29,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.accorpa.sawah.custom_views.CustomButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -82,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        CustomButton mEmailSignInButton = (CustomButton) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,8 +93,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        CustomButton newUserButton = (CustomButton) findViewById(R.id.new_user_button);
+        newUserButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createNewUser();
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void createNewUser() {
+        NavigationHandler.getInstance().startSignupActivity(this);
     }
 
     private void populateAutoComplete() {
