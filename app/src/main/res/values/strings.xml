@@ -6,8 +6,8 @@
     <string name="prompt_password">كلمة المرور</string>
     <string name="action_sign_up">تسجيل</string>
     <string name="action_sign_in_short">دخول</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_invalid_email">الإيميل غير صحيح</string>
+    <string name="error_invalid_password">كلمة المرور قصيرة</string>
     <string name="error_incorrect_password">كلمة مرور غير صحيحة</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
