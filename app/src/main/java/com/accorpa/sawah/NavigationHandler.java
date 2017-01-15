@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Created by root on 14/01/17.
+ * Created by Bassem on 14/01/17.
  */
 public class NavigationHandler {
     private static NavigationHandler ourInstance = new NavigationHandler();
