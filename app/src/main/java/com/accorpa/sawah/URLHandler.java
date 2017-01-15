@@ -51,4 +51,8 @@ public class URLHandler {
 
         return loginUrlStr;
     }
+
+    public String getSigupUrl() {
+        return Serverpath + registerPath;
+    }
 }

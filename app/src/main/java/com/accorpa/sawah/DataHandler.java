@@ -2,7 +2,12 @@ package com.accorpa.sawah;
 
 import android.content.Context;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Bassem on 15/01/17.
@@ -10,6 +15,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 public class DataHandler {
     private static DataHandler ourInstance;
     private SharedPreferencesController sharedPreferences;
+
+    private ObjectMapper mapper;
+
 
 
     public final static String OS = "Android";
@@ -25,6 +33,8 @@ public class DataHandler {
 
     private DataHandler(Context context) {
         sharedPreferences = SharedPreferencesController.getInstance(context);
+        mapper = new ObjectMapper();
+
     }
 
 
@@ -44,4 +54,24 @@ public class DataHandler {
         return token;
     }
 
+    public JSONObject getUserSignupData(String userName, String password) {
+
+        User user = new User(userName,password,"", "", "", "", "");
+
+        JSONObject userData = null;
+        try {
+            userData = new JSONObject(mapper.writeValueAsString(user));
+
+            userData.put("DeviceToken", getDeiveToken());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        return userData;
+    }
+
 }
+
