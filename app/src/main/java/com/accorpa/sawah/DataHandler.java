@@ -56,7 +56,7 @@ public class DataHandler {
 
     public JSONObject getUserSignupData(String userName, String password) {
 
-        User user = new User(userName,password,"", "", "", "", "");
+        User user = new User(userName, password, "", "", "", "", "", "", "");
 
         JSONObject userData = null;
         try {
@@ -73,5 +73,8 @@ public class DataHandler {
         return userData;
     }
 
+    public void saveUser(User user) {
+        sharedPreferences.updateUser(user);
+    }
 }
 

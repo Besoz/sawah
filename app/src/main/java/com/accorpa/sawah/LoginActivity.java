@@ -55,7 +55,7 @@ import org.json.JSONObject;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -72,13 +72,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
-
-
-    private DataHandler dataHandler;
-    private ServiceHandler serviceHandler;
-
-    private LoginResponseListener loginResponseListener;
-
+    private AuthorizationManger authorizationManger;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,11 +85,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         service.putExtra("serviceType", "register");
         this.startService(service);
 
-        dataHandler = DataHandler.getInstance(getApplicationContext());
-        serviceHandler = ServiceHandler.getInstance(getApplicationContext());;
 
-        loginResponseListener =  new LoginResponseListener(this);
-
+        authorizationManger = new AuthorizationManger(getApplicationContext(), this);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -132,6 +123,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
+
+
 
     private void createNewUser() {
         NavigationHandler.getInstance().startSignupActivity(this);
@@ -224,10 +217,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-//            showProgress(true);
-            serviceHandler.loginUser(email, password,
-                    dataHandler.getDeiveToken(), loginResponseListener);
+            showProgress(true);
+            authorizationManger.loginUser(email, password);
         }
+    }
+
+    private void attemptLogin(String userID) {
+        authorizationManger.loginUser(userID);
     }
 
     private boolean isEmailValid(String email) {
@@ -319,17 +315,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
-    public void loginSuccess() {
+    @Override
+    public void loginSuccess(User user) {
         showProgress(false);
         finish();
     }
 
+    @Override
     public void loginFailed(String message) {
         showProgress(false);
         mPasswordView.setError(message);
         mPasswordView.requestFocus();
     }
 
+    @Override
     public void loginError() {
         showProgress(false);
     }

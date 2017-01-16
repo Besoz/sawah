@@ -106,4 +106,19 @@ public class ServiceHandler {
 
         return jsonObjectRequest;
     }
+
+    public void loginUser(String userID, String deviceToken, LoginResponseListener loginResponseListener) {
+
+        String loginUrl = urlHandler.getLoginUrl(userID, deviceToken);
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, loginUrl, null,
+                loginResponseListener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+    }
 }

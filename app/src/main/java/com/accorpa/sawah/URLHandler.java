@@ -51,8 +51,23 @@ public class URLHandler {
 
         return loginUrlStr;
     }
+    public String getLoginUrl(String userID, String token) {
+
+        Uri.Builder loginParams = new Uri.Builder();
+        loginParams.appendQueryParameter("userID", userID)
+                .appendQueryParameter("os", dataHandler.OS)
+                .appendQueryParameter("devicetoken", token);
+        String loginUrlStr = loginParams.build().toString();
+
+        loginUrlStr = Serverpath + loginPath + loginParams;
+
+        return loginUrlStr;
+    }
+
 
     public String getSigupUrl() {
         return Serverpath + registerPath;
     }
+
+
 }

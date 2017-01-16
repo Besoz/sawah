@@ -22,6 +22,22 @@ public class ServiceResponse {
     @JsonProperty("Message")
     private String message;
 
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setDraftPointID(String draftPointID) {
+        this.draftPointID = draftPointID;
+    }
+
+    @JsonProperty("Data")
+    private User user;
+
+    @JsonProperty("DraftPointID")
+    private String draftPointID;
+
+
     public void setStatus(String status) {
         this.status = status;
     }
@@ -31,7 +47,7 @@ public class ServiceResponse {
     }
 
     public boolean isStatusSuccess(){
-        if(message.equals(STATUS_SUCCESS)){
+        if(status.equals(STATUS_SUCCESS)){
             return true;
         }else{
             return false;
@@ -40,5 +56,9 @@ public class ServiceResponse {
 
     public String getMessage() {
         return message;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

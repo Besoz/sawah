@@ -32,7 +32,7 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
-public class SignupActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class SignupActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, LoginListener {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -53,6 +53,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
 
     private DataHandler dataHandler;
     private ServiceHandler serviceHandler;
+    private AuthorizationManger authorizationManger;
 
     private SignupResponseListener signupResponseListener;
 
@@ -64,7 +65,9 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
         setContentView(R.layout.activity_signup);
 
         dataHandler = DataHandler.getInstance(getApplicationContext());
-        serviceHandler = ServiceHandler.getInstance(getApplicationContext());;
+        serviceHandler = ServiceHandler.getInstance(getApplicationContext());
+
+        authorizationManger = new AuthorizationManger(getApplicationContext(), this);
 
         signupResponseListener =  new SignupResponseListener(this);
 
@@ -93,8 +96,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
-        mSignupFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+        mSignupFormView = findViewById(R.id.signup_form);
+        mProgressView = findViewById(R.id.signup_progress);
     }
 
     private void createNewUser() {
@@ -188,8 +191,9 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user signup attempt.
-//            showProgress(true);
-            serviceHandler.signupUser(dataHandler.getUserSignupData(email, password), signupResponseListener);
+            showProgress(true);
+            serviceHandler.signupUser(dataHandler.getUserSignupData(email, password),
+                    signupResponseListener);
         }
     }
 
@@ -282,9 +286,8 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
         mEmailView.setAdapter(adapter);
     }
 
-    public void signupSuccess() {
-        showProgress(false);
-        finish();
+    public void signupSuccess(String userID) {
+        authorizationManger.loginUser(userID);
     }
 
     public void signupFailed(String message) {
@@ -295,6 +298,22 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
 
     public void signupError() {
         showProgress(false);
+    }
+
+    @Override
+    public void loginSuccess(User user) {
+        showProgress(false);
+        finish();
+    }
+
+    @Override
+    public void loginFailed(String message) {
+
+    }
+
+    @Override
+    public void loginError() {
+
     }
 
 

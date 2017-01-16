@@ -15,10 +15,10 @@ import java.io.IOException;
 
 public class LoginResponseListener implements Response.Listener<JSONObject>{
 
-    private LoginActivity loginActivity;
+    private LoginListener loginListener;
 
-    public LoginResponseListener(LoginActivity loginActivity){
-        this.loginActivity = loginActivity;
+    public LoginResponseListener(LoginListener loginListener){
+        this.loginListener = loginListener;
     }
     @Override
     public void onResponse(JSONObject jsonResponse) {
@@ -31,13 +31,13 @@ public class LoginResponseListener implements Response.Listener<JSONObject>{
             response = mapper.readValue(jsonResponse.toString(), ServiceResponse.class);
 
             if(response.isStatusSuccess()){
-                loginActivity.loginSuccess();
+                loginListener.loginSuccess(response.getUser());
             }else{
-                loginActivity.loginFailed(response.getMessage());
+                loginListener.loginFailed(response.getMessage());
             }
 
         } catch (IOException e) {
-            loginActivity.loginError();
+            loginListener.loginError();
         }
         
 

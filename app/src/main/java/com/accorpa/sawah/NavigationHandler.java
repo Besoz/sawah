@@ -20,4 +20,11 @@ public class NavigationHandler {
         Intent signUpActivity = new Intent(context, SignupActivity.class);
         context.startActivity(signUpActivity);
     }
+
+    public void startLoginActivity(Context context, String userID) {
+
+        Intent loginActivity = new Intent(context, LoginActivity.class);
+        loginActivity.putExtra("UserID", userID);
+        context.startActivity(loginActivity);
+    }
 }
