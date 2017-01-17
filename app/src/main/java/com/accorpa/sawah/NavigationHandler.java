@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 /**
- * Created by root on 14/01/17.
+ * Created by Bassem on 14/01/17.
  */
 public class NavigationHandler {
     private static NavigationHandler ourInstance = new NavigationHandler();
@@ -19,5 +19,12 @@ public class NavigationHandler {
     public void startSignupActivity(Context context){
         Intent signUpActivity = new Intent(context, SignupActivity.class);
         context.startActivity(signUpActivity);
+    }
+
+    public void startLoginActivity(Context context, String userID) {
+
+        Intent loginActivity = new Intent(context, LoginActivity.class);
+        loginActivity.putExtra("UserID", userID);
+        context.startActivity(loginActivity);
     }
 }
