@@ -29,6 +29,20 @@
     <string name="register_service_url">/api/users/AddByEmail</string>
 
     <string name="login_service_url">/api/users/login</string>
+    <string name="title_activity_base">BaseActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="contact_us">اتصل بنا</string>
+    <string name="change_city">تغيير المدينة</string>
+    <string name="add_place">إضافة مكان</string>
+    <string name="favourites">المفضلة</string>
+    <string name="user_guide">إرشادات عامة</string>
+    <string name="notifications">التنبيهات</string>
+    <string name="about_sawah">عن تطبيق سواح</string>
+    <string name="dashboard">الرئيسية</string>
 
 
 </resources>

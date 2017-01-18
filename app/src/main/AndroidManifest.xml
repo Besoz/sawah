@@ -34,7 +34,13 @@
         </activity>
         <activity
             android:name=".SignupActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".BaseActivity"
+            android:label="@string/title_activity_base"
+            android:theme="@style/Theme.AppCompat.NoActionBar"  />
+        <activity android:name=".CategoriesListActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
     </application>
 
 </manifest>

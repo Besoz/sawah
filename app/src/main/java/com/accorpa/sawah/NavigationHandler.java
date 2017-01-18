@@ -27,4 +27,9 @@ public class NavigationHandler {
         loginActivity.putExtra("UserID", userID);
         context.startActivity(loginActivity);
     }
+
+    public void startCityActivity(Context context) {
+        Intent cityActivity = new Intent(context, CategoriesListActivity.class);
+        context.startActivity(cityActivity);
+    }
 }

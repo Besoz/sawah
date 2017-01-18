@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         this.startService(service);
 
 
-        authorizationManger = new AuthorizationManger(getApplicationContext(), this);
+        authorizationManger = new AuthorizationManger(this, this);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -120,8 +120,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        CustomButton skipButton = (CustomButton) findViewById(R.id.skip_login_button);
+        skipButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                authorizationManger.skipLogin();
+            }
+        });
+
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+
     }
 
 
