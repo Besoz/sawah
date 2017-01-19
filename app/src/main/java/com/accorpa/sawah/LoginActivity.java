@@ -81,9 +81,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
 
 //        starting firebase cloud service
-        Intent service = new Intent(this, FCMService.class);
-        service.putExtra("serviceType", "register");
-        this.startService(service);
+//        Intent service = new Intent(this, FCMService.class);
+//        service.putExtra("serviceType", "register");
+//        this.startService(service);
 
 
         authorizationManger = new AuthorizationManger(this, this);
@@ -328,7 +328,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     public void loginSuccess(User user) {
         showProgress(false);
-        finish();
+        NavigationHandler.getInstance().startAfterLoginctivity(this);
     }
 
     @Override

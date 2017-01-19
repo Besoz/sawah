@@ -1,7 +1,11 @@
 package com.accorpa.sawah;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.support.v4.util.LruCache;
+import android.util.Log;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -13,10 +17,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -28,6 +38,7 @@ public class ServiceHandler {
 
     private Context context;
     private RequestQueue mRequestQueue;
+    private ImageLoader mImageLoader;
     private URLHandler urlHandler;
 
     private final String hostName;
@@ -53,6 +64,22 @@ public class ServiceHandler {
         mRequestQueue = new RequestQueue(cache, network);
 
         mRequestQueue.start();
+
+        mImageLoader = new ImageLoader(mRequestQueue,
+                new ImageLoader.ImageCache() {
+                    private final LruCache<String, Bitmap>
+                            cache = new LruCache<String, Bitmap>(20);
+
+                    @Override
+                    public Bitmap getBitmap(String url) {
+                        return cache.get(url);
+                    }
+
+                    @Override
+                    public void putBitmap(String url, Bitmap bitmap) {
+                        cache.put(url, bitmap);
+                    }
+                });
 
         urlHandler = URLHandler.getInstance(this.context);
     }
@@ -120,5 +147,69 @@ public class ServiceHandler {
         });
 
         mRequestQueue.add(jsonObjectRequest);
+    }
+
+    public void requestCategoriesList(final DataHandler dataHandler, final CategoriesListActivity activity){
+        Log.d("gg", "requesting");
+
+        String serviceUrl = urlHandler.getCategoriesServiceUrl("1");
+        Log.d("gg", "requesting"+urlHandler);
+
+        JsonArrayRequest categoriesArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                serviceUrl, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("gg", response.toString());
+                dataHandler.recieveCategoriesList(response, activity);
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(categoriesArrayRequest);
+
+    }
+
+    public void requestPlacesArray(final DataHandler dataHandler,
+                                   final PlacesListActivity placesListActivity, String cityID,
+                                   String categoryID) {
+        Log.d("gg", "requesting");
+
+        String serviceUrl = urlHandler.getPlacesServiceUrl(cityID, categoryID);
+        Log.d("gg", "requesting"+urlHandler);
+
+        JsonArrayRequest categoriesArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                serviceUrl, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("gg", response.toString());
+                dataHandler.recievePlacesList(response, placesListActivity);
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(categoriesArrayRequest);
+
+    }
+
+    public void fetchListViewItemResources(String imageUrl, CategoriesAdapter.ListViewItemImageResponse listViewItemImageResponse, CategoriesAdapter.ListViewItemResponseError listViewItemResponseError) {
+
+        Log.d("gg", "requesting"+imageUrl);
+
+        ImageRequest categoriesArrayRequest = new ImageRequest(imageUrl, listViewItemImageResponse,
+                0, 0, null,listViewItemResponseError);
+
+        mRequestQueue.add(categoriesArrayRequest);
+    }
+
+    public ImageLoader getImageLoader() {
+        return mImageLoader;
     }
 }

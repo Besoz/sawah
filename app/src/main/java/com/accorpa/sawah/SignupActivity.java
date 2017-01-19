@@ -303,7 +303,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public void loginSuccess(User user) {
         showProgress(false);
-        finish();
+        NavigationHandler.getInstance().startAfterLoginctivity(this);
     }
 
     @Override
