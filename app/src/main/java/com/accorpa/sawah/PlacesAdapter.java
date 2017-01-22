@@ -8,7 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 /**
  * Created by root on 18/01/17.
@@ -67,7 +69,7 @@ public class PlacesAdapter extends BaseAdapter{
 
             // 3
             holder = new PlacesAdapter.ViewHolder();
-            holder.thumbnailImageView = (ImageView) convertView.findViewById(R.id.icon);
+            holder.mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
             holder.titleTextView = (TextView) convertView.findViewById(R.id.firstLine);
 //            holder.subtitleTextView = (TextView) convertView.findViewById(R.id.secondLine);
 
@@ -84,15 +86,16 @@ public class PlacesAdapter extends BaseAdapter{
         TextView titleTextView = holder.titleTextView;
 //        TextView subtitleTextView = holder.subtitleTextView;
         TextView detailTextView = holder.detailTextView;
-        ImageView thumbnailImageView = holder.thumbnailImageView;
+        ImageView mNetworkImageView = holder.mNetworkImageView;
 
         titleTextView.setText(recipe.getPalceNameEng());
 //        subtitleTextView.setText(recipe.getPalceNameArb());
 
         ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
         String imageUrl= recipe.getImageLocation().replaceAll(" ", "%20");
-        mImageLoader.get(imageUrl, ImageLoader.getImageListener(holder.thumbnailImageView,
-                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
+//        mImageLoader.get(imageUrl, ImageLoader.getImageListener(holder.thumbnailImageView,
+//                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
+        holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
 
         return convertView;
     }
@@ -101,6 +104,28 @@ public class PlacesAdapter extends BaseAdapter{
         public TextView titleTextView;
 //        public TextView subtitleTextView;
         public TextView detailTextView;
-        public ImageView thumbnailImageView;
+        public NetworkImageView mNetworkImageView;
+    }
+
+    public ImageLoader.ImageListener getImageListener(final ImageView view,
+                                                      final int defaultImageResId, final int errorImageResId) {
+        return new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (errorImageResId != 0) {
+                    view.setImageResource(errorImageResId);
+                }
+            }
+
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                if (response.getBitmap() != null) {
+                    view.setImageBitmap(response.getBitmap());
+                    PlacesAdapter.this.notifyDataSetChanged();
+                } else if (defaultImageResId != 0) {
+                    view.setImageResource(defaultImageResId);
+                }
+            }
+        };
     }
 }

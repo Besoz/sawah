@@ -1,14 +1,12 @@
 package com.accorpa.sawah;
 
-import android.widget.ListView;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by root on 18/01/17.
  */
 
-public class Category extends  ListItem implements ListViewItem{
+public class Category {
 
     @JsonProperty("CategoryName")
     private String name;
@@ -46,4 +44,5 @@ public class Category extends  ListItem implements ListViewItem{
     public String getImageLocation() {
         return imageLocation;
     }
+
 }

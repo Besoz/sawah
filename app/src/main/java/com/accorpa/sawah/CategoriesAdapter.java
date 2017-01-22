@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 
@@ -33,9 +34,7 @@ public class CategoriesAdapter extends BaseAdapter {
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         this.mDataSource = mDataSource;
-
     }
-
 
     //1
     @Override
@@ -59,22 +58,18 @@ public class CategoriesAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get view for row item
-        ViewHolder holder;
+        CategotyView holder;
 
         Category recipe = (Category) getItem(position);
 
-// 2
-
-
-// 1
         if(convertView == null) {
 
             // 2
             convertView = mInflater.inflate(R.layout.category_list_item, parent, false);
 
             // 3
-            holder = new ViewHolder();
-            holder.thumbnailImageView = (ImageView) convertView.findViewById(R.id.icon);
+            holder = new CategotyView();
+            holder.mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
             holder.titleTextView = (TextView) convertView.findViewById(R.id.firstLine);
 //            holder.subtitleTextView = (TextView) convertView.findViewById(R.id.secondLine);
 
@@ -84,65 +79,48 @@ public class CategoriesAdapter extends BaseAdapter {
         }
         else{
             // 5
-            holder = (ViewHolder) convertView.getTag();
+            holder = (CategotyView) convertView.getTag();
         }
 
-// 6
-        TextView titleTextView = holder.titleTextView;
-//        TextView subtitleTextView = holder.subtitleTextView;
-        TextView detailTextView = holder.detailTextView;
-        ImageView thumbnailImageView = holder.thumbnailImageView;
-
-        titleTextView.setText(recipe.getName());
-//        subtitleTextView.setText(recipe.getCategoryID());
-
-
-//        ServiceHandler.getInstance(mContext.getApplicationContext())
-//                .fetchListViewItemResources(recipe.getImageLocation() ,
-//                        new ListViewItemImageResponse((ViewHolder) holder),
-//                        new ListViewItemResponseError((ViewHolder) holder));
+        holder.titleTextView.setText(recipe.getName());
 
         ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
         String imageUrl= recipe.getImageLocation().replaceAll(" ", "%20");
-        mImageLoader.get(imageUrl, ImageLoader.getImageListener(holder.thumbnailImageView,
-                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
+
+//        mImageLoader.get(imageUrl, getImageListener(holder.mNetworkImageView, R.drawable.sawah_logo, R.drawable.gplus_login_logo));
+        holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
 
         return convertView;
     }
 
-    private static class ViewHolder {
+    public static class CategotyView{
+
         public TextView titleTextView;
-        public TextView subtitleTextView;
-        public TextView detailTextView;
-        public ImageView thumbnailImageView;
+        public NetworkImageView mNetworkImageView;
+
     }
 
-     class ListViewItemImageResponse implements Response.Listener<Bitmap> {
 
-        ViewHolder holder;
+    public ImageLoader.ImageListener getImageListener(final ImageView view,
+                                                      final int defaultImageResId, final int errorImageResId) {
+        return new ImageLoader.ImageListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if (errorImageResId != 0) {
+                    view.setImageResource(errorImageResId);
+                }
+            }
 
-        public ListViewItemImageResponse(ViewHolder holder) {
-            this.holder = holder;
-        }
-
-        @Override
-        public void onResponse(Bitmap response) {
-            holder.thumbnailImageView.setImageBitmap(response);
-        }
-    }
-
-     class ListViewItemResponseError implements Response.ErrorListener {
-
-        ViewHolder holder;
-
-        public ListViewItemResponseError(ViewHolder holder) {
-            this.holder = holder;
-        }
-
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            holder.thumbnailImageView.setImageResource(R.drawable.sawah_logo);
-        }
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                if (response.getBitmap() != null) {
+                    view.setImageBitmap(response.getBitmap());
+                    CategoriesAdapter.this.notifyDataSetChanged();
+                } else if (defaultImageResId != 0) {
+                    view.setImageResource(defaultImageResId);
+                }
+            }
+        };
     }
 
 }

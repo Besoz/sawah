@@ -14,16 +14,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/activity_horizontal_margin">
+        android:layout_margin="@dimen/listview_margin">
 
 
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/icon"
             android:layout_gravity="center"
             android:src="@drawable/afa1b00e92014675b365903d8d133857"
             android:scaleType="centerCrop"
-            android:layout_height="match_parent"
+            android:layout_height="121dp"
             android:layout_width="match_parent" />
 
         <com.accorpa.sawah.custom_views.CustomTextView
@@ -37,6 +37,68 @@
             android:layout_gravity="bottom|right" />
 
     </FrameLayout>
+
+    <!--<FrameLayout-->
+
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_margin="@dimen/listview_margin">-->
+
+
+
+        <!--<ImageView-->
+            <!--android:id="@+id/icon"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/afa1b00e92014675b365903d8d133857"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:layout_height="121dp"-->
+            <!--android:layout_width="match_parent" />-->
+
+        <!--<com.accorpa.sawah.custom_views.CustomTextView-->
+            <!--android:id="@+id/firstLine"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:maxLines="2"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:layout_gravity="bottom|right" />-->
+
+    <!--</FrameLayout>-->
+
+    <!--<FrameLayout-->
+
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_margin="@dimen/listview_margin">-->
+
+
+
+        <!--<ImageView-->
+            <!--android:id="@+id/icon"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:src="@drawable/afa1b00e92014675b365903d8d133857"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:layout_height="121dp"-->
+            <!--android:layout_width="match_parent" />-->
+
+        <!--<com.accorpa.sawah.custom_views.CustomTextView-->
+            <!--android:id="@+id/firstLine"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:maxLines="2"-->
+            <!--android:paddingRight="10dp"-->
+            <!--android:textAlignment="center"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:layout_gravity="bottom|right" />-->
+
+    <!--</FrameLayout>-->
+
+
 
 
 </LinearLayout>

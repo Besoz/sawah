@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.GridView;
 
-public class ListActivity extends BaseActivity {
+public class ListActivity extends BaseActivity implements ListActivityInterface{
 
     protected GridView mListView;
     Context context = this;

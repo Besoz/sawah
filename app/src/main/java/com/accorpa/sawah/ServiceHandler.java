@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.util.LruCache;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.android.volley.Cache;
@@ -55,7 +56,7 @@ public class ServiceHandler {
         hostName = context.getString(R.string.host_name);
 
 // Instantiate the cache
-        Cache cache = new DiskBasedCache(this.context.getCacheDir(), 1024 * 1024); // 1MB cap
+        Cache cache = new DiskBasedCache(this.context.getCacheDir(), 100*1024 * 1024); // 1MB cap*100
 
 // Set up the network to use HttpURLConnection as the HTTP client.
         Network network = new BasicNetwork(new HurlStack());
@@ -65,21 +66,7 @@ public class ServiceHandler {
 
         mRequestQueue.start();
 
-        mImageLoader = new ImageLoader(mRequestQueue,
-                new ImageLoader.ImageCache() {
-                    private final LruCache<String, Bitmap>
-                            cache = new LruCache<String, Bitmap>(20);
-
-                    @Override
-                    public Bitmap getBitmap(String url) {
-                        return cache.get(url);
-                    }
-
-                    @Override
-                    public void putBitmap(String url, Bitmap bitmap) {
-                        cache.put(url, bitmap);
-                    }
-                });
+        mImageLoader = new ImageLoader(mRequestQueue, new LruBitmapCache(this.context));
 
         urlHandler = URLHandler.getInstance(this.context);
     }
@@ -199,17 +186,12 @@ public class ServiceHandler {
 
     }
 
-    public void fetchListViewItemResources(String imageUrl, CategoriesAdapter.ListViewItemImageResponse listViewItemImageResponse, CategoriesAdapter.ListViewItemResponseError listViewItemResponseError) {
-
-        Log.d("gg", "requesting"+imageUrl);
-
-        ImageRequest categoriesArrayRequest = new ImageRequest(imageUrl, listViewItemImageResponse,
-                0, 0, null,listViewItemResponseError);
-
-        mRequestQueue.add(categoriesArrayRequest);
-    }
 
     public ImageLoader getImageLoader() {
         return mImageLoader;
     }
+
+
 }
+
+
