@@ -1,6 +1,7 @@
 package com.accorpa.sawah;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +96,11 @@ public class PlacesAdapter extends BaseAdapter{
         String imageUrl= recipe.getImageLocation().replaceAll(" ", "%20");
 //        mImageLoader.get(imageUrl, ImageLoader.getImageListener(holder.thumbnailImageView,
 //                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
+
+        holder.mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+        AnimationDrawable frameAnimation = (AnimationDrawable) holder.mNetworkImageView.getBackground();
+        frameAnimation.start();
+
         holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
 
         return convertView;

@@ -12,6 +12,7 @@
 
     <GridView
         android:id="@+id/list"
+        android:numColumns="2"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
     </GridView>

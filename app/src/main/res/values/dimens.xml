@@ -5,6 +5,7 @@
 
     <dimen name="activity_margin">19dp</dimen>
     <dimen name="corner_radius">10dp</dimen>
+    <dimen name="small_corner_radius">5dp</dimen>
     <dimen name="children_padding1">6dp</dimen>
     <dimen name="children_padding">10dp</dimen>
     <dimen name="smallpadding">2dp</dimen>
