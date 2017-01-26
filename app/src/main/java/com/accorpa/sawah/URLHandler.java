@@ -10,7 +10,7 @@ import android.util.Log;
 public class URLHandler {
     private static URLHandler ourInstance;
 
-    private String Serverpath, loginPath, registerPath, categoriesPath, placesPath;
+    private String Serverpath, loginPath, registerPath, categoriesPath, placesPath, citiesPath;
 
 //    private DataHandler dataHandler;
 
@@ -31,7 +31,7 @@ public class URLHandler {
         registerPath = context.getString(R.string.register_service_url);
         categoriesPath = context.getString(R.string.categories_list_service_url);
         placesPath = context.getString(R.string.places_list_service_url);
-
+        citiesPath =  context.getString(R.string.cities_service_url);
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(scheme).authority(authority);
@@ -93,5 +93,9 @@ public class URLHandler {
         placesListUrlStr = Serverpath + placesPath + placesParams;
 
         return placesListUrlStr;
+    }
+
+    public String getCitiesServiceUrl() {
+        return Serverpath + citiesPath;
     }
 }

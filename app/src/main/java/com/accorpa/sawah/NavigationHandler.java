@@ -3,6 +3,7 @@ package com.accorpa.sawah;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.provider.ContactsContract;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,15 +36,11 @@ public class NavigationHandler {
         context.startActivity(loginActivity);
     }
 
-    public void startCityActivity(Context context) {
-        Intent cityActivity = new Intent(context, CategoriesListActivity.class);
-        context.startActivity(cityActivity);
-    }
 
-    public void startPlacesListActivity(Context context, String categoryID) {
+    public void startPlacesListActivity(Context context,  String categoryID, String CityID) {
 
         Intent placesList = new Intent(context, PlacesListActivity.class);
-        placesList.putExtra("CityID", "1");
+        placesList.putExtra("CityID", CityID);
         placesList.putExtra("CategoryID", categoryID);
         context.startActivity(placesList);
     }
@@ -68,8 +65,45 @@ public class NavigationHandler {
     }
 
     public void startAfterLoginctivity(Context context) {
-        Intent cityActivity = new Intent(context, CategoriesListActivity.class);
-        cityActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+        Intent afterLoginActivity = getCategoriesListActivityIntent(context);
+        afterLoginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(afterLoginActivity);
+
+    }
+
+    private Intent getCategoriesListActivityIntent(Context context){
+
+        DataHandler dataHandler =  DataHandler.getInstance(context.getApplicationContext());
+        Intent intent = null;
+
+        if(dataHandler.hasDefaultCity()){
+
+            intent = new Intent(context, CategoriesListActivity.class);
+            intent.putExtra(dataHandler.CITY_ID_KEY, dataHandler.getDefaultCityID());
+
+        }else{
+            intent = new Intent(context, CitiesListActivity.class);
+        }
+
+        return intent;
+    }
+
+    public void startCategoriesListActivity(Context context, String cityID) {
+
+        Intent intent = new Intent(context, CategoriesListActivity.class);
+        intent.putExtra(DataHandler.getInstance(context.getApplicationContext()).CITY_ID_KEY, cityID);
+        context.startActivity(intent);
+    }
+    public void startCategoriesListActivity(Context context) {
+
+        Intent cityActivity = getCategoriesListActivityIntent(context);
         context.startActivity(cityActivity);
+    }
+
+    public void startCityActivity(Context context){
+
+        Intent intent = new Intent(context, CitiesListActivity.class);
+        context.startActivity(intent);
     }
 }

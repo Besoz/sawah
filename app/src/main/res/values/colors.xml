@@ -4,5 +4,9 @@
     <color name="colorPrimaryDark">#2177a0</color>
     <color name="colorAccent">#ffffff</color>
     <color name="textColor">#ffffff</color>
-    <color name="buttonColor">#B2DBBF</color>
+    <color name="buttonColor">#b2dbbf</color>
+    <color name="light_grey">#f6f6f6</color>
+    <color name="project_green">#69c0b0</color>
+    <color name="dark_grey">#f1f1f1</color>
+    <color name="dark_text_color">#565656</color>
 </resources>

@@ -63,6 +63,6 @@ public class AuthorizationManger implements LoginListener {
     }
 
     public void skipLogin(){
-        NavigationHandler.getInstance().startCityActivity(context);
+        NavigationHandler.getInstance().startCategoriesListActivity(context);
     }
 }

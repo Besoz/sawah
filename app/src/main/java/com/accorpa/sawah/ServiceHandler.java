@@ -192,6 +192,28 @@ public class ServiceHandler {
     }
 
 
+    public void requestCitiesList(final DataHandler dataHandler,
+                                  final CitiesListActivity citiesListActivity) {
+
+        String serviceUrl = urlHandler.getCitiesServiceUrl();
+        Log.d("gg", "requesting"+urlHandler);
+
+        JsonArrayRequest categoriesArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                serviceUrl, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d("gg", response.toString());
+                dataHandler.recieveCitiesList(response, citiesListActivity);
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(categoriesArrayRequest);
+    }
 }
 
 

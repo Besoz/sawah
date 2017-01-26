@@ -30,11 +30,13 @@ public class PlacesListActivity extends ListActivity {
             }
         });
         DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
+        showProgress(true);
     }
 
 
     public void recievePlacesList(Place[] arr) {
         mListView.setAdapter(new PlacesAdapter(this, arr));
+        showProgress(false);
 
     }
 }

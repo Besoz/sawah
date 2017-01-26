@@ -11,16 +11,19 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorPrimaryDark"
 
-    tools:context="com.accorpa.sawah.SignupActivity">
+    tools:context="com.accorpa.sawah.SignupActivity"
+    android:gravity="center">
 
     <!-- Login progress -->
-    <ProgressBar
+    <!-- Login progress -->
+    <com.accorpa.sawah.custom_views.CustomProgressDialog
         android:id="@+id/signup_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:indeterminateDrawable="@drawable/white_progress_dialog_background" />
 
 
 
@@ -31,20 +34,19 @@
         android:orientation="vertical"
         android:weightSum="14">
 
-
-
         <LinearLayout
 
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:orientation="vertical"
-            android:layout_weight="4">
+            android:layout_weight="4"
+            android:gravity="center">
 
             <android.support.v7.widget.AppCompatImageView
-                android:layout_gravity="center"
                 android:src="@drawable/sawah_logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
 
 
         </LinearLayout>

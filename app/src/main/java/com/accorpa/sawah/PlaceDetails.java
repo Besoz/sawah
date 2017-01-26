@@ -1,20 +1,65 @@
 package com.accorpa.sawah;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SimpleExpandableListAdapter;
+import android.widget.Toast;
 
 import com.accorpa.sawah.custom_views.CustomTextView;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class PlaceDetails extends BaseActivity {
+import static android.util.DisplayMetrics.DENSITY_HIGH;
+
+public class PlaceDetails extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
 
 
-    private CustomTextView bioTextView;
+    private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
+    private NetworkImageView placeImage;
 
+    private ImageButton shareButtton, callButton, openSiteButton, checkInButton;
+
+
+    private SimpleExpandableListAdapter mAdapter;
+    ExpandableListView simpleExpandableListView;
+
+    private String groupItems[] = {"Animals"};
+    private String[][] childItems = {{"Dog", "Cat", "Tiger"}};
 
     private Place place;
+
+    private static final String NAME = "NAME";
+
+    ExpandableRelativeLayout mExpandLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +77,93 @@ public class PlaceDetails extends BaseActivity {
             e.printStackTrace();
         }
 
-        bioTextView = (CustomTextView) findViewById(R.id.bio_textview);
+        bioTextView = (CustomTextView) findViewById(R.id.bio_text);
         bioTextView.setText(place.getBio());
 
+        titleArabic = (CustomTextView) findViewById(R.id.title_ar);
+        titleArabic.setText(place.getPalceNameArb());
+
+        titleEnglish = (CustomTextView) findViewById(R.id.title_en);
+        titleEnglish.setText(place.getPalceNameEng());
+
+        rating = (CustomTextView) findViewById(R.id.rating);
+        rating.setText(place.getRatingID());
+
+        placeImage = (NetworkImageView) findViewById(R.id.imageView2);
+        String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
+        placeImage.setImageUrl(imageUrl,
+                ServiceHandler.getInstance(this.getApplicationContext()).getImageLoader());
+
+        shareButtton = (ImageButton) findViewById(R.id.share_button);
+        shareButtton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharingHandler.getInstance().share(PlaceDetails.this, place.getPalceNameArb());
+            }
+        });
+
+        if(place.haveContactNumber()){
+            callButton = (ImageButton) findViewById(R.id.call_button);
+            callButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharingHandler.getInstance().callNumber(PlaceDetails.this, place.getContactNumber());
+                }
+            });
+        }else{
+            callButton.setImageResource(R.drawable.call_disabled);
+        }
+
+        if(place.haveWebSite()){
+            openSiteButton = (ImageButton) findViewById(R.id.website_button);
+            openSiteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharingHandler.getInstance().openWebsite(PlaceDetails.this, place.getWebSite());
+                }
+            });
+        }else{
+            openSiteButton.setImageResource(R.drawable.globe_disabled);
+        }
+
+
+//        checkInButton = (ImageButton) findViewById(R.id.checkin_button);
+//        checkInButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                SharingHandler.getInstance().callNumber(PlaceDetails.this, place.getContactNumber());
+//            }
+//        });
+
+        // Get the SupportMapFragment and request notification
+        // when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+
+
+        for (String name: place.getAppointments().keySet()){
+
+            String key = name.toString();
+            String value = place.getAppointments().get(name).toString();
+           Log.d("gg", "++++++++++++++++++ " + key + " " + value);
+
+
+        }
+//
+//        Button mExpandButton = (Button) findViewById(R.id.expandButton);
+////        Button mMoveChildButton = (Button) findViewById(R.id.moveChildButton);
+//        Button mMoveChildButton2 = (Button) findViewById(R.id.moveChildButton2);
+//        Button  mMoveTopButton = (Button) findViewById(R.id.moveTopButton);
+//        Button mSetCloseHeightButton = (Button) findViewById(R.id.setCloseHeightButton);
+//        mExpandLayout = (ExpandableRelativeLayout) findViewById(R.id.expandableLayout);
+//        mExpandLayout.setOnClickListener(this);
+//        mExpandButton.setOnClickListener(this);
+////        mMoveChildButton.setOnClickListener(this);
+//        mMoveChildButton2.setOnClickListener(this);
+//        mMoveTopButton.setOnClickListener(this);
+//        mSetCloseHeightButton.setOnClickListener(this);
     }
 
 
@@ -43,4 +172,58 @@ public class PlaceDetails extends BaseActivity {
         return R.layout.activity_place_details;
     }
 
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        // Add a marker in Sydney, Australia,
+        // and move the map's camera to the same location.
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
+
+        Matrix m = new Matrix();
+        m.setRectToRect(new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight()), new RectF(0, 0, 100, 100), Matrix.ScaleToFit.CENTER);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
+
+        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
+
+        LatLng placeLocation = new LatLng(place.getLattitude(), place.getLongitude());
+        googleMap.addMarker(new MarkerOptions().position(placeLocation).icon(bitmapDescriptor));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(placeLocation));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        googleMap.getUiSettings().setAllGesturesEnabled(false);
+
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                SharingHandler.getInstance().openMapIntent(PlaceDetails.this, place.getLattitude(),
+                        place.getLongitude());
+            }
+        });
+
+
+    }
+
+
+    @Override
+    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.expandButton:
+//                mExpandLayout.toggle();
+//                break;
+//            case R.id.expandableLayout:
+//                mExpandLayout.toggle();
+//                break;
+////            case R.id.moveChildButton:
+////                mExpandLayout.moveChild(0);
+////                break;
+//            case R.id.moveChildButton2:
+//                mExpandLayout.moveChild(1);
+//                break;
+//            case R.id.moveTopButton:
+//                mExpandLayout.move(0);
+//                break;
+//            case R.id.setCloseHeightButton:
+//                mExpandLayout.setClosePosition(mExpandLayout.getCurrentPosition());
+//                break;
+//        }
+    }
 }

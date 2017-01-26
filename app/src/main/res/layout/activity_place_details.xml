@@ -1,20 +1,339 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_place_details"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.accorpa.sawah.PlaceDetails">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-
-    <com.accorpa.sawah.custom_views.CustomTextView
-        android:id="@+id/bio_textview"
+    <RelativeLayout
+        android:id="@+id/activity_place_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary" />
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="com.accorpa.sawah.PlaceDetails"
+        android:padding="0dp">
 
-</RelativeLayout>
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:layout_width="match_parent"
+            app:srcCompat="@drawable/afa1b00e92014675b365903d8d133857"
+            android:id="@+id/imageView2"
+            android:scaleType="centerCrop"
+            android:layout_height="300dp" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/gradiant_black_background_270"
+            android:padding="@dimen/listview_margin">
+
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:id="@+id/title_ar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sky garden"
+                android:layout_gravity="right" />
+
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:id="@+id/title_en"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sky garden"
+                android:layout_gravity="right"
+                android:textColor="@color/buttonColor" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/gradiant_black_background_90"
+            android:padding="@dimen/listview_margin"
+            android:layout_alignBottom="@+id/imageView2"
+            android:gravity="left">
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="9"
+            android:textColor="@color/buttonColor"
+            android:layout_alignBottom="@+id/imageView2"
+            />
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/rating_static"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/10"
+            android:layout_gravity="right"
+            android:textColor="@color/textColor"
+            android:layout_toRightOf="@+id/rating"
+            android:layout_marginLeft="@dimen/padding" />
+
+        </android.support.v7.widget.LinearLayoutCompat>
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/bio_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="متاز مطعم غولشان تندوري بمطبخه الهندي والبنغلاديشي والباكستاني الذي يقدم وجبات متنوعة في أجواء هادئة وودية. وقد أوصى به موقع تايم أوت لندن بين أفضل مطاعم التندوري. خدمتهجيّدة وأسعاره معقولة تتراوح بين 10-35 دولار. يستقبل الزّوّار يوميًّا من الساعة 11:00 قبل الظهر حتى 11:30 قبل منتصف الليل."
+            android:layout_gravity="right"
+            android:textColor="@android:color/black"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignParentTop="false"
+            android:layout_below="@+id/imageView2"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="@dimen/listview_margin"
+            android:layout_marginRight="@dimen/listview_margin" />
+
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:id="@+id/media_bar"
+            android:layout_below="@+id/bio_text"
+            android:background="@color/light_grey"
+            android:weightSum="4"
+            android:layout_height="70dp"
+            android:padding="@dimen/padding"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin">
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/share_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/share"
+                    android:background="@android:color/transparent"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center" />
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/place_share"
+                    android:textColor="@color/dark_text_color"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="4dp" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/checkin_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/check"
+                    android:background="@android:color/transparent"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center" />
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/place_checkin"
+                    android:textColor="@color/dark_text_color"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="4dp"/>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/call_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/call"
+                    android:background="@android:color/transparent"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center" />
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/palce_calling"
+                    android:textColor="@color/dark_text_color"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="4dp"/>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/website_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/globe"
+                    android:background="@android:color/transparent"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center" />
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/place_site"
+                    android:textColor="@color/dark_text_color"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="4dp"/>
+
+            </android.support.v7.widget.LinearLayoutCompat>
+        </android.support.v7.widget.LinearLayoutCompat>
+
+
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/media_bar"
+            android:layout_height="200dp"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/column1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@color/project_green"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:padding="1dp"-->
+            <!--android:layout_below="@+id/expandableLayout">-->
+
+            <!--<Button-->
+                <!--android:id="@+id/expandButton"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="1dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@color/textColor"-->
+                <!--android:text="Toggle" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/moveChildButton"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="1dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@color/textColor"-->
+                <!--android:text="Move child1" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/moveChildButton2"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@color/textColor"-->
+                <!--android:text="Move child2" />-->
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/column2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/column1"-->
+            <!--android:background="@color/project_green"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:paddingBottom="1dp"-->
+            <!--android:paddingLeft="1dp"-->
+            <!--android:paddingRight="1dp">-->
+
+            <!--<Button-->
+                <!--android:id="@+id/moveTopButton"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginRight="1dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@color/textColor"-->
+                <!--android:text="Top" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/setCloseHeightButton"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="2"-->
+                <!--android:background="@color/textColor"-->
+                <!--android:text="Set close height" />-->
+        <!--</LinearLayout>-->
+
+
+        <!--<com.github.aakira.expandablelayout.ExpandableLinearLayout-->
+            <!--android:id="@+id/expandableLayout"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@id/map"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--app:ael_duration="500"-->
+            <!--app:ael_interpolator="bounce"-->
+            <!--app:ael_orientation="vertical">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/one"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/project_green"-->
+                <!--android:padding="@dimen/smallpadding"-->
+                <!--android:text="-->
+    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
+    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
+    <!--"-->
+                <!--android:textColor="@color/textColor" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/two"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/one"-->
+                <!--android:background="@color/buttonColor"-->
+                <!--android:padding="@dimen/smallpadding"-->
+                <!--android:text="-->
+    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
+    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
+    <!--"-->
+                <!--android:textColor="@color/textColor" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@id/two"-->
+                <!--android:background="@color/buttonColor"-->
+                <!--android:padding="@dimen/smallpadding"-->
+                <!--android:text="-->
+    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
+    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
+    <!--"-->
+                <!--android:textColor="@color/textColor" />-->
+
+        <!--</com.github.aakira.expandablelayout.ExpandableLinearLayout>-->
+
+    </RelativeLayout>
+</ScrollView>

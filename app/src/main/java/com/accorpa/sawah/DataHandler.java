@@ -20,6 +20,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * Created by Bassem on 15/01/17.
  */
 public class DataHandler {
+    public static final String CITY_ID_KEY = "CityID";
     private static DataHandler ourInstance;
     private SharedPreferencesController sharedPreferences;
 
@@ -116,6 +117,10 @@ public class DataHandler {
         Log.d("gg", "requesting");
     }
 
+    public void requestCitiesArray(CitiesListActivity activity) {
+        serviceHandler.requestCitiesList(this, activity);
+        Log.d("gg", "requesting");
+    }
 
     public void requestPlacesArray(PlacesListActivity placesListActivity, String cityID, String catID) {
         serviceHandler.requestPlacesArray(this, placesListActivity, cityID, catID);
@@ -131,6 +136,32 @@ public class DataHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+
+    public void recieveCitiesList(JSONArray response, CitiesListActivity citiesListActivity) {
+
+        try {
+            City[] arr = convertToArray(response, City.class);
+            citiesListActivity.recieveCitiesList(arr);
+            Log.d("gg", String.valueOf(arr.length));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean hasDefaultCity() {
+        return sharedPreferences.hasDefaultCity();
+    }
+
+    public String getDefaultCityID() {
+        return sharedPreferences.getDefaultCityID();
+    }
+
+    public void setDefaulCity(String CityID){
+
+        sharedPreferences.setDefaultCityID(CityID);
+
     }
 }
 

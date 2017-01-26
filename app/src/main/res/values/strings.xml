@@ -29,7 +29,8 @@
     <string name="register_service_url">/api/users/AddByEmail</string>
     <string name="login_service_url">/api/users/login</string>
     <string name="categories_list_service_url">/api/Categories/get</string>
-
+    <string name="places_list_service_url">/api/points/GetByCategoryID</string>
+    <string name="cities_service_url">/api/cities/get</string>
 
     <string name="title_activity_base">BaseActivity</string>
 
@@ -45,7 +46,13 @@
     <string name="notifications">التنبيهات</string>
     <string name="about_sawah">عن تطبيق سواح</string>
     <string name="dashboard">الرئيسية</string>
-    <string name="places_list_service_url">/api/points/GetByCategoryID</string>
+    <string name="place_site">الموقع</string>
+    <string name="palce_calling">الاتصال</string>
+    <string name="place_share">مشاركة</string>
+    <string name="place_checkin">تسجيل الزيارة</string>
+    <string name="share_msg_a">قم بالإطلاع على</string>
+    <string name="share_msg_b">في تطبيق سواح</string>
+    <string name="share_msg_subject">تطبيق سواح</string>
 
 
 </resources>

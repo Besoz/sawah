@@ -11,8 +11,8 @@ public class SharedPreferencesController {
     private static SharedPreferencesController ourInstance;
     private ComplexSharedPreferences sharedPreferences;
 
-    private final static String DEVICE_TOKEN_KEY = "device_Token";
-    private final static String USER_DATA_KEY = "user_data";
+    private final static String DEVICE_TOKEN_KEY = "device_Token", USER_DATA_KEY = "user_data",
+    CITY_ID_KEY = "city_id";
 
 
     public static SharedPreferencesController getInstance(Context context) {
@@ -40,6 +40,19 @@ public class SharedPreferencesController {
 
     public void updateUser(User user) {
         sharedPreferences.putObject(USER_DATA_KEY, user);
+        sharedPreferences.commit();
+    }
+
+    public boolean hasDefaultCity() {
+        return sharedPreferences.hasKey(CITY_ID_KEY);
+    }
+
+    public String getDefaultCityID() {
+        return sharedPreferences.getObject(CITY_ID_KEY, String.class);
+    }
+
+    public void setDefaultCityID(String cityID){
+        sharedPreferences.putObject(CITY_ID_KEY, cityID);
         sharedPreferences.commit();
     }
 }

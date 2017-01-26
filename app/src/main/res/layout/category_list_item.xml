@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="right">
 
 
 
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center"
+        android:layout_gravity="right"
         android:background="@drawable/yellow_progress_dialog_background"
         android:layout_margin="@dimen/listview_margin">
 
@@ -25,15 +26,24 @@
             android:layout_height="121dp"
             android:layout_width="match_parent" />
 
-        <com.accorpa.sawah.custom_views.CustomTextView
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradiant_black_background_90"
+            android:gravity="right"
+            android:layout_gravity="bottom">
+            <com.accorpa.sawah.custom_views.CustomTextView
                 android:id="@+id/firstLine"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:paddingRight="10dp"
-                android:textAlignment="center"
+                android:textAlignment="gravity"
                 android:textColor="@android:color/white"
-                android:layout_gravity="bottom|right" />
+                android:padding="@dimen/listview_margin"
+                android:text="dfsghhhhhh"
+                android:layout_gravity="right" />
+        </android.support.v7.widget.LinearLayoutCompat>
+
     </FrameLayout>
 
     <!--<FrameLayout-->

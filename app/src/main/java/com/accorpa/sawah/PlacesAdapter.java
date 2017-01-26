@@ -66,13 +66,13 @@ public class PlacesAdapter extends BaseAdapter{
         if(convertView == null) {
 
             // 2
-            convertView = mInflater.inflate(R.layout.category_list_item, parent, false);
+            convertView = mInflater.inflate(R.layout.place_list_item, parent, false);
 
             // 3
             holder = new PlacesAdapter.ViewHolder();
             holder.mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
-            holder.titleTextView = (TextView) convertView.findViewById(R.id.firstLine);
-//            holder.subtitleTextView = (TextView) convertView.findViewById(R.id.secondLine);
+            holder.titleArabic = (TextView) convertView.findViewById(R.id.place_title_ar);
+            holder.titleEnglish = (TextView) convertView.findViewById(R.id.place_title_en);
 
 
             // 4
@@ -84,13 +84,13 @@ public class PlacesAdapter extends BaseAdapter{
         }
 
 // 6
-        TextView titleTextView = holder.titleTextView;
+        TextView titleTextView = holder.titleArabic;
 //        TextView subtitleTextView = holder.subtitleTextView;
-        TextView detailTextView = holder.detailTextView;
+        TextView detailTextView = holder.titleEnglish;
         ImageView mNetworkImageView = holder.mNetworkImageView;
 
-        titleTextView.setText(recipe.getPalceNameEng());
-//        subtitleTextView.setText(recipe.getPalceNameArb());
+        titleTextView.setText(recipe.getPalceNameArb());
+        detailTextView.setText(recipe.getPalceNameEng());
 
         ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
         String imageUrl= recipe.getImageLocation().replaceAll(" ", "%20");
@@ -107,9 +107,9 @@ public class PlacesAdapter extends BaseAdapter{
     }
 
     private static class ViewHolder {
-        public TextView titleTextView;
+        public TextView titleArabic;
 //        public TextView subtitleTextView;
-        public TextView detailTextView;
+        public TextView titleEnglish;
         public NetworkImageView mNetworkImageView;
     }
 
