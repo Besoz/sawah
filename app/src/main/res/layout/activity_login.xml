@@ -188,6 +188,7 @@
                     android:textColor="@color/textColor"
                     android:id="@+id/skip_login_button"
                     android:text="@string/skip_login_text"
+                    android:padding="@dimen/padding"
                     android:layout_width="wrap_content"
                     android:gravity="bottom|center_horizontal"
                     android:layout_height="wrap_content" />

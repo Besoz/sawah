@@ -21,10 +21,11 @@ import java.util.Locale;
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private int drawerGravity = Gravity.LEFT;
+    private int drawerGravity = Gravity.RIGHT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//                setLocle();
+//        setLocle();
+        getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -33,6 +34,7 @@ public class BaseActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -90,9 +92,10 @@ public class BaseActivity extends AppCompatActivity
             NavigationHandler.getInstance().startCityActivity(this);
 
         }
-// else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
+        else if (id == R.id.nav_home) {
+            NavigationHandler.getInstance().startAfterLoginctivity(this);
+        }
+//        else if (id == R.id.nav_slideshow) {
 //
 //        } else if (id == R.id.nav_add_place) {
 //
@@ -113,6 +116,7 @@ public class BaseActivity extends AppCompatActivity
 
     public void setLocle() {
 // Log.e("setLocle", lang);
+
         Locale locale = new Locale("ar");
         Locale.setDefault(locale);
         Configuration config = getBaseContext().getResources().getConfiguration();

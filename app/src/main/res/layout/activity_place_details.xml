@@ -36,6 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="sky garden"
+                android:textSize="@dimen/header_font_size"
                 android:layout_gravity="right" />
 
             <com.accorpa.sawah.custom_views.CustomTextView
@@ -43,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="sky garden"
+                android:textSize="@dimen/header_font_size"
                 android:layout_gravity="right"
                 android:textColor="@color/buttonColor" />
 
@@ -57,24 +59,29 @@
             android:layout_alignBottom="@+id/imageView2"
             android:gravity="left">
 
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:id="@+id/rating_static"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10/"
+                android:layout_gravity="left"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/font_size"
+                android:paddingTop="@dimen/padding"
+                android:layout_marginLeft="@dimen/padding" />
+
         <com.accorpa.sawah.custom_views.CustomTextView
             android:id="@+id/rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="9"
+            android:textSize="@dimen/header_font_size"
+            android:layout_gravity="left"
+            android:paddingBottom="@dimen/padding"
             android:textColor="@color/buttonColor"
-            android:layout_alignBottom="@+id/imageView2"
             />
 
-        <com.accorpa.sawah.custom_views.CustomTextView
-            android:id="@+id/rating_static"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/10"
-            android:layout_gravity="right"
-            android:textColor="@color/textColor"
-            android:layout_toRightOf="@+id/rating"
-            android:layout_marginLeft="@dimen/padding" />
+
 
         </android.support.v7.widget.LinearLayoutCompat>
 
@@ -115,10 +122,10 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/share_button"
+                    android:id="@+id/website_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/share"
+                    android:src="@drawable/globe"
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
@@ -126,32 +133,7 @@
                 <com.accorpa.sawah.custom_views.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/place_share"
-                    android:textColor="@color/dark_text_color"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="4dp" />
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/checkin_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/check"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center" />
-                <com.accorpa.sawah.custom_views.CustomTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/place_checkin"
+                    android:text="@string/place_site"
                     android:textColor="@color/dark_text_color"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="4dp"/>
@@ -190,10 +172,10 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/website_button"
+                    android:id="@+id/checkin_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/globe"
+                    android:src="@drawable/check"
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
@@ -201,12 +183,39 @@
                 <com.accorpa.sawah.custom_views.CustomTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/place_site"
+                    android:text="@string/place_checkin"
                     android:textColor="@color/dark_text_color"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="4dp"/>
 
             </android.support.v7.widget.LinearLayoutCompat>
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/share_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/share"
+                    android:background="@android:color/transparent"
+                    android:layout_weight="1"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="center" />
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/place_share"
+                    android:textColor="@color/dark_text_color"
+                    android:gravity="center_horizontal"
+                    android:layout_marginTop="4dp" />
+
+            </android.support.v7.widget.LinearLayoutCompat>
+
+
         </android.support.v7.widget.LinearLayoutCompat>
 
 

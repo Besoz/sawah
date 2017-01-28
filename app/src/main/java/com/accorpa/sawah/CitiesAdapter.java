@@ -65,7 +65,7 @@ public class CitiesAdapter extends BaseAdapter {
             holder = new CityView();
             holder.mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
             holder.titleTextView = (TextView) convertView.findViewById(R.id.title_ar);
-            holder.titleEnglish = (TextView) convertView.findViewById(R.id.title_en+);
+            holder.titleEnglish = (TextView) convertView.findViewById(R.id.title_en);
 
 
             // 4

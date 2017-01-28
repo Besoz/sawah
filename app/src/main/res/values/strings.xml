@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sawah</string>
+    <string name="app_name">سواح</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">الإيميل</string>
@@ -53,6 +53,7 @@
     <string name="share_msg_a">قم بالإطلاع على</string>
     <string name="share_msg_b">في تطبيق سواح</string>
     <string name="share_msg_subject">تطبيق سواح</string>
+    <string name="default_font" >fonts/Hawyia_Chamber_Bold.ttf</string>
 
 
 </resources>
