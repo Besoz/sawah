@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.webkit.URLUtil;
 import android.widget.Toast;
+
+import com.android.volley.toolbox.HurlStack;
 
 import java.util.List;
 
@@ -118,7 +121,6 @@ public class SharingHandler {
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
         context.startActivity(mapIntent);
-
     }
 
 }

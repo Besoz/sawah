@@ -1,27 +1,20 @@
 package com.accorpa.sawah;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
-import android.widget.Toast;
 
 import com.accorpa.sawah.custom_views.CustomTextView;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -33,14 +26,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import static android.util.DisplayMetrics.DENSITY_HIGH;
-
-public class PlaceDetails extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
+public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
 
 
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
@@ -98,28 +85,30 @@ public class PlaceDetails extends BaseActivity implements OnMapReadyCallback, Vi
         shareButtton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharingHandler.getInstance().share(PlaceDetails.this, place.getPalceNameArb());
+                SharingHandler.getInstance().share(PlaceDetailsActivity.this, place.getPalceNameArb());
             }
         });
 
+        callButton = (ImageButton) findViewById(R.id.call_button);
         if(place.haveContactNumber()){
-            callButton = (ImageButton) findViewById(R.id.call_button);
             callButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharingHandler.getInstance().callNumber(PlaceDetails.this, place.getContactNumber());
+                    SharingHandler.getInstance().callNumber(PlaceDetailsActivity.this, place.getContactNumber());
                 }
             });
         }else{
             callButton.setImageResource(R.drawable.call_disabled);
         }
 
+
+        openSiteButton = (ImageButton) findViewById(R.id.website_button);
         if(place.haveWebSite()){
-            openSiteButton = (ImageButton) findViewById(R.id.website_button);
             openSiteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SharingHandler.getInstance().openWebsite(PlaceDetails.this, place.getWebSite());
+                    SharingHandler.getInstance().openWebsite(PlaceDetailsActivity.this,
+                            URLUtil.guessUrl(place.getWebSite()));
                 }
             });
         }else{
@@ -131,7 +120,7 @@ public class PlaceDetails extends BaseActivity implements OnMapReadyCallback, Vi
 //        checkInButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                SharingHandler.getInstance().callNumber(PlaceDetails.this, place.getContactNumber());
+//                SharingHandler.getInstance().callNumber(PlaceDetailsActivity.this, place.getContactNumber());
 //            }
 //        });
 
@@ -194,7 +183,7 @@ public class PlaceDetails extends BaseActivity implements OnMapReadyCallback, Vi
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                SharingHandler.getInstance().openMapIntent(PlaceDetails.this, place.getLattitude(),
+                SharingHandler.getInstance().openMapIntent(PlaceDetailsActivity.this, place.getLattitude(),
                         place.getLongitude());
             }
         });

@@ -65,7 +65,7 @@
             android:name=".ListActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".PlaceDetails"
+            android:name=".PlaceDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CitiesListActivity"

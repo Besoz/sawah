@@ -2,8 +2,6 @@ package com.accorpa.sawah;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Parcelable;
-import android.provider.ContactsContract;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +51,7 @@ public class NavigationHandler {
         try {
             jsonPlace = new JSONObject(mapper.writeValueAsString(selectedPlace));
 
-            Intent placesList = new Intent(context, PlaceDetails.class);
+            Intent placesList = new Intent(context, PlaceDetailsActivity.class);
             placesList.putExtra("PlaceJSONObject",  jsonPlace.toString());
 
             context.startActivity(placesList);
