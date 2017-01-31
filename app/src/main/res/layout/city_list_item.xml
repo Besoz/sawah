@@ -23,24 +23,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom|center"
             android:orientation="vertical"
             android:gravity="center">
 
 
             <com.accorpa.sawah.custom_views.CustomTextView
                 android:id="@+id/title_ar"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:paddingRight="10dp"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:layout_margin="2dp"/>
+                android:layout_margin="2dp"
+                android:contextClickable="true" />
 
             <com.accorpa.sawah.custom_views.CustomTextView
                 android:id="@+id/title_en"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:paddingRight="10dp"
