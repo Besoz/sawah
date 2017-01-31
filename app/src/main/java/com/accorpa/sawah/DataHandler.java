@@ -1,20 +1,30 @@
 package com.accorpa.sawah;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.Locale;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Created by Bassem on 15/01/17.
  */
 public class DataHandler {
+    public static final String CITY_ID_KEY = "CityID";
     private static DataHandler ourInstance;
     private SharedPreferencesController sharedPreferences;
+
+    private ServiceHandler serviceHandler;
 
     private ObjectMapper mapper;
 
@@ -34,6 +44,8 @@ public class DataHandler {
     private DataHandler(Context context) {
         sharedPreferences = SharedPreferencesController.getInstance(context);
         mapper = new ObjectMapper();
+
+        serviceHandler = ServiceHandler.getInstance(context);
 
     }
 
@@ -75,6 +87,90 @@ public class DataHandler {
 
     public void saveUser(User user) {
         sharedPreferences.updateUser(user);
+    }
+
+
+    public boolean userExist(){
+        return sharedPreferences.isSavedUserExists();
+    }
+
+    public User getUser(){
+        return sharedPreferences.getUser();
+    }
+
+    private <T> T[] convertToArray(JSONArray response, Class<T> c) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        T[] result = (T[]) mapper.readValue(response.toString(), mapper.getTypeFactory().constructArrayType(c));
+
+//        mapper.readValue(response, mapper.getTypeFactory().constructCollectionType(List.class, c));
+//        List<T> myObjects = mapper.readValue(response.toString(), mapper.getTypeFactory().constructCollectionType(List.class, c));
+        return (T[]) result;
+    }
+
+    public void recieveCategoriesList(JSONArray response, CategoriesListActivity activity) {
+
+        try {
+            Category [] arr = convertToArray(response, Category.class);
+            activity.recieveCategouriesList(arr);
+
+            Log.d("gg", String.valueOf(arr.length));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void requestCategoriesArray(CategoriesListActivity activity) {
+        serviceHandler.requestCategoriesList(this, activity);
+        Log.d("gg", "requesting");
+    }
+
+    public void requestCitiesArray(CitiesListActivity activity) {
+        serviceHandler.requestCitiesList(this, activity);
+        Log.d("gg", "requesting");
+    }
+
+    public void requestPlacesArray(PlacesListActivity placesListActivity, String cityID, String catID) {
+        serviceHandler.requestPlacesArray(this, placesListActivity, cityID, catID);
+
+    }
+
+    public void recievePlacesList(JSONArray response, PlacesListActivity placesListActivity) {
+        try {
+            Place[] arr = convertToArray(response, Place.class);
+            placesListActivity.recievePlacesList(arr);
+
+            Log.d("gg", String.valueOf(arr.length));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void recieveCitiesList(JSONArray response, CitiesListActivity citiesListActivity) {
+
+        try {
+            City[] arr = convertToArray(response, City.class);
+            citiesListActivity.recieveCitiesList(arr);
+            Log.d("gg", String.valueOf(arr.length));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean hasDefaultCity() {
+        return sharedPreferences.hasDefaultCity();
+    }
+
+    public String getDefaultCityID() {
+        return sharedPreferences.getDefaultCityID();
+    }
+
+    public void setDefaulCity(String CityID){
+
+        sharedPreferences.setDefaultCityID(CityID);
+
     }
 }
 

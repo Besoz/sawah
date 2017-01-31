@@ -10,9 +10,9 @@ import android.util.Log;
 public class URLHandler {
     private static URLHandler ourInstance;
 
-    private String Serverpath, loginPath, registerPath;
+    private String Serverpath, loginPath, registerPath, categoriesPath, placesPath, citiesPath;
 
-    private DataHandler dataHandler;
+//    private DataHandler dataHandler;
 
     public static URLHandler getInstance(Context context) {
         if(ourInstance == null){
@@ -23,13 +23,15 @@ public class URLHandler {
 
     private URLHandler(Context context) {
 
-        dataHandler = DataHandler.getInstance(context);
+//        dataHandler = DataHandler.getInstance(context);
 
         String scheme =  context.getString(R.string.connection_scheme);
         String authority =  context.getString(R.string.host_name);
         loginPath = context.getString(R.string.login_service_url);
         registerPath = context.getString(R.string.register_service_url);
-
+        categoriesPath = context.getString(R.string.categories_list_service_url);
+        placesPath = context.getString(R.string.places_list_service_url);
+        citiesPath =  context.getString(R.string.cities_service_url);
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(scheme).authority(authority);
@@ -43,7 +45,7 @@ public class URLHandler {
         Uri.Builder loginParams = new Uri.Builder();
         loginParams.appendQueryParameter("username", userName)
                             .appendQueryParameter("Password", password)
-                            .appendQueryParameter("os", dataHandler.OS)
+                            .appendQueryParameter("os", "Android")
                             .appendQueryParameter("devicetoken", deviceToken);
         String loginUrlStr = loginParams.build().toString();
 
@@ -55,7 +57,7 @@ public class URLHandler {
 
         Uri.Builder loginParams = new Uri.Builder();
         loginParams.appendQueryParameter("userID", userID)
-                .appendQueryParameter("os", dataHandler.OS)
+                .appendQueryParameter("os", "Android")
                 .appendQueryParameter("devicetoken", token);
         String loginUrlStr = loginParams.build().toString();
 
@@ -70,4 +72,30 @@ public class URLHandler {
     }
 
 
+    public String getCategoriesServiceUrl(String cityID) {
+
+        Uri.Builder placesParams = new Uri.Builder();
+        placesParams.appendQueryParameter("cityID", cityID);
+
+        String placesListUrlStr = placesParams.build().toString();
+
+        return Serverpath+categoriesPath+placesListUrlStr;
+    }
+
+
+    public String getPlacesServiceUrl(String cityID, String categoryID) {
+
+        Uri.Builder placesParams = new Uri.Builder();
+        placesParams.appendQueryParameter("catid", categoryID)
+                .appendQueryParameter("cityID", cityID);
+        String placesListUrlStr = placesParams.build().toString();
+
+        placesListUrlStr = Serverpath + placesPath + placesParams;
+
+        return placesListUrlStr;
+    }
+
+    public String getCitiesServiceUrl() {
+        return Serverpath + citiesPath;
+    }
 }

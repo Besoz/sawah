@@ -36,6 +36,10 @@ public class User {
     private String imageLocation;
 
 
+    public String getUserName() {
+        return userName;
+    }
+
     public User(String email, String password, String birthDate, String fullName, String sex,
                 String mobileNumber, String userID, String imageLocation, String userName) {
         this.email = email;

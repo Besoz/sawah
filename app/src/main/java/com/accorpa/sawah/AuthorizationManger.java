@@ -23,8 +23,8 @@ public class AuthorizationManger implements LoginListener {
         this.loginListener = loginListener;
 
         loginResponseListener =  new LoginResponseListener(this);
-        dataHandler = DataHandler.getInstance(context);
-        serviceHandler = ServiceHandler.getInstance(context);;
+        dataHandler = DataHandler.getInstance(this.context.getApplicationContext());
+        serviceHandler = ServiceHandler.getInstance(this.context.getApplicationContext());;
     }
 
 
@@ -60,5 +60,9 @@ public class AuthorizationManger implements LoginListener {
     public void loginError() {
         //        notify calling activity
         loginListener.loginError();
+    }
+
+    public void skipLogin(){
+        NavigationHandler.getInstance().startCategoriesListActivity(context);
     }
 }

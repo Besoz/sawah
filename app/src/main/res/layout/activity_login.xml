@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
+    android:gravity="center_horizontal|center"
     android:orientation="vertical"
     android:paddingBottom="0dp"
     android:paddingLeft="32dp"
@@ -13,13 +13,14 @@
     tools:context="com.accorpa.sawah.LoginActivity">
 
     <!-- Login progress -->
-    <ProgressBar
+    <com.accorpa.sawah.custom_views.CustomProgressDialog
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:indeterminateDrawable="@drawable/white_progress_dialog_background" />
 
         <LinearLayout
             android:id="@+id/login_form"
@@ -35,13 +36,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="0px"
                 android:orientation="vertical"
-                android:layout_weight="4">
+                android:layout_weight="4"
+                android:gravity="center">
 
                 <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/sawah_logo"
                     android:layout_gravity="center"
                     android:src="@drawable/sawah_logo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
 
             </LinearLayout>
@@ -183,7 +186,9 @@
                 <com.accorpa.sawah.custom_views.CustomButton
                     android:background="@android:color/transparent"
                     android:textColor="@color/textColor"
+                    android:id="@+id/skip_login_button"
                     android:text="@string/skip_login_text"
+                    android:padding="@dimen/padding"
                     android:layout_width="wrap_content"
                     android:gravity="bottom|center_horizontal"
                     android:layout_height="wrap_content" />

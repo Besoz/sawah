@@ -44,10 +44,11 @@ public class CustomButton extends Button {
             }
             else
             {
-//                fontFilePath = getResources().getString(R.string.default_font);
+                fontFilePath = getResources().getString(R.string.default_font);
+                this.setTypeface(Typeface.createFromAsset(context.getAssets(),
+                    fontFilePath));
             }
-//            this.setTypeface(Typeface.createFromAsset(context.getAssets(),
-//                    fontFilePath));
+
 
         } finally {
             a.recycle();

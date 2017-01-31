@@ -24,5 +24,8 @@ public class FCMService extends FirebaseInstanceIdService {
 
     private void sendRegistrationToServer(String refreshedToken) {
         DataHandler.getInstance(this.getApplicationContext()).updateDeviceToken(refreshedToken);
+
+        // TODO: send any registration to your app's servers.
+
     }
 }
