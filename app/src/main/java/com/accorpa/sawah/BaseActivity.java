@@ -16,12 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.accorpa.sawah.custom_views.CustomTextView;
+
 import java.util.Locale;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private int drawerGravity = Gravity.RIGHT;
+    private int drawerGravity = Gravity.LEFT;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        setLocle();
@@ -40,6 +42,15 @@ public class BaseActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+//        version 23.1.0 switches NavigationView to using a RecyclerView This means it is not
+//        instantly available to call findViewById() -a layout pass is needed before it is attached to the
+        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_base);
+
+        if(DataHandler.getInstance(this).userExist()){
+            CustomTextView userNameText = (CustomTextView) headerLayout.findViewById(R.id.user_name);
+            userNameText.setText(DataHandler.getInstance(this).getUser().getUserName());
+        }
 
         ViewGroup mainLayout = (ViewGroup) findViewById(R.id.content_base);
 
@@ -93,7 +104,7 @@ public class BaseActivity extends AppCompatActivity
 
         }
         else if (id == R.id.nav_home) {
-            NavigationHandler.getInstance().startAfterLoginctivity(this);
+            NavigationHandler.getInstance().startCategoriesListActivity(this);
         }
 //        else if (id == R.id.nav_slideshow) {
 //

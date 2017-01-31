@@ -55,4 +55,12 @@ public class SharedPreferencesController {
         sharedPreferences.putObject(CITY_ID_KEY, cityID);
         sharedPreferences.commit();
     }
+
+    public boolean isSavedUserExists() {
+        return sharedPreferences.hasKey(USER_DATA_KEY);
+    }
+
+    public User getUser() {
+        return sharedPreferences.getObject(USER_DATA_KEY, User.class);
+    }
 }

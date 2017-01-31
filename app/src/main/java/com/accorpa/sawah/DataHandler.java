@@ -89,6 +89,15 @@ public class DataHandler {
         sharedPreferences.updateUser(user);
     }
 
+
+    public boolean userExist(){
+        return sharedPreferences.isSavedUserExists();
+    }
+
+    public User getUser(){
+        return sharedPreferences.getUser();
+    }
+
     private <T> T[] convertToArray(JSONArray response, Class<T> c) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
 

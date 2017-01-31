@@ -53,7 +53,8 @@
     <string name="share_msg_a">قم بالإطلاع على</string>
     <string name="share_msg_b">في تطبيق سواح</string>
     <string name="share_msg_subject">تطبيق سواح</string>
-    <string name="default_font" >fonts/Hawyia_Chamber_Bold.ttf</string>
+    <string name="default_font">fonts/Hawyia_Chamber_Bold.ttf</string>
+    <string name="title_activity_launcher">LauncherActivity</string>
 
 
 </resources>
