@@ -2,9 +2,11 @@ package com.accorpa.sawah;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -103,4 +105,26 @@ public class NavigationHandler {
         Intent intent = new Intent(context, CitiesListActivity.class);
         context.startActivity(intent);
     }
+
+    public void startCommentActivity(Context context, String placeID) {
+        Intent commentActivity = new Intent(context, CommentActivity.class);
+        commentActivity.putExtra("PlaceID", placeID);
+        context.startActivity(commentActivity);
+    }
+
+    public void startCommentsListActivity(Context context, PlaceComment[] comments) {
+
+        Intent commentListActivity = new Intent(context, CommentsListActivity.class);
+        String JsonArr = "";
+        try {
+            JsonArr = JacksonHelper.getInstance().convertToJSON(comments);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        commentListActivity.putExtra("PlaceCommentsArray", JsonArr);
+        context.startActivity(commentListActivity);
+
+    }
+
+
 }

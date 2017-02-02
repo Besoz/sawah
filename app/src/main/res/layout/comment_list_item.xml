@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/top_bar">
+
+
+        <com.android.volley.toolbox.NetworkImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:background="@drawable/img"
+            android:layout_height="70dp"
+            android:layout_width="70dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/listview_margin"/>
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="false"
+            android:layout_toLeftOf="@+id/profile_image"
+            android:text="7amda"
+            android:layout_margin="@dimen/listview_margin"
+            android:textColor="@color/colorPrimary"/>
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/comment_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="false"
+            android:layout_alignParentLeft="true"
+            android:text="2 w"
+            android:layout_margin="@dimen/listview_margin"
+            android:textColor="@color/buttonColor"/>
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/comment_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="  يمتاز مطعم غولشان تندوري بمطبخه الهندي والبنغلاديشي والباكستاني الذي يقدم وجبات متنوعة في أجواء هادئة وودية. وقد أوصى به موقع تايم أوت لندن بين أفضل مطاعم التندوري. خدمتهجيّدة وأسعاره معقولة تتراوح بين 10-35 دولار. يستقبل الزّوّار يوميًّا من الساعة 11:00 قبل الظهر حتى 11:30 قبل منتصف الليل."
+            android:layout_toLeftOf="@+id/profile_image"
+            android:layout_below="@+id/user_name"
+            android:layout_marginLeft="@dimen/listview_margin"
+            android:layout_marginRight="@dimen/listview_margin"
+            android:layout_marginTop="@dimen/listview_margin"
+            android:textColor="@android:color/black"/>
+
+
+    </RelativeLayout>
+</LinearLayout>

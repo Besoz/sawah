@@ -219,8 +219,7 @@
         </android.support.v7.widget.LinearLayoutCompat>
 
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
+        <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
@@ -228,6 +227,50 @@
             android:layout_height="200dp"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin" />
+
+        <LinearLayout
+            android:id="@+id/comments_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@+id/map"
+            android:visibility="gone">
+
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/commments"/>
+
+            <LinearLayout
+                android:id="@+id/comments_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <com.accorpa.sawah.custom_views.CustomButton
+                android:id="@+id/more_comments_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/map"
+                android:text="@string/more_comments_text"
+                android:textColor="@color/colorPrimary"
+                android:background="@drawable/frame_rounded_primary_color"
+                android:layout_margin="@dimen/listview_margin" />
+        </LinearLayout>
+
+
+
+        <com.accorpa.sawah.custom_views.CustomButton
+            android:id="@+id/add_comment_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/comments_view"
+            android:text="@string/add_new_comment"
+            android:textColor="@color/colorPrimary"
+            android:background="@drawable/frame_rounded_primary_color"
+            android:layout_margin="@dimen/listview_margin" />
 
         <!--<LinearLayout-->
             <!--android:id="@+id/column1"-->

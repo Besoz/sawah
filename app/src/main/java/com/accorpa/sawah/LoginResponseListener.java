@@ -20,6 +20,8 @@ public class LoginResponseListener implements Response.Listener<JSONObject>{
     public LoginResponseListener(LoginListener loginListener){
         this.loginListener = loginListener;
     }
+
+//    todo parent response listner and childs inherit from it
     @Override
     public void onResponse(JSONObject jsonResponse) {
 //        response.
@@ -39,7 +41,6 @@ public class LoginResponseListener implements Response.Listener<JSONObject>{
         } catch (IOException e) {
             loginListener.loginError();
         }
-        
 
     }
 }

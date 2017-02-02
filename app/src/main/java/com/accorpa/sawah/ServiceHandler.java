@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.util.LruCache;
+import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
@@ -25,9 +26,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -213,6 +216,42 @@ public class ServiceHandler {
         });
 
         mRequestQueue.add(categoriesArrayRequest);
+    }
+
+    public void postComment(Response.Listener<JSONObject> commentResponseListner,
+                            String placeID, String text, String userID, float rating) {
+        Log.d("comment", placeID+" "+text+" "+userID+" "+rating);
+
+        String addCommentUrl = urlHandler.getAddCommentUrl();
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                addCommentUrl, getPostCommentRequest(placeID, text, userID, rating),
+                commentResponseListner, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+
+    }
+
+    private JSONObject getPostCommentRequest(String placeID, String text, String userID, float rating){
+
+        JSONObject request = new JSONObject();
+        try {
+            request.put("PointID", placeID);
+            request.put("Description", text);
+            request.put("UserID", userID);
+            request.put("RateValue", rating);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return request;
     }
 }
 

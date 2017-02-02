@@ -55,6 +55,16 @@
     <string name="share_msg_subject">تطبيق سواح</string>
     <string name="default_font">fonts/Hawyia_Chamber_Bold.ttf</string>
     <string name="title_activity_launcher">LauncherActivity</string>
+    <string name="add_new_comment">إضافة تعليق</string>
+    <string name="terms_of_use_notation">بضغطك على زر النشر بالأسفل تكون قد وافقت على شروط النشر والاستخدام والخصوصية الخاصة بتطبيق سوّاح.</string>
+    <string name="max_comment_char_text">الحد الأقصى 300 حرف</string>
+    <string name="comment_post_button_text">نشر</string>
+    <string name="add_comment_url">/api/comments/add</string>
+    <string name="comment_in_review_text">نم إضافة تعليق\nسيتم نشر التعليق بعد مراجعته</string>
+    <string name="agree">موافق</string>
+    <string name="done_text">تم</string>
+    <string name="more_comments_text">المزيد من التعليقات</string>
+    <string name="commments">التعليقات</string>
 
 
 </resources>

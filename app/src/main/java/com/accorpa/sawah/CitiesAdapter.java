@@ -82,7 +82,7 @@ public class CitiesAdapter extends BaseAdapter {
         ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
         String imageUrl= recipe.getImageLocation().replaceAll(" ", "%20");
 
-//        mImageLoader.get(imageUrl, getImageListener(holder.mNetworkImageView, R.drawable.sawah_logo, R.drawable.gplus_login_logo));
+//        mImageLoader.get(imageUrl, getImageListener(holder.userPhotoImageView, R.drawable.sawah_logo, R.drawable.gplus_login_logo));
         holder.mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
         AnimationDrawable frameAnimation = (AnimationDrawable) holder.mNetworkImageView.getBackground();
         frameAnimation.start();

@@ -14,7 +14,14 @@
 
         <item name="android:textColor">@color/textColor</item>
 
+        <item name="android:alertDialogTheme">@style/sawahAlertDialogTheme</item>
 
+    </style>
+
+    <style name="sawahAlertDialogTheme">
+        <item name="android:colorBackground">
+            @color/buttonColor
+        </item>
     </style>
 
     <style name="AutoCompleteTextLabel" parent="Widget.AppCompat.Light.AutoCompleteTextView">
@@ -53,7 +60,7 @@
 
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -88,3 +95,5 @@
     </style>
 
 </resources>
+
+
