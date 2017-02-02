@@ -234,12 +234,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_below="@+id/map"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:gravity="right">
 
             <com.accorpa.sawah.custom_views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/commments"/>
+                android:text="@string/commments"
+                android:textColor="@color/dark_text_color"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:id="@+id/comments_list"

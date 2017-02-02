@@ -175,7 +175,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             }else{
                 moreCommentsButton.setVisibility(View.GONE);
             }
-            
+
         }
 
 
