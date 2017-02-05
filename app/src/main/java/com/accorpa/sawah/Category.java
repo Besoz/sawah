@@ -1,11 +1,13 @@
 package com.accorpa.sawah;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by root on 18/01/17.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Category {
 
     @JsonProperty("CategoryName")

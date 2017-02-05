@@ -1,11 +1,13 @@
 package com.accorpa.sawah;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Bassem on 15/01/17.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
 
     @JsonProperty("Email")

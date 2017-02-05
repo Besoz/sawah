@@ -1,5 +1,6 @@
 package com.accorpa.sawah;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
@@ -7,6 +8,8 @@ import java.io.Serializable;
 /**
  * Created by root on 25/01/17.
  */
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PlaceComment implements Serializable{
 
     @JsonProperty("ImageLocation")
