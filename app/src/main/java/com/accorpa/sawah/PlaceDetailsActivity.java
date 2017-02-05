@@ -6,13 +6,16 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.SimpleExpandableListAdapter;
 
 import com.accorpa.sawah.custom_views.CustomButton;
@@ -28,6 +31,8 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.kennyc.bottomsheet.BottomSheet;
+import com.kennyc.bottomsheet.BottomSheetListener;
 
 import java.io.IOException;
 
@@ -75,6 +80,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//       todo sperate view intialization in other methods
 
         bioTextView = (CustomTextView) findViewById(R.id.bio_text);
         bioTextView.setText(place.getBio());
@@ -228,9 +235,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // Add a marker in Sydney, Australia,
-        // and move the map's camera to the same location.
 
+//        todo refactor this part
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
 
         Matrix m = new Matrix();
@@ -248,8 +254,28 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                SharingHandler.getInstance().openMapIntent(PlaceDetailsActivity.this, place.getLattitude(),
-                        place.getLongitude());
+
+                new BottomSheet.Builder(PlaceDetailsActivity.this)
+                        .setSheet(R.menu.map_application_options)
+                        .setTitle(R.string.open_map_with_text)
+                        .setNegativeButton(R.string.close)
+                        .setListener(new BottomSheetListener() {
+                            @Override
+                            public void onSheetShown(@NonNull BottomSheet bottomSheet) {
+
+                            }
+
+                            @Override
+                            public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem) {
+                                onMenuItemClick(menuItem);
+                            }
+
+                            @Override
+                            public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @DismissEvent int i) {
+
+                            }
+                        }).setStyle(R.style.MyBottomSheetStyle)
+                        .show();
             }
         });
 
@@ -280,4 +306,32 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 //                break;
 //        }
     }
+
+
+//    public void showMenu(View v) {
+//        PopupMenu popup = new PopupMenu(this, v);
+//
+//        // This activity implements OnMenuItemClickListener
+//        popup.setOnMenuItemClickListener(this);
+//        popup.inflate(R.menu.map_application_options);
+//        popup.show();
+//    }
+
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.open_in_google_maps:
+
+                SharingHandler.getInstance().openMapIntent(PlaceDetailsActivity.this,
+                        place.getLattitude(), place.getLongitude());
+
+                return true;
+            case R.id.request_uber:
+                SharingHandler.getInstance().requestUberRide(PlaceDetailsActivity.this,
+                        place.getLattitude(), place.getLongitude());
+                return true;
+            default:
+                return false;
+        }
+    }
+
 }
