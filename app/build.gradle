@@ -27,6 +27,11 @@ android {
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/2'] } }
 }
 
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -46,6 +51,10 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.0.1'
 
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
+
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.github.Kennyc1012:BottomSheet:2.3.1'
+
 }
 
 

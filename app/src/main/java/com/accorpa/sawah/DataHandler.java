@@ -98,20 +98,10 @@ public class DataHandler {
         return sharedPreferences.getUser();
     }
 
-    private <T> T[] convertToArray(JSONArray response, Class<T> c) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-
-        T[] result = (T[]) mapper.readValue(response.toString(), mapper.getTypeFactory().constructArrayType(c));
-
-//        mapper.readValue(response, mapper.getTypeFactory().constructCollectionType(List.class, c));
-//        List<T> myObjects = mapper.readValue(response.toString(), mapper.getTypeFactory().constructCollectionType(List.class, c));
-        return (T[]) result;
-    }
-
     public void recieveCategoriesList(JSONArray response, CategoriesListActivity activity) {
 
         try {
-            Category [] arr = convertToArray(response, Category.class);
+            Category [] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Category.class);
             activity.recieveCategouriesList(arr);
 
             Log.d("gg", String.valueOf(arr.length));
@@ -138,7 +128,7 @@ public class DataHandler {
 
     public void recievePlacesList(JSONArray response, PlacesListActivity placesListActivity) {
         try {
-            Place[] arr = convertToArray(response, Place.class);
+            Place[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Place.class);
             placesListActivity.recievePlacesList(arr);
 
             Log.d("gg", String.valueOf(arr.length));
@@ -151,7 +141,7 @@ public class DataHandler {
     public void recieveCitiesList(JSONArray response, CitiesListActivity citiesListActivity) {
 
         try {
-            City[] arr = convertToArray(response, City.class);
+            City[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), City.class);
             citiesListActivity.recieveCitiesList(arr);
             Log.d("gg", String.valueOf(arr.length));
         } catch (IOException e) {

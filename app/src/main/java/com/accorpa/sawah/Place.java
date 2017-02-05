@@ -165,7 +165,7 @@ public class Place {
         isOpen = open;
     }
 
-    public String getPointID() {
+    public String getPlaceID() {
         return pointID;
     }
 

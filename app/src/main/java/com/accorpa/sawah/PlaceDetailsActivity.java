@@ -4,14 +4,21 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.SimpleExpandableListAdapter;
 
+import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomTextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,16 +31,25 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.kennyc.bottomsheet.BottomSheet;
+import com.kennyc.bottomsheet.BottomSheetListener;
 
 import java.io.IOException;
 
 public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
 
 
+    private static final int VIEW_COMMENTS_COUNT = 2;
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
     private NetworkImageView placeImage;
 
     private ImageButton shareButtton, callButton, openSiteButton, checkInButton;
+
+    private CustomButton addCommentButton, moreCommentsButton;
+
+    private View commentsView;
+
+    private LinearLayout linearLayout;
 
 
     private SimpleExpandableListAdapter mAdapter;
@@ -48,6 +64,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     ExpandableRelativeLayout mExpandLayout;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +80,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//       todo sperate view intialization in other methods
 
         bioTextView = (CustomTextView) findViewById(R.id.bio_text);
         bioTextView.setText(place.getBio());
@@ -115,6 +134,59 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             openSiteButton.setImageResource(R.drawable.globe_disabled);
         }
 
+        addCommentButton = (CustomButton) findViewById(R.id.add_comment_button);
+        addCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DataHandler dataHandler = DataHandler.getInstance(PlaceDetailsActivity.this);
+                if(dataHandler.userExist()){
+                    NavigationHandler.getInstance().startCommentActivity(PlaceDetailsActivity.this,
+                            place.getPlaceID());
+                }else{
+//                    show not signed in dialog
+                }
+            }
+        });
+
+
+        if(place.getCommentsCount() != 0){
+
+            commentsView = findViewById(R.id.comments_view);
+            commentsView.setVisibility(View.VISIBLE);
+
+            linearLayout = (LinearLayout) findViewById(R.id.comments_list);
+
+            PlaceComment[] comments = place.getComments();
+
+            int totalCommentsCount,remainingCommentsCount;
+            totalCommentsCount = remainingCommentsCount = place.getCommentsCount();
+
+            CommentsAdapter adapter =  new CommentsAdapter(this, comments);
+
+            for(int i = 0; i < Math.min(VIEW_COMMENTS_COUNT, totalCommentsCount); i++){
+                linearLayout.addView(adapter.getView(i, null, null));
+                remainingCommentsCount --;
+            }
+
+            moreCommentsButton = (CustomButton) findViewById(R.id.more_comments_button);
+
+            if(remainingCommentsCount > 0){
+                moreCommentsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DataHandler dataHandler = DataHandler.getInstance(PlaceDetailsActivity.this);
+                        NavigationHandler.getInstance().startCommentsListActivity(PlaceDetailsActivity.this,
+                                PlaceDetailsActivity.this.place.getComments());
+                    }
+                });
+            }else{
+                moreCommentsButton.setVisibility(View.GONE);
+            }
+
+        }
+
+
+
 
 //        checkInButton = (ImageButton) findViewById(R.id.checkin_button);
 //        checkInButton.setOnClickListener(new View.OnClickListener() {
@@ -163,9 +235,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        // Add a marker in Sydney, Australia,
-        // and move the map's camera to the same location.
 
+//        todo refactor this part
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
 
         Matrix m = new Matrix();
@@ -183,8 +254,28 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                SharingHandler.getInstance().openMapIntent(PlaceDetailsActivity.this, place.getLattitude(),
-                        place.getLongitude());
+
+                new BottomSheet.Builder(PlaceDetailsActivity.this)
+                        .setSheet(R.menu.map_application_options)
+                        .setTitle(R.string.open_map_with_text)
+                        .setNegativeButton(R.string.close)
+                        .setListener(new BottomSheetListener() {
+                            @Override
+                            public void onSheetShown(@NonNull BottomSheet bottomSheet) {
+
+                            }
+
+                            @Override
+                            public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem) {
+                                onMenuItemClick(menuItem);
+                            }
+
+                            @Override
+                            public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @DismissEvent int i) {
+
+                            }
+                        }).setStyle(R.style.MyBottomSheetStyle)
+                        .show();
             }
         });
 
@@ -215,4 +306,32 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 //                break;
 //        }
     }
+
+
+//    public void showMenu(View v) {
+//        PopupMenu popup = new PopupMenu(this, v);
+//
+//        // This activity implements OnMenuItemClickListener
+//        popup.setOnMenuItemClickListener(this);
+//        popup.inflate(R.menu.map_application_options);
+//        popup.show();
+//    }
+
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.open_in_google_maps:
+
+                SharingHandler.getInstance().openMapIntent(PlaceDetailsActivity.this,
+                        place.getLattitude(), place.getLongitude());
+
+                return true;
+            case R.id.request_uber:
+                SharingHandler.getInstance().requestUberRide(PlaceDetailsActivity.this,
+                        place.getLattitude(), place.getLongitude());
+                return true;
+            default:
+                return false;
+        }
+    }
+
 }
