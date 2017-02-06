@@ -19,6 +19,7 @@ import android.widget.PopupMenu;
 import android.widget.SimpleExpandableListAdapter;
 
 import com.accorpa.sawah.custom_views.CustomButton;
+import com.accorpa.sawah.custom_views.CustomCheckBox;
 import com.accorpa.sawah.custom_views.CustomTextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +45,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     private NetworkImageView placeImage;
 
     private ImageButton shareButtton, callButton, openSiteButton, checkInButton;
+
+    private CustomCheckBox likeButton;
 
     private CustomButton addCommentButton, moreCommentsButton;
 
@@ -185,8 +188,14 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         }
 
-
-
+        likeButton = (CustomCheckBox) this.findViewById(R.id.like_button);
+        likeButton.setBackResIDs(R.drawable.bell, R.drawable.heart);
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                likeButton.toggleState();
+            }
+        });
 
 //        checkInButton = (ImageButton) findViewById(R.id.checkin_button);
 //        checkInButton.setOnClickListener(new View.OnClickListener() {
