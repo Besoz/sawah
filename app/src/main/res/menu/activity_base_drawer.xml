@@ -29,6 +29,12 @@
             android:title="@string/change_city"
             />
 
+        <item
+            android:id="@+id/nav_fav_list"
+            android:icon="@drawable/heart"
+            android:title="@string/favourites"
+            />
+
         <!--<item-->
             <!--android:id="@+id/nav_contact_us"-->
             <!--android:title="@string/contact_us" />-->

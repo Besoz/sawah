@@ -1,21 +1,18 @@
 package com.accorpa.sawah;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
+import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.custom_views.CustomEditText;
 import com.android.volley.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;

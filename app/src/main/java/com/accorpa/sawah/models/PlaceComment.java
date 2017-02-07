@@ -1,7 +1,8 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.orm.SugarRecord;
 
 import java.io.Serializable;
 
@@ -10,7 +11,9 @@ import java.io.Serializable;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PlaceComment implements Serializable{
+public class PlaceComment extends SugarRecord implements Serializable{
+
+    private Place place;
 
     @JsonProperty("ImageLocation")
     private String imageLocation;
@@ -68,5 +71,9 @@ public class PlaceComment implements Serializable{
 
     public void setRateValue(float rateValue) {
         this.rateValue = rateValue;
+    }
+
+    public void setPlace(Place place) {
+        this.place = place;
     }
 }

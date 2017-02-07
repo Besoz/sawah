@@ -1,6 +1,8 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
+
+import com.accorpa.sawah.models.User;
 
 /**
  * Created by Bassem on 15/01/17.

@@ -1,21 +1,12 @@
 package com.accorpa.sawah;
 
-import android.content.Context;
-import android.content.Intent;
-import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
 
-import org.json.JSONArray;
-
-import static com.accorpa.sawah.R.styleable.View;
+import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.models.Category;
 
 public class CategoriesListActivity extends ListActivity{
 

@@ -1,17 +1,17 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.ContactsContract;
-import android.support.v4.util.LruCache;
-import android.text.Editable;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
+import com.accorpa.sawah.CategoriesListActivity;
+import com.accorpa.sawah.CitiesListActivity;
+import com.accorpa.sawah.LoginResponseListener;
+import com.accorpa.sawah.LruBitmapCache;
+import com.accorpa.sawah.place.PlacesListActivity;
+import com.accorpa.sawah.R;
+import com.accorpa.sawah.SignupResponseListener;
 import com.android.volley.Cache;
 import com.android.volley.Network;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,14 +20,8 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.google.gson.JsonArray;
 
 import org.json.JSONArray;
 import org.json.JSONException;

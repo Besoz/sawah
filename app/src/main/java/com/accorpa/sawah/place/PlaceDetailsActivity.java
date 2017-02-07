@@ -1,4 +1,4 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.place;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,12 +15,20 @@ import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.SimpleExpandableListAdapter;
 
+import com.accorpa.sawah.BaseActivity;
+import com.accorpa.sawah.CommentsAdapter;
+import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.Handlers.SharingHandler;
+import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomCheckBox;
 import com.accorpa.sawah.custom_views.CustomTextView;
+import com.accorpa.sawah.models.Place;
+import com.accorpa.sawah.models.PlaceComment;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -189,10 +197,17 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         }
 
         likeButton = (CustomCheckBox) this.findViewById(R.id.like_button);
-        likeButton.setBackResIDs(R.drawable.bell, R.drawable.heart);
+        likeButton.setBackgroundResIDs(R.drawable.bell, R.drawable.heart);
+
+        if(place.isFavourite()){
+            likeButton.setChecked();
+        }
+
         likeButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                DataHandler.getInstance(PlaceDetailsActivity.this).togglePlaceFavourite(place);
                 likeButton.toggleState();
             }
         });
@@ -213,14 +228,14 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
 
 
-        for (String name: place.getAppointments().keySet()){
-
-            String key = name.toString();
-            String value = place.getAppointments().get(name).toString();
-           Log.d("gg", "++++++++++++++++++ " + key + " " + value);
-
-
-        }
+//        for (String name: place.getAppointments().keySet()){
+//
+//            String key = name.toString();
+//            String value = place.getAppointments().get(name).toString();
+//           Log.d("gg", "++++++++++++++++++ " + key + " " + value);
+//
+//
+//        }
 //
 //        Button mExpandButton = (Button) findViewById(R.id.expandButton);
 ////        Button mMoveChildButton = (Button) findViewById(R.id.moveChildButton);

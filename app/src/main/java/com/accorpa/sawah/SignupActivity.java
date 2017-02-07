@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
-import android.content.Intent;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -25,7 +24,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.accorpa.sawah.Handlers.AuthorizationManger;
+import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.custom_views.CustomButton;
+import com.accorpa.sawah.models.User;
 
 import java.util.ArrayList;
 import java.util.List;

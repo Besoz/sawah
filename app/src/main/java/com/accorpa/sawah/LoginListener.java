@@ -1,5 +1,7 @@
 package com.accorpa.sawah;
 
+import com.accorpa.sawah.models.User;
+
 /**
  * Created by Bassem on 16/01/17.
  */

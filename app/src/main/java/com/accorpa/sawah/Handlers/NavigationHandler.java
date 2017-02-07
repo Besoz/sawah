@@ -1,12 +1,23 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
+import com.accorpa.sawah.BaseActivity;
+import com.accorpa.sawah.CategoriesListActivity;
+import com.accorpa.sawah.CitiesListActivity;
+import com.accorpa.sawah.CommentActivity;
+import com.accorpa.sawah.CommentsListActivity;
+import com.accorpa.sawah.JacksonHelper;
+import com.accorpa.sawah.LoginActivity;
+import com.accorpa.sawah.models.PlaceComment;
+import com.accorpa.sawah.place.FavouritePlacesList;
+import com.accorpa.sawah.place.PlaceDetailsActivity;
+import com.accorpa.sawah.place.PlacesListActivity;
+import com.accorpa.sawah.SignupActivity;
+import com.accorpa.sawah.models.Place;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,4 +138,8 @@ public class NavigationHandler {
     }
 
 
+    public void startFavouritePlacesList(Context context) {
+        Intent activity = new Intent(context, FavouritePlacesList.class);
+        context.startActivity(activity);
+    }
 }

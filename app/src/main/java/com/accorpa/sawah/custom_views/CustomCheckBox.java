@@ -10,14 +10,18 @@ import android.widget.ImageButton;
 
 public class CustomCheckBox extends ImageButton {
 
-    private int currentResID, nextResID;
+    private int checkedResID, unCheckedResID, currentResID, nextResID;
 
     public CustomCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public void setBackResIDs(int checkedResID, int unCheckResID){
-        currentResID = unCheckResID;
+    public void setBackgroundResIDs(int checkedResID, int unCheckedResID){
+
+        this.checkedResID = checkedResID;
+        this.unCheckedResID = unCheckedResID;
+
+        currentResID = unCheckedResID;
         nextResID = checkedResID;
 
         this.setBackgroundResource(this.currentResID);
@@ -29,6 +33,20 @@ public class CustomCheckBox extends ImageButton {
         int temp = nextResID;
         nextResID = currentResID;
         currentResID = temp;
+    }
+
+    public void setChecked(){
+        this.setBackgroundResource(checkedResID);
+
+        currentResID = checkedResID;
+        nextResID = unCheckedResID;
+    }
+
+    public void setUnChecked(){
+        this.setBackgroundResource(unCheckedResID);
+
+        currentResID = unCheckedResID;
+        nextResID = checkedResID;
     }
 
 

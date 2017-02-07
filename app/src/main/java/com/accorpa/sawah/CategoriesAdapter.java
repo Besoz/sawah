@@ -1,23 +1,19 @@
 package com.accorpa.sawah;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
+import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.models.Category;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-
-import java.util.ArrayList;
 
 /**
  * Created by root on 18/01/17.

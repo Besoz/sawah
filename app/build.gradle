@@ -55,6 +55,10 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.Kennyc1012:BottomSheet:2.3.1'
 
+    compile 'com.github.satyan:sugar:1.4'
+
+    compile 'com.arasthel:asyncjob-library:1.0.3'
+
 }
 
 

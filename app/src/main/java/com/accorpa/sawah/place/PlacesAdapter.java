@@ -1,4 +1,4 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.place;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
@@ -9,6 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.R;
+import com.accorpa.sawah.custom_views.CustomCheckBox;
+import com.accorpa.sawah.models.Place;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -55,14 +59,10 @@ public class PlacesAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get view for row item
-        PlacesAdapter.ViewHolder holder;
+        final PlacesAdapter.ViewHolder holder;
 
         Place recipe = (Place) getItem(position);
 
-// 2
-
-
-// 1
         if(convertView == null) {
 
             // 2
@@ -73,7 +73,8 @@ public class PlacesAdapter extends BaseAdapter{
             holder.mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
             holder.titleArabic = (TextView) convertView.findViewById(R.id.place_title_ar);
             holder.titleEnglish = (TextView) convertView.findViewById(R.id.place_title_en);
-
+            holder.customCheckBox = (CustomCheckBox) convertView.findViewById(R.id.like_button);
+            holder.customCheckBox.setBackgroundResIDs(R.drawable.bell, R.drawable.heart);
 
             // 4
             convertView.setTag(holder);
@@ -103,6 +104,22 @@ public class PlacesAdapter extends BaseAdapter{
 
         holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
 
+
+
+
+        if(recipe.isFavourite())
+            holder.customCheckBox.setChecked();
+        else
+            holder.customCheckBox.setUnChecked();
+
+        holder.customCheckBox.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                holder.customCheckBox.toggleState();
+            }
+        });
+
         return convertView;
     }
 
@@ -111,6 +128,7 @@ public class PlacesAdapter extends BaseAdapter{
 //        public TextView subtitleTextView;
         public TextView titleEnglish;
         public NetworkImageView mNetworkImageView;
+        public CustomCheckBox customCheckBox;
     }
 
     public ImageLoader.ImageListener getImageListener(final ImageView view,

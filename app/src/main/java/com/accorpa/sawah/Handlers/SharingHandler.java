@@ -1,14 +1,13 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.webkit.URLUtil;
 import android.widget.Toast;
 
-import com.android.volley.toolbox.HurlStack;
+import com.accorpa.sawah.R;
 
 import java.util.List;
 

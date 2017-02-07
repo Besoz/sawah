@@ -1,9 +1,12 @@
 package com.accorpa.sawah;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.models.City;
 
 public class CitiesListActivity extends ListActivity {
 

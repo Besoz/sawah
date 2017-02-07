@@ -1,16 +1,34 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.models;
 
+import android.util.Log;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.orm.SugarRecord;
+import com.orm.dsl.Ignore;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by root on 18/01/17.
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Place {
+public class Place extends SugarRecord{
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    @JsonProperty("favourite")
+    private boolean favourite;
 
     @JsonProperty("PointName")
     private String palceName;
@@ -24,8 +42,10 @@ public class Place {
     @JsonProperty("BIO")
     private String biography;
 
+    @Ignore
     @JsonProperty("ImagesLocation")
-    private String[] imagesLocations;
+    private PlaceImage[] images;
+
 
     @JsonProperty("ContactNumber")
     private String contactNumber;
@@ -60,6 +80,7 @@ public class Place {
     @JsonProperty("WebSite")
     private String webSite;
 
+    @Ignore
     @JsonProperty("Appointments")
     private HashMap<String,String> appointments;
 
@@ -75,11 +96,13 @@ public class Place {
     @JsonProperty("CommentsCount")
     private int commentsCount;
 
+    @Ignore
     @JsonProperty("Comments")
     private PlaceComment[] comments;
 
 
     public Place() {
+        Log.d("Default Constructor", this.getId()+"");
     }
 
     public String getPalceName() {
@@ -114,24 +137,57 @@ public class Place {
         this.biography = biography;
     }
 
-    public void setImagesLocations(String[] imagesLocations) {
-        this.imagesLocations = imagesLocations;
+    public void setImages(String[] imagesUrls) {
+        Log.d("Image group", "+9999999999999999999999");
+
+        this.images = new PlaceImage[imagesUrls.length];
+
+        for (int i = 0; i < imagesUrls.length; i++) {
+            images[i] = new PlaceImage(this, imagesUrls[i]);
+        }
+
+//        Log.d("Image group", this.imageGroup.getNextImage());
+
     }
 
+    public String[] getImages(){
+
+        Log.d("Getter", "Get Images");
+
+        String[] imagesUrls = new String[this.images.length];
+
+        for (int i = 0; i < images.length; i++) {
+            imagesUrls[i] = this.images[i].getImageURL();
+        }
+
+        return imagesUrls;
+    }
+
+    @JsonIgnore
+    public void setPlaceImages(PlaceImage[] placeImages){
+        this.images = placeImages;
+    }
+
+    @JsonIgnore
+    public PlaceImage[] getPlaceImages() {
+        return this.images;
+    }
 
     public String getImageLocation() {
-        if(imagesLocations.length > 0)
-            return imagesLocations[0];
+
+        if(images.length > 0)
+            return images[0].getImageURL();
         return "";
     }
+
 
     public String getBiography() {
         return biography;
     }
 
-    public String[] getImagesLocations() {
-        return imagesLocations;
-    }
+//    public String[] getImageGroup() {
+//        return imageGroup;
+//    }
 
     public String getContactNumber() {
         return contactNumber;
@@ -234,6 +290,9 @@ public class Place {
     }
 
     public void setComments(PlaceComment[] comments) {
+        for (int i = 0;  i < comments.length; i++){
+            comments[i].setPlace(this);
+        }
         this.comments = comments;
     }
 
@@ -246,4 +305,11 @@ public class Place {
         if(webSite != null && !webSite.equals("")) return true;
         return false;
     }
+
+    public void loadAssets() {
+
+    }
+
+
+
 }

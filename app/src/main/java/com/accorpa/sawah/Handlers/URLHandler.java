@@ -1,8 +1,9 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
 import android.net.Uri;
-import android.util.Log;
+
+import com.accorpa.sawah.R;
 
 /**
  * Created by Bassem on 12/01/17.

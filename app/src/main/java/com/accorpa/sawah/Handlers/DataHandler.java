@@ -1,20 +1,33 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.accorpa.sawah.CategoriesListActivity;
+import com.accorpa.sawah.CitiesListActivity;
+import com.accorpa.sawah.JacksonHelper;
+import com.accorpa.sawah.models.PlaceComment;
+import com.accorpa.sawah.place.FavouritePlacesList;
+import com.accorpa.sawah.place.PlacesListActivity;
+import com.accorpa.sawah.models.Category;
+import com.accorpa.sawah.models.City;
+import com.accorpa.sawah.models.Place;
+import com.accorpa.sawah.models.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.orm.SugarRecord;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.Locale;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by Bassem on 15/01/17.
@@ -101,7 +114,7 @@ public class DataHandler {
     public void recieveCategoriesList(JSONArray response, CategoriesListActivity activity) {
 
         try {
-            Category [] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Category.class);
+            Category[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Category.class);
             activity.recieveCategouriesList(arr);
 
             Log.d("gg", String.valueOf(arr.length));
@@ -129,9 +142,33 @@ public class DataHandler {
     public void recievePlacesList(JSONArray response, PlacesListActivity placesListActivity) {
         try {
             Place[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Place.class);
+
+//            ArrayList<Place> favArr = (ArrayList<Place>) Place.findWithQueryAsIterator(Place.class,
+//                    "CityID = ? and CatID = ?", placesListActivity.getCityID(),
+//                    placesListActivity.getCatID());
+
+            List<Place> favArr = (List<Place>) Place.listAll(Place.class);
+
+            HashMap<String, Place> favPlacesIDs = new HashMap<String, Place>();
+
+            for(int i = 0; i < favArr.size(); i++){
+                favPlacesIDs.put(favArr.get(i).getPlaceID(), favArr.get(i));
+            }
+
+            for(int i = 0; i < arr.length; i++){
+                if(favPlacesIDs.containsKey(arr[i].getPlaceID())){
+
+                    arr[i].setFavourite(true);
+                    arr[i].setId(favPlacesIDs.get(arr[i].getPlaceID()).getId());
+
+//                   todo set nested object IDs
+                }
+            }
+
             placesListActivity.recievePlacesList(arr);
 
             Log.d("gg", String.valueOf(arr.length));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,6 +198,30 @@ public class DataHandler {
 
         sharedPreferences.setDefaultCityID(CityID);
 
+    }
+
+    public void togglePlaceFavourite(Place place) {
+        if(place.isFavourite()){
+//            remove from database
+            SugarRecord.deleteInTx(place.getComments());
+            SugarRecord.deleteInTx(place.getPlaceImages());
+            place.delete();
+        }else{
+//            add to database
+            place.save();
+//            List<PlaceComment> comments = new ArrayList<PlaceComment>(Arrays.asList(place.getComments()));
+            SugarRecord.saveInTx(place.getComments());
+            SugarRecord.saveInTx(place.getPlaceImages());
+
+        }
+    }
+
+    public void requestFavouritePlacesArray(FavouritePlacesList favouritePlacesList) {
+        DatabaseHelper.getInstance().getFavouritePlaces(this, favouritePlacesList, "", "");
+    }
+
+    public void recieveFavouritePlacesList(FavouritePlacesList activity, List<Place> places) {
+        activity.recieveFavouritePlacesList(places);
     }
 }
 

@@ -1,11 +1,14 @@
-package com.accorpa.sawah;
+package com.accorpa.sawah.place;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.fasterxml.jackson.databind.deser.Deserializers;
+import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.ListActivity;
+import com.accorpa.sawah.R;
+import com.accorpa.sawah.models.Place;
 
 public class PlacesListActivity extends ListActivity {
 
@@ -38,5 +41,13 @@ public class PlacesListActivity extends ListActivity {
         mListView.setAdapter(new PlacesAdapter(this, arr));
         showProgress(false);
 
+    }
+
+    public String getCityID() {
+        return cityID;
+    }
+
+    public String getCatID() {
+        return catID;
     }
 }

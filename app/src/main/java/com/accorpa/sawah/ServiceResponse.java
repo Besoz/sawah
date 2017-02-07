@@ -1,9 +1,7 @@
 package com.accorpa.sawah;
 
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.accorpa.sawah.models.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonView;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 
 /**
  * Created by bassem on 12/01/17.
