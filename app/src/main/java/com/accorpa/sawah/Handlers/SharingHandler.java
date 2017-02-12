@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.R;
 
 import java.util.List;
@@ -97,8 +99,7 @@ public class SharingHandler {
         i.setType("text/plain");
 
         i.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.share_msg_subject));
-        i.putExtra(android.content.Intent.EXTRA_TEXT, context.getString(R.string.share_msg_a)+" "+
-                placeName+" "+context.getString(R.string.share_msg_b));
+        i.putExtra(android.content.Intent.EXTRA_TEXT, placeName);
         context.startActivity(Intent.createChooser(i,"Share via"));
     }
 
@@ -108,11 +109,7 @@ public class SharingHandler {
         context.startActivity(intent);
     }
 
-    public void openWebsite(Context context, String website){
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(website));
-        context.startActivity(intent);
-    }
+
 
     public void openMapIntent(Context context, double placeLat, double placLong){
 
@@ -138,5 +135,38 @@ public class SharingHandler {
             context.startActivity(i);
         }
     }
+
+    public void contactSawah(Context context) {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("application/octet-stream");
+//        emailIntent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        emailIntent.putExtra(Intent.EXTRA_EMAIL  , new String[]{"info@sawahapp.com"});
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, context.getString(R.string.share_msg_subject));
+        emailIntent.putExtra(Intent.EXTRA_TEXT   , "من نظام Android");
+
+        try {
+            context.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(context, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void openWebsite(Context context, String website){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(website));
+        context.startActivity(intent);
+    }
+
+    public void openTwitterPage(Context context){
+
+        try {
+            openWebsite(context, context.getString(R.string.twitter_app_page_uri));
+
+        }catch (Exception e) {
+            openWebsite(context, context.getString(R.string.twitter_page_url));
+
+        }
+    }
+
 
 }

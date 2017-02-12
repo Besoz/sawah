@@ -3,11 +3,12 @@ package com.accorpa.sawah.Handlers;
 import android.content.Context;
 import android.content.Intent;
 
-import com.accorpa.sawah.BaseActivity;
+import com.accorpa.sawah.AboutSawahActivity;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.CommentActivity;
 import com.accorpa.sawah.CommentsListActivity;
+import com.accorpa.sawah.GeneralInstructionActivity;
 import com.accorpa.sawah.JacksonHelper;
 import com.accorpa.sawah.LoginActivity;
 import com.accorpa.sawah.models.PlaceComment;
@@ -140,6 +141,16 @@ public class NavigationHandler {
 
     public void startFavouritePlacesList(Context context) {
         Intent activity = new Intent(context, FavouritePlacesList.class);
+        context.startActivity(activity);
+    }
+
+    public void startAboutSawah(Context context) {
+        Intent activity = new Intent(context, AboutSawahActivity.class);
+        context.startActivity(activity);
+    }
+
+    public void startGeneralInstruction(Context context){
+        Intent activity = new Intent(context, GeneralInstructionActivity.class);
         context.startActivity(activity);
     }
 }

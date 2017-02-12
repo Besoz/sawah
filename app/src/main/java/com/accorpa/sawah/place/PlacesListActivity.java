@@ -13,6 +13,7 @@ import com.accorpa.sawah.models.Place;
 public class PlacesListActivity extends ListActivity {
 
     private String cityID, catID;
+    private PlacesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +33,18 @@ public class PlacesListActivity extends ListActivity {
                 NavigationHandler.getInstance().startPlaceDetailsActivity(PlacesListActivity.this, selectedPlace);
             }
         });
+        adapter = new PlacesAdapter(this, new Place[0]);
+        mListView.setAdapter(adapter);
+
         DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
         showProgress(true);
     }
 
 
     public void recievePlacesList(Place[] arr) {
-        mListView.setAdapter(new PlacesAdapter(this, arr));
+        Place[] mergedPlaces = DataHandler.getInstance(this).mergeWithFavouritePlaces(arr);
+        adapter.setDataSource(mergedPlaces);
+        adapter.notifyDataSetChanged();
         showProgress(false);
 
     }
@@ -49,5 +55,14 @@ public class PlacesListActivity extends ListActivity {
 
     public String getCatID() {
         return catID;
+    }
+
+    @Override
+    protected void onResume() {
+        Place[] places = adapter.getDataSource();
+        Place[] mergedPlaces = DataHandler.getInstance(this).mergeWithFavouritePlaces(places);
+        adapter.setDataSource(mergedPlaces);
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 }

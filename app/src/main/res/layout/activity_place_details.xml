@@ -68,7 +68,7 @@
                     android:id="@+id/rating_static"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="/10"
+                    android:text="10/"
                     android:layout_gravity="left"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/font_size"

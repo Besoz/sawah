@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.orm.SugarRecord;
-import com.orm.dsl.Ignore;
+import com.orm.annotation.Ignore;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -306,10 +306,23 @@ public class Place extends SugarRecord{
         return false;
     }
 
-    public void loadAssets() {
+    @Override
+    public long save() {
 
+        long x = super.save();
+//            List<PlaceComment> comments = new ArrayList<PlaceComment>(Arrays.asList(place.getComments()));
+        SugarRecord.saveInTx(this.getComments());
+        SugarRecord.saveInTx(this.getPlaceImages());
+
+        return x;
     }
 
+    @Override
+    public boolean delete() {
 
+        SugarRecord.deleteInTx(this.getComments());
+        SugarRecord.deleteInTx(this.getPlaceImages());
 
+        return super.delete();
+    }
 }

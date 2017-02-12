@@ -105,4 +105,8 @@ public class URLHandler {
     public String getAddCommentUrl() {
         return Serverpath+addCommentPath;
     }
+
+    public String getServerpath(){
+        return Serverpath;
+    }
 }

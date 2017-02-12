@@ -44,6 +44,7 @@ import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
 
 import java.io.IOException;
+import java.util.List;
 
 public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
 
@@ -115,7 +116,10 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         shareButtton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharingHandler.getInstance().share(PlaceDetailsActivity.this, place.getPalceNameArb());
+                SharingHandler.getInstance().share(PlaceDetailsActivity.this,
+                        PlaceDetailsActivity.this.getString(R.string.share_msg_a)+" "+
+                        place.getPalceNameArb()+" "+
+                                PlaceDetailsActivity.this.getString(R.string.share_msg_b) );
             }
         });
 
@@ -197,10 +201,12 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         }
 
         likeButton = (CustomCheckBox) this.findViewById(R.id.like_button);
-        likeButton.setBackgroundResIDs(R.drawable.bell, R.drawable.heart);
+        likeButton.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
 
         if(place.isFavourite()){
             likeButton.setChecked();
+        }else{
+            likeButton.setUnChecked();
         }
 
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -251,6 +257,18 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 //        mSetCloseHeightButton.setOnClickListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        List<Place> places = Place.find(Place.class, "point_id = ?", this.place.getPlaceID());
+        if(places.size() > 0){
+            likeButton.setChecked();
+        }else{
+            likeButton.setUnChecked();
+
+        }
+    }
 
     @Override
     protected int getLayoutResourceId() {

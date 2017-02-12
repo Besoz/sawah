@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomCheckBox;
@@ -61,26 +62,21 @@ public class PlacesAdapter extends BaseAdapter{
         // Get view for row item
         final PlacesAdapter.ViewHolder holder;
 
-        Place recipe = (Place) getItem(position);
+        final Place place = (Place) getItem(position);
 
         if(convertView == null) {
-
-            // 2
             convertView = mInflater.inflate(R.layout.place_list_item, parent, false);
 
-            // 3
             holder = new PlacesAdapter.ViewHolder();
             holder.mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
             holder.titleArabic = (TextView) convertView.findViewById(R.id.place_title_ar);
             holder.titleEnglish = (TextView) convertView.findViewById(R.id.place_title_en);
             holder.customCheckBox = (CustomCheckBox) convertView.findViewById(R.id.like_button);
-            holder.customCheckBox.setBackgroundResIDs(R.drawable.bell, R.drawable.heart);
+            holder.customCheckBox.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
 
-            // 4
             convertView.setTag(holder);
         }
         else{
-            // 5
             holder = (PlacesAdapter.ViewHolder) convertView.getTag();
         }
 
@@ -90,11 +86,11 @@ public class PlacesAdapter extends BaseAdapter{
         TextView detailTextView = holder.titleEnglish;
         ImageView mNetworkImageView = holder.mNetworkImageView;
 
-        titleTextView.setText(recipe.getPalceNameArb());
-        detailTextView.setText(recipe.getPalceNameEng());
+        titleTextView.setText(place.getPalceNameArb());
+        detailTextView.setText(place.getPalceNameEng());
 
         ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
-        String imageUrl= recipe.getImageLocation().replaceAll(" ", "%20");
+        String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
 //        mImageLoader.get(imageUrl, ImageLoader.getImageListener(holder.thumbnailImageView,
 //                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
 
@@ -106,21 +102,31 @@ public class PlacesAdapter extends BaseAdapter{
 
 
 
-
-        if(recipe.isFavourite())
+        if(place.isFavourite()){
             holder.customCheckBox.setChecked();
-        else
+        }else{
             holder.customCheckBox.setUnChecked();
+        }
 
         holder.customCheckBox.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                DataHandler.getInstance(mContext).togglePlaceFavourite(place);
                 holder.customCheckBox.toggleState();
             }
         });
 
+
         return convertView;
+    }
+
+    public void setDataSource(Place[] dataSource) {
+        this.mDataSource = dataSource;
+    }
+
+    public Place[] getDataSource() {
+        return mDataSource;
     }
 
     private static class ViewHolder {

@@ -147,24 +147,6 @@ public class DataHandler {
 //                    "CityID = ? and CatID = ?", placesListActivity.getCityID(),
 //                    placesListActivity.getCatID());
 
-            List<Place> favArr = (List<Place>) Place.listAll(Place.class);
-
-            HashMap<String, Place> favPlacesIDs = new HashMap<String, Place>();
-
-            for(int i = 0; i < favArr.size(); i++){
-                favPlacesIDs.put(favArr.get(i).getPlaceID(), favArr.get(i));
-            }
-
-            for(int i = 0; i < arr.length; i++){
-                if(favPlacesIDs.containsKey(arr[i].getPlaceID())){
-
-                    arr[i].setFavourite(true);
-                    arr[i].setId(favPlacesIDs.get(arr[i].getPlaceID()).getId());
-
-//                   todo set nested object IDs
-                }
-            }
-
             placesListActivity.recievePlacesList(arr);
 
             Log.d("gg", String.valueOf(arr.length));
@@ -203,15 +185,12 @@ public class DataHandler {
     public void togglePlaceFavourite(Place place) {
         if(place.isFavourite()){
 //            remove from database
-            SugarRecord.deleteInTx(place.getComments());
-            SugarRecord.deleteInTx(place.getPlaceImages());
+            place.setFavourite(false);
             place.delete();
         }else{
 //            add to database
+            place.setFavourite(true);
             place.save();
-//            List<PlaceComment> comments = new ArrayList<PlaceComment>(Arrays.asList(place.getComments()));
-            SugarRecord.saveInTx(place.getComments());
-            SugarRecord.saveInTx(place.getPlaceImages());
 
         }
     }
@@ -221,7 +200,32 @@ public class DataHandler {
     }
 
     public void recieveFavouritePlacesList(FavouritePlacesList activity, List<Place> places) {
-        activity.recieveFavouritePlacesList(places);
+//        activity.recieveFavouritePlacesList(places);
+    }
+
+    public Place[] mergeWithFavouritePlaces(Place[] places) {
+
+        List<Place> favArr = (List<Place>) Place.listAll(Place.class);
+
+        HashMap<String, Place> favPlacesIDs = new HashMap<String, Place>();
+
+        for(int i = 0; i < favArr.size(); i++){
+            favPlacesIDs.put(favArr.get(i).getPlaceID(), favArr.get(i));
+        }
+
+        for(int i = 0; i < places.length; i++){
+            if(favPlacesIDs.containsKey(places[i].getPlaceID())){
+
+                places[i].setFavourite(true);
+                places[i].setId(favPlacesIDs.get(places[i].getPlaceID()).getId());
+
+//                   todo set nested object IDs
+            }else{
+                places[i].setFavourite(false);
+            }
+        }
+
+        return places;
     }
 }
 
