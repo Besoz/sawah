@@ -14,7 +14,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.accorpa.sawah.PlaceDetailsActivity"
+        tools:context="com.accorpa.sawah.place.PlaceDetailsActivity"
         android:padding="0dp">
 
 
@@ -51,40 +51,55 @@
 
         </android.support.v7.widget.LinearLayoutCompat>
 
-        <android.support.v7.widget.LinearLayoutCompat
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:background="@drawable/gradiant_black_background_90"
             android:padding="@dimen/listview_margin"
-            android:layout_alignBottom="@+id/imageView2"
-            android:gravity="left">
+            android:layout_alignBottom="@+id/imageView2">
 
-            <com.accorpa.sawah.custom_views.CustomTextView
-                android:id="@+id/rating_static"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10/"
-                android:layout_gravity="left"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/font_size"
-                android:paddingTop="@dimen/padding"
-                android:layout_marginLeft="@dimen/padding" />
+                android:layout_alignParentLeft="true">
 
-        <com.accorpa.sawah.custom_views.CustomTextView
-            android:id="@+id/rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="9"
-            android:textSize="@dimen/header_font_size"
-            android:layout_gravity="left"
-            android:paddingBottom="@dimen/padding"
-            android:textColor="@color/buttonColor"
-            />
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:id="@+id/rating_static"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10/"
+                    android:layout_gravity="left"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/font_size"
+                    android:paddingTop="@dimen/padding"
+                    android:layout_marginLeft="@dimen/padding" />
+
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9"
+                    android:textSize="@dimen/header_font_size"
+                    android:layout_gravity="left"
+                    android:textColor="@color/buttonColor"/>
 
 
 
-        </android.support.v7.widget.LinearLayoutCompat>
+
+            </LinearLayout>
+
+
+            <com.accorpa.sawah.custom_views.CustomCheckBox
+                android:id="@+id/like_button"
+                android:background="@drawable/heart"
+                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_centerVertical="true"/>
+
+
+        </RelativeLayout>
 
         <com.accorpa.sawah.custom_views.CustomTextView
             android:id="@+id/bio_text"

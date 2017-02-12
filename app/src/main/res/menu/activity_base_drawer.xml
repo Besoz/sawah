@@ -29,10 +29,26 @@
             android:title="@string/change_city"
             />
 
-        <!--<item-->
-            <!--android:id="@+id/nav_contact_us"-->
-            <!--android:title="@string/contact_us" />-->
-        <!--android:icon="@drawable/ic_menu_manage"-->
+        <item
+            android:id="@+id/nav_fav_list"
+            android:icon="@drawable/heart"
+            android:title="@string/favourites"
+            />
+
+        <item
+            android:id="@+id/nav_about_sawah"
+            android:title="@string/about_sawah"
+            android:icon="@drawable/about" />
+
+        <item
+            android:id="@+id/nav_general_inst"
+            android:title="@string/user_guide"
+            android:icon="@drawable/clipboard" />
+
+        <item
+            android:id="@+id/nav_contact_us"
+            android:title="@string/contact_us"
+            android:icon="@drawable/call" />
 
     </group>
 

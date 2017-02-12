@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_about_sawah"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.accorpa.sawah.AboutSawahActivity"
+    android:weightSum="8"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="2"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_height="0dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/white_progress_dialog_background"
+            app:srcCompat="@drawable/sawah_logo"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:gravity="right"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_height="0dp">
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/version_text"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:layout_marginBottom="@dimen/listview_margin"
+            android:layout_marginTop="@dimen/listview_margin" />
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/about_text"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="@dimen/listview_margin"
+            android:layout_marginTop="@dimen/listview_margin"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_weight="3"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@color/dark_grey"
+        android:orientation="vertical"
+        android:gravity="right"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="2dp"
+        android:paddingTop="2dp"
+        android:layout_height="0dp">
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/happy_to_contact_us"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/open_twitter_page_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/twitter_sawah_name"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:textColor="@android:color/black" />
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/open_website_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sawah_website"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"/>
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share_app"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"/>
+
+        <ImageView
+            android:id="@+id/share_button"
+            android:src="@drawable/unnamed"
+            android:scaleType="fitCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

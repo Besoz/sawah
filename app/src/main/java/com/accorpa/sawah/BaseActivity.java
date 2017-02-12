@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.SharingHandler;
 import com.accorpa.sawah.custom_views.CustomTextView;
 
 import java.util.Locale;
@@ -26,6 +28,7 @@ public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private int drawerGravity = Gravity.RIGHT;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,7 @@ public class BaseActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.base, menu);
+        getMenuInflater().inflate(getActionBarMenuLayout(), menu);
         return true;
     }
 
@@ -109,9 +112,16 @@ public class BaseActivity extends AppCompatActivity
         else if (id == R.id.nav_home) {
             NavigationHandler.getInstance().startCategoriesListActivity(this);
         }
-//        else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_add_place) {
+        else if (id == R.id.nav_fav_list) {
+            NavigationHandler.getInstance().startFavouritePlacesList(this);
+        }else if (id == R.id.nav_about_sawah){
+            NavigationHandler.getInstance().startAboutSawah(this);
+        } else if (id == R.id.nav_general_inst){
+            NavigationHandler.getInstance().startGeneralInstruction(this);
+        } else if (id == R.id.nav_contact_us){
+            SharingHandler.getInstance().contactSawah(this);
+        }
+// else if (id == R.id.nav_add_place) {
 //
 //        } else if (id == R.id.nav_favourites) {
 //
@@ -137,5 +147,9 @@ public class BaseActivity extends AppCompatActivity
         config.locale = locale;
         getBaseContext().getResources().updateConfiguration(config,
                 getBaseContext().getResources().getDisplayMetrics());
+    }
+
+    protected int getActionBarMenuLayout() {
+        return R.menu.base;
     }
 }

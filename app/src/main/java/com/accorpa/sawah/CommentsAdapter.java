@@ -1,17 +1,16 @@
 package com.accorpa.sawah;
 
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.models.PlaceComment;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by root on 02/02/17.
