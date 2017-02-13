@@ -1,18 +1,12 @@
 package com.accorpa.sawah;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 
-import com.accorpa.sawah.custom_views.CustomProgressDialog;
-
-public class ListActivity extends BaseActivity implements ListActivityInterface{
+public class ListActivity extends BaseActivity {
 
     protected GridView mListView;
     Context context = this;

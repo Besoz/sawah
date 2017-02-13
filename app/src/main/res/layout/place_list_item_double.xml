@@ -4,7 +4,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants"
+    android:weightSum="2">
 
 
     <LinearLayout
@@ -12,7 +13,8 @@
         android:background="@drawable/frame_rounded"
         android:layout_margin="@dimen/listview_margin"
         android:orientation="vertical"
-        android:layout_width="match_parent">
+        android:layout_width="0dp"
+        android:layout_weight="1">
 
         <FrameLayout
 
@@ -73,6 +75,73 @@
         </LinearLayout>
        vertical
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/frame_rounded"
+        android:layout_margin="@dimen/listview_margin"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <FrameLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:background="@drawable/yellow_progress_dialog_background">
+
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/icon2"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:layout_height="121dp"
+                android:layout_width="match_parent" />
+
+            <com.accorpa.sawah.custom_views.CustomCheckBox
+                android:id="@+id/like_button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/heart"
+                android:layout_gravity="bottom"/>
+
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:weightSum="2"
+            android:layout_height="80dp"
+            android:gravity="center">
+
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:id="@+id/place_title_ar2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="dsdsdggggggggggggggggggggggggggggggggggg\ngggggg" />
+
+
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:id="@+id/place_title_en2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:textColor="@color/buttonColor"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="sdsd\nsds" />
+
+        </LinearLayout>
+
     <!--<FrameLayout-->
 
         <!--android:layout_width="match_parent"-->
@@ -135,5 +204,5 @@
 
 
 
-
+    </LinearLayout>
 </LinearLayout>
