@@ -29,11 +29,11 @@ public class PlacesAdapter extends BaseAdapter{
 
     private Place[] mDataSource;
 
-    public PlacesAdapter(Context mContext, Place[] mDataSource) {
+    public PlacesAdapter(Context mContext) {
         this.mContext = mContext;
         mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        this.mDataSource = mDataSource;
+        this.mDataSource = new Place[0];
 
     }
 

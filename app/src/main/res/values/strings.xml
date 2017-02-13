@@ -79,5 +79,8 @@
     <string name="twitter_app_page_uri">twitter://user?user_id=762229045732007937</string>
     <string name="twitter_page_url">https://twitter.com/Sawah_app</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>
