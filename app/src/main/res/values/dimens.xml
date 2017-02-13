@@ -32,4 +32,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="main_activity_post_length">200dp</dimen>
     <dimen name="listview_margin">8dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

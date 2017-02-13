@@ -10,7 +10,7 @@
     android:paddingRight="32dp"
     android:background="@color/colorPrimary"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.accorpa.sawah.LoginActivity">
+    tools:context="com.accorpa.sawah.Authorization.LoginActivity">
 
     <!-- Login progress -->
     <com.accorpa.sawah.custom_views.CustomProgressDialog

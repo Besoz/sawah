@@ -2,6 +2,7 @@ package com.accorpa.sawah;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.models.Category;
+import com.accorpa.sawah.place.MyItemRecyclerViewAdapter;
+import com.accorpa.sawah.place.dummy.DummyContent;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -19,7 +22,7 @@ import com.android.volley.toolbox.NetworkImageView;
  * Created by root on 18/01/17.
  */
 
-public class CategoriesAdapter extends BaseAdapter {
+public class CategoriesAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
 
     private Context mContext;
     private LayoutInflater mInflater;
@@ -45,10 +48,25 @@ public class CategoriesAdapter extends BaseAdapter {
         return mDataSource[position];
     }
 
+    @Override
+    public MyItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(MyItemRecyclerViewAdapter.ViewHolder holder, int position) {
+
+    }
+
     //3
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
     }
 
     //4
@@ -122,6 +140,25 @@ public class CategoriesAdapter extends BaseAdapter {
                 }
             }
         };
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public final View mView;
+        public final TextView mIdView;
+        public final TextView mContentView;
+//        public DummyContent.DummyItem mItem;
+
+        public ViewHolder(View view) {
+            super(view);
+            mView = view;
+            mIdView = (TextView) view.findViewById(R.id.id);
+            mContentView = (TextView) view.findViewById(R.id.content);
+        }
+
+        @Override
+        public String toString() {
+            return super.toString() + " '" + mContentView.getText() + "'";
+        }
     }
 
 }

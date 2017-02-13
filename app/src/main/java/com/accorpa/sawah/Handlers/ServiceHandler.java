@@ -5,11 +5,11 @@ import android.util.Log;
 
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
-import com.accorpa.sawah.LoginResponseListener;
+import com.accorpa.sawah.Authorization.LoginResponseListener;
 import com.accorpa.sawah.LruBitmapCache;
 import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.R;
-import com.accorpa.sawah.SignupResponseListener;
+import com.accorpa.sawah.Authorization.SignupResponseListener;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;

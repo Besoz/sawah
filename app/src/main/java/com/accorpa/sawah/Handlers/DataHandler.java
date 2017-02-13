@@ -5,8 +5,6 @@ import android.util.Log;
 
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
-import com.accorpa.sawah.JacksonHelper;
-import com.accorpa.sawah.models.PlaceComment;
 import com.accorpa.sawah.place.FavouritePlacesList;
 import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.models.Category;
@@ -16,17 +14,13 @@ import com.accorpa.sawah.models.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.orm.SugarRecord;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**

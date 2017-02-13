@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
+import com.accorpa.sawah.Handlers.JacksonHelper;
 import com.accorpa.sawah.models.PlaceComment;
 
 import java.io.IOException;
