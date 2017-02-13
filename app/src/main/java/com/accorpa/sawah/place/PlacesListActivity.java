@@ -15,6 +15,8 @@ import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.ListActivity;
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.custom_views.CustomButton;
+import com.accorpa.sawah.custom_views.CustomCheckBox;
 import com.accorpa.sawah.models.Place;
 
 public class PlacesListActivity extends BaseActivity implements PlaceListFragment.OnFragmentInteractionListener {
@@ -24,11 +26,16 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
     private Place[] places;
 
     private PlaceListFragment listFragment;
+    private PlacesMapFragment mapFragment;
 
     private LinearLayout mProgressView;
-    private View fragmentView;
+    private View mainView;
 
-    public FragmentTransaction ft;
+    private FragmentTransaction ft;
+
+    private CustomButton mapToggleButton;
+
+    private boolean mapView;
 
 
     @Override
@@ -54,9 +61,35 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
         places =  new Place[0];
 
         mProgressView = (LinearLayout) findViewById(R.id.progress_bar);
-        fragmentView = (View) findViewById(R.id.fragment);
+        mainView = (View) findViewById(R.id.main_view);
 
         listFragment = PlaceListFragment.newInstance();
+        mapFragment = PlacesMapFragment.newInstance();
+
+        mapToggleButton = (CustomButton) findViewById(R.id.map_toggle_button);
+        mapToggleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mapView){
+
+                    ft  = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment, listFragment);
+                    ft.commit();
+
+
+                    mapView = false;
+                }else{
+
+                    mapFragment.setPlaces(places);
+
+                    ft  = getSupportFragmentManager().beginTransaction();
+                    ft.replace(R.id.fragment, mapFragment);
+                    ft.commit();
+
+                    mapView = true;
+                }
+            }
+        });
 
         ft  = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment, listFragment);
@@ -109,6 +142,6 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
         // The ViewPropertyAnimator APIs are not available, so simply show
         // and hide the relevant UI components.
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        fragmentView.setVisibility(show ? View.GONE : View.VISIBLE);
+        mainView.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 }

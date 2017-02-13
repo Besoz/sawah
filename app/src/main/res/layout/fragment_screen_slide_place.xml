@@ -1,0 +1,95 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants">
+
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:background="@drawable/frame_rounded"
+        android:layout_margin="@dimen/listview_margin"
+        android:orientation="horizontal"
+        android:layout_width="match_parent">
+
+        <FrameLayout
+
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:background="@drawable/yellow_progress_dialog_background">
+
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/icon"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:layout_height="121dp"
+                android:layout_width="match_parent" />
+
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:weightSum="2"
+            android:layout_height="80dp"
+            android:gravity="right">
+
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:id="@+id/place_title_ar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="dsdsdggggggggggggggggggggggggggggggggggg\ngggggg" />
+
+
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:id="@+id/place_title_en"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textAlignment="center"
+                android:textColor="@color/buttonColor"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="sdsd\nsds" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true">
+
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:id="@+id/rating_static"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10/"
+                    android:layout_gravity="left"
+                    android:textColor="@color/buttonColor"
+                    android:textSize="@dimen/font_size"
+                    android:paddingTop="@dimen/padding"
+                    android:layout_marginLeft="@dimen/padding" />
+
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9"
+                    android:textSize="@dimen/header_font_size"
+                    android:layout_gravity="left"
+                    android:textColor="@color/buttonColor"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

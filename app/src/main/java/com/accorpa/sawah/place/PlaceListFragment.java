@@ -50,7 +50,6 @@ public class PlaceListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         listFragment = inflater.inflate(R.layout.fragment_place_list, container, false);
 
         mListView = (GridView) listFragment.findViewById(R.id.list);
