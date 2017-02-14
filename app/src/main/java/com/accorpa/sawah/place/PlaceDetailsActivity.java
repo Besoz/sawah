@@ -287,9 +287,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
 
-        LatLng placeLocation = new LatLng(place.getLattitude(), place.getLongitude());
-        googleMap.addMarker(new MarkerOptions().position(placeLocation).icon(bitmapDescriptor));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(placeLocation));
+        googleMap.addMarker(new MarkerOptions().position(place.getPosition()).icon(bitmapDescriptor));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(place.getPosition()));
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         googleMap.getUiSettings().setAllGesturesEnabled(false);
 

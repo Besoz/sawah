@@ -20,16 +20,20 @@ import com.android.volley.toolbox.NetworkImageView;
 
 public class ScreenSlidePlaceFragment extends Fragment {
 
-    public String titleArabic;
-    public String titleEnglish;
-    public String rating;
-    public String imageURL;
+    private String titleArabic;
+    private String titleEnglish;
+    private String rating;
+    private String imageURL;
 
-    public ScreenSlidePlaceFragment(Place place) {
+    private View.OnClickListener onClickListener;
+
+    public ScreenSlidePlaceFragment(Place place, View.OnClickListener onClickListener) {
         titleArabic = place.getPalceNameArb();
         titleEnglish = place.getPalceNameEng();
         rating = place.getRatingID();
         imageURL = place.getImageLocation();
+
+        this.onClickListener = onClickListener;
     }
 
     @Override
@@ -38,14 +42,16 @@ public class ScreenSlidePlaceFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_screen_slide_place, container, false);
 
+        rootView.setOnClickListener(onClickListener);
+
         TextView titleArabic = (TextView) rootView.findViewById(R.id.place_title_ar);
         titleArabic.setText(this.titleArabic);
 
         TextView titleEnglish = (TextView) rootView.findViewById(R.id.place_title_en);
-        titleArabic.setText(this.titleEnglish);
+        titleEnglish.setText(this.titleEnglish);
 
         TextView rating = (TextView) rootView.findViewById(R.id.rating);
-        titleArabic.setText(this.rating);
+        rating.setText(this.rating);
 
         NetworkImageView mNetworkImageView = (NetworkImageView) rootView.findViewById(R.id.icon);
 

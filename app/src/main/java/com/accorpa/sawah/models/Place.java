@@ -5,6 +5,8 @@ import android.util.Log;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterItem;
 import com.orm.SugarRecord;
 import com.orm.annotation.Ignore;
 
@@ -17,7 +19,7 @@ import java.util.List;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Place extends SugarRecord{
+public class Place extends SugarRecord implements ClusterItem{
 
     public boolean isFavourite() {
         return favourite;
@@ -100,6 +102,9 @@ public class Place extends SugarRecord{
     @JsonProperty("Comments")
     private PlaceComment[] comments;
 
+    @JsonIgnore
+    @Ignore
+    private LatLng position;
 
     public Place() {
         Log.d("Default Constructor", this.getId()+"");
@@ -203,6 +208,7 @@ public class Place extends SugarRecord{
 
     public void setLattitude(double lattitude) {
         this.lattitude = lattitude;
+        position = new LatLng(lattitude, longitude);
     }
 
     public double getLongitude() {
@@ -211,6 +217,7 @@ public class Place extends SugarRecord{
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+        position = new LatLng(lattitude, longitude);
     }
 
     public boolean isOpen() {
@@ -324,5 +331,11 @@ public class Place extends SugarRecord{
         SugarRecord.deleteInTx(this.getPlaceImages());
 
         return super.delete();
+    }
+
+    @JsonIgnore
+    @Override
+    public LatLng getPosition() {
+        return position;
     }
 }

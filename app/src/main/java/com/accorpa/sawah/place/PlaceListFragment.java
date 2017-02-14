@@ -7,11 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.models.Place;
+import com.labo.kaji.fragmentanimations.FlipAnimation;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,6 +74,11 @@ public class PlaceListFragment extends Fragment {
         if (mListener != null) {
             mListener.onPlaceSelected(place);
         }
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        return FlipAnimation.create(FlipAnimation.RIGHT, enter, 1000);
     }
 
     @Override

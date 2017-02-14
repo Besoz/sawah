@@ -76,7 +76,7 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
                     ft.replace(R.id.fragment, listFragment);
                     ft.commit();
 
-
+                    mapToggleButton.setText(R.string.view_map);
                     mapView = false;
                 }else{
 
@@ -86,6 +86,7 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
                     ft.replace(R.id.fragment, mapFragment);
                     ft.commit();
 
+                    mapToggleButton.setText(R.string.view_list);
                     mapView = true;
                 }
             }

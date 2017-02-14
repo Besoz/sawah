@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:descendantFocusability="blocksDescendants">
 
 
     <LinearLayout
         android:layout_height="wrap_content"
-        android:background="@drawable/frame_rounded"
+        android:background="@drawable/background_rounded_white"
         android:layout_margin="@dimen/listview_margin"
         android:orientation="horizontal"
         android:layout_width="match_parent">
@@ -27,7 +27,7 @@
                 android:id="@+id/icon"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
-                android:layout_height="121dp"
+                android:layout_height="wrap_content"
                 android:layout_width="match_parent" />
 
         </FrameLayout>
@@ -35,6 +35,7 @@
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:weightSum="2"
+            android:layout_margin="@dimen/listview_margin"
             android:layout_height="80dp"
             android:gravity="right">
 
