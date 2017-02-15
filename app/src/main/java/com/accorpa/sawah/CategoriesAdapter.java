@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.models.Category;
-import com.accorpa.sawah.place.MyItemRecyclerViewAdapter;
-import com.accorpa.sawah.place.dummy.DummyContent;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -22,7 +20,7 @@ import com.android.volley.toolbox.NetworkImageView;
  * Created by root on 18/01/17.
  */
 
-public class CategoriesAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class CategoriesAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater mInflater;
@@ -48,15 +46,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAd
         return mDataSource[position];
     }
 
-    @Override
-    public MyItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-    @Override
-    public void onBindViewHolder(MyItemRecyclerViewAdapter.ViewHolder holder, int position) {
-
-    }
 
     //3
     @Override
@@ -64,10 +53,6 @@ public class CategoriesAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAd
         return position;
     }
 
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
 
     //4
     @Override
