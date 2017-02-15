@@ -22,177 +22,177 @@
         android:visibility="gone"
         android:indeterminateDrawable="@drawable/white_progress_dialog_background" />
 
+    <LinearLayout
+        android:id="@+id/login_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="14">
+
+
+
         <LinearLayout
-            android:id="@+id/login_form"
+
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0px"
             android:orientation="vertical"
-            android:weightSum="14">
+            android:layout_weight="4"
+            android:gravity="center">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/sawah_logo"
+                android:layout_gravity="center"
+                android:src="@drawable/sawah_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
 
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/email_login_form"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:orientation="vertical"
+            android:layout_weight="6">
 
-            <LinearLayout
-
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:orientation="vertical"
-                android:layout_weight="4"
-                android:gravity="center">
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/textColor"
+                app:hintTextAppearance="@style/myTextAppearance.Design.Hint">
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/sawah_logo"
-                    android:layout_gravity="center"
-                    android:src="@drawable/sawah_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/email_login_form"
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:orientation="vertical"
-                android:layout_weight="6">
-
-                <android.support.design.widget.TextInputLayout
+                <AutoCompleteTextView
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColorHint="@color/textColor"
-                    app:hintTextAppearance="@style/myTextAppearance.Design.Hint">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_email"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        style="@style/myAutoCompleteTextLabel"
-                        android:textColor="@color/textColor"
-                        android:textColorLink="@color/textColor"
-                        android:theme="@style/AppTheme"
-                        android:gravity="center"/>
-
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/textColor"
+                    android:hint="@string/prompt_email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    style="@style/myAutoCompleteTextLabel"
+                    android:textColor="@color/textColor"
+                    android:textColorLink="@color/textColor"
                     android:theme="@style/AppTheme"
-                    app:hintTextAppearance="@style/myTextAppearance.Design.Hint"
-                    app:passwordToggleTint="@color/textColor">
+                    android:gravity="center"/>
 
-                    <EditText
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_password"
-                        android:imeActionLabel="@string/action_sign_in_short"
-                        android:imeActionId="@+id/login"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        android:textColor="@color/textColor" />
 
-                </android.support.design.widget.TextInputLayout>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/textColor"
+                android:theme="@style/AppTheme"
+                app:hintTextAppearance="@style/myTextAppearance.Design.Hint"
+                app:passwordToggleTint="@color/textColor">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_password"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeActionId="@+id/login"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:gravity="center"
+                    android:textColor="@color/textColor" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <com.accorpa.sawah.custom_views.CustomButton
+                android:id="@+id/email_sign_in_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/action_sign_in_short"
+                android:textStyle="bold"
+                android:textColor="@color/textColor"
+                android:background="@drawable/background_rounded" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content">
 
                 <com.accorpa.sawah.custom_views.CustomButton
-                    android:id="@+id/email_sign_in_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/action_sign_in_short"
-                    android:textStyle="bold"
+                    android:text="@string/new_user_text"
+                    android:id="@+id/new_user_button"
                     android:textColor="@color/textColor"
-                    android:background="@drawable/background_rounded" />
-
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-
-                    <com.accorpa.sawah.custom_views.CustomButton
-                        android:text="@string/new_user_text"
-                        android:id="@+id/new_user_button"
-                        android:textColor="@color/textColor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent" />
-
-                    <com.accorpa.sawah.custom_views.CustomTextView
-                        android:text="@string/sperator"
-                        android:textColor="@color/textColor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-
-                    <com.accorpa.sawah.custom_views.CustomButton
-                        android:text="@string/forget_password_text"
-                        android:textColor="@color/textColor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent" />
-
-                </android.support.v7.widget.LinearLayoutCompat>
-            </LinearLayout>
-
-
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_weight="4"
-                tools:gravity="center">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent" />
 
                 <com.accorpa.sawah.custom_views.CustomTextView
-                    android:text="@string/social_login_text"
+                    android:text="@string/sperator"
                     android:textColor="@color/textColor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <android.support.v7.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:gravity="center"
-                    android:layout_height="wrap_content">
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/facebook_login_logo"
-                        android:background="@android:color/transparent" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/twitter_login_logo"
-                        android:background="@android:color/transparent" />
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/gplus_login_logo"
-                        android:background="@android:color/transparent" />
-                </android.support.v7.widget.LinearLayoutCompat>
 
                 <com.accorpa.sawah.custom_views.CustomButton
-                    android:background="@android:color/transparent"
+                    android:text="@string/forget_password_text"
                     android:textColor="@color/textColor"
-                    android:id="@+id/skip_login_button"
-                    android:text="@string/skip_login_text"
-                    android:padding="@dimen/padding"
                     android:layout_width="wrap_content"
-                    android:gravity="bottom|center_horizontal"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent" />
 
-            </LinearLayout>
+            </android.support.v7.widget.LinearLayoutCompat>
         </LinearLayout>
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_weight="4"
+            tools:gravity="center">
+
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:text="@string/social_login_text"
+                android:textColor="@color/textColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/facebook_login_logo"
+                    android:background="@android:color/transparent" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/twitter_login_logo"
+                    android:background="@android:color/transparent" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/gplus_login_logo"
+                    android:background="@android:color/transparent" />
+            </android.support.v7.widget.LinearLayoutCompat>
+
+            <com.accorpa.sawah.custom_views.CustomButton
+                android:background="@android:color/transparent"
+                android:textColor="@color/textColor"
+                android:id="@+id/skip_login_button"
+                android:text="@string/skip_login_text"
+                android:padding="@dimen/padding"
+                android:layout_width="wrap_content"
+                android:gravity="bottom|center_horizontal"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

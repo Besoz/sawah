@@ -1,5 +1,7 @@
 package com.accorpa.sawah;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -16,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
@@ -28,6 +31,9 @@ public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private int drawerGravity = Gravity.RIGHT;
+
+    private LinearLayout mProgressView;
+    private ViewGroup mainLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -58,7 +64,8 @@ public class BaseActivity extends AppCompatActivity
             userNameText.setText(DataHandler.getInstance(this).getUser().getUserName());
         }
 
-        ViewGroup mainLayout = (ViewGroup) findViewById(R.id.content_base);
+        mainLayout = (ViewGroup) findViewById(R.id.content_base);
+        mProgressView = (LinearLayout) findViewById(R.id.base_progress_bar);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(getLayoutResourceId(), null, false);
@@ -151,5 +158,13 @@ public class BaseActivity extends AppCompatActivity
 
     protected int getActionBarMenuLayout() {
         return R.menu.base;
+    }
+
+
+    protected void showProgress(final boolean show) {
+            // and hide the relevant UI components.
+        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        mainLayout.setVisibility(show ? View.GONE : View.VISIBLE);
+
     }
 }

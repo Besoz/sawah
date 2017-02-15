@@ -83,6 +83,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="view_list">استعراض الخريطة</string>
     <string name="view_map">استعراض القائمة</string>
+    <string name="edit">تعديل</string>
+    <string name="personal_information">المعلومات الشخصية</string>
+    <string name="save">حفظ</string>
+    <string name="name">الاسم</string>
+    <string name="gender">الجنس</string>
+    <string name="birth_date">تاريخ الميلاد</string>
+    <string name="password">الرمز السري</string>
+    <string name="phone">الهاتف</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="male">ذكر</string>
 
 
 </resources>
