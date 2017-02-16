@@ -12,7 +12,7 @@ public class URLHandler {
     private static URLHandler ourInstance;
 
     private String Serverpath, loginPath, registerPath, categoriesPath, placesPath, citiesPath,
-            addCommentPath;
+            addCommentPath, updateUserDataPath, updateUserImagePath, changePasswordPath;
 
 //    private DataHandler dataHandler;
 
@@ -35,6 +35,9 @@ public class URLHandler {
         placesPath = context.getString(R.string.places_list_service_url);
         citiesPath =  context.getString(R.string.cities_service_url);
         addCommentPath = context.getString(R.string.add_comment_url);
+        updateUserDataPath = context.getString(R.string.update_user_data_url);;
+        updateUserImagePath = context.getString(R.string.update_user_image_url);;
+        changePasswordPath = context.getString(R.string.change_password_url);;
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(scheme).authority(authority);
@@ -104,6 +107,16 @@ public class URLHandler {
 
     public String getAddCommentUrl() {
         return Serverpath+addCommentPath;
+    }
+
+    public String getUpdateUserDataUrl() {
+        return Serverpath+updateUserDataPath;
+    }
+    public String getUpdateUserImageUrl() {
+        return Serverpath+updateUserImagePath;
+    }
+    public String getChangePasswordUrl() {
+        return Serverpath+changePasswordPath;
     }
 
     public String getServerpath(){

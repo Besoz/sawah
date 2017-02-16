@@ -8,9 +8,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.util.Base64;
 import android.util.Log;
 
+import com.accorpa.sawah.Authorization.EditProfileActivity;
 import com.accorpa.sawah.Authorization.ImageRequestListner;
+import com.accorpa.sawah.BaseResponseListner;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.CommentActivity;
@@ -30,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -239,8 +243,9 @@ public class DataHandler {
         return places;
     }
 
-
-    public void requestUpdateUserImage(final ImageRequestListner listner, final Context context, Uri userSelectedImage) throws IOException {
+// todo split the method getimage and and send to server
+    public Bitmap requestUpdateUserImage(final BaseResponseListner listner, final Context context,
+                                         Uri userSelectedImage) throws IOException {
 
         Cursor returnCursor =
                 context.getContentResolver().query(userSelectedImage, null, null, null, null);
@@ -252,33 +257,32 @@ public class DataHandler {
         final Bitmap userImage = MediaStore.Images.Media.getBitmap(context.getContentResolver(),
                 userSelectedImage);
 
-        User user = getUser();
-        listner.recieveBitmap(saveUserImage(context, userImage, imageName));
+        final User user = getUser();
 
-//        send to server
-//        serviceHandler.updateUserImage(new Response.Listener<JSONObject>(){
-////            todo decide which pattern is better
-//            @Override
-//            public void onResponse(JSONObject jsonResponse) {
-//                ObjectMapper mapper = new ObjectMapper();
-//
-//                ServiceResponse response = null;
-//
-//                try {
-//                    response = mapper.readValue(jsonResponse.toString(), ServiceResponse.class);
-//
-//                    if(response.isStatusSuccess()){
-//
-//                        listner.recieveBitmap(saveUserImage(context, userImage, imageName));
-//                    }else{
-//                    }
-//
-//
-//                } catch (IOException e) {
-//                }
-//            }
-//        }, user.getUserID(), userImage, imageName);
+        //        send to server
+        BaseResponseListner mResponseListner = new BaseResponseListner() {
+            @Override
+            public void onResponse(JSONObject response) {
+                super.onResponse(response);
+                if(isStatusSuccess()){
+                    saveUserImage(context, userImage, imageName);
+                    listner.onResponse(response);
+                }else{
+                    Log.d("Update user", "fail");
+                }
+            }
+        };
 
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        userImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+
+        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        serviceHandler.updateUserImage(mResponseListner, user.getUserID(), encoded, imageName);
+
+        return userImage;
     }
 
     private Bitmap saveUserImage(Context context, Bitmap userImage, String imageName) {
@@ -339,6 +343,53 @@ public class DataHandler {
 
 
         return b;
+    }
+
+    public void requestUdpateUserPassword(BaseResponseListner response, String currentPasswordStr,
+                                          String newPasswordStr, String confirmPasswordStr){
+        serviceHandler.updatePassword(response, getUser().getUserID(), currentPasswordStr,
+                newPasswordStr, confirmPasswordStr);
+    }
+
+    public void requestUdpateUser(final User user, final BaseResponseListner responseListner) {
+
+        BaseResponseListner mResponseListner = new BaseResponseListner() {
+            @Override
+            public void onResponse(JSONObject response) {
+                super.onResponse(response);
+                Log.d("update user", response.toString());
+                if(isStatusSuccess()){
+
+                    saveUser(user);
+                    responseListner.onResponse(response);
+                }else{
+                    Log.d("Update user", "fail");
+                }
+            }
+        };
+
+
+        ObjectMapper mapper =  new ObjectMapper();
+        JSONObject userData = null;
+        try {
+            userData = new JSONObject(mapper.writeValueAsString(user));
+            userData.put("DeviceToken", getDeiveToken());
+            userData.put("OS", OS);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+
+        serviceHandler.requestUpdateUser(userData, mResponseListner);
+    }
+
+    public Bitmap getImage(Uri data) throws IOException {
+;
+        return MediaStore.Images.Media.getBitmap(context.getContentResolver(),
+                data);
     }
 }
 

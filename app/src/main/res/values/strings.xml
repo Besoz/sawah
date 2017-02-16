@@ -9,6 +9,7 @@
     <string name="error_invalid_email">الإيميل غير صحيح</string>
     <string name="error_invalid_password">كلمة المرور قصيرة</string>
     <string name="error_incorrect_password">كلمة مرور غير صحيحة</string>
+    <string name="error_not_equal_password">كلمة مرور غير مطابقة</string>
     <string name="error_field_required">This field is required</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
@@ -60,6 +61,12 @@
     <string name="max_comment_char_text">الحد الأقصى 300 حرف</string>
     <string name="comment_post_button_text">نشر</string>
     <string name="add_comment_url">/api/comments/add</string>
+
+    <string name="update_user_data_url">/api/users/update</string>
+    <string name="update_user_image_url">/api/users/changeImage</string>
+    <string name="change_password_url">/api/users/ChangePassword</string>
+
+
     <string name="comment_in_review_text">نم إضافة تعليق\nسيتم نشر التعليق بعد مراجعته</string>
     <string name="agree">موافق</string>
     <string name="done_text">تم</string>
@@ -93,6 +100,10 @@
     <string name="phone">الهاتف</string>
     <string name="email">البريد الإلكتروني</string>
     <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="new_password">كلمة المرور الجديدة:</string>
+    <string name="current_password">كلمة المرور الحالية</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
 
 
 </resources>

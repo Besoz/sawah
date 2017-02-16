@@ -28,8 +28,8 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
     private PlaceListFragment listFragment;
     private PlacesMapFragment mapFragment;
 
-    private LinearLayout mProgressView;
-    private View mainView;
+//    private LinearLayout mProgressView;
+//    private View mainView;
 
     private FragmentTransaction ft;
 
@@ -60,8 +60,8 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
 //        mListView.setAdapter(adapter);
         places =  new Place[0];
 
-        mProgressView = (LinearLayout) findViewById(R.id.progress_bar);
-        mainView = (View) findViewById(R.id.main_view);
+//        mProgressView = (LinearLayout) findViewById(R.id.progress_bar);
+//        mainView = (View) findViewById(R.id.main_view);
 
         listFragment = PlaceListFragment.newInstance();
         mapFragment = PlacesMapFragment.newInstance();
@@ -139,10 +139,10 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
         return R.layout.activity_places_list;
     }
 
-    protected void showProgress(final boolean show) {
-        // The ViewPropertyAnimator APIs are not available, so simply show
-        // and hide the relevant UI components.
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mainView.setVisibility(show ? View.GONE : View.VISIBLE);
-    }
+//    protected void showProgress(final boolean show) {
+//        // The ViewPropertyAnimator APIs are not available, so simply show
+//        // and hide the relevant UI components.
+//        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//        mainView.setVisibility(show ? View.GONE : View.VISIBLE);
+//    }
 }

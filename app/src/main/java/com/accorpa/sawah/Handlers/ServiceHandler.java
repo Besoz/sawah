@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.accorpa.sawah.Authorization.ImageRequestListner;
+import com.accorpa.sawah.BaseResponseListner;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.Authorization.LoginResponseListener;
@@ -254,7 +255,76 @@ public class ServiceHandler {
 
 
 
-    public void updateUserImage(Response.Listener<JSONObject> listener, String userID, Bitmap userImage, String imageName) {
+    public void updateUserImage(Response.Listener<JSONObject> listener, String userID, String userImage, String imageName) {
+
+        String signupUrl = urlHandler.getUpdateUserImageUrl();
+
+        JSONObject request = new JSONObject();
+        try {
+            request.put("UserID", userID);
+            request.put("FileName", imageName);
+            request.put("Image", userImage);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, signupUrl, request,
+                listener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
+    public void updatePassword(BaseResponseListner listener, String userID, String currentPasswordStr, String newPasswordStr, String confirmPasswordStr) {
+
+        String url = urlHandler.getUpdateUserImageUrl();
+
+        JSONObject request = new JSONObject();
+        try {
+            request.put("OldPassword", currentPasswordStr);
+            request.put("NewPassword", newPasswordStr);
+            request.put("UserID", userID);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        Log.d("change password", request.toString());
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, request,
+                listener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
+    public void requestUpdateUser(JSONObject userData, BaseResponseListner mResponseListner) {
+
+        String url = urlHandler.getUpdateUserDataUrl();
+
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, userData,
+                mResponseListner, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        Log.d("update user", userData.toString());
+        mRequestQueue.add(jsonObjectRequest);
+
+
     }
 }
 
