@@ -1,20 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/nav_header_height"
-    android:gravity="bottom"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/AppTheme"
-    android:background="@color/colorPrimary">
+    android:background="@color/colorPrimary"
+    android:visibility="gone"
+    android:gravity="center">
 
-    <com.accorpa.sawah.custom_views.CustomTextView
-        android:id="@+id/user_name"
+
+    <ImageButton
+        android:id="@+id/settings_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/gear"
+        android:layout_margin="@dimen/listview_margin"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_margin="@dimen/listview_margin">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@drawable/afa1b00e92014675b365903d8d133857"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="@dimen/listview_margin"/>
+
+        <com.accorpa.sawah.custom_views.CustomTextView
+            android:id="@+id/user_name"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="gggggg"
+            android:layout_margin="@dimen/listview_margin"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

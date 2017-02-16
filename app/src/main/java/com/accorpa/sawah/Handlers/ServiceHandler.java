@@ -1,8 +1,10 @@
 package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.accorpa.sawah.Authorization.ImageRequestListner;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.Authorization.LoginResponseListener;
@@ -246,6 +248,13 @@ public class ServiceHandler {
         }
 
         return request;
+    }
+
+
+
+
+
+    public void updateUserImage(Response.Listener<JSONObject> listener, String userID, Bitmap userImage, String imageName) {
     }
 }
 

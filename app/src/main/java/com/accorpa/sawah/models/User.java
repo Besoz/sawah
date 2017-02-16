@@ -37,6 +37,8 @@ public class User {
     @JsonProperty("ImageLocation")
     private String imageLocation;
 
+    @JsonProperty("ImageName")
+    private String imageName;
 
     public String getUserName() {
         return userName;
@@ -92,5 +94,17 @@ public class User {
 
     public void setImageLocation(String imageLocation) {
         this.imageLocation = imageLocation;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public String getImageLocation() {
+        return imageLocation;
     }
 }

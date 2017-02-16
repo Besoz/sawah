@@ -1,16 +1,27 @@
 package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Log;
 
+import com.accorpa.sawah.Authorization.ImageRequestListner;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
+import com.accorpa.sawah.CommentActivity;
+import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.place.FavouritePlacesList;
 import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.models.Category;
 import com.accorpa.sawah.models.City;
 import com.accorpa.sawah.models.Place;
 import com.accorpa.sawah.models.User;
+import com.android.volley.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -19,6 +30,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +50,7 @@ public class DataHandler {
 
     private ObjectMapper mapper;
 
+    private Context context;
 
 
     public final static String OS = "Android";
@@ -54,6 +70,7 @@ public class DataHandler {
 
         serviceHandler = ServiceHandler.getInstance(context);
 
+        this.context = context.getApplicationContext();
     }
 
 
@@ -220,6 +237,108 @@ public class DataHandler {
         }
 
         return places;
+    }
+
+
+    public void requestUpdateUserImage(final ImageRequestListner listner, final Context context, Uri userSelectedImage) throws IOException {
+
+        Cursor returnCursor =
+                context.getContentResolver().query(userSelectedImage, null, null, null, null);
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+
+        final String imageName = returnCursor.getString(nameIndex);
+
+        final Bitmap userImage = MediaStore.Images.Media.getBitmap(context.getContentResolver(),
+                userSelectedImage);
+
+        User user = getUser();
+        listner.recieveBitmap(saveUserImage(context, userImage, imageName));
+
+//        send to server
+//        serviceHandler.updateUserImage(new Response.Listener<JSONObject>(){
+////            todo decide which pattern is better
+//            @Override
+//            public void onResponse(JSONObject jsonResponse) {
+//                ObjectMapper mapper = new ObjectMapper();
+//
+//                ServiceResponse response = null;
+//
+//                try {
+//                    response = mapper.readValue(jsonResponse.toString(), ServiceResponse.class);
+//
+//                    if(response.isStatusSuccess()){
+//
+//                        listner.recieveBitmap(saveUserImage(context, userImage, imageName));
+//                    }else{
+//                    }
+//
+//
+//                } catch (IOException e) {
+//                }
+//            }
+//        }, user.getUserID(), userImage, imageName);
+
+    }
+
+    private Bitmap saveUserImage(Context context, Bitmap userImage, String imageName) {
+
+        ContextWrapper cw = new ContextWrapper(context);
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("user_image", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory, imageName);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            userImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        User user = getUser();
+
+        user.setImageLocation(directory.getAbsolutePath());
+        user.setImageName(imageName);
+        Log.d("profile image", user.getImageLocation()+" uu "+user.getImageName());
+
+        saveUser(user);
+
+        return userImage;
+    }
+
+    private Bitmap loadImageFromStorage(String path, String imageName)
+    {
+
+        try {
+            File f=new File(path, imageName);
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            return b;
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Bitmap loadProfileImage() {
+
+        User user = getUser();
+
+
+        Bitmap b = loadImageFromStorage(user.getImageLocation(), user.getImageName());
+
+
+        return b;
     }
 }
 

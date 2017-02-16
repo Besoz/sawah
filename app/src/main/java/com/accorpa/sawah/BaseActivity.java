@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import com.accorpa.sawah.Handlers.DataHandler;
@@ -60,8 +61,24 @@ public class BaseActivity extends AppCompatActivity
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_base);
 
         if(DataHandler.getInstance(this).userExist()){
+
+            headerLayout.setVisibility(View.VISIBLE);
+
+
             CustomTextView userNameText = (CustomTextView) headerLayout.findViewById(R.id.user_name);
             userNameText.setText(DataHandler.getInstance(this).getUser().getUserName());
+
+
+            ImageButton settingsButton = (ImageButton) headerLayout.findViewById(R.id.settings_button);
+            settingsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    NavigationHandler.getInstance().startEditProfileActivity(BaseActivity.this);
+                }
+            });
+
+
+
         }
 
         mainLayout = (ViewGroup) findViewById(R.id.content_base);

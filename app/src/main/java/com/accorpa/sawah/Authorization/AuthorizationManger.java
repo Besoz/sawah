@@ -1,6 +1,7 @@
 package com.accorpa.sawah.Authorization;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
@@ -34,6 +35,8 @@ public class AuthorizationManger implements LoginListener {
 
 
     public void loginUser(String userID) {
+        Log.d("After login", "iiiiiiiiiii");
+
         serviceHandler.loginUser(userID, dataHandler.getDeiveToken(), loginResponseListener);
     }
 
@@ -44,13 +47,15 @@ public class AuthorizationManger implements LoginListener {
 
     @Override
     public void loginSuccess(User user) {
+
+        Log.d("After login", "iiiiiiiiiii");
+
 //        save user
         dataHandler.saveUser(user);
 //        notify calling activity
         loginListener.loginSuccess(user);
 
 //        navigate to next page and clear stack
-
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.accorpa.sawah.Handlers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
 import com.accorpa.sawah.AboutSawahActivity;
+import com.accorpa.sawah.Authorization.EditProfileActivity;
+import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.CommentActivity;
@@ -21,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * Created by Bassem on 14/01/17.
@@ -151,5 +155,20 @@ public class NavigationHandler {
     public void startGeneralInstruction(Context context){
         Intent activity = new Intent(context, GeneralInstructionActivity.class);
         context.startActivity(activity);
+    }
+
+    public void startEditProfileActivity(Context context) {
+        Intent activity = new Intent(context, EditProfileActivity.class);
+        context.startActivity(activity);
+    }
+
+    public void startImagePickerForResult(Activity activity, int pickImageRequest) {
+
+        Intent intent = new Intent();
+
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImageRequest);
     }
 }
