@@ -131,8 +131,8 @@ public class User {
         return imageLocation;
     }
 
-    public Date getBirthDate(){
-        return date;
+    public String getBirthDate(){
+        return birthDate;
     }
 
     public String getEmail() {
@@ -145,5 +145,9 @@ public class User {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public Date getBirthDateObject() {
+        return date;
     }
 }

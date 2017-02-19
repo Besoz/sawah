@@ -64,8 +64,11 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
                         }else{
                             Log.d("Update user", "fail");
                         }
+                        showProgress(false);
                     }
                 };
+                showProgress(true);
+
                 DataHandler.getInstance(this).requestUpdateUserImage(mResponseListner, this.getApplicationContext(),
                         data.getData());
             } catch (IOException e) {
@@ -116,9 +119,10 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
                 }else{
                     Log.d("Update user", "fail");
                 }
+                showProgress(false);
             }
         };
-
+        showProgress(true);
         DataHandler.getInstance(this).requestUdpateUser(user, responseListner);
     }
 
@@ -135,9 +139,10 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
                 }else{
                     mResponse.onResponse(response);
                 }
+                showProgress(false);
             }
         };
-
+        showProgress(true);
         DataHandler.getInstance(this).requestUdpateUserPassword(mResponseListner, currentPasswordStr,
                 newPasswordStr, confirmPasswordStr);
     }

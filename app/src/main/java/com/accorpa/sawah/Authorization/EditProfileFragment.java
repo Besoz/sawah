@@ -131,8 +131,8 @@ public class EditProfileFragment extends Fragment {
             }
         };
 
-        dpd = new DatePickerDialog(getContext(), date, user.getBirthDate().getYear(),
-                user.getBirthDate().getMonth(), user.getBirthDate().getDay());
+        dpd = new DatePickerDialog(getContext(), date, user.getBirthDateObject().getYear(),
+                user.getBirthDateObject().getMonth(), user.getBirthDateObject().getDay());
         dpd.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
 
         birthDate = (CustomTextView) view.findViewById(R.id.birth_date);
