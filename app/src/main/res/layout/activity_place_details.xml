@@ -18,11 +18,17 @@
         android:padding="0dp">
 
 
-        <com.android.volley.toolbox.NetworkImageView
+        <!--<com.android.volley.toolbox.NetworkImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--app:srcCompat="@drawable/afa1b00e92014675b365903d8d133857"-->
+            <!--android:id="@+id/imagePager"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:layout_height="300dp" />-->
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/imagePager"
+            android:background="@drawable/transparent_rounded_background"
             android:layout_width="match_parent"
-            app:srcCompat="@drawable/afa1b00e92014675b365903d8d133857"
-            android:id="@+id/imageView2"
-            android:scaleType="centerCrop"
             android:layout_height="300dp" />
 
         <android.support.v7.widget.LinearLayoutCompat
@@ -57,7 +63,7 @@
             android:orientation="horizontal"
             android:background="@drawable/gradiant_black_background_90"
             android:padding="@dimen/listview_margin"
-            android:layout_alignBottom="@+id/imageView2">
+            android:layout_alignBottom="@+id/imagePager">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -114,7 +120,7 @@
             android:layout_alignParentRight="false"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="false"
-            android:layout_below="@+id/imageView2"
+            android:layout_below="@+id/imagePager"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginLeft="@dimen/listview_margin"
