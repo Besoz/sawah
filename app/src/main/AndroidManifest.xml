@@ -95,8 +95,12 @@
         <activity
             android:name=".AboutSawahActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".GeneralInstructionActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".GeneralInstructionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Authorization.EditProfileActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
     </application>
 
 </manifest>

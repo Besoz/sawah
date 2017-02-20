@@ -2,6 +2,11 @@ package com.accorpa.sawah.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.orm.annotation.Ignore;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Bassem on 15/01/17.
@@ -9,6 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
+
+    public static final String MALE = "Male", FEMALE = "Female", DATE_FORMAT = "yyyy-MM-dd";
 
     @JsonProperty("Email")
     private String email;
@@ -37,6 +44,11 @@ public class User {
     @JsonProperty("ImageLocation")
     private String imageLocation;
 
+    @JsonProperty("ImageName")
+    private String imageName;
+
+    @Ignore
+    private Date date;
 
     public String getUserName() {
         return userName;
@@ -56,7 +68,9 @@ public class User {
 
     }
 
-    public User(){}
+    public User(){
+        date = new Date();
+    }
 
     public String getUserID() {
         return this.userID;
@@ -79,7 +93,18 @@ public class User {
     }
 
     public void setBirthDate(String birthDate) {
+
         this.birthDate = birthDate;
+
+        if(!birthDate.equals("")){
+            SimpleDateFormat parser=new SimpleDateFormat(DATE_FORMAT);
+            try {
+                date = parser.parse(birthDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public void setMobileNumber(String mobileNumber) {
@@ -92,5 +117,37 @@ public class User {
 
     public void setImageLocation(String imageLocation) {
         this.imageLocation = imageLocation;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public String getImageLocation() {
+        return imageLocation;
+    }
+
+    public String getBirthDate(){
+        return birthDate;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public Date getBirthDateObject() {
+        return date;
     }
 }

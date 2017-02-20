@@ -8,6 +8,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,7 +53,7 @@ import java.util.List;
 public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
 
 
-    private static final int VIEW_COMMENTS_COUNT = 2;
+    private static final int VIEW_COMMENTS_COUNT = 2, IMAGES_OFFSCREEN_COUNT= 4;
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
     private NetworkImageView placeImage;
 
@@ -75,6 +79,11 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     private static final String NAME = "NAME";
 
     ExpandableRelativeLayout mExpandLayout;
+
+    private ViewPager mPager;
+    private ScreenSlidePagerAdapter mPagerAdapter;
+
+    private Fragment[] imagesFragments;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -107,10 +116,21 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         rating = (CustomTextView) findViewById(R.id.rating);
         rating.setText(place.getRatingID());
 
-        placeImage = (NetworkImageView) findViewById(R.id.imageView2);
-        String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
-        placeImage.setImageUrl(imageUrl,
-                ServiceHandler.getInstance(this.getApplicationContext()).getImageLoader());
+//        placeImage = (NetworkImageView) findViewById(R.id.imageView2);
+//        String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
+//        placeImage.setImageUrl(imageUrl,
+//                ServiceHandler.getInstance(this.getApplicationContext()).getImageLoader());
+
+        imagesFragments = new Fragment[place.getPlaceImages().length];
+
+        for (int i = 0; i < imagesFragments.length; i++){
+            imagesFragments[i] = new ScreenSlideImageFragment(place.getPlaceImages()[i].getImageURL());
+        }
+
+        mPager = (ViewPager) findViewById(R.id.imagePager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+//        mPager.setOffscreenPageLimit(IMAGES_OFFSCREEN_COUNT);
 
         shareButtton = (ImageButton) findViewById(R.id.share_button);
         shareButtton.setOnClickListener(new View.OnClickListener() {
@@ -372,6 +392,23 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                 return true;
             default:
                 return false;
+        }
+    }
+
+    private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(final int position) {
+
+            return imagesFragments[position];
+        }
+
+        @Override
+        public int getCount() {
+            return place.getPlaceImages().length;
         }
     }
 

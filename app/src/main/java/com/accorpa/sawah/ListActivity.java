@@ -27,12 +27,4 @@ public class ListActivity extends BaseActivity {
         return R.layout.activity_categories_list;
     }
 
-    protected void showProgress(final boolean show) {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            gridView.setVisibility(show ? View.GONE : View.VISIBLE);
-    }
-
-
 }
