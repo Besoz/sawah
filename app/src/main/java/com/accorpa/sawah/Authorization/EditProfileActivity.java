@@ -87,7 +87,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
     @Override
     public void selectImage() {
         NavigationHandler.getInstance().startImagePickerForResult(EditProfileActivity.this,
-                PICK_IMAGE_REQUEST);
+                PICK_IMAGE_REQUEST, false);
     }
 
     @Override

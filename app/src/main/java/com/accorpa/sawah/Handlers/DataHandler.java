@@ -2,6 +2,7 @@ package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,20 +12,17 @@ import android.provider.OpenableColumns;
 import android.util.Base64;
 import android.util.Log;
 
-import com.accorpa.sawah.Authorization.EditProfileActivity;
-import com.accorpa.sawah.Authorization.ImageRequestListner;
 import com.accorpa.sawah.BaseResponseListner;
+import com.accorpa.sawah.BitmapImage;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
-import com.accorpa.sawah.CommentActivity;
-import com.accorpa.sawah.ServiceResponse;
+import com.accorpa.sawah.BaseRequestStateListner;
 import com.accorpa.sawah.place.FavouritePlacesList;
 import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.models.Category;
 import com.accorpa.sawah.models.City;
 import com.accorpa.sawah.models.Place;
 import com.accorpa.sawah.models.User;
-import com.android.volley.Response;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -35,18 +33,21 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import rapid.decoder.BitmapDecoder;
 
 /**
  * Created by Bassem on 15/01/17.
  */
 public class DataHandler {
-    public static final String CITY_ID_KEY = "CityID";
+    public static final String CITY_ID_KEY = "CityID", DElIMITER = ":|:";
+    private static final int PROFILE_IMAGE_WIDTH = 200, PROFILE_IMAGE_HEIGHT = 200;
+    private static final int PLACE_IMAGE_WIDTH = 640, PLACE_IMAGE_HEIGHT = 360;
     private static DataHandler ourInstance;
     private SharedPreferencesController sharedPreferences;
 
@@ -247,15 +248,9 @@ public class DataHandler {
     public Bitmap requestUpdateUserImage(final BaseResponseListner listner, final Context context,
                                          Uri userSelectedImage) throws IOException {
 
-        Cursor returnCursor =
-                context.getContentResolver().query(userSelectedImage, null, null, null, null);
-        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-        returnCursor.moveToFirst();
+        final String imageName = getImageName(userSelectedImage);
 
-        final String imageName = returnCursor.getString(nameIndex);
-
-        final Bitmap userImage = MediaStore.Images.Media.getBitmap(context.getContentResolver(),
-                userSelectedImage);
+        final Bitmap userImage = getImage(userSelectedImage);
 
         final User user = getUser();
 
@@ -273,16 +268,27 @@ public class DataHandler {
             }
         };
 
+        String encodedUserImage = getBase64Encoding(userImage);
 
+        serviceHandler.updateUserImage(mResponseListner, user.getUserID(), encodedUserImage, imageName);
+
+        return userImage;
+    }
+
+    private String getImageName(Uri userSelectedImage) {
+        Cursor returnCursor =
+                context.getContentResolver().query(userSelectedImage, null, null, null, null);
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        return returnCursor.getString(nameIndex);
+    }
+
+    private String getBase64Encoding(Bitmap userImage) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         userImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
 
-        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
-        serviceHandler.updateUserImage(mResponseListner, user.getUserID(), encoded, imageName);
-
-        return userImage;
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     private Bitmap saveUserImage(Context context, Bitmap userImage, String imageName) {
@@ -310,28 +316,46 @@ public class DataHandler {
 
         User user = getUser();
 
-        user.setImageLocation(directory.getAbsolutePath());
-        user.setImageName(imageName);
-        Log.d("profile image", user.getImageLocation()+" uu "+user.getImageName());
+        user.setLocalImagePath(directory.getAbsolutePath());
+//        user.setImageName(imageName);
+        Log.d("profile image", user.getImageLocation()+" uu ");
 
         saveUser(user);
 
         return userImage;
     }
 
-    private Bitmap loadImageFromStorage(String path, String imageName)
+    private Bitmap loadImageFromStorage(String path, int reqWidth, int reqHeight)
     {
+        Uri uri = Uri.parse(path);
+        path = uri.getPath();
 
-        try {
-            File f=new File(path, imageName);
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
-            return b;
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
+        return BitmapDecoder.from(path).decode();
+
+//        try {
+//            File f=new File(path);
+//            if(f.isDirectory()){
+//                Log.d("file", f.getName()+" "+f.getTotalSpace());
+//            }else{
+//                Log.d("file", "No file");
+//
+//            }
+//
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inJustDecodeBounds = true;
+//            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//            BitmapFactory.decodeStream(new FileInputStream(f), null, options);
+//            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+//
+//            FileInputStream fs  = new FileInputStream(f);
+//            Bitmap b = BitmapFactory.decodeStream(fs, null, options);
+//            return b;
+//        }
+//        catch (FileNotFoundException e)
+//        {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 
     public Bitmap loadProfileImage() {
@@ -339,7 +363,7 @@ public class DataHandler {
         User user = getUser();
 
 
-        Bitmap b = loadImageFromStorage(user.getImageLocation(), user.getImageName());
+        Bitmap b = loadImageFromStorage(user.getLocalImagePath(),  PROFILE_IMAGE_WIDTH, PROFILE_IMAGE_HEIGHT);
 
 
         return b;
@@ -387,9 +411,150 @@ public class DataHandler {
     }
 
     public Bitmap getImage(Uri data) throws IOException {
-;
+
         return MediaStore.Images.Media.getBitmap(context.getContentResolver(),
                 data);
     }
+
+
+    private String concateImageNameAndEncoding(String name, String encoding){
+//        string builder for encoding is very large and full of terrror
+//        no need encoding is copied only one time
+        
+//        StringBuilder sb = new StringBuilder(name.length() + encoding.length() + 2);
+//
+//        sb.append(name).append(DElIMITER).append(encoding);
+
+
+        return name+DElIMITER+encoding;
+
+    }
+
+    public Bitmap[] getImages(Intent data) throws IOException {
+
+//        ArrayList<String> imagesPathList = new ArrayList<String>();
+        Log.d("Add new Place", data.getStringExtra("data"));
+
+        String[] imagesPath = data.getStringExtra("data").split("\\|");
+        Bitmap[] images = new Bitmap[imagesPath.length];
+
+        for (int i = 0; i < images.length; i++) {
+            images[i] = getImage(Uri.parse(imagesPath[i]));
+        }
+
+        Log.d("add new Place", images.length+"========");
+
+        return images;
+    }
+
+    public String[] getImagesNames(Intent data){
+
+        String[] imagesPath = data.getStringExtra("data").split("\\|");
+
+        String[] names = new String[imagesPath.length];
+
+        for (int i = 0; i < imagesPath.length; i++) {
+            names[i] = getImageName(Uri.parse(imagesPath[i]));
+        }
+
+        return names;
+    }
+
+    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place, final BaseRequestStateListner listner) {
+        Log.d("add new Place", "2");
+
+        String cityID = getDefaultCityID(), userID = getUser().getUserID();
+
+        ObjectMapper mapper =  new ObjectMapper();
+        JSONObject PlaceData = null;
+        try {
+            PlaceData = new JSONObject(mapper.writeValueAsString(place));
+            Log.d("Add new place", place.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        final BaseResponseListner placeImageResponseListner = new BaseResponseListner() {
+            @Override
+            public void onResponse(JSONObject response) {
+                super.onResponse(response);
+                Log.d("Add new place", response.toString());
+                if(isStatusSuccess()){
+                    listner.successResponse();
+                }else{
+                    listner.failReponse();
+                    Log.d("add new place", "fail");
+                }
+            }
+        };
+
+        BaseResponseListner placeDataResponseListner = new BaseResponseListner() {
+            @Override
+            public void onResponse(JSONObject response) {
+                super.onResponse(response);
+                Log.d("Add new place", response.toString());
+                if(isStatusSuccess()){
+
+                    String[] bitmapsEndcoded = new String[bitmapImages.size()];
+
+                    for (int i = 0; i < bitmapsEndcoded.length ; i++) {
+                        bitmapsEndcoded[i] = concateImageNameAndEncoding(bitmapImages.get(i).name,
+                                getBase64Encoding(bitmapImages.get(i).getBitmap()));
+                    }
+
+                    serviceHandler.addPlaceImages(this.getResponse().getDraftPointID(), bitmapsEndcoded,
+                            placeImageResponseListner);
+                }else{
+                    Log.d("dd new place", "fail");
+                }
+            }
+        };
+
+        serviceHandler.addNewPlace(userID, cityID, PlaceData, placeDataResponseListner);
+
+
+    }
+
+    public void loadImageBitmaps(ArrayList<BitmapImage> images) {
+
+        for (int i = 0; i < images.size() ; i++) {
+            //                Uri s = Uri.parse(images.get(i).path);
+            BitmapImage bitmapImage = new BitmapImage(images.get(i));
+            String s = bitmapImage.path;
+
+            Bitmap b = loadImageFromStorage(s, PLACE_IMAGE_WIDTH, PLACE_IMAGE_HEIGHT);
+            bitmapImage.setBitmap(b);
+
+            images.set(i, bitmapImage);
+        }
+
+    }
+
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
 }
 

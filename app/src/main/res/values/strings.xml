@@ -104,6 +104,12 @@
     <string name="new_password">كلمة المرور الجديدة:</string>
     <string name="current_password">كلمة المرور الحالية</string>
     <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="title_activity_add_new_place">AddNewPlaceActivity</string>
+    <string name="next">التالي</string>
+    <string name="send">إرسال</string>
+    <string name="error_must_select_one_image">يجب اختيار صورة على الاقل</string>
+    <string name="add_new_place_url">/api/draftpoints/add</string>
+    <string name="upload_place_images_url">/api/draftpoints/uploadImages</string>
 
 
 </resources>

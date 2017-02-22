@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.accorpa.sawah.AboutSawahActivity;
+import com.accorpa.sawah.AddNewPlace.AddNewPlaceActivity;
 import com.accorpa.sawah.Authorization.EditProfileActivity;
 import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.CategoriesListActivity;
@@ -19,6 +20,8 @@ import com.accorpa.sawah.place.PlaceDetailsActivity;
 import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.Authorization.SignupActivity;
 import com.accorpa.sawah.models.Place;
+import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
+import com.darsh.multipleimageselect.helpers.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -162,13 +165,26 @@ public class NavigationHandler {
         context.startActivity(activity);
     }
 
-    public void startImagePickerForResult(Activity activity, int pickImageRequest) {
+    public void startImagePickerForResult(Activity activity, int pickImageRequest, boolean multiSelect) {
 
+
+
+
+        if(multiSelect){
+            Intent intent = new Intent(activity, AlbumSelectActivity.class);
+//set limit on number of images that can be selected, default is 10
+            intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 10);
+            activity.startActivityForResult(intent, Constants.REQUEST_CODE);
+            return;
+        }
         Intent intent = new Intent();
-
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-
         activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImageRequest);
+    }
+
+    public void AddNewPlace(Context context) {
+        Intent activity = new Intent(context, AddNewPlaceActivity.class);
+        context.startActivity(activity);
     }
 }

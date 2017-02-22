@@ -30,6 +30,15 @@ android {
 allprojects {
     repositories {
         maven { url "https://jitpack.io" }
+
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            url 'https://github.com/suckgamony/RapidDecoder/raw/master/repository'
+        }
     }
 }
 dependencies {
@@ -66,6 +75,13 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4.+'
     compile 'com.labo.kaji:fragmentanimations:0.1.1'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.android.gms:play-services-location:10.0.1'
+    compile 'com.github.darsh2:MultipleImageSelect:v0.0.4'
+
+    compile 'rapid.decoder:library:0.3.0'
+    compile 'rapid.decoder:jpeg-decoder:0.3.0'
+    compile 'rapid.decoder:png-decoder:0.3.0'
+
 }
 
 

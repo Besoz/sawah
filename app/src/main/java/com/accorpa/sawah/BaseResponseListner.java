@@ -16,13 +16,14 @@ import java.io.IOException;
 public class BaseResponseListner implements Response.Listener<JSONObject> {
 
     boolean statusSuccess;
+    ServiceResponse response;
 
     @Override
     public void onResponse(JSONObject jsonResponse) {
         ObjectMapper mapper = new ObjectMapper();
 
         Log.d("gg", jsonResponse.toString());
-        ServiceResponse response = null;
+        response = null;
         try {
             response = mapper.readValue(jsonResponse.toString(), ServiceResponse.class);
 
@@ -39,5 +40,9 @@ public class BaseResponseListner implements Response.Listener<JSONObject> {
 
     public boolean isStatusSuccess(){
         return statusSuccess;
+    }
+
+    public ServiceResponse getResponse(){
+        return response;
     }
 }

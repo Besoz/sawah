@@ -10,9 +10,11 @@ import com.accorpa.sawah.R;
  */
 public class URLHandler {
     private static URLHandler ourInstance;
+    private String addPlaceImagesUrl;
 
     private String Serverpath, loginPath, registerPath, categoriesPath, placesPath, citiesPath,
             addCommentPath, updateUserDataPath, updateUserImagePath, changePasswordPath;
+    private String addNewPlacePath;
 
 //    private DataHandler dataHandler;
 
@@ -37,7 +39,11 @@ public class URLHandler {
         addCommentPath = context.getString(R.string.add_comment_url);
         updateUserDataPath = context.getString(R.string.update_user_data_url);;
         updateUserImagePath = context.getString(R.string.update_user_image_url);;
-        changePasswordPath = context.getString(R.string.change_password_url);;
+        changePasswordPath = context.getString(R.string.change_password_url);
+        addNewPlacePath =  context.getString(R.string.add_new_place_url);
+        addPlaceImagesUrl = context.getString(R.string.upload_place_images_url);
+
+
 
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(scheme).authority(authority);
@@ -121,5 +127,13 @@ public class URLHandler {
 
     public String getServerpath(){
         return Serverpath;
+    }
+
+    public String getAddNewPlaceUrl() {
+        return Serverpath+addNewPlacePath;
+    }
+
+    public String getAddPlaceImagesUrl() {
+        return Serverpath+addPlaceImagesUrl;
     }
 }

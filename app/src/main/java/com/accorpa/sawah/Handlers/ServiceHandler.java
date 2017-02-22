@@ -326,6 +326,70 @@ public class ServiceHandler {
 
 
     }
+
+    public void addNewPlace(String userID, String cityID, JSONObject placeData, BaseResponseListner placeDataResponseListner) {
+
+        String url = urlHandler.getAddNewPlaceUrl();
+
+
+        Log.d("place data", placeData.toString());
+        try {
+            placeData.put("CityID", cityID);
+            placeData.put("UserID", userID);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, placeData,
+                placeDataResponseListner, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        Log.d("update user", placeData.toString());
+        mRequestQueue.add(jsonObjectRequest);
+
+    }
+
+    public void addPlaceImages(String draftPointID, String[] bitmapsEndcoded, BaseResponseListner placeImageResponseListner) {
+
+        String url = urlHandler.getAddPlaceImagesUrl();
+
+
+        JSONObject request = new JSONObject();
+        JSONObject images = new JSONObject();
+
+        try {
+            request.put("DraftPointID", draftPointID);
+            images.put("count", bitmapsEndcoded.length);
+
+            for (int i = 0; i < bitmapsEndcoded.length; i++) {
+                images.put(i+"", bitmapsEndcoded[i]);
+            }
+
+            request.put("Images", images);
+
+            Log.d("add new place", request.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, request,
+                placeImageResponseListner, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+
+        mRequestQueue.add(jsonObjectRequest);
+
+
+
+    }
 }
 
 
