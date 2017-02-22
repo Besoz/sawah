@@ -2,6 +2,7 @@ package com.accorpa.sawah.models;
 
 import android.util.Log;
 
+import com.accorpa.sawah.AddNewPlace.AddNewPlaceActivity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Place extends SugarRecord implements ClusterItem{
+public class Place extends SugarRecord implements ClusterItem {
 
     public boolean isFavourite() {
         return favourite;
@@ -107,6 +108,8 @@ public class Place extends SugarRecord implements ClusterItem{
     private LatLng position;
 
     public Place() {
+        images = new PlaceImage[0];
+        comments =  new PlaceComment[0];
         Log.d("Default Constructor", this.getId()+"");
     }
 

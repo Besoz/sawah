@@ -97,7 +97,6 @@ public class EditProfileFragment extends Fragment {
         editProfilePicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 mListener.selectImage();
             }
         });

@@ -144,9 +144,10 @@ public class BaseActivity extends AppCompatActivity
             NavigationHandler.getInstance().startGeneralInstruction(this);
         } else if (id == R.id.nav_contact_us){
             SharingHandler.getInstance().contactSawah(this);
+        } else if (id == R.id.nav_add_place) {
+            NavigationHandler.getInstance().AddNewPlace(this);
         }
-// else if (id == R.id.nav_add_place) {
-//
+
 //        } else if (id == R.id.nav_favourites) {
 //
 //        } else if (id == R.id.nav_contact_us) {

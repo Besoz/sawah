@@ -44,8 +44,16 @@ public class User {
     @JsonProperty("ImageLocation")
     private String imageLocation;
 
-    @JsonProperty("ImageName")
-    private String imageName;
+    @JsonProperty("LocalImageLocation")
+    public String getLocalImagePath() {
+        return localImagePath;
+    }
+
+    public void setLocalImagePath(String localImagePath) {
+        this.localImagePath = localImagePath;
+    }
+
+    private String localImagePath;
 
     @Ignore
     private Date date;
@@ -119,13 +127,13 @@ public class User {
         this.imageLocation = imageLocation;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
-    }
-
-    public String getImageName() {
-        return imageName;
-    }
+//    public void setImageName(String imageName) {
+//        this.imageName = imageName;
+//    }
+//
+//    public String getImageName() {
+//        return imageName;
+//    }
 
     public String getImageLocation() {
         return imageLocation;
@@ -150,4 +158,6 @@ public class User {
     public Date getBirthDateObject() {
         return date;
     }
+
+
 }

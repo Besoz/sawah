@@ -59,4 +59,8 @@ public class ServiceResponse {
     public User getUser() {
         return user;
     }
+
+    public String getDraftPointID() {
+        return draftPointID;
+    }
 }
