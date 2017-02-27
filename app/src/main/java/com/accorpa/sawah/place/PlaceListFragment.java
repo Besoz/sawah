@@ -3,15 +3,17 @@ package com.accorpa.sawah.place;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.RecycleAdapterListener;
 import com.accorpa.sawah.models.Place;
 import com.labo.kaji.fragmentanimations.FlipAnimation;
 
@@ -23,13 +25,20 @@ import com.labo.kaji.fragmentanimations.FlipAnimation;
  * Use the {@link PlaceListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PlaceListFragment extends Fragment {
+public class PlaceListFragment extends Fragment implements RecycleAdapterListener {
 
-    private PlacesAdapter adapter;
+//    private PlacesAdapter adapter;
     private View listFragment;
-    private GridView mListView;
+//    private GridView mListView;
+
+    private RecyclerView mRecyclerView;
+    private PlaceRecycleAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
     private OnFragmentInteractionListener mListener;
+
+    private Place[] places;
 
     public PlaceListFragment() {
         // Required empty public constructor
@@ -54,17 +63,39 @@ public class PlaceListFragment extends Fragment {
         // Inflate the layout for this fragment
         listFragment = inflater.inflate(R.layout.fragment_place_list, container, false);
 
-        mListView = (GridView) listFragment.findViewById(R.id.list);
+        mRecyclerView = (RecyclerView) listFragment.findViewById(R.id.list);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        mListView = (GridView) listFragment.findViewById(R.id.list);
+
+
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
+//                onPlaceSelected((Place) mListView.getAdapter().getItem(position));
+//            }
+//        });
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager.SpanSizeLookup onSpanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
             @Override
-            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
-                onPlaceSelected((Place) mListView.getAdapter().getItem(position));
+            public int getSpanSize(int position) {
+                return places[position].isSpecial() ? 2 : 1;
             }
-        });
+        };
+        gridLayoutManager.setSpanSizeLookup(onSpanSizeLookup);
 
-        adapter = new PlacesAdapter(getContext());
-        mListView.setAdapter(adapter);
+
+        // specify an adapter (see also next example)
+        mAdapter = new PlaceRecycleAdapter(getContext(), this);
+
+
+        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+//        adapter = new PlacesAdapter(getContext());
+//        mListView.setAdapter(adapter);
 
         return listFragment;
     }
@@ -75,6 +106,8 @@ public class PlaceListFragment extends Fragment {
             mListener.onPlaceSelected(place);
         }
     }
+
+
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
@@ -98,6 +131,11 @@ public class PlaceListFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void itemSelected(Object object) {
+        mListener.onPlaceSelected((Place) object);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -115,15 +153,21 @@ public class PlaceListFragment extends Fragment {
     }
 
     public void setPlacesList(Place[] arr){
-        adapter.setDataSource(arr);
-        adapter.notifyDataSetChanged();
+//        adapter.setDataSource(arr);
+//        adapter.notifyDataSetChanged();
+        places = arr;
+        mAdapter.setDataSource(arr);
+        mAdapter.notifyDataSetChanged();
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        places = mListener.getPlaces();
 
-        setPlacesList(mListener.getPlaces());
+        setPlacesList(places);
         Log.d("Fragment", "+++++++++++++++++=");
     }
 }

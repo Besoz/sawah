@@ -14,7 +14,7 @@ public class URLHandler {
 
     private String Serverpath, loginPath, registerPath, categoriesPath, placesPath, citiesPath,
             addCommentPath, updateUserDataPath, updateUserImagePath, changePasswordPath;
-    private String addNewPlacePath;
+    private String addNewPlacePath, retreivePassword;
 
 //    private DataHandler dataHandler;
 
@@ -42,6 +42,7 @@ public class URLHandler {
         changePasswordPath = context.getString(R.string.change_password_url);
         addNewPlacePath =  context.getString(R.string.add_new_place_url);
         addPlaceImagesUrl = context.getString(R.string.upload_place_images_url);
+        retreivePassword = context.getString(R.string.retreive_assword_url);
 
 
 
@@ -135,5 +136,14 @@ public class URLHandler {
 
     public String getAddPlaceImagesUrl() {
         return Serverpath+addPlaceImagesUrl;
+    }
+
+    public String getRetrievePasswordUrl(String email) {
+
+        Uri.Builder loginParams = new Uri.Builder();
+        loginParams.appendQueryParameter("UserNameOrEmail", email);
+        String RetrievePasswordUrl = loginParams.build().toString();
+
+        return Serverpath + retreivePassword + RetrievePasswordUrl;
     }
 }

@@ -9,4 +9,5 @@
     <color name="project_green">#69c0b0</color>
     <color name="dark_grey">#f1f1f1</color>
     <color name="dark_text_color">#565656</color>
+    <color name="grey">#d8d8d8</color>
 </resources>

@@ -1,16 +1,21 @@
 package com.accorpa.sawah;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.models.PlaceComment;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by root on 02/02/17.
@@ -58,7 +63,7 @@ public class CommentsAdapter extends BaseAdapter{
             convertView = mInflater.inflate(R.layout.comment_list_item, parent, false);
 
             holder = new CommentsAdapter.CommentView();
-            holder.userPhotoImageView = (NetworkImageView) convertView.findViewById(R.id.profile_image);
+            holder.userPhotoImageView = (CircleImageView) convertView.findViewById(R.id.profile_image);
             holder.userNameTextView = (TextView) convertView.findViewById(R.id.user_name);
             holder.commentDateTextView = (TextView) convertView.findViewById(R.id.comment_date);
             holder.commentTextView = (TextView) convertView.findViewById(R.id.comment_text);
@@ -76,13 +81,16 @@ public class CommentsAdapter extends BaseAdapter{
 
 //        holder.titleTextView.setText(recipe.getName());
 //
-        ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
+//        ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
         String imageUrl= comment.getImageLocation().replaceAll(" ", "%20");
 
 //        mImageLoader.get(imageUrl, getImageListener(holder.userPhotoImageView, R.drawable.sawah_logo, R.drawable.gplus_login_logo));
         holder.userPhotoImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
 
-        holder.userPhotoImageView.setImageUrl(imageUrl, mImageLoader);
+        if(!TextUtils.isEmpty(comment.getImageLocation())){
+            Picasso.with(mContext).load(comment.getImageLocation()).into(holder.userPhotoImageView);
+        }
+//        holder.userPhotoImageView.setImageUrl(imageUrl, mImageLoader);
 
         return convertView;
     }
@@ -92,7 +100,7 @@ public class CommentsAdapter extends BaseAdapter{
         public TextView userNameTextView;
         public TextView commentDateTextView;
         public TextView commentTextView;
-        public NetworkImageView userPhotoImageView;
+        public CircleImageView userPhotoImageView;
     }
 
 }

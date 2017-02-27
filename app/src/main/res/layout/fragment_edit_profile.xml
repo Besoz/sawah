@@ -70,6 +70,15 @@
                     android:background="@drawable/under_line"
                     android:padding="@dimen/listview_margin">
 
+                    <com.accorpa.sawah.custom_views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name"
+                        android:textColor="@color/black_35"
+                        android:textSize="20sp"
+                        android:layout_marginRight="@dimen/listview_margin"
+                        android:layout_gravity="right" />
+
                     <com.accorpa.sawah.custom_views.CustomEditText
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
@@ -81,19 +90,20 @@
                         android:layout_gravity="right"
                         android:background="@android:color/transparent" />
 
-                    <com.accorpa.sawah.custom_views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/name"
-                        android:textColor="@color/black_35"
-                        android:textSize="20sp"
-                        android:layout_marginRight="@dimen/listview_margin"
-                        android:layout_gravity="right" />
                 </TableRow>
 
                 <TableRow android:gravity="right"
                     android:background="@drawable/under_line"
                     android:padding="@dimen/listview_margin">
+
+                    <com.accorpa.sawah.custom_views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/email"
+                        android:textColor="@color/black_35"
+                        android:textSize="20sp"
+                        android:layout_marginRight="@dimen/listview_margin"
+                        android:layout_gravity="right" />
 
                     <com.accorpa.sawah.custom_views.CustomEditText
                         android:id="@+id/user_email"
@@ -106,19 +116,20 @@
                         android:layout_gravity="right"
                         android:background="@android:color/transparent" />
 
-                    <com.accorpa.sawah.custom_views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/email"
-                        android:textColor="@color/black_35"
-                        android:textSize="20sp"
-                        android:layout_marginRight="@dimen/listview_margin"
-                        android:layout_gravity="right" />
                 </TableRow>
 
                 <TableRow android:gravity="right"
                     android:background="@drawable/under_line"
                     android:padding="@dimen/listview_margin">
+
+                    <com.accorpa.sawah.custom_views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/password"
+                        android:textColor="@color/black_35"
+                        android:textSize="20sp"
+                        android:layout_marginRight="@dimen/listview_margin"
+                        android:layout_gravity="right" />
 
                     <com.accorpa.sawah.custom_views.CustomTextView
                         android:id="@+id/edit_password"
@@ -131,20 +142,21 @@
                         android:layout_marginRight="@dimen/listview_margin"
                         android:layout_gravity="right" />
 
-                    <com.accorpa.sawah.custom_views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/password"
-                        android:textColor="@color/black_35"
-                        android:textSize="20sp"
-                        android:layout_marginRight="@dimen/listview_margin"
-                        android:layout_gravity="right" />
                 </TableRow>
 
 
                 <TableRow android:gravity="right"
                     android:background="@drawable/under_line"
                     android:padding="@dimen/listview_margin">
+
+                    <com.accorpa.sawah.custom_views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/phone"
+                        android:textColor="@color/black_35"
+                        android:textSize="20sp"
+                        android:layout_marginRight="@dimen/listview_margin"
+                        android:layout_gravity="right" />
 
                     <com.accorpa.sawah.custom_views.CustomEditText
                         android:id="@+id/user_phone"
@@ -157,23 +169,19 @@
                         android:layout_gravity="right"
                         android:background="@android:color/transparent" />
 
-                    <com.accorpa.sawah.custom_views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/phone"
-                        android:textColor="@color/black_35"
-                        android:textSize="20sp"
-                        android:layout_marginRight="@dimen/listview_margin"
-                        android:layout_gravity="right" />
-
-
-
-
-
                 </TableRow>
                 <TableRow android:gravity="right"
                     android:background="@drawable/under_line"
                     android:padding="@dimen/listview_margin">
+
+                    <com.accorpa.sawah.custom_views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/birth_date"
+                        android:textColor="@color/black_35"
+                        android:textSize="20sp"
+                        android:layout_marginRight="@dimen/listview_margin"
+                        android:layout_gravity="right" />
 
                     <com.accorpa.sawah.custom_views.CustomTextView
                         android:id="@+id/birth_date"
@@ -185,18 +193,19 @@
                         android:layout_marginRight="@dimen/listview_margin"
                         android:layout_gravity="right" />
 
-                    <com.accorpa.sawah.custom_views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/birth_date"
-                        android:textColor="@color/black_35"
-                        android:textSize="20sp"
-                        android:layout_marginRight="@dimen/listview_margin"
-                        android:layout_gravity="right" />
                 </TableRow>
                 <TableRow android:gravity="right"
                     android:background="@drawable/under_line"
                     android:padding="@dimen/listview_margin">
+
+                    <com.accorpa.sawah.custom_views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/gender"
+                        android:textColor="@color/black_35"
+                        android:textSize="20sp"
+                        android:layout_marginRight="@dimen/listview_margin"
+                        android:layout_gravity="right" />
 
                     <Spinner
                         android:id="@+id/gender_spinner"
@@ -207,14 +216,6 @@
                         android:layout_marginRight="@dimen/listview_margin"
                         android:layout_gravity="right" />
 
-                    <com.accorpa.sawah.custom_views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/gender"
-                        android:textColor="@color/black_35"
-                        android:textSize="20sp"
-                        android:layout_marginRight="@dimen/listview_margin"
-                        android:layout_gravity="right" />
                 </TableRow>
 
             </TableLayout>

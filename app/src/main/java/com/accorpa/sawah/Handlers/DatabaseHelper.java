@@ -21,10 +21,5 @@ public class DatabaseHelper {
     private DatabaseHelper() {
     }
 
-    public void getFavouritePlaces(DataHandler dataHandler, FavouritePlacesList activity,
-                                          String s, String s1) {
-
-        dataHandler.recieveFavouritePlacesList(activity, (List<Place>) Place.listAll(Place.class));
-    }
 
 }

@@ -11,7 +11,8 @@ import com.accorpa.sawah.BitmapImage;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.R;
-import com.accorpa.sawah.BaseRequestStateListner;
+import com.accorpa.sawah.BaseRequestStateListener;
+import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.models.Place;
 import com.darsh.multipleimageselect.helpers.Constants;
 
@@ -64,17 +65,18 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
     public void addNewPlace(Place place) {
         Log.d("add new Place", "1");
         showProgress(true);
-        DataHandler.getInstance(this).addNewPlace(bitmapImages, place, new BaseRequestStateListner() {
+        DataHandler.getInstance(this).addNewPlace(bitmapImages, place, new BaseRequestStateListener() {
             @Override
-            public void failReponse() {
+            public void failResponse(ServiceResponse response) {
                 showProgress(false);
             }
 
             @Override
-            public void successResponse() {
+            public void successResponse(ServiceResponse response) {
                 showProgress(false);
                 NavigationHandler.getInstance().startCategoriesListActivity(AddNewPlaceActivity.this);
             }
+
         });
     }
 

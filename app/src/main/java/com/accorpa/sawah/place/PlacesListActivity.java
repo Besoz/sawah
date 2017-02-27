@@ -4,6 +4,10 @@ import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -11,12 +15,14 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import com.accorpa.sawah.BaseActivity;
+import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.ListActivity;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomCheckBox;
+import com.accorpa.sawah.models.City;
 import com.accorpa.sawah.models.Place;
 
 public class PlacesListActivity extends BaseActivity implements PlaceListFragment.OnFragmentInteractionListener {
@@ -139,6 +145,42 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
         return R.layout.activity_places_list;
     }
 
+    @Override
+    protected int getActionBarMenuLayout() {
+        return R.menu.search_tool_bar;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if(places == null) return false;
+
+                Place[] queriedCities = DataHandler.getInstance(PlacesListActivity.this).
+                        queryPlaces(places, newText);
+
+                listFragment.setPlacesList(queriedCities);
+
+                return true;
+            }
+        });
+
+        return true;
+    }
 //    protected void showProgress(final boolean show) {
 //        // The ViewPropertyAnimator APIs are not available, so simply show
 //        // and hide the relevant UI components.

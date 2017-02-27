@@ -7,6 +7,8 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.view.GravityCompat;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +27,12 @@ import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.SharingHandler;
 import com.accorpa.sawah.custom_views.CustomTextView;
+import com.accorpa.sawah.models.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,6 +42,10 @@ public class BaseActivity extends AppCompatActivity
     private LinearLayout mProgressView;
     private ViewGroup mainLayout;
 
+    private DrawerLayout drawer;
+    private ActionBarDrawerToggle toggle;
+    private CustomTextView toolbarTitle;
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,15 +53,41 @@ public class BaseActivity extends AppCompatActivity
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbarTitle = (CustomTextView) findViewById(R.id.toolbar_title);
+
+//        toolbarToggle = (CustomTextView) findViewById(R.id.toolbar_toggle);
+
+        toolbarTitle.setText(getToolbarTitle());
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+// final View navView = findViewById(R.id.nav_view);
+//        toolbarToggle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if (drawer.isDrawerOpen(navView)) {
+//                    drawer.closeDrawer(navView);
+//                } else {
+//                    drawer.openDrawer(navView);
+//                }
+//            }
+//        });
+
+
+
+//        toggle.setDrawerIndicatorEnabled(false);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -64,9 +100,15 @@ public class BaseActivity extends AppCompatActivity
 
             headerLayout.setVisibility(View.VISIBLE);
 
+            User user = DataHandler.getInstance(this).getUser();
 
             CustomTextView userNameText = (CustomTextView) headerLayout.findViewById(R.id.user_name);
-            userNameText.setText(DataHandler.getInstance(this).getUser().getUserName());
+            userNameText.setText(user.getUserName());
+
+            CircleImageView userImage = (CircleImageView) findViewById(R.id.profile_image);
+            if(!TextUtils.isEmpty((user.getLocalImagePath()))){
+                Picasso.with(this).load(user.getLocalImagePath()).into(userImage);
+            }
 
 
             ImageButton settingsButton = (ImageButton) headerLayout.findViewById(R.id.settings_button);
@@ -184,5 +226,23 @@ public class BaseActivity extends AppCompatActivity
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         mainLayout.setVisibility(show ? View.GONE : View.VISIBLE);
 
+    }
+
+    protected void removeNavigationDrawer(){
+        toggle.setDrawerIndicatorEnabled(false);
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+    }
+
+    protected void hideToolbarTitle(){
+        toolbarTitle.setVisibility(View.GONE);
+    }
+
+    protected String getToolbarTitle() {
+        return getString(R.string.app_name);
+    }
+
+    protected void setToolbarTitle(String s){
+        toolbarTitle.setText(s);
     }
 }

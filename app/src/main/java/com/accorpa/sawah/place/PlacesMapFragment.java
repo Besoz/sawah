@@ -190,7 +190,7 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
         }
         LatLngBounds bounds = builder.build();
 
-        int padding = 50; // offset from edges of the map in pixels
+        int padding = 100; // offset from edges of the map in pixels
         CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
         googleMap.animateCamera(cu);
 

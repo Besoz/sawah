@@ -70,7 +70,7 @@ public class CategoriesAdapter extends BaseAdapter {
             // 3
             holder = new CategotyView();
             holder.mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
-            holder.titleTextView = (TextView) convertView.findViewById(R.id.firstLine);
+            holder.titleTextView = (TextView) convertView.findViewById(R.id.category_title);
 //            holder.subtitleTextView = (TextView) convertView.findViewById(R.id.secondLine);
 
 

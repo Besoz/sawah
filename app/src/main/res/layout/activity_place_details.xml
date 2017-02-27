@@ -44,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:text="sky garden"
                 android:textSize="@dimen/header_font_size"
-                android:layout_gravity="right" />
+                android:layout_gravity="right"
+                android:textColor="@color/textColor" />
 
             <com.accorpa.sawah.custom_views.CustomTextView
                 android:id="@+id/title_en"
@@ -107,6 +108,18 @@
 
         </RelativeLayout>
 
+        <io.techery.properratingbar.ProperRatingBar
+            android:id="@+id/price_level_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_margin="@dimen/listview_margin"
+            app:prb_defaultRating="1"
+            android:layout_below="@+id/imagePager"
+            app:prb_tickNormalDrawable="@drawable/dollar"
+            app:prb_tickSelectedDrawable="@drawable/dollar_active"
+            app:prb_totalTicks="5"
+            />
+
         <com.accorpa.sawah.custom_views.CustomTextView
             android:id="@+id/bio_text"
             android:layout_width="wrap_content"
@@ -120,9 +133,9 @@
             android:layout_alignParentRight="false"
             android:layout_alignParentStart="false"
             android:layout_alignParentTop="false"
-            android:layout_below="@+id/imagePager"
+            android:layout_below="@id/price_level_bar"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/listview_margin"
             android:layout_marginLeft="@dimen/listview_margin"
             android:layout_marginRight="@dimen/listview_margin" />
 
@@ -250,12 +263,88 @@
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin" />
 
+        <RelativeLayout
+            android:id="@+id/work_time"
+            android:layout_below="@id/map"
+            android:background="@color/grey"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/listview_margin">
+
+            <com.accorpa.sawah.custom_views.CustomRotatingButton
+                android:id="@+id/arrow"
+                android:background="@drawable/expand_arrow_48"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/arrow">
+
+                <LinearLayout
+                    android:id="@+id/header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right">
+
+                    <com.accorpa.sawah.custom_views.CustomTextView
+                        android:id="@+id/work_time_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorPrimary"
+                        android:text="sdsss"
+                        android:textSize="18sp"
+                        />
+                    <com.accorpa.sawah.custom_views.CustomTextView
+                        android:id="@+id/work_time_title_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black_85"
+                        android:layout_marginRight="4dp"
+                        android:textSize="18sp"/>
+
+
+                </LinearLayout>
+
+
+                <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                    android:id="@+id/body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:ael_expanded="false"
+                    app:ael_duration="200"
+                    app:ael_interpolator="accelerate"
+                    app:ael_orientation="vertical">
+
+
+                    <TableLayout
+                        android:id="@+id/work_time_table"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right">
+
+
+                    </TableLayout>
+                </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
         <LinearLayout
             android:id="@+id/comments_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@+id/map"
+            android:layout_below="@+id/work_time"
             android:visibility="gone"
             android:gravity="right">
 

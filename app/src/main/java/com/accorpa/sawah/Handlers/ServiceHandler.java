@@ -1,17 +1,16 @@
 package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
-import com.accorpa.sawah.Authorization.ImageRequestListner;
-import com.accorpa.sawah.BaseResponseListner;
+import com.accorpa.sawah.BaseRequestStateListener;
+import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.Authorization.LoginResponseListener;
 import com.accorpa.sawah.LruBitmapCache;
-import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.Authorization.SignupResponseListener;
 import com.android.volley.Cache;
 import com.android.volley.Network;
@@ -139,7 +138,7 @@ public class ServiceHandler {
     public void requestCategoriesList(final DataHandler dataHandler, final CategoriesListActivity activity){
         Log.d("gg", "requesting");
 
-        String serviceUrl = urlHandler.getCategoriesServiceUrl("1");
+        String serviceUrl = urlHandler.getCategoriesServiceUrl(dataHandler.getDefaultCityID());
         Log.d("gg", "requesting"+urlHandler);
 
         JsonArrayRequest categoriesArrayRequest = new JsonArrayRequest(Request.Method.GET,
@@ -281,7 +280,7 @@ public class ServiceHandler {
         mRequestQueue.add(jsonObjectRequest);
     }
 
-    public void updatePassword(BaseResponseListner listener, String userID, String currentPasswordStr, String newPasswordStr, String confirmPasswordStr) {
+    public void updatePassword(BaseResponseListener listener, String userID, String currentPasswordStr, String newPasswordStr, String confirmPasswordStr) {
 
         String url = urlHandler.getUpdateUserImageUrl();
 
@@ -308,7 +307,7 @@ public class ServiceHandler {
         mRequestQueue.add(jsonObjectRequest);
     }
 
-    public void requestUpdateUser(JSONObject userData, BaseResponseListner mResponseListner) {
+    public void requestUpdateUser(JSONObject userData, BaseResponseListener mResponseListner) {
 
         String url = urlHandler.getUpdateUserDataUrl();
 
@@ -327,7 +326,7 @@ public class ServiceHandler {
 
     }
 
-    public void addNewPlace(String userID, String cityID, JSONObject placeData, BaseResponseListner placeDataResponseListner) {
+    public void addNewPlace(String userID, String cityID, JSONObject placeData, BaseResponseListener placeDataResponseListner) {
 
         String url = urlHandler.getAddNewPlaceUrl();
 
@@ -353,7 +352,7 @@ public class ServiceHandler {
 
     }
 
-    public void addPlaceImages(String draftPointID, String[] bitmapsEndcoded, BaseResponseListner placeImageResponseListner) {
+    public void addPlaceImages(String draftPointID, String[] bitmapsEndcoded, BaseResponseListener placeImageResponseListner) {
 
         String url = urlHandler.getAddPlaceImagesUrl();
 
@@ -389,6 +388,25 @@ public class ServiceHandler {
 
 
 
+    }
+
+    public void requestRetrievePassword(String email, BaseRequestStateListener baseRequestStateListener) {
+
+        BaseResponseListener baseResponseListener1 = new BaseResponseListener();
+        baseResponseListener1.setOnResponseListner(baseRequestStateListener);
+
+
+        String url = urlHandler.getRetrievePasswordUrl(email);
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                baseResponseListener1, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
     }
 }
 

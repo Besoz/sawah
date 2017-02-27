@@ -9,15 +9,20 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
-import com.accorpa.sawah.BaseResponseListner;
+import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.BitmapImage;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
-import com.accorpa.sawah.BaseRequestStateListner;
-import com.accorpa.sawah.place.FavouritePlacesList;
+import com.accorpa.sawah.BaseRequestStateListener;
+import com.accorpa.sawah.R;
+import com.accorpa.sawah.ServiceResponse;
+import com.accorpa.sawah.models.PlaceComment;
+import com.accorpa.sawah.models.PlaceImage;
+import com.accorpa.sawah.models.WorkTime;
 import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.models.Category;
 import com.accorpa.sawah.models.City;
@@ -38,6 +43,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rapid.decoder.BitmapDecoder;
 
@@ -48,6 +54,7 @@ public class DataHandler {
     public static final String CITY_ID_KEY = "CityID", DElIMITER = ":|:";
     private static final int PROFILE_IMAGE_WIDTH = 200, PROFILE_IMAGE_HEIGHT = 200;
     private static final int PLACE_IMAGE_WIDTH = 640, PLACE_IMAGE_HEIGHT = 360;
+    public static final String CITY_NAME_KEY = "CityName";
     private static DataHandler ourInstance;
     private SharedPreferencesController sharedPreferences;
 
@@ -60,6 +67,7 @@ public class DataHandler {
 
     public final static String OS = "Android";
 
+    private static final Map<Integer, String> dayMap = new HashMap<>();
 
 
     public static DataHandler getInstance(Context context) {
@@ -76,6 +84,16 @@ public class DataHandler {
         serviceHandler = ServiceHandler.getInstance(context);
 
         this.context = context.getApplicationContext();
+
+
+        dayMap.put(7, context.getString(R.string.sat_day));
+        dayMap.put(1, context.getString(R.string.sun_day));
+        dayMap.put(2, context.getString(R.string.mon_day));
+        dayMap.put(3, context.getString(R.string.tue_day));
+        dayMap.put(4, context.getString(R.string.wen_day));
+        dayMap.put(5, context.getString(R.string.thu_day));
+        dayMap.put(6, context.getString(R.string.fri_day));
+
     }
 
 
@@ -131,7 +149,7 @@ public class DataHandler {
 
         try {
             Category[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Category.class);
-            activity.recieveCategouriesList(arr);
+            activity.receiveCategorizesList(arr);
 
             Log.d("gg", String.valueOf(arr.length));
         } catch (IOException e) {
@@ -211,19 +229,13 @@ public class DataHandler {
         }
     }
 
-    public void requestFavouritePlacesArray(FavouritePlacesList favouritePlacesList) {
-        DatabaseHelper.getInstance().getFavouritePlaces(this, favouritePlacesList, "", "");
-    }
-
-    public void recieveFavouritePlacesList(FavouritePlacesList activity, List<Place> places) {
-//        activity.recieveFavouritePlacesList(places);
-    }
 
     public Place[] mergeWithFavouritePlaces(Place[] places) {
 
-        List<Place> favArr = (List<Place>) Place.listAll(Place.class);
+        List<Place> favArr = loadAllPlaceFromDataBase();
 
         HashMap<String, Place> favPlacesIDs = new HashMap<String, Place>();
+
 
         for(int i = 0; i < favArr.size(); i++){
             favPlacesIDs.put(favArr.get(i).getPlaceID(), favArr.get(i));
@@ -233,9 +245,9 @@ public class DataHandler {
             if(favPlacesIDs.containsKey(places[i].getPlaceID())){
 
                 places[i].setFavourite(true);
-                places[i].setId(favPlacesIDs.get(places[i].getPlaceID()).getId());
+                favPlacesIDs.get(places[i].getPlaceID()).delete();
+                places[i].save();
 
-//                   todo set nested object IDs
             }else{
                 places[i].setFavourite(false);
             }
@@ -245,7 +257,7 @@ public class DataHandler {
     }
 
 // todo split the method getimage and and send to server
-    public Bitmap requestUpdateUserImage(final BaseResponseListner listner, final Context context,
+    public Bitmap requestUpdateUserImage(final BaseResponseListener listner, final Context context,
                                          Uri userSelectedImage) throws IOException {
 
         final String imageName = getImageName(userSelectedImage);
@@ -255,7 +267,7 @@ public class DataHandler {
         final User user = getUser();
 
         //        send to server
-        BaseResponseListner mResponseListner = new BaseResponseListner() {
+        BaseResponseListener mResponseListner = new BaseResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 super.onResponse(response);
@@ -369,15 +381,15 @@ public class DataHandler {
         return b;
     }
 
-    public void requestUdpateUserPassword(BaseResponseListner response, String currentPasswordStr,
+    public void requestUdpateUserPassword(BaseResponseListener response, String currentPasswordStr,
                                           String newPasswordStr, String confirmPasswordStr){
         serviceHandler.updatePassword(response, getUser().getUserID(), currentPasswordStr,
                 newPasswordStr, confirmPasswordStr);
     }
 
-    public void requestUdpateUser(final User user, final BaseResponseListner responseListner) {
+    public void requestUdpateUser(final User user, final BaseResponseListener responseListner) {
 
-        BaseResponseListner mResponseListner = new BaseResponseListner() {
+        BaseResponseListener mResponseListner = new BaseResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 super.onResponse(response);
@@ -460,7 +472,7 @@ public class DataHandler {
         return names;
     }
 
-    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place, final BaseRequestStateListner listner) {
+    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place, final BaseRequestStateListener listner) {
         Log.d("add new Place", "2");
 
         String cityID = getDefaultCityID(), userID = getUser().getUserID();
@@ -477,43 +489,33 @@ public class DataHandler {
             e.printStackTrace();
         }
 
-        final BaseResponseListner placeImageResponseListner = new BaseResponseListner() {
+        final BaseResponseListener placeImageResponseListener = new BaseResponseListener();
+        placeImageResponseListener.setOnResponseListner(listner);
+
+        BaseResponseListener placeDataResponseListener = new BaseResponseListener();
+        placeDataResponseListener.setOnResponseListner(new BaseRequestStateListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                super.onResponse(response);
-                Log.d("Add new place", response.toString());
-                if(isStatusSuccess()){
-                    listner.successResponse();
-                }else{
-                    listner.failReponse();
-                    Log.d("add new place", "fail");
-                }
-            }
-        };
+            public void failResponse(ServiceResponse response) {
+                String[] bitmapsEndcoded = new String[bitmapImages.size()];
 
-        BaseResponseListner placeDataResponseListner = new BaseResponseListner() {
+                for (int i = 0; i < bitmapsEndcoded.length ; i++) {
+                    bitmapsEndcoded[i] = concateImageNameAndEncoding(bitmapImages.get(i).name,
+                            getBase64Encoding(bitmapImages.get(i).getBitmap()));
+                }
+
+                serviceHandler.addPlaceImages(response.getDraftPointID(), bitmapsEndcoded,
+                        placeImageResponseListener);
+            }
+
             @Override
-            public void onResponse(JSONObject response) {
-                super.onResponse(response);
-                Log.d("Add new place", response.toString());
-                if(isStatusSuccess()){
+            public void successResponse(ServiceResponse message) {
+                Log.d("dd new place", "fail");
 
-                    String[] bitmapsEndcoded = new String[bitmapImages.size()];
-
-                    for (int i = 0; i < bitmapsEndcoded.length ; i++) {
-                        bitmapsEndcoded[i] = concateImageNameAndEncoding(bitmapImages.get(i).name,
-                                getBase64Encoding(bitmapImages.get(i).getBitmap()));
-                    }
-
-                    serviceHandler.addPlaceImages(this.getResponse().getDraftPointID(), bitmapsEndcoded,
-                            placeImageResponseListner);
-                }else{
-                    Log.d("dd new place", "fail");
-                }
             }
-        };
+        });
 
-        serviceHandler.addNewPlace(userID, cityID, PlaceData, placeDataResponseListner);
+
+        serviceHandler.addNewPlace(userID, cityID, PlaceData, placeDataResponseListener);
 
 
     }
@@ -556,5 +558,79 @@ public class DataHandler {
         return inSampleSize;
     }
 
+//    todo improve performance
+    public City[] queryCities(City[] cities, String newText) {
+
+        if (TextUtils.isEmpty(newText)) return cities;
+
+        ArrayList<City> queriedCities = new ArrayList<>();
+
+        for (int i = 0; i < cities.length; i++) {
+
+            if(cities[i].getCityNameAR().contains(newText) ||
+                    cities[i].getCityNameEN().toLowerCase().contains(newText.toLowerCase())){
+                queriedCities.add(cities[i]);
+            }
+        }
+
+        return queriedCities.toArray(new City[queriedCities.size()]);
+    }
+
+    public Place loadPlaceFromDataBase(Place place) {
+
+        Place dbPlace = Place.findById(Place.class, place.getId());
+        if(dbPlace != null){
+            List<PlaceImage> images = PlaceImage.find(PlaceImage.class, "place = ?",
+                    place.getId()+"");
+
+            List<PlaceComment> comments = PlaceComment.find(PlaceComment.class, "place = ?",
+                    place.getId()+"");
+
+            List<WorkTime> workTimes = WorkTime.find(WorkTime.class, "place = ?",
+                    place.getId()+"");
+
+            Log.d("work yyyyyyyyyy", workTimes.size()+"");
+
+            place.setPlaceImages(images.toArray(new PlaceImage[images.size()]));
+
+            place.setComments(comments.toArray(new PlaceComment[comments.size()]));
+
+            place.setWorkTimes(workTimes.toArray(new WorkTime[workTimes.size()]));
+        }
+
+        return place;
+    }
+
+    public List<Place> loadAllPlaceFromDataBase() {
+
+        List<Place> places = (List<Place>) Place.listAll(Place.class);
+        for(int i = 0; i < places.size(); i++){
+           loadPlaceFromDataBase(places.get(i));
+        }
+
+
+        return places;
+    }
+
+    public String getDayMapping(int day) {
+        return dayMap.get(day);
+    }
+
+    public Place[] queryPlaces(Place[] places, String newText) {
+
+        if (TextUtils.isEmpty(newText)) return places;
+
+        ArrayList<Place> queriedPlaces = new ArrayList<>();
+
+        for (int i = 0; i < places.length; i++) {
+
+            if(places[i].getPalceNameArb().contains(newText) ||
+                    places[i].getPalceNameEng().toLowerCase().contains(newText.toLowerCase())){
+                queriedPlaces.add(places[i]);
+            }
+        }
+
+        return queriedPlaces.toArray(new Place[queriedPlaces.size()]);
+    }
 }
 

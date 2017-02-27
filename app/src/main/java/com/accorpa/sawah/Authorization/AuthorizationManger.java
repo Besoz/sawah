@@ -14,6 +14,10 @@ import com.accorpa.sawah.models.User;
 
 public class AuthorizationManger implements LoginListener {
 
+//    todo destroy this structure
+//    todo remove context awareness
+//    todo use BaseListeners
+
     private static AuthorizationManger authMan;
     private Context context;
     private LoginListener loginListener;

@@ -110,6 +110,27 @@
     <string name="error_must_select_one_image">يجب اختيار صورة على الاقل</string>
     <string name="add_new_place_url">/api/draftpoints/add</string>
     <string name="upload_place_images_url">/api/draftpoints/uploadImages</string>
+    <string name="search_for_city">ابحث عن مدينة</string>
+
+    <string name="align_justify_icon">\ue9ad</string>
+    <string name="cities">المدن</string>
+
+
+    <string name="facebook_app_id">353641474978410</string>
+    <string name="fb_login_protocol_scheme">fbAPP_ID</string>
+    <string name="sat_day">السبت</string>
+    <string name="sun_day">الاحد</string>
+    <string name="mon_day">الاثنين</string>
+    <string name="tue_day">الثلاثاء</string>
+    <string name="wen_day">الاربعاء</string>
+    <string name="thu_day">الخميس</string>
+    <string name="fri_day">الجمعة</string>
+    <string name="work_time_today">اوقات العمل اليوم</string>
+    <string name="work_time"> اوقات العمل</string>
+    <string name="retreive_password">استعادة كلمة المرور</string>
+    <string name="password_sent_to_mail_successfuly">تم اسعادة كلمة المرور إلى ايميلك بنجاح</string>
+    <string name="retreive_assword_url">/api/users/ResetPassword</string>
+    >
 
 
 </resources>

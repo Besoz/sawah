@@ -33,13 +33,20 @@ allprojects {
 
     }
 }
-
+repositories {
+    mavenCentral()
+}
 allprojects {
     repositories {
         maven {
             url 'https://github.com/suckgamony/RapidDecoder/raw/master/repository'
         }
     }
+
+    repositories {
+        maven { url 'https://github.com/500px/greedo-layout-for-android/raw/master/releases/' }
+    }
+
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -81,6 +88,20 @@ dependencies {
     compile 'rapid.decoder:library:0.3.0'
     compile 'rapid.decoder:jpeg-decoder:0.3.0'
     compile 'rapid.decoder:png-decoder:0.3.0'
+
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+    compile 'com.android.support:cardview-v7:24.0.+'
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    compile 'com.github.techery:properratingbar:0.0.5'
+    compile 'com.iarcuschin:simpleratingbar:0.1.5'
+
+    compile 'com.afollestad.material-dialogs:core:0.9.3.0'
+
+    compile 'com.jakewharton:butterknife:8.5.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
 }
 

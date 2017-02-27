@@ -7,12 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.accorpa.sawah.BaseActivity;
-import com.accorpa.sawah.BaseResponseListner;
+import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.models.User;
-import com.android.volley.Response;
 
 import org.json.JSONObject;
 
@@ -54,7 +53,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
 
                 final Bitmap bitmap = DataHandler.getInstance(this).getImage(data.getData());
 
-                BaseResponseListner mResponseListner = new BaseResponseListner() {
+                BaseResponseListener mResponseListner = new BaseResponseListener() {
                     @Override
                     public void onResponse(JSONObject response) {
                         super.onResponse(response);
@@ -110,7 +109,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
     @Override
     public void updateUser() {
 
-        BaseResponseListner responseListner = new BaseResponseListner() {
+        BaseResponseListener responseListner = new BaseResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 super.onResponse(response);
@@ -127,10 +126,10 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
     }
 
     @Override
-    public void updatePassword(final BaseResponseListner mResponse, String currentPasswordStr,
+    public void updatePassword(final BaseResponseListener mResponse, String currentPasswordStr,
                                String newPasswordStr, String confirmPasswordStr) {
 
-        BaseResponseListner mResponseListner = new BaseResponseListner() {
+        BaseResponseListener mResponseListner = new BaseResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 super.onResponse(response);

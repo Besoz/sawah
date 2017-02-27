@@ -3,6 +3,8 @@ package com.accorpa.sawah.Authorization;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -18,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,13 +28,16 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -39,6 +45,17 @@ import static android.Manifest.permission.READ_CONTACTS;
 
 
 import com.accorpa.sawah.models.User;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONObject;
 
 
 /**
@@ -47,7 +64,6 @@ import com.accorpa.sawah.models.User;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginListener {
 
     /**
-     * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -63,6 +79,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private AuthorizationManger authorizationManger;
 
+
+    private ImageButton  mFacebookLoginButton, twitterLoginButton, gplusLoginButton;
+    private CallbackManager callbackManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +122,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        CustomButton forgetPasswordButton = (CustomButton) findViewById(R.id.forget_password_button);
+        forgetPasswordButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startRetrievePasswordActivity();
+            }
+        });
+
         CustomButton skipButton = (CustomButton) findViewById(R.id.skip_login_button);
         skipButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -114,10 +141,125 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
+        twitterLoginButton = (ImageButton) findViewById(R.id.twitter_login_btn);
+        gplusLoginButton= (ImageButton) findViewById(R.id.gplus_login_btn);
 
+        final LoginButton facebookLoginButton = (LoginButton) new LoginButton(this);
+        facebookLoginButton.setReadPermissions("public_profile","email", "user_location");
+   ;
+        callbackManager = CallbackManager.Factory.create();
+
+
+//        facebookLoginButton.setPaintFlags(facebookLoginButton.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        facebookLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                LoginManager.getInstance().logInWithPublishPermissions(
+//                        LoginActivity.this,
+//                        Arrays.asList("publish_actions"));
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
+                        (Arrays.asList("public_profile","email", "user_location")));
+            }
+        });
+        mFacebookLoginButton = (ImageButton) findViewById(R.id.facebook_login_btn);
+        mFacebookLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                facebookLoginButton.callOnClick();
+            }
+        });
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+
+                Log.d("facebook login", loginResult.getAccessToken().getToken());
+//                attemptFacebookLogin(loginResult);
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+            }
+        });
     }
 
+    private void startRetrievePasswordActivity() {
+        NavigationHandler.getInstance().startRetrievePasswordActivity(this);
+    }
 
+//    private void attemptFacebookLogin(LoginResult loginResult) {
+//
+//
+//        DataHandler.getInstance(this).
+//        Profile profile = Profile.getCurrentProfile();
+//        if (profile != null) {
+//            String facebook_id=profile.getId();
+//        }
+//
+//        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+//                new GraphRequest.GraphJSONObjectCallback() {
+//                    @Override
+//                    public void onCompleted(JSONObject object, GraphResponse response) {
+//                        Log.v("LoginActivity", response.toString());
+//
+//                        if (object != null)
+//                        {
+//                            // try to login
+//                            try {
+//                                if (object.has("id"))
+//                                    uid = object.getString("id");
+//                                if (object.has("email"))
+//                                    email = object.getString("email");
+//                                if (object.has("name"))
+//                                    name = object.getString("name");
+//                                if (object.has("location"))
+//                                {
+//                                    JSONObject locationJSonObject = object.getJSONObject("location");
+//                                    String location = locationJSonObject.getString("name");
+//                                    int locationIndex = location.indexOf(',');
+//                                    city = location.substring(0, locationIndex);
+//                                    country = location.substring(locationIndex + 2);
+//                                }
+//
+//                                accessToken = loginResult.getAccessToken().getToken();
+//
+//                                provider = DataHandler.FACEBOOK;
+//
+//                                registerUserFromSocialLogin(uid, accessToken, provider);
+//
+//
+////                                        String userMobilePhone = object.getString("user_mobile_phone");
+////                                        Object location = object.get("location");
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                        }
+//
+//
+//                    }
+//
+//                });
+//        Bundle parameters = new Bundle();
+//        parameters.putString("fields", "id,name,email, location");
+//        request.setParameters(parameters);
+//        request.executeAsync();
+//    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
     private void createNewUser() {
         NavigationHandler.getInstance().startSignupActivity(this);
