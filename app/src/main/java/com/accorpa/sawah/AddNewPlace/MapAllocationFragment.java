@@ -61,6 +61,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
     private ImageView imageView;
 
     private FrameLayout frameLayout;
+    private boolean locationDenied;
 
     public MapAllocationFragment(Place place) {
         // Required empty public constructor
@@ -294,6 +295,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
                 } else {
 
+                    locationDenied = true;
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -311,7 +313,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
         mLastLocation = location;
         if (googleMap != null) {
-            if (!(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
+            if (!locationDenied && !(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
                 googleMap.setMyLocationEnabled(true);
             }
 
