@@ -408,6 +408,45 @@ public class ServiceHandler {
 
         mRequestQueue.add(jsonObjectRequest);
     }
+
+    public void signupUser(String socialUserID, String socialType, String OS,
+                           String deviceToken, String DOB,
+                           BaseResponseListener baseResponseListener) {
+
+        String url = urlHandler.getSocialLoginUrl();
+
+        JSONObject payload = getSocialLoginPayload(socialUserID, socialType, OS,
+                deviceToken, DOB);
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, payload, baseResponseListener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
+    private JSONObject getSocialLoginPayload(String socialUserID, String socialType, String DOB,
+                                             String OS, String deviceToken){
+        JSONObject request = new JSONObject();
+        try {
+            request.put("SocialUserID", socialUserID);
+            request.put("SocialType", socialType);
+            request.put("OS", OS);
+            request.put("DeviceToken", deviceToken);
+            request.put("DOB", DOB);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return request;
+    }
+
 }
 
 

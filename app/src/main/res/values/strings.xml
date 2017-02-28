@@ -130,6 +130,8 @@
     <string name="retreive_password">استعادة كلمة المرور</string>
     <string name="password_sent_to_mail_successfuly">تم اسعادة كلمة المرور إلى ايميلك بنجاح</string>
     <string name="retreive_assword_url">/api/users/ResetPassword</string>
+    <string name="social_login_url">/api/users/AddOrLoginBySocialMedia</string>
+
     >
 
 

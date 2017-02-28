@@ -3,9 +3,12 @@ package com.accorpa.sawah.Authorization;
 import android.content.Context;
 import android.util.Log;
 
+import com.accorpa.sawah.BaseRequestStateListener;
+import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.models.User;
 
 /**
@@ -46,6 +49,28 @@ public class AuthorizationManger implements LoginListener {
 
     public void loginUser(String email, String password) {
         serviceHandler.loginUser(email, password, dataHandler.getDeiveToken(), loginResponseListener);
+    }
+
+    public void socialSignup(String socialUserID, String socialType, String DOB,
+                             final BaseRequestStateListener baseRequestStateListener){
+
+        BaseResponseListener baseResponseListener = new BaseResponseListener();
+        baseResponseListener.setOnResponseListner(new BaseRequestStateListener() {
+            @Override
+            public void failResponse(ServiceResponse response) {
+                baseRequestStateListener.failResponse(response);
+            }
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+                dataHandler.saveUser(response.getUser());
+                baseRequestStateListener.successResponse(response);
+            }
+        });
+
+        serviceHandler.signupUser(socialUserID, socialType, DOB, dataHandler.OS,
+                dataHandler.getDeiveToken(), baseResponseListener);
+
     }
 
 
