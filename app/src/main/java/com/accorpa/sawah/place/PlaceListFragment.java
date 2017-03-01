@@ -17,6 +17,8 @@ import com.accorpa.sawah.RecycleAdapterListener;
 import com.accorpa.sawah.models.Place;
 import com.labo.kaji.fragmentanimations.FlipAnimation;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -38,10 +40,14 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
 
     private OnFragmentInteractionListener mListener;
 
-    private Place[] places;
+    private ArrayList<Place> places;
+    private boolean addLikeButton, specialPlaceLayout;
 
-    public PlaceListFragment() {
+    public PlaceListFragment(boolean addLikeButton, boolean specialPlaceLayout) {
         // Required empty public constructor
+
+        this.addLikeButton = addLikeButton;
+        this.specialPlaceLayout = specialPlaceLayout;
     }
 
     /**
@@ -49,16 +55,18 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment PlaceListFragment.
+     * @param addLikeButton
+     * @param specialPlaceLayout
      */
     // TODO: Rename and change types and number of parameters
-    public static PlaceListFragment newInstance() {
-        PlaceListFragment fragment = new PlaceListFragment();
+    public static PlaceListFragment newInstance(boolean addLikeButton, boolean specialPlaceLayout) {
+        PlaceListFragment fragment = new PlaceListFragment(addLikeButton, specialPlaceLayout);
         return fragment;
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         listFragment = inflater.inflate(R.layout.fragment_place_list, container, false);
@@ -77,21 +85,24 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
 
         mLayoutManager = new LinearLayoutManager(getContext());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager specialGridLayoutManager = new GridLayoutManager(getContext(), 2);
         GridLayoutManager.SpanSizeLookup onSpanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
-                return places[position].isSpecial() ? 2 : 1;
+                return places.get(position).isSpecial() ? 2 : 1;
             }
         };
-        gridLayoutManager.setSpanSizeLookup(onSpanSizeLookup);
+        specialGridLayoutManager.setSpanSizeLookup(onSpanSizeLookup);
+
+        GridLayoutManager normalGridLayoutManager = new GridLayoutManager(getContext(), 1);
 
 
         // specify an adapter (see also next example)
-        mAdapter = new PlaceRecycleAdapter(getContext(), this);
+        mAdapter = new PlaceRecycleAdapter(getContext(), this, addLikeButton, specialPlaceLayout);
 
 
-        mRecyclerView.setLayoutManager(gridLayoutManager);
+        mRecyclerView.setLayoutManager(specialPlaceLayout?
+                specialGridLayoutManager : normalGridLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
 //        adapter = new PlacesAdapter(getContext());
@@ -136,6 +147,11 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
         mListener.onPlaceSelected((Place) object);
     }
 
+    public void setShowDeleteButton(boolean showDeleteButton) {
+
+        mAdapter.setShowDeletionButton(showDeleteButton);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -149,10 +165,10 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onPlaceSelected(Place place);
-        Place[] getPlaces();
+        ArrayList<Place> getPlaces();
     }
 
-    public void setPlacesList(Place[] arr){
+    public void setPlacesList(ArrayList<Place> arr){
 //        adapter.setDataSource(arr);
 //        adapter.notifyDataSetChanged();
         places = arr;

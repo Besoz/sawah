@@ -358,6 +358,8 @@ public class Place extends SugarRecord implements ClusterItem {
     @JsonIgnore
     @Override
     public LatLng getPosition() {
+
+        if(position == null) return new LatLng(lattitude, longitude);
         return position;
     }
 

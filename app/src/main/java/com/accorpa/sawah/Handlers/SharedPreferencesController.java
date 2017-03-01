@@ -2,6 +2,7 @@ package com.accorpa.sawah.Handlers;
 
 import android.content.Context;
 
+import com.accorpa.sawah.models.City;
 import com.accorpa.sawah.models.User;
 
 /**
@@ -14,7 +15,7 @@ public class SharedPreferencesController {
     private ComplexSharedPreferences sharedPreferences;
 
     private final static String DEVICE_TOKEN_KEY = "device_Token", USER_DATA_KEY = "user_data",
-    CITY_ID_KEY = "city_id";
+    CITY_ID_KEY = "city_id", CITY_DATA_KEY = "city_data";
 
 
     public static SharedPreferencesController getInstance(Context context) {
@@ -46,15 +47,15 @@ public class SharedPreferencesController {
     }
 
     public boolean hasDefaultCity() {
-        return sharedPreferences.hasKey(CITY_ID_KEY);
+        return sharedPreferences.hasKey(CITY_DATA_KEY);
     }
 
     public String getDefaultCityID() {
-        return sharedPreferences.getObject(CITY_ID_KEY, String.class);
+        return sharedPreferences.getObject(CITY_DATA_KEY, City.class).getCityID();
     }
 
-    public void setDefaultCityID(String cityID){
-        sharedPreferences.putObject(CITY_ID_KEY, cityID);
+    public void setDefaultCity(City city){
+        sharedPreferences.putObject(CITY_DATA_KEY, city);
         sharedPreferences.commit();
     }
 
@@ -64,5 +65,13 @@ public class SharedPreferencesController {
 
     public User getUser() {
         return sharedPreferences.getObject(USER_DATA_KEY, User.class);
+    }
+
+    public void deleteUser() {
+        sharedPreferences.deleteObject(USER_DATA_KEY);
+    }
+
+    public City getDefaultCity() {
+        return sharedPreferences.getObject(CITY_DATA_KEY, City.class);
     }
 }

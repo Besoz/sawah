@@ -4,7 +4,7 @@
     android:id="@+id/activity_places_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.accorpa.sawah.place.PlacesListActivity">
+    tools:context="com.accorpa.sawah.place.BasePlacesListActivity">
 
     <LinearLayout
         android:id="@+id/main_view"
@@ -18,7 +18,7 @@
             android:layout_height="40dp"
             android:textColor="@color/textColor"
             android:background="@color/buttonColor"
-            android:text="@string/view_list" />
+            android:text="@string/view_map" />
 
         <LinearLayout android:id="@+id/fragment"
             android:layout_width="match_parent"

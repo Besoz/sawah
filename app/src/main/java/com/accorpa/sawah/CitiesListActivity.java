@@ -35,7 +35,7 @@ public class CitiesListActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
                 City selectedCity = (City) mListView.getAdapter().getItem(position);
 
-                DataHandler.getInstance(context.getApplicationContext()).setDefaulCity(selectedCity.getCityID());
+                DataHandler.getInstance(context.getApplicationContext()).setDefaulCity(selectedCity);
 
                 NavigationHandler.getInstance().startCategoriesListActivity(CitiesListActivity.this,
                         selectedCity.getCityID());

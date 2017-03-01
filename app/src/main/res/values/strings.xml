@@ -88,8 +88,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="view_list">استعراض الخريطة</string>
-    <string name="view_map">استعراض القائمة</string>
+    <string name="view_list">استعراض القائمة</string>
+    <string name="view_map">استعراض الخريطة</string>
     <string name="edit">تعديل</string>
     <string name="personal_information">المعلومات الشخصية</string>
     <string name="save">حفظ</string>
@@ -131,6 +131,13 @@
     <string name="password_sent_to_mail_successfuly">تم اسعادة كلمة المرور إلى ايميلك بنجاح</string>
     <string name="retreive_assword_url">/api/users/ResetPassword</string>
     <string name="social_login_url">/api/users/AddOrLoginBySocialMedia</string>
+    <string name="log_out">خروج</string>
+    <string name="settings">ألإعدادات</string>
+    <string name="must_sign_in_to_add_comment">يجب تسجيل الدخول لإضافة تعليق</string>
+    <string name="user_data">البيانات الشخصية</string>
+    <string name="must_user_data_add_comment">يجب إضافة اسم المستخدم لإضافة تعليق </string>
+    <string name="general_instructions_text">نتطلع في تطبيق سواح إلى تغطية أبرز المناطق السياحية في مدن العالم، إذ يعمل فريق سواح لزيارة الأماكن المهمة في هذه المدن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدن العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
+    >
 
     >
 

@@ -15,6 +15,6 @@
     <com.accorpa.sawah.custom_views.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/about_sawah"
+        android:text="@string/general_instructions_text"
         android:textColor="@color/colorPrimary"/>
 </RelativeLayout>

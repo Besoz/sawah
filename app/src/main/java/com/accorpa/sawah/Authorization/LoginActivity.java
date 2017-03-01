@@ -31,9 +31,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.custom_views.CustomButton;
 
 import java.util.ArrayList;
@@ -177,6 +179,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                 Log.d("facebook login", loginResult.getAccessToken().getToken());
 //                attemptFacebookLogin(loginResult);
+
+                authorizationManger.socialSignup("", "", "", new BaseRequestStateListener() {
+                    @Override
+                    public void failResponse(ServiceResponse response) {
+
+                    }
+
+                    @Override
+                    public void successResponse(ServiceResponse response) {
+
+                    }
+                });
             }
 
             @Override

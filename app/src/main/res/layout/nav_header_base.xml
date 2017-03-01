@@ -6,8 +6,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/AppTheme"
     android:background="@color/colorPrimary"
@@ -20,8 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:src="@drawable/gear"
-        android:layout_margin="@dimen/listview_margin"/>
+        android:src="@drawable/gear" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -41,10 +40,27 @@
             android:id="@+id/user_name"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="gggggg"
+            android:textColor="@color/textColor"
             android:layout_margin="@dimen/listview_margin"/>
+        </LinearLayout>
+    <!--<ImageView-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingTop="@dimen/nav_header_vertical_spacing"-->
+        <!--android:src="@android:drawable/sym_def_app_icon" />-->
 
-    </LinearLayout>
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingTop="@dimen/nav_header_vertical_spacing"-->
+        <!--android:text="Android Studio"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
 
+    <!--<TextView-->
+        <!--android:id="@+id/textView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="android.studio@android.com" />-->
 
 </LinearLayout>

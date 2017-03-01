@@ -51,7 +51,7 @@
             android:name=".CategoriesListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".place.PlacesListActivity"
+            android:name=".place.BasePlacesListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListActivity"
@@ -127,7 +127,12 @@
         </activity>
         <activity
             android:name=".Authorization.RetrievePasswordActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar.AlertLight"></activity>
+            android:theme="@style/Theme.AppCompat.NoActionBar.AlertLight" />
+        <activity
+            android:name=".place.PlaceListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>
