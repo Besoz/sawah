@@ -23,11 +23,12 @@ import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.models.PlaceComment;
 import com.accorpa.sawah.models.PlaceImage;
 import com.accorpa.sawah.models.WorkTime;
-import com.accorpa.sawah.place.PlacesListActivity;
+import com.accorpa.sawah.place.BasePlacesListActivity;
 import com.accorpa.sawah.models.Category;
 import com.accorpa.sawah.models.City;
 import com.accorpa.sawah.models.Place;
 import com.accorpa.sawah.models.User;
+import com.accorpa.sawah.place.PlaceListActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -168,18 +169,18 @@ public class DataHandler {
         Log.d("gg", "requesting");
     }
 
-    public void requestPlacesArray(PlacesListActivity placesListActivity, String cityID, String catID) {
-        serviceHandler.requestPlacesArray(this, placesListActivity, cityID, catID);
+    public void requestPlacesArray(PlaceListActivity basePlacesListActivity, String cityID, String catID) {
+        serviceHandler.requestPlacesArray(this, basePlacesListActivity, cityID, catID);
 
     }
 
-    public void recievePlacesList(JSONArray response, PlacesListActivity placesListActivity) {
+    public void recievePlacesList(JSONArray response, PlaceListActivity placesListActivity) {
         try {
             Place[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Place.class);
 
 //            ArrayList<Place> favArr = (ArrayList<Place>) Place.findWithQueryAsIterator(Place.class,
-//                    "CityID = ? and CatID = ?", placesListActivity.getCityID(),
-//                    placesListActivity.getCatID());
+//                    "CityID = ? and CatID = ?", basePlacesListActivity.getCityID(),
+//                    basePlacesListActivity.getCatID());
 
             placesListActivity.recievePlacesList(arr);
 
@@ -191,7 +192,7 @@ public class DataHandler {
     }
 
 
-    public void recieveCitiesList(JSONArray response, CitiesListActivity citiesListActivity) {
+    public void receiveCitiesList(JSONArray response, CitiesListActivity citiesListActivity) {
 
         try {
             City[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), City.class);
@@ -210,9 +211,9 @@ public class DataHandler {
         return sharedPreferences.getDefaultCityID();
     }
 
-    public void setDefaulCity(String CityID){
+    public void setDefaulCity(City City){
 
-        sharedPreferences.setDefaultCityID(CityID);
+        sharedPreferences.setDefaultCity(City);
 
     }
 
@@ -230,7 +231,7 @@ public class DataHandler {
     }
 
 
-    public Place[] mergeWithFavouritePlaces(Place[] places) {
+    public ArrayList<Place> mergeWithFavouritePlaces(ArrayList<Place> places) {
 
         List<Place> favArr = loadAllPlaceFromDataBase();
 
@@ -241,15 +242,15 @@ public class DataHandler {
             favPlacesIDs.put(favArr.get(i).getPlaceID(), favArr.get(i));
         }
 
-        for(int i = 0; i < places.length; i++){
-            if(favPlacesIDs.containsKey(places[i].getPlaceID())){
+        for(int i = 0; i < places.size(); i++){
+            if(favPlacesIDs.containsKey(places.get(i).getPlaceID())){
 
-                places[i].setFavourite(true);
-                favPlacesIDs.get(places[i].getPlaceID()).delete();
-                places[i].save();
+                places.get(i).setFavourite(true);
+                favPlacesIDs.get(places.get(i).getPlaceID()).delete();
+                places.get(i).save();
 
             }else{
-                places[i].setFavourite(false);
+                places.get(i).setFavourite(false);
             }
         }
 
@@ -601,9 +602,9 @@ public class DataHandler {
         return place;
     }
 
-    public List<Place> loadAllPlaceFromDataBase() {
+    public ArrayList<Place> loadAllPlaceFromDataBase() {
 
-        List<Place> places = (List<Place>) Place.listAll(Place.class);
+        ArrayList<Place> places = (ArrayList<Place>) Place.listAll(Place.class);
         for(int i = 0; i < places.size(); i++){
            loadPlaceFromDataBase(places.get(i));
         }
@@ -616,21 +617,36 @@ public class DataHandler {
         return dayMap.get(day);
     }
 
-    public Place[] queryPlaces(Place[] places, String newText) {
+    public ArrayList<Place> queryPlaces(ArrayList<Place> places, String newText) {
 
         if (TextUtils.isEmpty(newText)) return places;
 
         ArrayList<Place> queriedPlaces = new ArrayList<>();
 
-        for (int i = 0; i < places.length; i++) {
+        for (int i = 0; i < places.size(); i++) {
 
-            if(places[i].getPalceNameArb().contains(newText) ||
-                    places[i].getPalceNameEng().toLowerCase().contains(newText.toLowerCase())){
-                queriedPlaces.add(places[i]);
+            if(places.get(i).getPalceNameArb().contains(newText) ||
+                    places.get(i).getPalceNameEng().toLowerCase().contains(newText.toLowerCase())){
+                queriedPlaces.add(places.get(i));
             }
         }
 
-        return queriedPlaces.toArray(new Place[queriedPlaces.size()]);
+        return queriedPlaces;
+    }
+
+    public void eraseCurrentUser() {
+
+//        remove user
+        sharedPreferences.deleteUser();
+
+//        remove fav places
+        Place.deleteAll(Place.class);
+        PlaceComment.deleteAll(PlaceComment.class);
+        WorkTime.deleteAll(WorkTime.class);
+    }
+
+    public City getDefaultCity() {
+        return sharedPreferences.getDefaultCity();
     }
 }
 

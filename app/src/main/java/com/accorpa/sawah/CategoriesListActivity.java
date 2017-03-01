@@ -11,7 +11,6 @@ import com.accorpa.sawah.models.Category;
 public class CategoriesListActivity extends BaseActivity implements RecycleAdapterListener {
 
 
-    private String cityName;
     private String cityID;
 
     private RecyclerView mRecyclerView;
@@ -47,8 +46,7 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
 
         cityID = (String) getIntent().getSerializableExtra(DataHandler
                 .getInstance(this.getApplicationContext()).CITY_ID_KEY);
-//        cityName =  (String) getIntent().getSerializableExtra(DataHandler
-//                .getInstance(context.getApplicationContext()).CITY_NAME_KEY);
+//
 //        mListView = (GridView) findViewById(R.id.list);
 
 //        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -78,13 +76,13 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
     @Override
     public void itemSelected(Object object) {
         NavigationHandler.getInstance().startPlacesListActivity(CategoriesListActivity.this,
-                ((Category) object).getCategoryID(), cityID);
+                ((Category) object).getCategoryID(), cityID, ((Category) object).getName());
     }
 
-//    @Override
-//    protected String getToolbarTitle() {
-//        return cityName;
-//    }
+    @Override
+    protected String getToolbarTitle() {
+        return DataHandler.getInstance(this).getDefaultCity().getCityNameAR();
+    }
 
     protected int getLayoutResourceId() {
         return R.layout.fragment_place_list;

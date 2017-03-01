@@ -82,11 +82,8 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
 
 /**
  * A login screen that offers login via email/password.
@@ -357,6 +354,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         facebookLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                LoginManager.getInstance().logInWithPublishPermissions(
+//                        LoginActivity.this,
+//                        Arrays.asList("publish_actions"));
                 LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
                         (Arrays.asList("public_profile","email", "user_location")));
             }

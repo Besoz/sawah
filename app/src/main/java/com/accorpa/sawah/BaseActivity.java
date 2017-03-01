@@ -63,9 +63,6 @@ public class BaseActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -96,9 +93,11 @@ public class BaseActivity extends AppCompatActivity
 //        instantly available to call findViewById() -a layout pass is needed before it is attached to the
         View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_base);
 
-        if(DataHandler.getInstance(this).userExist()){
+        Menu nav_Menu = navigationView.getMenu();
 
+        if(DataHandler.getInstance(this).userExist()){
             headerLayout.setVisibility(View.VISIBLE);
+            nav_Menu.findItem(R.id.nav_login).setVisible(false);
 
             User user = DataHandler.getInstance(this).getUser();
 
@@ -120,6 +119,13 @@ public class BaseActivity extends AppCompatActivity
             });
 
 
+
+        }else{
+
+            nav_Menu.findItem(R.id.nav_settings).setVisible(false);
+            nav_Menu.findItem(R.id.nav_fav_list).setVisible(false);
+            nav_Menu.findItem(R.id.nav_add_place).setVisible(false);
+            nav_Menu.findItem(R.id.nav_logout).setVisible(false);
 
         }
 
@@ -188,13 +194,15 @@ public class BaseActivity extends AppCompatActivity
             SharingHandler.getInstance().contactSawah(this);
         } else if (id == R.id.nav_add_place) {
             NavigationHandler.getInstance().AddNewPlace(this);
+        } else if (id == R.id.nav_login) {
+            NavigationHandler.getInstance().startLoginActivity(this);
+        } else if (id == R.id.nav_logout) {
+            DataHandler.getInstance(this).eraseCurrentUser();
+            NavigationHandler.getInstance().startLoginActivity(this);
+        } else if (id == R.id.nav_settings) {
+            NavigationHandler.getInstance().startEditProfileActivity(BaseActivity.this);
         }
 
-//        } else if (id == R.id.nav_favourites) {
-//
-//        } else if (id == R.id.nav_contact_us) {
-//
-//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(drawerGravity);

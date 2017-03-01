@@ -6,6 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +20,12 @@ import com.accorpa.sawah.custom_views.CustomCheckBox;
 import com.accorpa.sawah.models.Place;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
+
+import java.net.PortUnreachableException;
+import java.util.ArrayList;
 
 /**
  * Created by root on 26/02/17.
@@ -24,19 +33,33 @@ import com.android.volley.toolbox.NetworkImageView;
 
 public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapter.ViewHolder> {
 
+
     private Context mContext;
 //    private LayoutInflater mInflater;
 
-    private Place[] mDataSource;
+    private ArrayList<Place> mDataSource;
 
     private RecycleAdapterListener mListener;
 
+    private boolean addLikeButton, addDeleteButton, specialPlaceLayout;
+    private YoYo.YoYoString yoYoString;
 
-    public PlaceRecycleAdapter(Context mContext, RecycleAdapterListener mListener) {
+    private Animation rotation;
+
+    public PlaceRecycleAdapter(Context mContext, RecycleAdapterListener mListener,
+                               boolean addLikeButton,
+                               boolean specialPlaceLayout) {
         this.mContext = mContext;
 
-        this.mDataSource = new Place[0];
+        this.mDataSource = new ArrayList<>();
         this.mListener =  mListener;
+
+        this.addLikeButton = addLikeButton;
+        this.specialPlaceLayout = specialPlaceLayout;
+
+        rotation = AnimationUtils.loadAnimation(mContext, R.anim.shake);
+
+
     }
 
     @Override
@@ -45,23 +68,15 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         View convertView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.place_list_item, parent, false);
 
-        NetworkImageView mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
-        TextView titleTextView = (TextView) convertView.findViewById(R.id.place_title_ar);
-        TextView detailTextView  = (TextView) convertView.findViewById(R.id.place_title_en);
-        CustomCheckBox customCheckBox = (CustomCheckBox) convertView.findViewById(R.id.like_button);
-        customCheckBox.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
-        mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
-        LinearLayout specailTag = (LinearLayout) convertView.findViewById(R.id.special_place_tag);
 
-        ViewHolder vh = new ViewHolder(convertView, mNetworkImageView, titleTextView, detailTextView,
-        customCheckBox, specailTag);
+        ViewHolder vh = new ViewHolder(convertView, addLikeButton);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(final PlaceRecycleAdapter.ViewHolder holder, int position) {
 
-        final Place place = mDataSource[position];
+        final Place place = mDataSource.get(position);
 
         holder.titleArabic.setText(place.getPalceNameArb());
         holder.titleEnglish.setText(place.getPalceNameEng());
@@ -75,39 +90,71 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
 
-        if(place.isFavourite()){
-            holder.customCheckBox.setChecked();
-        }else{
-            holder.customCheckBox.setUnChecked();
-        }
 
-        if(place.isSpecial()){
-            holder.specialTag.setVisibility(View.VISIBLE);
-        }else{
-            holder.specialTag.setVisibility(View.GONE);
-        }
+        holder.specialTag.setVisibility(place.isSpecial() && specialPlaceLayout ?
+                View.VISIBLE : View.GONE);
 
-        holder.customCheckBox.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                DataHandler.getInstance(mContext).togglePlaceFavourite(place);
-                holder.customCheckBox.toggleState();
+
+        if(addLikeButton){
+
+            if(place.isFavourite()){
+                holder.likeButton.setChecked();
+            }else{
+                holder.likeButton.setUnChecked();
             }
-        });
 
+            holder.likeButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    DataHandler.getInstance(mContext).togglePlaceFavourite(place);
+                    holder.likeButton.toggleState();
+                }
+            });
+        }
+
+        holder.specialTag.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
+
+        if(addDeleteButton) {
+            holder.deleteButton.setVisibility(View.VISIBLE);
+            holder.v.startAnimation(rotation);
+
+        }else {
+            holder.deleteButton.setVisibility(View.GONE);
+            holder.v.clearAnimation();
+        }
+
+        if(addDeleteButton){
+            holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    holder.v.clearAnimation();
+                    DataHandler.getInstance(mContext).togglePlaceFavourite(place);
+                    mDataSource.remove(place);
+                    holder.v.clearAnimation();
+                    PlaceRecycleAdapter.this.notifyDataSetChanged();
+
+
+                }
+            });
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.v.clearAnimation();
                 mListener.itemSelected(place);
             }
         });
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return mDataSource.length;
+        return mDataSource.size();
     }
 
 //    @Override
@@ -115,8 +162,13 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 //        return 1;
 //    }
 
-    public void setDataSource(Place[] dataSource) {
+    public void setDataSource(ArrayList<Place> dataSource) {
         this.mDataSource = dataSource;
+    }
+
+    public void setShowDeletionButton(boolean showDeleteButton) {
+        addDeleteButton = showDeleteButton;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -124,18 +176,24 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         public TextView titleArabic;
         public TextView titleEnglish;
         public NetworkImageView mNetworkImageView;
-        public CustomCheckBox customCheckBox;
+        public CustomCheckBox likeButton;
+        public CustomCheckBox deleteButton;
         public LinearLayout specialTag;
+        public View v;
 
-        public ViewHolder(View v, NetworkImageView mNetworkImageView, TextView titleTextView,
-                          TextView titleEnglish, CustomCheckBox customCheckBox,
-                          LinearLayout specialTag) {
+        public ViewHolder(View v, boolean addLikeButton) {
             super(v);
-            this.mNetworkImageView = mNetworkImageView;
-            this.titleArabic = titleTextView;
-            this.titleEnglish = titleEnglish;
-            this.customCheckBox = customCheckBox;
-            this.specialTag = specialTag;
+            this.v = v;
+            this.mNetworkImageView = (NetworkImageView) v.findViewById(R.id.icon);
+            mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+            this.titleArabic = (TextView) v.findViewById(R.id.place_title_ar);
+            this.titleEnglish = (TextView) v.findViewById(R.id.place_title_en);
+            this.likeButton = (CustomCheckBox) v.findViewById(R.id.like_button);
+            likeButton.setVisibility(addLikeButton? View.VISIBLE : View.GONE);
+            likeButton.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
+            this.specialTag = (LinearLayout) v.findViewById(R.id.special_place_tag);
+            this.deleteButton = (CustomCheckBox) v.findViewById(R.id.delete_button);
+
         }
     }
 

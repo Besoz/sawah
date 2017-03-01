@@ -30,6 +30,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.accorpa.sawah.BaseActivity;
+import com.accorpa.sawah.CommentActivity;
 import com.accorpa.sawah.CommentsAdapter;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
@@ -45,6 +46,9 @@ import com.accorpa.sawah.custom_views.ExpandArrow;
 import com.accorpa.sawah.models.Place;
 import com.accorpa.sawah.models.PlaceComment;
 import com.accorpa.sawah.models.WorkTime;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.aakira.expandablelayout.ExpandableLayoutListener;
@@ -198,10 +202,46 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             public void onClick(View v) {
                 DataHandler dataHandler = DataHandler.getInstance(PlaceDetailsActivity.this);
                 if(dataHandler.userExist()){
-                    NavigationHandler.getInstance().startCommentActivity(PlaceDetailsActivity.this,
+
+                    if(TextUtils.isEmpty(dataHandler.getUser().getFullName())){
+                        new MaterialDialog.Builder(PlaceDetailsActivity.this)
+                                .title(R.string.user_data)
+                                .content(R.string.must_user_data_add_comment)
+                                .positiveText(R.string.agree)
+                                .negativeText(R.string.close)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog,
+                                                        @NonNull DialogAction which) {
+                                        NavigationHandler.getInstance().
+                                                startEditProfileActivity(PlaceDetailsActivity.this);
+                                    }
+                                }).autoDismiss(true)
+                                .titleGravity(GravityEnum.CENTER)
+                                .contentGravity(GravityEnum.CENTER)
+                                .show();
+
+                    }else{
+                        NavigationHandler.getInstance().startCommentActivity(PlaceDetailsActivity.this,
                             place.getPlaceID());
+                    }
                 }else{
-//                    show not signed in dialog
+                    new MaterialDialog.Builder(PlaceDetailsActivity.this)
+                            .title(R.string.action_sign_in_short)
+                            .content(R.string.must_sign_in_to_add_comment)
+                            .positiveText(R.string.agree)
+                            .negativeText(R.string.close)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog,
+                                                    @NonNull DialogAction which) {
+                                    NavigationHandler.getInstance().
+                                            startLoginActivity(PlaceDetailsActivity.this);
+                                }
+                            }).autoDismiss(true)
+                            .titleGravity(GravityEnum.CENTER)
+                            .contentGravity(GravityEnum.CENTER)
+                            .show();
                 }
             }
         });
@@ -244,6 +284,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         }
 
         likeButton = (CustomCheckBox) this.findViewById(R.id.like_button);
+        likeButton.setVisibility(DataHandler.getInstance(this).userExist() ? View.VISIBLE : View.GONE);
         likeButton.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
 
         if(place.isFavourite()){

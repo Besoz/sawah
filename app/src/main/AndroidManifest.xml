@@ -137,6 +137,12 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="51e4547b1779ba1627f513e241a8b428d1e1e6b2" />
+            android:theme="@style/Theme.AppCompat.NoActionBar.AlertLight" />
+        <activity
+            android:name=".place.PlaceListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
     </application>
 
 </manifest>

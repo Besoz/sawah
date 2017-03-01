@@ -10,8 +10,9 @@ import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.Authorization.LoginResponseListener;
 import com.accorpa.sawah.LruBitmapCache;
 import com.accorpa.sawah.R;
-import com.accorpa.sawah.place.PlacesListActivity;
+import com.accorpa.sawah.place.BasePlacesListActivity;
 import com.accorpa.sawah.Authorization.SignupResponseListener;
+import com.accorpa.sawah.place.PlaceListActivity;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -160,7 +161,7 @@ public class ServiceHandler {
     }
 
     public void requestPlacesArray(final DataHandler dataHandler,
-                                   final PlacesListActivity placesListActivity, String cityID,
+                                   final PlaceListActivity basePlacesListActivity, String cityID,
                                    String categoryID) {
         Log.d("gg", "requesting");
 
@@ -172,7 +173,7 @@ public class ServiceHandler {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d("gg", response.toString());
-                dataHandler.recievePlacesList(response, placesListActivity);
+                dataHandler.recievePlacesList(response, basePlacesListActivity);
             }
         },new Response.ErrorListener() {
             @Override
@@ -202,7 +203,7 @@ public class ServiceHandler {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d("gg", response.toString());
-                dataHandler.recieveCitiesList(response, citiesListActivity);
+                dataHandler.receiveCitiesList(response, citiesListActivity);
             }
         },new Response.ErrorListener() {
             @Override

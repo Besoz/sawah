@@ -1,13 +1,5 @@
 package com.accorpa.sawah.Handlers;
 
-import android.os.AsyncTask;
-
-import com.accorpa.sawah.models.Place;
-import com.accorpa.sawah.place.FavouritePlacesList;
-import com.arasthel.asyncjob.AsyncJob;
-
-import java.util.List;
-
 /**
  * Created by root on 06/02/17.
  */

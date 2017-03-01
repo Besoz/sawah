@@ -8,7 +8,6 @@ import com.accorpa.sawah.AboutSawahActivity;
 import com.accorpa.sawah.AddNewPlace.AddNewPlaceActivity;
 import com.accorpa.sawah.Authorization.EditProfileActivity;
 import com.accorpa.sawah.Authorization.RetrievePasswordActivity;
-import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
 import com.accorpa.sawah.CommentActivity;
@@ -18,9 +17,9 @@ import com.accorpa.sawah.Authorization.LoginActivity;
 import com.accorpa.sawah.models.PlaceComment;
 import com.accorpa.sawah.place.FavouritePlacesList;
 import com.accorpa.sawah.place.PlaceDetailsActivity;
-import com.accorpa.sawah.place.PlacesListActivity;
 import com.accorpa.sawah.Authorization.SignupActivity;
 import com.accorpa.sawah.models.Place;
+import com.accorpa.sawah.place.PlaceListActivity;
 import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
 import com.darsh.multipleimageselect.helpers.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,11 +54,14 @@ public class NavigationHandler {
     }
 
 
-    public void startPlacesListActivity(Context context,  String categoryID, String CityID) {
+    public void startPlacesListActivity(Context context, String categoryID, String CityID,
+                                        String CatName) {
 
-        Intent placesList = new Intent(context, PlacesListActivity.class);
+        Intent placesList = new Intent(context, PlaceListActivity.class);
         placesList.putExtra("CityID", CityID);
         placesList.putExtra("CategoryID", categoryID);
+        placesList.putExtra("CategoryName", CatName);
+
         context.startActivity(placesList);
     }
 

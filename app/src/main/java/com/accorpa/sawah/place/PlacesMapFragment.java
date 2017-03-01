@@ -7,21 +7,17 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
-import com.accorpa.sawah.Handlers.GoogleMapHelper;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.models.Place;
 import com.google.android.gms.maps.CameraUpdate;
@@ -31,23 +27,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.view.ClusterRenderer;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-import com.kennyc.bottomsheet.BottomSheet;
-import com.kennyc.bottomsheet.BottomSheetListener;
 import com.labo.kaji.fragmentanimations.FlipAnimation;
 
-import java.util.Arrays;
-import java.util.Set;
+import java.util.ArrayList;
 
 public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
 
-    private Place[] places;
+    private ArrayList<Place> places;
 
     private PlaceListFragment.OnFragmentInteractionListener mListener;
 
@@ -103,7 +94,7 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
             public void onPageSelected(int position) {
 
                 Log.d("map frag", position+"");
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(places[position].getPosition(),
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(places.get(position).getPosition(),
                         20));
 
 
@@ -148,14 +139,21 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
         mListener = null;
     }
 
-    public void setPlaces(Place[] places) {
+    public void setPlaces(ArrayList<Place> places) {
         this.places = places;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        setUpClusterer(googleMap);
+
+        ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) ((View) mPager).getLayoutParams();
+
+
+        if(!places.isEmpty()){
+            googleMap.setPadding(0, 0, 0, lp.bottomMargin+mPager.getHeight());
+            setUpCluster(googleMap);
+        }
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {
@@ -166,10 +164,10 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
         @Override
         public Fragment getItem(final int position) {
 
-            Fragment frag = new ScreenSlidePlaceFragment(places[position], new View.OnClickListener() {
+            Fragment frag = new ScreenSlidePlaceFragment(places.get(position), new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mListener.onPlaceSelected(places[position]);
+                    mListener.onPlaceSelected(places.get(position));
                 }
             });
 
@@ -178,11 +176,11 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
 
         @Override
         public int getCount() {
-            return places.length;
+            return places.size();
         }
     }
 
-    private void setUpClusterer(GoogleMap googleMap) {
+    private void setUpCluster(GoogleMap googleMap) {
         // Position the map.
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Place marker : places) {
@@ -206,8 +204,8 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
 
     private void addItems() {
 
-        for (int i = 0; i < places.length; i++) {
-            mClusterManager.addItem(places[i]);
+        for (int i = 0; i < places.size(); i++) {
+            mClusterManager.addItem(places.get(i));
         }
     }
 
