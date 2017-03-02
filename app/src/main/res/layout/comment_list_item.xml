@@ -11,14 +11,13 @@
         android:id="@+id/top_bar">
 
 
-        <com.android.volley.toolbox.NetworkImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
-            android:background="@drawable/under_line"
             android:layout_height="70dp"
             android:layout_width="70dp"
             android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/listview_margin"/>
+            android:layout_margin="@dimen/listview_margin" />
 
         <com.accorpa.sawah.custom_views.CustomTextView
             android:id="@+id/user_name"

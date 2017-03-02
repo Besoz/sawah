@@ -4,17 +4,17 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/textColor</item>
+        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
+        <item name="colorAccent">@color/colorPrimary</item>
 
         <item name="colorControlNormal">@color/textColor</item>
         <item name="colorControlActivated">@color/textColor</item>
-        <item name="colorControlHighlight">@color/textColor</item>
-        <item name="android:textColorHint">@color/textColor</item>
+        <!--<item name="colorControlHighlight">@color/textColor</item>-->
+        <!--<item name="android:textColorHint">@color/textColor</item>-->
 
-        <item name="android:textColor">@color/textColor</item>
+        <!--<item name="android:textColor">@color/textColor</item>-->
 
-        <item name="android:alertDialogTheme">@style/sawahAlertDialogTheme</item>
+        <!--<item name="android:alertDialogTheme">@style/sawahAlertDialogTheme</item>-->
 
     </style>
 
@@ -22,6 +22,14 @@
         <item name="android:colorBackground">
             @color/buttonColor
         </item>
+    </style>
+    <style name="Theme.AppCompat.NoActionBar.AlertLight" parent="Theme.AppCompat.NoActionBar">
+        <item name="md_dark_theme">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorControlNormal">@color/textColor</item>
+        <item name="colorControlActivated">@color/textColor</item>
+
     </style>
 
     <style name="AutoCompleteTextLabel" parent="Widget.AppCompat.Light.AutoCompleteTextView">
@@ -64,6 +72,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 

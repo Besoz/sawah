@@ -92,6 +92,12 @@ public class CitiesAdapter extends BaseAdapter {
 
         return convertView;
     }
+
+    public void updateDataSource(City[] dataSource) {
+        this.mDataSource = dataSource;
+        notifyDataSetChanged();
+    }
+
     public static class CityView{
 
         public TextView titleTextView;

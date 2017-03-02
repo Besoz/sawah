@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_comment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,7 +29,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
-                android:src="@drawable/afa1b00e92014675b365903d8d133857"
+                android:layout_alignParentRight="true"
                 android:layout_height="70dp"
                 android:layout_width="70dp"/>
 
@@ -38,19 +39,22 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/profile_image" />
+                android:layout_toLeftOf="@+id/profile_image"
+                android:textColor="?attr/colorPrimary"
+                android:layout_margin="@dimen/listview_margin" />
 
-            <RatingBar
+            <com.iarcuschin.simpleratingbar.SimpleRatingBar
                 android:id="@+id/rating_bar"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                style="@style/Widget.AppCompat.RatingBar.Small"
-                android:layout_gravity="right|center_vertical"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
-                android:numStars="5"
-                android:stepSize="0.5"/>
-
+                android:layout_height="wrap_content"
+                app:srb_starSize="25dp"
+                app:srb_numberOfStars="5"
+                app:srb_rating="0"
+                app:srb_stepSize="0.5"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                app:srb_borderColor="@color/colorPrimary"
+                app:srb_fillColor="@color/buttonColor"/>
         </RelativeLayout>
 
 

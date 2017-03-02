@@ -1,8 +1,10 @@
 package com.accorpa.sawah.models;
 
+import android.net.Uri;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.orm.annotation.Ignore;
+import com.orm.dsl.Ignore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,6 +47,25 @@ public class User {
     private String imageLocation;
 
     @JsonProperty("LocalImageLocation")
+    private String localImagePath;
+
+    @Ignore
+    private Date date;
+
+    public User(String email, String userName, String password, String fullName, String sex, String birthDate, String mobileNumber, String userID, String imageLocation, String localImagePath, Date date) {
+        this.email = email;
+        this.userName = userName;
+        this.password = password;
+        this.fullName = fullName;
+        this.sex = sex;
+        this.birthDate = birthDate;
+        this.mobileNumber = mobileNumber;
+        this.userID = userID;
+        this.imageLocation = imageLocation;
+        this.localImagePath = localImagePath;
+        this.date = date;
+    }
+
     public String getLocalImagePath() {
         return localImagePath;
     }
@@ -53,17 +74,12 @@ public class User {
         this.localImagePath = localImagePath;
     }
 
-    private String localImagePath;
-
-    @Ignore
-    private Date date;
-
     public String getUserName() {
         return userName;
     }
 
     public User(String email, String password, String birthDate, String fullName, String sex,
-                String mobileNumber, String userID, String imageLocation, String userName) {
+                String mobileNumber, String userID, String userName) {
         this.email = email;
         this.password = password;
         this.birthDate = birthDate;
@@ -71,12 +87,22 @@ public class User {
         this.sex = sex;
         this.mobileNumber = mobileNumber;
         this.userID = userID;
-        this.imageLocation = imageLocation;
         this.userName = userName;
 
     }
 
     public User(){
+
+        this.email = "";
+        this.userName = "";
+        this.password = "";
+        this.fullName = "";
+        this.sex = MALE;
+        this.birthDate = "";
+        this.mobileNumber = "";
+        this.userID = "";
+        this.imageLocation = "";
+        this.localImagePath = "";
         date = new Date();
     }
 
@@ -124,7 +150,8 @@ public class User {
     }
 
     public void setImageLocation(String imageLocation) {
-        this.imageLocation = imageLocation;
+
+        this.imageLocation =imageLocation;
     }
 
 //    public void setImageName(String imageName) {
@@ -136,7 +163,7 @@ public class User {
 //    }
 
     public String getImageLocation() {
-        return imageLocation;
+        return  imageLocation;
     }
 
     public String getBirthDate(){

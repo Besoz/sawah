@@ -1,7 +1,6 @@
 package com.accorpa.sawah.AddNewPlace;
 
 import android.content.Context;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,14 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import com.accorpa.sawah.Authorization.AuthorizationManger;
-import com.accorpa.sawah.BaseResponseListner;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
 import com.accorpa.sawah.models.Place;
-
-import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.

@@ -3,6 +3,7 @@ package com.accorpa.sawah.Authorization;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,13 +27,18 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.accorpa.sawah.BaseRequestStateListener;
+import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.custom_views.CustomButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -39,6 +46,34 @@ import static android.Manifest.permission.READ_CONTACTS;
 
 
 import com.accorpa.sawah.models.User;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.Result;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
+import com.twitter.sdk.android.core.TwitterException;
+import com.twitter.sdk.android.core.TwitterSession;
+import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -47,7 +82,6 @@ import com.accorpa.sawah.models.User;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor>, LoginListener {
 
     /**
-     * Id to identity READ_CONTACTS permission request.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
@@ -61,7 +95,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
 
-    private AuthorizationManger authorizationManger;
+    private AuthorizationController authorizationController;
+
+
+    private ImageButton mFacebookLoginButton, mtwitterLoginButton, mgplusLoginButton;
+    private CallbackManager callbackManager;
+    private TwitterLoginButton twitterLoginButton;
+    private GoogleApiClient mGoogleApiClient;
+//    String uid;
+//    String email;
+    String name;
+
+    private static final int RC_SIGN_IN = 0;
+    private BaseRequestStateListener baseRequestStateListener;
+
+//    private boolean mIntentInProgress;
+//
+//    private boolean mShouldResolve;
+//
+//    private ConnectionResult connectionResult;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +122,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
 
-        authorizationManger = new AuthorizationManger(this, this);
+        authorizationController = new AuthorizationController(this, this);
+
+
+        baseRequestStateListener = new BaseRequestStateListener() {
+            @Override
+            public void failResponse(ServiceResponse response) {
+
+                Log.d("failResponse", "failResponse");
+                showProgress(false);
+            }
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+                showProgress(false);
+                startMainActivity();
+
+            }
+        };
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -103,21 +173,353 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        CustomButton forgetPasswordButton = (CustomButton) findViewById(R.id.forget_password_button);
+        forgetPasswordButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startRetrievePasswordActivity();
+            }
+        });
+
         CustomButton skipButton = (CustomButton) findViewById(R.id.skip_login_button);
         skipButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                authorizationManger.skipLogin();
+                authorizationController.skipLogin();
             }
         });
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
+        signInWithFacebook();
+        signInWithTwitter();
+        signInWithGoogle();
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
+
+        mGoogleApiClient.connect();
+    }
+
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+    private void signInWithGoogle() {
+        mgplusLoginButton = (ImageButton) findViewById(R.id.gplus_login_btn);
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestEmail()
+//                .build();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+//        GoogleApiClient.ConnectionCallbacks connectionCallbacks = new GoogleApiClient.ConnectionCallbacks() {
+//            @Override
+//            public void onConnected(@Nullable Bundle bundle) {
+//
+//                try {
+//                    if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
+//                        Person person = Plus.PeopleApi
+//                                .getCurrentPerson(mGoogleApiClient);
+//                        name = person.getDisplayName();
+////                        String personPhotoUrl = person.getImage().getUrl();
+////                        String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+//
+//                        BaseRequestStateListener baseRequestStateListener = new BaseRequestStateListener() {
+//                            @Override
+//                            public void failResponse(ServiceResponse response) {
+//
+//                                Log.d("failResponse", "failResponse");
+//                            }
+//
+//                            @Override
+//                            public void successResponse(ServiceResponse response) {
+//                                User user = response.getUser();
+//                                authorizationController.loginSuccess(user);
+//                            }
+//                        };
+//                        authorizationController.socialLogin(name, "GO", "", baseRequestStateListener);
+//                        Toast.makeText(getApplicationContext(),
+//                                "You are Logged In " + name,             Toast.LENGTH_LONG).show();
+//                    } else {
+//                        Toast.makeText(getApplicationContext(),
+//                                "Couldnt Get the Person Info", Toast.LENGTH_SHORT).show();
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onConnectionSuspended(int i) {
+//                mGoogleApiClient.connect();
+//                Log.d("onConnectionSuspended", "onConnectionSuspended");
+//            }
+//        };
+
+        GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+            @Override
+            public void onConnectionFailed(@NonNull ConnectionResult result) {
+                Log.d("onConnectionFailed", "onConnectionFailed");
+                if (!result.hasResolution()) {
+                    GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), LoginActivity.this,
+                            0).show();
+                    return;
+                }
+
+            }
+        };
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .addConnectionCallbacks(connectionCallbacks)
+//                .addOnConnectionFailedListener(connectionFailedListener)
+//                .addApi(Plus.API)
+//                .addScope(Plus.SCOPE_PLUS_LOGIN)
+//                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, connectionFailedListener)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+
+
+        mgplusLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+
+
+            }
+        });
+
+    }
+
+    private void signInWithTwitter() {
+        mtwitterLoginButton = (ImageButton) findViewById(R.id.twitter_login_btn);
+        twitterLoginButton = (TwitterLoginButton) new TwitterLoginButton(this);
+        twitterLoginButton.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                // Do something with result, which provides a TwitterSession for making API calls\
+//                Log.d("g", "Success twitter login");
+
+                final TwitterSession session = result.data;
+                final TwitterAuthToken authToken = session.getAuthToken();
+                String accessToken = authToken.token;
+                final String userName = session.getUserName();
+                final long id = session.getUserId();
+
+
+
+
+                Twitter.getApiClient().getAccountService().verifyCredentials(true, false, new Callback<com.twitter.sdk.android.core.models.User>() {
+                    @Override
+                    public void success(Result<com.twitter.sdk.android.core.models.User> result) {
+                        result.data.getId();
+                        Log.d("Twitter",  id + " "+ result.data.getId()+ " "+result.data.name + " " +result.data.profileImageUrl);
+                        showProgress(true);
+
+                        authorizationController.socialLogin(userName, "TW", "",
+                                result.data.name, "", Uri.parse(result.data.profileImageUrl),
+                                baseRequestStateListener, LoginActivity.this);
+
+                    }
+
+                    @Override
+                    public void failure(TwitterException e) {
+                        showProgress(false);
+
+                    }
+                });
+
+
+            }
+            @Override
+            public void failure(TwitterException exception) {
+//                 Do  on failureLsomethingog.d("g", "Failed twitter Login");
+                Log.d("twitter failure", "TwitterSession"); // "com.twitter.android"
+//                ViewHandler.getInstance().openPlayStoreToInstallApp(LoginFragment.this.getContext(), "com.twitter.android");
+
+            }
+        });
+        mtwitterLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                twitterLoginButton.callOnClick();
+            }
+        });
+    }
+
+    private void signInWithFacebook() {
+//        FacebookSdk.sdkInitialize(this);
+
+        final LoginButton facebookLoginButton = (LoginButton) new LoginButton(this);
+        facebookLoginButton.setReadPermissions("public_profile","email", "user_location");
+
+        callbackManager = CallbackManager.Factory.create();
+
+        Log.d("Facbook", AccessToken.getCurrentAccessToken()+" "+ Profile.getCurrentProfile());
+
+        mFacebookLoginButton = (ImageButton) findViewById(R.id.facebook_login_btn);
+        mFacebookLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
+                        Arrays.asList("public_profile"));
+            }
+        });
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // App code
+
+                Log.d("facebook login", loginResult.getAccessToken().getToken());
+
+                Uri pictureUri = Profile.getCurrentProfile().getProfilePictureUri(200, 200);
+                final String userName = Profile.getCurrentProfile().getName();
+
+                Log.d("Facebook", pictureUri.toString()+" "+name);
+//                attemptFacebookLogin(loginResult);
+
+                showProgress(true);
+                authorizationController.socialLogin(Profile.getCurrentProfile().getId(), "FB",
+                        "", userName, "", pictureUri, baseRequestStateListener, LoginActivity.this);
+            }
+
+            @Override
+            public void onCancel() {
+                // App code
+                showProgress(false);
+
+                Log.d("facebook login", "onCancel");
+
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                // App code
+                showProgress(false);
+
+                Log.d("facebook login", "onError");
+
+            }
+        });
+    }
+
+    private void startRetrievePasswordActivity() {
+        NavigationHandler.getInstance().startRetrievePasswordActivity(this);
+    }
+
+//    private void attemptFacebookLogin(LoginResult loginResult) {
+//
+//        Profile profile = Profile.getCurrentProfile();
+//
+////        if (profile != null) {
+////            String facebook_id=profile.getId();
+////        }
+//        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+//                new GraphRequest.GraphJSONObjectCallback() {
+//                    @Override
+//                    public void onCompleted(JSONObject object, GraphResponse response) {
+//                        Log.v("LoginActivity", response.toString());
+//
+//                        if (object != null)
+//                        {
+//                            // try to login
+//                            try {
+//                                if (object.has("name"))
+//                                    name = object.getString("name");
+//                                    BaseRequestStateListener baseRequestStateListener = new BaseRequestStateListener() {
+//                                    @Override
+//                                    public void failResponse(ServiceResponse response) {
+//
+//                                    }
+//
+//                                    @Override
+//                                    public void successResponse(ServiceResponse response) {
+//                                    }
+//                                };
+////                                authorizationController.socialLogin(name, "FB",  "2000-01-31",
+////                                        baseRequestStateListener, LoginActivity.this);
+////
+//
+////                                accessToken = loginResult.getAccessToken().getToken();
+////
+////                                provider = DataHandler.FACEBOOK;
+////
+////                                registerUserFromSocialLogin(uid, accessToken, provider);
+//
+//
+////                                        String userMobilePhone = object.getString("user_mobile_phone");
+////                                        Object location = object.get("location");
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                        }
+//
+//
+//                    }
+//
+//                });
+//        Bundle parameters = new Bundle();
+//        parameters.putString("fields", "id,name,email, user_birthday");
+//        request.setParameters(parameters);
+//        request.executeAsync();
+//    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleGoogleSignInResult(result);
+        }
+        else if(TwitterAuthConfig.DEFAULT_AUTH_REQUEST_CODE == requestCode) {
+            Log.d("g", "Twitter login"+resultCode+" "+requestCode);
+
+            twitterLoginButton.onActivityResult(requestCode, resultCode, data);
+        }else {
+            Log.d("g", "facebookLogin " + resultCode + " " + requestCode);
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void handleGoogleSignInResult(GoogleSignInResult result) {
+
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            String personName = acct.getDisplayName();
+
+            Log.d("Google", personName +" "+acct.getEmail() + acct.getId()+acct.getPhotoUrl());
+
+            showProgress(true);
+
+            authorizationController .socialLogin(personName, "GO", "", personName, acct.getEmail(),
+                    acct.getPhotoUrl(), baseRequestStateListener, LoginActivity.this);
+
+        }
+    }
 
     private void createNewUser() {
         NavigationHandler.getInstance().startSignupActivity(this);
@@ -186,7 +588,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !AuthorizationManger.isPasswordValid(password)) {
+        if (!TextUtils.isEmpty(password) && !AuthorizationController.isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -197,7 +599,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!AuthorizationManger.isEmailValid(email)) {
+        } else if (!AuthorizationController.isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -211,12 +613,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            authorizationManger.loginUser(email, password);
+            authorizationController.loginUser(email, password);
         }
     }
 
     private void attemptLogin(String userID) {
-        authorizationManger.loginUser(userID);
+        authorizationController.loginUser(userID);
     }
 
 
@@ -300,10 +702,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+
     @Override
     public void loginSuccess(User user) {
         showProgress(false);
+        startMainActivity();
+    }
+
+    private void startMainActivity() {
         NavigationHandler.getInstance().startAfterLoginctivity(this);
+
     }
 
     @Override

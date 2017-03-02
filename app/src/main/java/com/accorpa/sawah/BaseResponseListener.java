@@ -13,10 +13,13 @@ import java.io.IOException;
  * Created by root on 16/02/17.
  */
 
-public class BaseResponseListner implements Response.Listener<JSONObject> {
+public class BaseResponseListener implements Response.Listener<JSONObject> {
 
     boolean statusSuccess;
-    ServiceResponse response;
+
+    private ServiceResponse response;
+
+    private BaseRequestStateListener onResponseListner;
 
     @Override
     public void onResponse(JSONObject jsonResponse) {
@@ -29,8 +32,15 @@ public class BaseResponseListner implements Response.Listener<JSONObject> {
 
             if(response.isStatusSuccess()){
                 statusSuccess = true;
+
+                if(onResponseListner!=null)
+                    onResponseListner.successResponse(response);
+
             }else{
                 statusSuccess = false;
+                if(onResponseListner!=null)
+                    onResponseListner.failResponse(response);
+
             }
 
         } catch (IOException e) {
@@ -44,5 +54,9 @@ public class BaseResponseListner implements Response.Listener<JSONObject> {
 
     public ServiceResponse getResponse(){
         return response;
+    }
+
+    public void setOnResponseListner(BaseRequestStateListener onResponseListner) {
+        this.onResponseListner = onResponseListner;
     }
 }

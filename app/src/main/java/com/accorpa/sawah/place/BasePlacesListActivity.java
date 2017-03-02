@@ -1,50 +1,53 @@
 package com.accorpa.sawah.place;
 
-import android.app.Fragment;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.GridView;
-import android.widget.LinearLayout;
 
 import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
-import com.accorpa.sawah.ListActivity;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
-import com.accorpa.sawah.custom_views.CustomCheckBox;
 import com.accorpa.sawah.models.Place;
 
-public class PlacesListActivity extends BaseActivity implements PlaceListFragment.OnFragmentInteractionListener {
+import java.util.ArrayList;
+import java.util.Arrays;
 
-    private String cityID, catID;
+public class BasePlacesListActivity extends BaseActivity implements PlaceListFragment.OnFragmentInteractionListener {
 
-    private Place[] places;
 
-    private PlaceListFragment listFragment;
-    private PlacesMapFragment mapFragment;
+    protected ArrayList<Place> places;
+
+    protected PlaceListFragment listFragment;
+    protected PlacesMapFragment mapFragment;
 
 //    private LinearLayout mProgressView;
 //    private View mainView;
 
-    private FragmentTransaction ft;
+    protected FragmentTransaction ft;
 
-    private CustomButton mapToggleButton;
+    protected CustomButton mapToggleButton;
 
-    private boolean mapView;
+    protected boolean mapView;
+
+    protected boolean addLikeButton, specialPlaceLayout;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_places_list);
 
-        cityID = (String) getIntent().getSerializableExtra("CityID");
-        catID = (String) getIntent().getSerializableExtra("CategoryID");
+
+
 
 //        mListView = (GridView) findViewById(R.id.list);
 //
@@ -53,17 +56,17 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
 //            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
 //                Place selectedPlace= (Place) mListView.getAdapter().getItem(position);
 //
-//                NavigationHandler.getInstance().startPlaceDetailsActivity(PlacesListActivity.this, selectedPlace);
+//                NavigationHandler.getInstance().startPlaceDetailsActivity(BasePlacesListActivity.this, selectedPlace);
 //            }
 //        });
 //        adapter = new PlacesAdapter(this, new Place[0]);
 //        mListView.setAdapter(adapter);
-        places =  new Place[0];
+        places =  new ArrayList<>();
 
 //        mProgressView = (LinearLayout) findViewById(R.id.progress_bar);
 //        mainView = (View) findViewById(R.id.main_view);
 
-        listFragment = PlaceListFragment.newInstance();
+        listFragment = PlaceListFragment.newInstance(addLikeButton, specialPlaceLayout);
         mapFragment = PlacesMapFragment.newInstance();
 
         mapToggleButton = (CustomButton) findViewById(R.id.map_toggle_button);
@@ -72,9 +75,7 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
             public void onClick(View v) {
                 if(mapView){
 
-                    ft  = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment, listFragment);
-                    ft.commit();
+                    showListFragment();
 
                     mapToggleButton.setText(R.string.view_map);
                     mapView = false;
@@ -82,41 +83,31 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
 
                     mapFragment.setPlaces(places);
 
-                    ft  = getSupportFragmentManager().beginTransaction();
-                    ft.replace(R.id.fragment, mapFragment);
-                    ft.commit();
+                    showMapFragment();
 
                     mapToggleButton.setText(R.string.view_list);
                     mapView = true;
                 }
             }
+
+
         });
 
+        showListFragment();
+    }
+
+    private void showMapFragment() {
+        ft  = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment, mapFragment);
+        ft.commit();
+    }
+
+    protected void showListFragment() {
         ft  = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment, listFragment);
         ft.commit();
-
-        DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
-        showProgress(true);
     }
 
-
-    public void recievePlacesList(Place[] arr) {
-
-        places = DataHandler.getInstance(this).mergeWithFavouritePlaces(arr);
-//        show fragment
-        listFragment.setPlacesList(places);
-
-        showProgress(false);
-    }
-
-    public String getCityID() {
-        return cityID;
-    }
-
-    public String getCatID() {
-        return catID;
-    }
 
     @Override
     protected void onResume() {
@@ -126,11 +117,11 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
 
     @Override
     public void onPlaceSelected(Place place){
-        NavigationHandler.getInstance().startPlaceDetailsActivity(PlacesListActivity.this, place);
+        NavigationHandler.getInstance().startPlaceDetailsActivity(BasePlacesListActivity.this, place);
     }
 
     @Override
-    public Place[] getPlaces() {
+    public ArrayList<Place> getPlaces() {
         return DataHandler.getInstance(this).mergeWithFavouritePlaces(places);
     }
 
@@ -139,7 +130,10 @@ public class PlacesListActivity extends BaseActivity implements PlaceListFragmen
         return R.layout.activity_places_list;
     }
 
-//    protected void showProgress(final boolean show) {
+
+
+
+    //    protected void showProgress(final boolean show) {
 //        // The ViewPropertyAnimator APIs are not available, so simply show
 //        // and hide the relevant UI components.
 //        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);

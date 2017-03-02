@@ -10,12 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.accorpa.sawah.BaseResponseListner;
+import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
-import com.accorpa.sawah.custom_views.CustomTextView;
-import com.android.volley.Response;
 
 import org.json.JSONObject;
 
@@ -94,7 +92,7 @@ public class EditPasswordFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
 
-        void updatePassword(BaseResponseListner response, String confirmPasswordStr, String newPasswordStr, String confirmPasswordStr1);
+        void updatePassword(BaseResponseListener response, String confirmPasswordStr, String newPasswordStr, String confirmPasswordStr1);
 
         void updatePasswordSuccess();
     }
@@ -130,7 +128,7 @@ public class EditPasswordFragment extends Fragment {
             newPassword.setError(getString(R.string.error_field_required));
             focusView = newPassword;
             cancel = true;
-        } else if (!AuthorizationManger.isPasswordValid(newPasswordStr)) {
+        } else if (!AuthorizationController.isPasswordValid(newPasswordStr)) {
             newPassword.setError(getString(R.string.error_invalid_password));
             focusView = newPassword;
             cancel = true;
@@ -148,7 +146,7 @@ public class EditPasswordFragment extends Fragment {
             focusView.requestFocus();
         } else {
 
-            BaseResponseListner mResponseListner = new BaseResponseListner() {
+            BaseResponseListener mResponseListner = new BaseResponseListener() {
                 @Override
                 public void onResponse(JSONObject response) {
                     super.onResponse(response);

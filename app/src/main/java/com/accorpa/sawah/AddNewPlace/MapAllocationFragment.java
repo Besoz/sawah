@@ -22,8 +22,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.accorpa.sawah.Authorization.AuthorizationManger;
-import com.accorpa.sawah.BaseResponseListner;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
@@ -41,8 +39,6 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import org.json.JSONObject;
 
 public class MapAllocationFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -65,6 +61,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
     private ImageView imageView;
 
     private FrameLayout frameLayout;
+    private boolean locationDenied;
 
     public MapAllocationFragment(Place place) {
         // Required empty public constructor
@@ -298,6 +295,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
                 } else {
 
+                    locationDenied = true;
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
@@ -315,7 +313,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
         mLastLocation = location;
         if (googleMap != null) {
-            if (!(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
+            if (!locationDenied && !(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
                 googleMap.setMyLocationEnabled(true);
             }
 

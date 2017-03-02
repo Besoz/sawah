@@ -6,57 +6,53 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
-import com.accorpa.sawah.ListActivity;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.models.Place;
-import com.accorpa.sawah.models.PlaceComment;
-import com.accorpa.sawah.models.PlaceImage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
-public class FavouritePlacesList extends ListActivity {
+public class FavouritePlacesList extends BasePlacesListActivity {
 
-    private ListView mListView;
+//    private ListView mListView;
     private int nextResID, currentResID;
-    private FavouritePlacesAdapter adapter;
+//    private FavouritePlacesAdapter adapter;
     private boolean showDeleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        specialPlaceLayout = false;
+        addLikeButton = false;
+
+
         super.onCreate(savedInstanceState);
 
         nextResID = R.drawable.cross;
         currentResID = R.drawable.ic_action_edit;
-
-        mListView = (ListView) findViewById(R.id.list);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
-                Place selectedPlace= (Place) mListView.getAdapter().getItem(position);
-
-                NavigationHandler.getInstance().startPlaceDetailsActivity(FavouritePlacesList.this, selectedPlace);
-            }
-        });
+//
+//        mListView = (ListView) findViewById(R.id.list);
+//
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
+//                Place selectedPlace= (Place) mListView.getAdapter().getItem(position);
+//
+//                NavigationHandler.getInstance().startPlaceDetailsActivity(FavouritePlacesList.this, selectedPlace);
+//            }
+//        });
         //        todo move to datahandeler
 
-        List<Place> places = (List<Place>) Place.listAll(Place.class);
-        for(int i = 0; i < places.size(); i++){
-            List<PlaceImage> images = PlaceImage.find(PlaceImage.class, "place = ?",
-                    places.get(i).getId()+"");
+//        List<Place> places = DataHandler.getInstance(this).loadAllPlaceFromDataBase();
+//
+//        adapter = new FavouritePlacesAdapter(this, places);
+//        mListView.setAdapter(adapter);
 
-            List<PlaceComment> comments = PlaceComment.find(PlaceComment.class, "place = ?",
-                    places.get(i).getId()+"");
 
-            places.get(i).setPlaceImages(images.toArray(new PlaceImage[images.size()]));
-
-            places.get(i).setComments(comments.toArray(new PlaceComment[comments.size()]));
-
-        }
-        adapter = new FavouritePlacesAdapter(this, places);
-        mListView.setAdapter(adapter);
 //        showProgress(true);
 
         Log.d("fav plcs", "on create");
@@ -67,28 +63,18 @@ public class FavouritePlacesList extends ListActivity {
         super.onResume();
 
 //        todo move to datahandeler
-        List<Place> places = (List<Place>) Place.listAll(Place.class);
-        for(int i = 0; i < places.size(); i++){
-            List<PlaceImage> images = PlaceImage.find(PlaceImage.class, "place = ?",
-                    places.get(i).getId()+"");
 
-            List<PlaceComment> comments = PlaceComment.find(PlaceComment.class, "place = ?",
-                    places.get(i).getId()+"");
-
-            places.get(i).setPlaceImages(images.toArray(new PlaceImage[images.size()]));
-
-            places.get(i).setComments(comments.toArray(new PlaceComment[comments.size()]));
-
-        }
-        adapter.setDataSouce(places);
-        adapter.notifyDataSetChanged();
+//        List<Place> places = DataHandler.getInstance(this).loadAllPlaceFromDataBase();
+//
+//        adapter.setDataSouce(places);
+//        adapter.notifyDataSetChanged();
 
     }
 
-    @Override
-    protected int getLayoutResourceId() {
-        return R.layout.activity_favourite_places_list;
-    }
+//    @Override
+//    protected int getLayoutResourceId() {
+//        return R.layout.activity_favourite_places_list;
+//    }
 
 //    public void recieveFavouritePlacesList(List<Place> places) {
 //        showProgress(false);
@@ -113,8 +99,13 @@ public class FavouritePlacesList extends ListActivity {
 
             showDeleteButton = !showDeleteButton;
 
-            adapter.setShowDeleteButton(showDeleteButton);
-            adapter.notifyDataSetChanged();
+            if(listFragment.isVisible()){
+                listFragment.setShowDeleteButton(showDeleteButton);
+            }else{
+                showListFragment();
+                listFragment.setShowDeleteButton(showDeleteButton);
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -124,4 +115,17 @@ public class FavouritePlacesList extends ListActivity {
     protected int getActionBarMenuLayout() {
         return R.menu.favourite_places_list;
     }
+
+    @Override
+    protected String getToolbarTitle() {
+        return getString(R.string.favourites);
+    }
+
+    @Override
+    public ArrayList<Place> getPlaces() {
+
+        places = DataHandler.getInstance(this).loadAllPlaceFromDataBase();
+        return places;
+    }
+
 }

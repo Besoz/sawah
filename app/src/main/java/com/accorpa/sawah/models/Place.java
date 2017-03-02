@@ -2,18 +2,16 @@ package com.accorpa.sawah.models;
 
 import android.util.Log;
 
-import com.accorpa.sawah.AddNewPlace.AddNewPlaceActivity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 import com.orm.SugarRecord;
-import com.orm.annotation.Ignore;
+import com.orm.dsl.Ignore;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by root on 18/01/17.
@@ -106,6 +104,10 @@ public class Place extends SugarRecord implements ClusterItem {
     @JsonIgnore
     @Ignore
     private LatLng position;
+
+    @Ignore
+    @JsonIgnore
+    private WorkTime[] workTimes;
 
     public Place() {
         images = new PlaceImage[0];
@@ -268,7 +270,23 @@ public class Place extends SugarRecord implements ClusterItem {
     }
 
     public void setAppointments(HashMap<String, String> appointments) {
-        this.appointments = appointments;
+
+        Log.d("appointments", String.valueOf(appointments));
+
+        if(appointments != null){
+            workTimes = new WorkTime[appointments.size()];
+            int i = 0;
+            for (Map.Entry<String, String> entry : appointments.entrySet()) {
+                workTimes[i++] = new WorkTime(this, entry.getKey(), entry.getValue(), false);
+            }
+
+            this.appointments = appointments;
+        }
+
+    }
+
+    public WorkTime[] getWorkTimes(){
+        return workTimes;
     }
 
     public boolean isSpecial() {
@@ -323,7 +341,7 @@ public class Place extends SugarRecord implements ClusterItem {
 //            List<PlaceComment> comments = new ArrayList<PlaceComment>(Arrays.asList(place.getComments()));
         SugarRecord.saveInTx(this.getComments());
         SugarRecord.saveInTx(this.getPlaceImages());
-
+        SugarRecord.saveInTx(this.getWorkTimes());
         return x;
     }
 
@@ -332,6 +350,7 @@ public class Place extends SugarRecord implements ClusterItem {
 
         SugarRecord.deleteInTx(this.getComments());
         SugarRecord.deleteInTx(this.getPlaceImages());
+        SugarRecord.deleteInTx(this.getWorkTimes());
 
         return super.delete();
     }
@@ -339,6 +358,13 @@ public class Place extends SugarRecord implements ClusterItem {
     @JsonIgnore
     @Override
     public LatLng getPosition() {
+
+        if(position == null) return new LatLng(lattitude, longitude);
         return position;
+    }
+
+
+    public void setWorkTimes(WorkTime[] workTimes) {
+        this.workTimes = workTimes;
     }
 }

@@ -6,26 +6,34 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
-import com.accorpa.sawah.BaseResponseListner;
+import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.BitmapImage;
 import com.accorpa.sawah.CategoriesListActivity;
 import com.accorpa.sawah.CitiesListActivity;
-import com.accorpa.sawah.BaseRequestStateListner;
-import com.accorpa.sawah.place.FavouritePlacesList;
-import com.accorpa.sawah.place.PlacesListActivity;
+import com.accorpa.sawah.BaseRequestStateListener;
+import com.accorpa.sawah.R;
+import com.accorpa.sawah.ServiceResponse;
+import com.accorpa.sawah.models.PlaceComment;
+import com.accorpa.sawah.models.PlaceImage;
+import com.accorpa.sawah.models.WorkTime;
 import com.accorpa.sawah.models.Category;
 import com.accorpa.sawah.models.City;
 import com.accorpa.sawah.models.Place;
 import com.accorpa.sawah.models.User;
+import com.accorpa.sawah.place.PlaceListActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,11 +41,14 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import rapid.decoder.BitmapDecoder;
 
@@ -48,6 +59,7 @@ public class DataHandler {
     public static final String CITY_ID_KEY = "CityID", DElIMITER = ":|:";
     private static final int PROFILE_IMAGE_WIDTH = 200, PROFILE_IMAGE_HEIGHT = 200;
     private static final int PLACE_IMAGE_WIDTH = 640, PLACE_IMAGE_HEIGHT = 360;
+    public static final String CITY_NAME_KEY = "CityName";
     private static DataHandler ourInstance;
     private SharedPreferencesController sharedPreferences;
 
@@ -60,6 +72,7 @@ public class DataHandler {
 
     public final static String OS = "Android";
 
+    private static final Map<Integer, String> dayMap = new HashMap<>();
 
 
     public static DataHandler getInstance(Context context) {
@@ -76,6 +89,16 @@ public class DataHandler {
         serviceHandler = ServiceHandler.getInstance(context);
 
         this.context = context.getApplicationContext();
+
+
+        dayMap.put(7, context.getString(R.string.sat_day));
+        dayMap.put(1, context.getString(R.string.sun_day));
+        dayMap.put(2, context.getString(R.string.mon_day));
+        dayMap.put(3, context.getString(R.string.tue_day));
+        dayMap.put(4, context.getString(R.string.wen_day));
+        dayMap.put(5, context.getString(R.string.thu_day));
+        dayMap.put(6, context.getString(R.string.fri_day));
+
     }
 
 
@@ -83,7 +106,7 @@ public class DataHandler {
         sharedPreferences.setDeviceToken(token);
     }
 
-    public String getDeiveToken(){
+    public String getDeviceToken(){
 
         String token = sharedPreferences.getDeviceToken();
 
@@ -97,13 +120,13 @@ public class DataHandler {
 
     public JSONObject getUserSignupData(String userName, String password) {
 
-        User user = new User(userName, password, "", "", "", "", "", "", "");
+        User user = new User(userName, password, "", "", "", "", "", "");
 
         JSONObject userData = null;
         try {
             userData = new JSONObject(mapper.writeValueAsString(user));
 
-            userData.put("DeviceToken", getDeiveToken());
+            userData.put("DeviceToken", getDeviceToken());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -131,7 +154,7 @@ public class DataHandler {
 
         try {
             Category[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Category.class);
-            activity.recieveCategouriesList(arr);
+            activity.receiveCategorizesList(arr);
 
             Log.d("gg", String.valueOf(arr.length));
         } catch (IOException e) {
@@ -150,18 +173,18 @@ public class DataHandler {
         Log.d("gg", "requesting");
     }
 
-    public void requestPlacesArray(PlacesListActivity placesListActivity, String cityID, String catID) {
-        serviceHandler.requestPlacesArray(this, placesListActivity, cityID, catID);
+    public void requestPlacesArray(PlaceListActivity basePlacesListActivity, String cityID, String catID) {
+        serviceHandler.requestPlacesArray(this, basePlacesListActivity, cityID, catID);
 
     }
 
-    public void recievePlacesList(JSONArray response, PlacesListActivity placesListActivity) {
+    public void recievePlacesList(JSONArray response, PlaceListActivity placesListActivity) {
         try {
             Place[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), Place.class);
 
 //            ArrayList<Place> favArr = (ArrayList<Place>) Place.findWithQueryAsIterator(Place.class,
-//                    "CityID = ? and CatID = ?", placesListActivity.getCityID(),
-//                    placesListActivity.getCatID());
+//                    "CityID = ? and CatID = ?", basePlacesListActivity.getCityID(),
+//                    basePlacesListActivity.getCatID());
 
             placesListActivity.recievePlacesList(arr);
 
@@ -173,7 +196,7 @@ public class DataHandler {
     }
 
 
-    public void recieveCitiesList(JSONArray response, CitiesListActivity citiesListActivity) {
+    public void receiveCitiesList(JSONArray response, CitiesListActivity citiesListActivity) {
 
         try {
             City[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), City.class);
@@ -192,9 +215,9 @@ public class DataHandler {
         return sharedPreferences.getDefaultCityID();
     }
 
-    public void setDefaulCity(String CityID){
+    public void setDefaulCity(City City){
 
-        sharedPreferences.setDefaultCityID(CityID);
+        sharedPreferences.setDefaultCity(City);
 
     }
 
@@ -211,33 +234,27 @@ public class DataHandler {
         }
     }
 
-    public void requestFavouritePlacesArray(FavouritePlacesList favouritePlacesList) {
-        DatabaseHelper.getInstance().getFavouritePlaces(this, favouritePlacesList, "", "");
-    }
 
-    public void recieveFavouritePlacesList(FavouritePlacesList activity, List<Place> places) {
-//        activity.recieveFavouritePlacesList(places);
-    }
+    public ArrayList<Place> mergeWithFavouritePlaces(ArrayList<Place> places) {
 
-    public Place[] mergeWithFavouritePlaces(Place[] places) {
-
-        List<Place> favArr = (List<Place>) Place.listAll(Place.class);
+        List<Place> favArr = loadAllPlaceFromDataBase();
 
         HashMap<String, Place> favPlacesIDs = new HashMap<String, Place>();
+
 
         for(int i = 0; i < favArr.size(); i++){
             favPlacesIDs.put(favArr.get(i).getPlaceID(), favArr.get(i));
         }
 
-        for(int i = 0; i < places.length; i++){
-            if(favPlacesIDs.containsKey(places[i].getPlaceID())){
+        for(int i = 0; i < places.size(); i++){
+            if(favPlacesIDs.containsKey(places.get(i).getPlaceID())){
 
-                places[i].setFavourite(true);
-                places[i].setId(favPlacesIDs.get(places[i].getPlaceID()).getId());
+                places.get(i).setFavourite(true);
+                favPlacesIDs.get(places.get(i).getPlaceID()).delete();
+                places.get(i).save();
 
-//                   todo set nested object IDs
             }else{
-                places[i].setFavourite(false);
+                places.get(i).setFavourite(false);
             }
         }
 
@@ -245,7 +262,7 @@ public class DataHandler {
     }
 
 // todo split the method getimage and and send to server
-    public Bitmap requestUpdateUserImage(final BaseResponseListner listner, final Context context,
+    public Bitmap requestUpdateUserImage(final BaseResponseListener listner,
                                          Uri userSelectedImage) throws IOException {
 
         final String imageName = getImageName(userSelectedImage);
@@ -255,12 +272,12 @@ public class DataHandler {
         final User user = getUser();
 
         //        send to server
-        BaseResponseListner mResponseListner = new BaseResponseListner() {
+        BaseResponseListener mResponseListner = new BaseResponseListener() {
             @Override
             public void onResponse(JSONObject response) {
                 super.onResponse(response);
                 if(isStatusSuccess()){
-                    saveUserImage(context, userImage, imageName);
+                    saveUserImage(userImage, imageName);
                     listner.onResponse(response);
                 }else{
                     Log.d("Update user", "fail");
@@ -291,13 +308,13 @@ public class DataHandler {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    private Bitmap saveUserImage(Context context, Bitmap userImage, String imageName) {
+    public Bitmap saveUserImage(Bitmap userImage, String imageName) {
 
-        ContextWrapper cw = new ContextWrapper(context);
+        ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("user_image", Context.MODE_PRIVATE);
         // Create imageDir
-        File mypath=new File(directory, imageName);
+        File mypath=new File(directory, "profile.png");
 
         FileOutputStream fos = null;
         try {
@@ -316,46 +333,37 @@ public class DataHandler {
 
         User user = getUser();
 
-        user.setLocalImagePath(directory.getAbsolutePath());
+        String path = directory.getAbsolutePath();
+
+        user.setLocalImagePath(path);
 //        user.setImageName(imageName);
-        Log.d("profile image", user.getImageLocation()+" uu ");
+        Log.d("profile image", user.getLocalImagePath().toString()+" uu ");
 
         saveUser(user);
+
 
         return userImage;
     }
 
-    private Bitmap loadImageFromStorage(String path, int reqWidth, int reqHeight)
+    public Bitmap loadImageFromStorage(String path)
     {
-        Uri uri = Uri.parse(path);
-        path = uri.getPath();
 
-        return BitmapDecoder.from(path).decode();
+        try {
 
-//        try {
-//            File f=new File(path);
-//            if(f.isDirectory()){
-//                Log.d("file", f.getName()+" "+f.getTotalSpace());
-//            }else{
-//                Log.d("file", "No file");
-//
-//            }
-//
-//            BitmapFactory.Options options = new BitmapFactory.Options();
-//            options.inJustDecodeBounds = true;
-//            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//            BitmapFactory.decodeStream(new FileInputStream(f), null, options);
-//            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-//
-//            FileInputStream fs  = new FileInputStream(f);
-//            Bitmap b = BitmapFactory.decodeStream(fs, null, options);
-//            return b;
-//        }
-//        catch (FileNotFoundException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        return null;
+            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("user_image", Context.MODE_PRIVATE);
+
+            File f=new File(directory, "profile.png");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            return b;
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public Bitmap loadProfileImage() {
@@ -363,41 +371,41 @@ public class DataHandler {
         User user = getUser();
 
 
-        Bitmap b = loadImageFromStorage(user.getLocalImagePath(),  PROFILE_IMAGE_WIDTH, PROFILE_IMAGE_HEIGHT);
+        Bitmap b = loadImageFromStorage(user.getLocalImagePath());
 
 
         return b;
     }
 
-    public void requestUdpateUserPassword(BaseResponseListner response, String currentPasswordStr,
+    public void requestUdpateUserPassword(BaseResponseListener response, String currentPasswordStr,
                                           String newPasswordStr, String confirmPasswordStr){
         serviceHandler.updatePassword(response, getUser().getUserID(), currentPasswordStr,
                 newPasswordStr, confirmPasswordStr);
     }
 
-    public void requestUdpateUser(final User user, final BaseResponseListner responseListner) {
+    public void requestUdpateUser(final User user, final BaseRequestStateListener responseListner) {
 
-        BaseResponseListner mResponseListner = new BaseResponseListner() {
+        BaseResponseListener baseResponseListener = new BaseResponseListener();
+        baseResponseListener.setOnResponseListner(new BaseRequestStateListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                super.onResponse(response);
-                Log.d("update user", response.toString());
-                if(isStatusSuccess()){
-
-                    saveUser(user);
-                    responseListner.onResponse(response);
-                }else{
-                    Log.d("Update user", "fail");
-                }
+            public void failResponse(ServiceResponse response) {
+                Log.d("Update user", "fail");
             }
-        };
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+                Log.d("update user", response.toString());
+                saveUser(user);
+                responseListner.successResponse(response);
+            }
+        });
 
 
         ObjectMapper mapper =  new ObjectMapper();
         JSONObject userData = null;
         try {
             userData = new JSONObject(mapper.writeValueAsString(user));
-            userData.put("DeviceToken", getDeiveToken());
+            userData.put("DeviceToken", getDeviceToken());
             userData.put("OS", OS);
 
         } catch (JSONException e) {
@@ -407,13 +415,18 @@ public class DataHandler {
         }
 
 
-        serviceHandler.requestUpdateUser(userData, mResponseListner);
+        serviceHandler.requestUpdateUser(userData, baseResponseListener);
     }
 
-    public Bitmap getImage(Uri data) throws IOException {
+    public Bitmap getImage(Uri data)  {
 
-        return MediaStore.Images.Media.getBitmap(context.getContentResolver(),
-                data);
+        try {
+            return MediaStore.Images.Media.getBitmap(context.getContentResolver(),
+                    data);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -460,7 +473,7 @@ public class DataHandler {
         return names;
     }
 
-    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place, final BaseRequestStateListner listner) {
+    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place, final BaseRequestStateListener listner) {
         Log.d("add new Place", "2");
 
         String cityID = getDefaultCityID(), userID = getUser().getUserID();
@@ -477,43 +490,33 @@ public class DataHandler {
             e.printStackTrace();
         }
 
-        final BaseResponseListner placeImageResponseListner = new BaseResponseListner() {
+        final BaseResponseListener placeImageResponseListener = new BaseResponseListener();
+        placeImageResponseListener.setOnResponseListner(listner);
+
+        BaseResponseListener placeDataResponseListener = new BaseResponseListener();
+        placeDataResponseListener.setOnResponseListner(new BaseRequestStateListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                super.onResponse(response);
-                Log.d("Add new place", response.toString());
-                if(isStatusSuccess()){
-                    listner.successResponse();
-                }else{
-                    listner.failReponse();
-                    Log.d("add new place", "fail");
-                }
-            }
-        };
+            public void failResponse(ServiceResponse response) {
+                String[] bitmapsEndcoded = new String[bitmapImages.size()];
 
-        BaseResponseListner placeDataResponseListner = new BaseResponseListner() {
+                for (int i = 0; i < bitmapsEndcoded.length ; i++) {
+                    bitmapsEndcoded[i] = concateImageNameAndEncoding(bitmapImages.get(i).name,
+                            getBase64Encoding(bitmapImages.get(i).getBitmap()));
+                }
+
+                serviceHandler.addPlaceImages(response.getDraftPointID(), bitmapsEndcoded,
+                        placeImageResponseListener);
+            }
+
             @Override
-            public void onResponse(JSONObject response) {
-                super.onResponse(response);
-                Log.d("Add new place", response.toString());
-                if(isStatusSuccess()){
+            public void successResponse(ServiceResponse message) {
+                Log.d("dd new place", "fail");
 
-                    String[] bitmapsEndcoded = new String[bitmapImages.size()];
-
-                    for (int i = 0; i < bitmapsEndcoded.length ; i++) {
-                        bitmapsEndcoded[i] = concateImageNameAndEncoding(bitmapImages.get(i).name,
-                                getBase64Encoding(bitmapImages.get(i).getBitmap()));
-                    }
-
-                    serviceHandler.addPlaceImages(this.getResponse().getDraftPointID(), bitmapsEndcoded,
-                            placeImageResponseListner);
-                }else{
-                    Log.d("dd new place", "fail");
-                }
             }
-        };
+        });
 
-        serviceHandler.addNewPlace(userID, cityID, PlaceData, placeDataResponseListner);
+
+        serviceHandler.addNewPlace(userID, cityID, PlaceData, placeDataResponseListener);
 
 
     }
@@ -525,7 +528,7 @@ public class DataHandler {
             BitmapImage bitmapImage = new BitmapImage(images.get(i));
             String s = bitmapImage.path;
 
-            Bitmap b = loadImageFromStorage(s, PLACE_IMAGE_WIDTH, PLACE_IMAGE_HEIGHT);
+            Bitmap b = BitmapDecoder.from(s).decode();
             bitmapImage.setBitmap(b);
 
             images.set(i, bitmapImage);
@@ -556,5 +559,118 @@ public class DataHandler {
         return inSampleSize;
     }
 
+//    todo improve performance
+    public City[] queryCities(City[] cities, String newText) {
+
+        if (TextUtils.isEmpty(newText)) return cities;
+
+        ArrayList<City> queriedCities = new ArrayList<>();
+
+        for (int i = 0; i < cities.length; i++) {
+
+            if(cities[i].getCityNameAR().contains(newText) ||
+                    cities[i].getCityNameEN().toLowerCase().contains(newText.toLowerCase())){
+                queriedCities.add(cities[i]);
+            }
+        }
+
+        return queriedCities.toArray(new City[queriedCities.size()]);
+    }
+
+    public Place loadPlaceFromDataBase(Place place) {
+
+        Place dbPlace = Place.findById(Place.class, place.getId());
+        if(dbPlace != null){
+            List<PlaceImage> images = PlaceImage.find(PlaceImage.class, "place = ?",
+                    place.getId()+"");
+
+            List<PlaceComment> comments = PlaceComment.find(PlaceComment.class, "place = ?",
+                    place.getId()+"");
+
+            List<WorkTime> workTimes = WorkTime.find(WorkTime.class, "place = ?",
+                    place.getId()+"");
+
+            Log.d("work yyyyyyyyyy", workTimes.size()+"");
+
+            place.setPlaceImages(images.toArray(new PlaceImage[images.size()]));
+
+            place.setComments(comments.toArray(new PlaceComment[comments.size()]));
+
+            place.setWorkTimes(workTimes.toArray(new WorkTime[workTimes.size()]));
+        }
+
+        return place;
+    }
+
+    public ArrayList<Place> loadAllPlaceFromDataBase() {
+
+        ArrayList<Place> places = (ArrayList<Place>) Place.listAll(Place.class);
+        for(int i = 0; i < places.size(); i++){
+           loadPlaceFromDataBase(places.get(i));
+        }
+
+
+        return places;
+    }
+
+    public String getDayMapping(int day) {
+        return dayMap.get(day);
+    }
+
+    public ArrayList<Place> queryPlaces(ArrayList<Place> places, String newText) {
+
+        if (TextUtils.isEmpty(newText)) return places;
+
+        ArrayList<Place> queriedPlaces = new ArrayList<>();
+
+        for (int i = 0; i < places.size(); i++) {
+
+            if(places.get(i).getPalceNameArb().contains(newText) ||
+                    places.get(i).getPalceNameEng().toLowerCase().contains(newText.toLowerCase())){
+                queriedPlaces.add(places.get(i));
+            }
+        }
+
+        return queriedPlaces;
+    }
+
+    public void eraseCurrentUser() {
+
+//        remove user
+        sharedPreferences.deleteUser();
+
+//        remove fav places
+        Place.deleteAll(Place.class);
+        PlaceComment.deleteAll(PlaceComment.class);
+        WorkTime.deleteAll(WorkTime.class);
+    }
+
+    public City getDefaultCity() {
+        return sharedPreferences.getDefaultCity();
+    }
+
+//    todo make it servic
+    public void loadAndSaveUserNetworkImage(final Uri image,
+                                            final BaseRequestStateListener baseRequestStateListener) {
+        Picasso.with(context).load(image).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                saveUserImage(bitmap,"photo");
+                baseRequestStateListener.successResponse(null);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                baseRequestStateListener.failResponse(null);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
+    }
 }
 

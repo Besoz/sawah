@@ -29,25 +29,23 @@
         android:orientation="vertical"
         android:weightSum="14">
 
-
-
         <LinearLayout
-
             android:layout_width="match_parent"
-            android:layout_height="0px"
+            android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_weight="4"
-            android:gravity="center">
+            android:gravity="center"
+            android:background="@color/black_85">
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/sawah_logo"
-                android:layout_gravity="center"
                 android:src="@drawable/sawah_logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
@@ -134,6 +132,7 @@
 
 
                 <com.accorpa.sawah.custom_views.CustomButton
+                    android:id="@+id/forget_password_button"
                     android:text="@string/forget_password_text"
                     android:textColor="@color/textColor"
                     android:layout_width="wrap_content"
@@ -144,55 +143,83 @@
         </LinearLayout>
 
 
-        <LinearLayout
+        <RelativeLayout
 
             android:layout_width="match_parent"
             android:layout_height="0px"
-            android:gravity="center"
             android:orientation="vertical"
             android:layout_weight="4"
             tools:gravity="center">
 
-            <com.accorpa.sawah.custom_views.CustomTextView
-                android:text="@string/social_login_text"
-                android:textColor="@color/textColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <android.support.v7.widget.LinearLayoutCompat
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
 
-                <ImageButton
+                <com.accorpa.sawah.custom_views.CustomTextView
+                    android:id="@+id/socail_login_title"
+                    android:text="@string/social_login_text"
+                    android:textColor="@color/textColor"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/facebook_login_logo"
-                    android:background="@android:color/transparent" />
+                    android:layout_height="wrap_content"/>
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/twitter_login_logo"
-                    android:background="@android:color/transparent" />
+                <LinearLayout
+                    android:id="@+id/social_login_bar"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:weightSum="4"
+                    android:layout_height="70dp">
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/gplus_login_logo"
-                    android:background="@android:color/transparent" />
-            </android.support.v7.widget.LinearLayoutCompat>
+                    <!--<com.facebook.login.widget.LoginButton-->
+                        <!--android:id="@+id/facebook_login_btn"-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:src="@drawable/facebook_login_logo"-->
+                        <!--android:background="@android:color/transparent"-->
+                        <!--android:scaleType="fitCenter"/>-->
+
+                    <ImageButton
+                        android:id="@+id/facebook_login_btn"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/facebook_login_logo"
+                        android:background="@android:color/transparent"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/twitter_login_btn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/twitter_login_logo"
+                        android:background="@android:color/transparent"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/gplus_login_btn"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:src="@drawable/gplus_login_logo"
+                        android:background="@android:color/transparent"
+                        android:scaleType="fitCenter"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </LinearLayout>
+
 
             <com.accorpa.sawah.custom_views.CustomButton
+                android:id="@+id/skip_login_button"
                 android:background="@android:color/transparent"
                 android:textColor="@color/textColor"
-                android:id="@+id/skip_login_button"
                 android:text="@string/skip_login_text"
-                android:padding="@dimen/padding"
                 android:layout_width="wrap_content"
-                android:gravity="bottom|center_horizontal"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
 
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

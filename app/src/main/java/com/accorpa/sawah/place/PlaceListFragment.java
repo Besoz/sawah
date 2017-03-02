@@ -3,17 +3,21 @@ package com.accorpa.sawah.place;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.RecycleAdapterListener;
 import com.accorpa.sawah.models.Place;
 import com.labo.kaji.fragmentanimations.FlipAnimation;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,16 +27,27 @@ import com.labo.kaji.fragmentanimations.FlipAnimation;
  * Use the {@link PlaceListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PlaceListFragment extends Fragment {
+public class PlaceListFragment extends Fragment implements RecycleAdapterListener {
 
-    private PlacesAdapter adapter;
+//    private PlacesAdapter adapter;
     private View listFragment;
-    private GridView mListView;
+//    private GridView mListView;
+
+    private RecyclerView mRecyclerView;
+    private PlaceRecycleAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
 
     private OnFragmentInteractionListener mListener;
 
-    public PlaceListFragment() {
+    private ArrayList<Place> places;
+    private boolean addLikeButton, specialPlaceLayout;
+
+    public PlaceListFragment(boolean addLikeButton, boolean specialPlaceLayout) {
         // Required empty public constructor
+
+        this.addLikeButton = addLikeButton;
+        this.specialPlaceLayout = specialPlaceLayout;
     }
 
     /**
@@ -40,31 +55,58 @@ public class PlaceListFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment PlaceListFragment.
+     * @param addLikeButton
+     * @param specialPlaceLayout
      */
     // TODO: Rename and change types and number of parameters
-    public static PlaceListFragment newInstance() {
-        PlaceListFragment fragment = new PlaceListFragment();
+    public static PlaceListFragment newInstance(boolean addLikeButton, boolean specialPlaceLayout) {
+        PlaceListFragment fragment = new PlaceListFragment(addLikeButton, specialPlaceLayout);
         return fragment;
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         listFragment = inflater.inflate(R.layout.fragment_place_list, container, false);
 
-        mListView = (GridView) listFragment.findViewById(R.id.list);
+        mRecyclerView = (RecyclerView) listFragment.findViewById(R.id.list);
 
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        mListView = (GridView) listFragment.findViewById(R.id.list);
+
+
+//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
+//                onPlaceSelected((Place) mListView.getAdapter().getItem(position));
+//            }
+//        });
+
+        mLayoutManager = new LinearLayoutManager(getContext());
+
+        GridLayoutManager specialGridLayoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager.SpanSizeLookup onSpanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
             @Override
-            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
-                onPlaceSelected((Place) mListView.getAdapter().getItem(position));
+            public int getSpanSize(int position) {
+                return places.get(position).isSpecial() ? 2 : 1;
             }
-        });
+        };
+        specialGridLayoutManager.setSpanSizeLookup(onSpanSizeLookup);
 
-        adapter = new PlacesAdapter(getContext());
-        mListView.setAdapter(adapter);
+        GridLayoutManager normalGridLayoutManager = new GridLayoutManager(getContext(), 1);
+
+
+        // specify an adapter (see also next example)
+        mAdapter = new PlaceRecycleAdapter(getContext(), this, addLikeButton, specialPlaceLayout);
+
+
+        mRecyclerView.setLayoutManager(specialPlaceLayout?
+                specialGridLayoutManager : normalGridLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+
+//        adapter = new PlacesAdapter(getContext());
+//        mListView.setAdapter(adapter);
 
         return listFragment;
     }
@@ -75,6 +117,8 @@ public class PlaceListFragment extends Fragment {
             mListener.onPlaceSelected(place);
         }
     }
+
+
 
     @Override
     public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
@@ -98,6 +142,16 @@ public class PlaceListFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void itemSelected(Object object) {
+        mListener.onPlaceSelected((Place) object);
+    }
+
+    public void setShowDeleteButton(boolean showDeleteButton) {
+
+        mAdapter.setShowDeletionButton(showDeleteButton);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -111,19 +165,25 @@ public class PlaceListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onPlaceSelected(Place place);
-        Place[] getPlaces();
+        ArrayList<Place> getPlaces();
     }
 
-    public void setPlacesList(Place[] arr){
-        adapter.setDataSource(arr);
-        adapter.notifyDataSetChanged();
+    public void setPlacesList(ArrayList<Place> arr){
+//        adapter.setDataSource(arr);
+//        adapter.notifyDataSetChanged();
+        places = arr;
+        mAdapter.setDataSource(arr);
+        mAdapter.notifyDataSetChanged();
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        places = mListener.getPlaces();
 
-        setPlacesList(mListener.getPlaces());
+        setPlacesList(places);
         Log.d("Fragment", "+++++++++++++++++=");
     }
 }

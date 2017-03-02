@@ -12,29 +12,47 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.RotateAnimation;
 import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SimpleExpandableListAdapter;
+import android.widget.TableLayout;
+import android.widget.TextView;
 
 import com.accorpa.sawah.BaseActivity;
+import com.accorpa.sawah.CommentActivity;
 import com.accorpa.sawah.CommentsAdapter;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.Handlers.SharingHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomCheckBox;
+import com.accorpa.sawah.custom_views.CustomRotatingButton;
 import com.accorpa.sawah.custom_views.CustomTextView;
+import com.accorpa.sawah.custom_views.ExpandArrow;
 import com.accorpa.sawah.models.Place;
 import com.accorpa.sawah.models.PlaceComment;
+import com.accorpa.sawah.models.WorkTime;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.aakira.expandablelayout.ExpandableLayoutListener;
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,7 +66,11 @@ import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+
+import io.techery.properratingbar.ProperRatingBar;
+
 
 public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
 
@@ -84,13 +106,14 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     private ScreenSlidePagerAdapter mPagerAdapter;
 
     private Fragment[] imagesFragments;
+    private int mCurrRotation = 0;
+
+    private LinearLayout header;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_place_details);
-
 
         String placeJSONObject = (String) getIntent().getSerializableExtra("PlaceJSONObject");
 
@@ -101,6 +124,10 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        setToolbarTitle(place.getPalceNameArb()                                                                                                     );
+
+        DataHandler.getInstance(this).loadPlaceFromDataBase(place);
 
 //       todo sperate view intialization in other methods
 
@@ -175,10 +202,46 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             public void onClick(View v) {
                 DataHandler dataHandler = DataHandler.getInstance(PlaceDetailsActivity.this);
                 if(dataHandler.userExist()){
-                    NavigationHandler.getInstance().startCommentActivity(PlaceDetailsActivity.this,
+
+                    if(TextUtils.isEmpty(dataHandler.getUser().getFullName())){
+                        new MaterialDialog.Builder(PlaceDetailsActivity.this)
+                                .title(R.string.user_data)
+                                .content(R.string.must_user_data_add_comment)
+                                .positiveText(R.string.agree)
+                                .negativeText(R.string.close)
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog,
+                                                        @NonNull DialogAction which) {
+                                        NavigationHandler.getInstance().
+                                                startEditProfileActivity(PlaceDetailsActivity.this);
+                                    }
+                                }).autoDismiss(true)
+                                .titleGravity(GravityEnum.CENTER)
+                                .contentGravity(GravityEnum.CENTER)
+                                .show();
+
+                    }else{
+                        NavigationHandler.getInstance().startCommentActivity(PlaceDetailsActivity.this,
                             place.getPlaceID());
+                    }
                 }else{
-//                    show not signed in dialog
+                    new MaterialDialog.Builder(PlaceDetailsActivity.this)
+                            .title(R.string.action_sign_in_short)
+                            .content(R.string.must_sign_in_to_add_comment)
+                            .positiveText(R.string.agree)
+                            .negativeText(R.string.close)
+                            .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                @Override
+                                public void onClick(@NonNull MaterialDialog dialog,
+                                                    @NonNull DialogAction which) {
+                                    NavigationHandler.getInstance().
+                                            startLoginActivity(PlaceDetailsActivity.this);
+                                }
+                            }).autoDismiss(true)
+                            .titleGravity(GravityEnum.CENTER)
+                            .contentGravity(GravityEnum.CENTER)
+                            .show();
                 }
             }
         });
@@ -221,6 +284,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         }
 
         likeButton = (CustomCheckBox) this.findViewById(R.id.like_button);
+        likeButton.setVisibility(DataHandler.getInstance(this).userExist() ? View.VISIBLE : View.GONE);
         likeButton.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
 
         if(place.isFavourite()){
@@ -254,28 +318,83 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
 
 
-//        for (String name: place.getAppointments().keySet()){
-//
-//            String key = name.toString();
-//            String value = place.getAppointments().get(name).toString();
-//           Log.d("gg", "++++++++++++++++++ " + key + " " + value);
-//
-//
-//        }
-//
-//        Button mExpandButton = (Button) findViewById(R.id.expandButton);
-////        Button mMoveChildButton = (Button) findViewById(R.id.moveChildButton);
-//        Button mMoveChildButton2 = (Button) findViewById(R.id.moveChildButton2);
-//        Button  mMoveTopButton = (Button) findViewById(R.id.moveTopButton);
-//        Button mSetCloseHeightButton = (Button) findViewById(R.id.setCloseHeightButton);
-//        mExpandLayout = (ExpandableRelativeLayout) findViewById(R.id.expandableLayout);
-//        mExpandLayout.setOnClickListener(this);
-//        mExpandButton.setOnClickListener(this);
-////        mMoveChildButton.setOnClickListener(this);
-//        mMoveChildButton2.setOnClickListener(this);
-//        mMoveTopButton.setOnClickListener(this);
-//        mSetCloseHeightButton.setOnClickListener(this);
+        final CustomRotatingButton arrow = (CustomRotatingButton) findViewById(R.id.arrow);
+        final ExpandableRelativeLayout body
+                = (ExpandableRelativeLayout) findViewById(R.id.body);
+        header = (LinearLayout) findViewById(R.id.header);
+
+        CustomTextView headerTitle = (CustomTextView) findViewById(R.id.work_time_title);
+        CustomTextView headerTitleTime = (CustomTextView) findViewById(R.id.work_time_title_time);
+
+        WorkTime[] workTimes = place.getWorkTimes();
+        Arrays.sort(workTimes);
+
+        int dayNo = Utils.getInstance().getTodayDayNumber();
+        String time = "";
+        if(workTimes.length >= dayNo){
+            time = workTimes[dayNo -1].getTime();
+        }
+        if (TextUtils.isEmpty(time)) {
+            headerTitle.setText(getString(R.string.work_time));
+        }else{
+            headerTitleTime.setText(time);
+            headerTitle.setText(getString(R.string.work_time_today));
+        }
+        WorkTimeAdapter adapter =  new WorkTimeAdapter(this, workTimes);
+
+        TableLayout tableLayout = (TableLayout) findViewById(R.id.work_time_table);
+
+        for(int i = 0; i < workTimes.length; i++){
+            tableLayout.addView(adapter.getView(i, null, null));
+        }
+
+        body.setListener(new ExpandableLayoutListener() {
+            @Override
+            public void onAnimationStart() {
+            }
+
+            @Override
+            public void onAnimationEnd() {
+
+            }
+
+            @Override
+            public void onPreOpen() {
+                header.setVisibility(header.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            }
+
+            @Override
+            public void onPreClose() {
+
+            }
+
+            @Override
+            public void onOpened() {
+
+            }
+
+            @Override
+            public void onClosed() {
+                header.setVisibility(header.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+
+            }
+        });
+
+
+        arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                arrow.rotate();
+                body.toggle();
+            }
+        });
+
+        ProperRatingBar priceLevel = (ProperRatingBar) findViewById(R.id.price_level_bar);
+        priceLevel.setRating((int) place.getPriceLevel());
+
     }
+
+
 
     @Override
     protected void onResume() {
