@@ -57,7 +57,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
 
     private DataHandler dataHandler;
     private ServiceHandler serviceHandler;
-    private AuthorizationManger authorizationManger;
+    private AuthorizationController authorizationController;
 
     private SignupResponseListener signupResponseListener;
 
@@ -71,7 +71,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
         dataHandler = DataHandler.getInstance(getApplicationContext());
         serviceHandler = ServiceHandler.getInstance(getApplicationContext());
 
-        authorizationManger = new AuthorizationManger(getApplicationContext(), this);
+        authorizationController = new AuthorizationController(getApplicationContext(), this);
 
         signupResponseListener =  new SignupResponseListener(this);
 
@@ -291,7 +291,7 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     public void signupSuccess(String userID) {
-        authorizationManger.loginUser(userID);
+        authorizationController.loginUser(userID);
     }
 
     public void signupFailed(String message) {

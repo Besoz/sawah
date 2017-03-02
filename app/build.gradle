@@ -100,10 +100,10 @@ dependencies {
     compile 'rapid.decoder:jpeg-decoder:0.3.0'
     compile 'rapid.decoder:png-decoder:0.3.0'
 
-//    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-    compile('com.facebook.android:facebook-android-sdk:4.8.2') {
-        exclude module: 'bolts-android'
-    }
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+//    compile('com.facebook.android:facebook-android-sdk:4.8.2') {
+//        exclude module: 'bolts-android'
+//    }
     compile('com.twitter.sdk.android:twitter:1.12.1@aar') {
         transitive = true;
     }
@@ -123,9 +123,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
 
-    compile 'com.android.support:support-compat:25.1.1'
-    compile 'com.daimajia.easing:library:2.0@aar'
-    compile 'com.daimajia.androidanimations:library:2.2@aar'
 }
 
 

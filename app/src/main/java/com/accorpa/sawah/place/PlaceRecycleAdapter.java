@@ -20,8 +20,6 @@ import com.accorpa.sawah.custom_views.CustomCheckBox;
 import com.accorpa.sawah.models.Place;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.daimajia.androidanimations.library.Techniques;
-import com.daimajia.androidanimations.library.YoYo;
 
 
 import java.net.PortUnreachableException;
@@ -42,7 +40,6 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
     private RecycleAdapterListener mListener;
 
     private boolean addLikeButton, addDeleteButton, specialPlaceLayout;
-    private YoYo.YoYoString yoYoString;
 
     private Animation rotation;
 

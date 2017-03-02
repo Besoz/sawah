@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -23,7 +24,6 @@ import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.models.PlaceComment;
 import com.accorpa.sawah.models.PlaceImage;
 import com.accorpa.sawah.models.WorkTime;
-import com.accorpa.sawah.place.BasePlacesListActivity;
 import com.accorpa.sawah.models.Category;
 import com.accorpa.sawah.models.City;
 import com.accorpa.sawah.models.Place;
@@ -32,6 +32,8 @@ import com.accorpa.sawah.place.PlaceListActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +41,8 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -102,7 +106,7 @@ public class DataHandler {
         sharedPreferences.setDeviceToken(token);
     }
 
-    public String getDeiveToken(){
+    public String getDeviceToken(){
 
         String token = sharedPreferences.getDeviceToken();
 
@@ -116,13 +120,13 @@ public class DataHandler {
 
     public JSONObject getUserSignupData(String userName, String password) {
 
-        User user = new User(userName, password, "", "", "", "", "", "", "");
+        User user = new User(userName, password, "", "", "", "", "", "");
 
         JSONObject userData = null;
         try {
             userData = new JSONObject(mapper.writeValueAsString(user));
 
-            userData.put("DeviceToken", getDeiveToken());
+            userData.put("DeviceToken", getDeviceToken());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -258,7 +262,7 @@ public class DataHandler {
     }
 
 // todo split the method getimage and and send to server
-    public Bitmap requestUpdateUserImage(final BaseResponseListener listner, final Context context,
+    public Bitmap requestUpdateUserImage(final BaseResponseListener listner,
                                          Uri userSelectedImage) throws IOException {
 
         final String imageName = getImageName(userSelectedImage);
@@ -273,7 +277,7 @@ public class DataHandler {
             public void onResponse(JSONObject response) {
                 super.onResponse(response);
                 if(isStatusSuccess()){
-                    saveUserImage(context, userImage, imageName);
+                    saveUserImage(userImage, imageName);
                     listner.onResponse(response);
                 }else{
                     Log.d("Update user", "fail");
@@ -304,13 +308,13 @@ public class DataHandler {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    private Bitmap saveUserImage(Context context, Bitmap userImage, String imageName) {
+    public Bitmap saveUserImage(Bitmap userImage, String imageName) {
 
-        ContextWrapper cw = new ContextWrapper(context);
+        ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("user_image", Context.MODE_PRIVATE);
         // Create imageDir
-        File mypath=new File(directory, imageName);
+        File mypath=new File(directory, "profile.png");
 
         FileOutputStream fos = null;
         try {
@@ -329,46 +333,37 @@ public class DataHandler {
 
         User user = getUser();
 
-        user.setLocalImagePath(directory.getAbsolutePath());
+        String path = directory.getAbsolutePath();
+
+        user.setLocalImagePath(path);
 //        user.setImageName(imageName);
-        Log.d("profile image", user.getImageLocation()+" uu ");
+        Log.d("profile image", user.getLocalImagePath().toString()+" uu ");
 
         saveUser(user);
+
 
         return userImage;
     }
 
-    private Bitmap loadImageFromStorage(String path, int reqWidth, int reqHeight)
+    public Bitmap loadImageFromStorage(String path)
     {
-        Uri uri = Uri.parse(path);
-        path = uri.getPath();
 
-        return BitmapDecoder.from(path).decode();
+        try {
 
-//        try {
-//            File f=new File(path);
-//            if(f.isDirectory()){
-//                Log.d("file", f.getName()+" "+f.getTotalSpace());
-//            }else{
-//                Log.d("file", "No file");
-//
-//            }
-//
-//            BitmapFactory.Options options = new BitmapFactory.Options();
-//            options.inJustDecodeBounds = true;
-//            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//            BitmapFactory.decodeStream(new FileInputStream(f), null, options);
-//            options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-//
-//            FileInputStream fs  = new FileInputStream(f);
-//            Bitmap b = BitmapFactory.decodeStream(fs, null, options);
-//            return b;
-//        }
-//        catch (FileNotFoundException e)
-//        {
-//            e.printStackTrace();
-//        }
-//        return null;
+            ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("user_image", Context.MODE_PRIVATE);
+
+            File f=new File(directory, "profile.png");
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            return b;
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public Bitmap loadProfileImage() {
@@ -376,7 +371,7 @@ public class DataHandler {
         User user = getUser();
 
 
-        Bitmap b = loadImageFromStorage(user.getLocalImagePath(),  PROFILE_IMAGE_WIDTH, PROFILE_IMAGE_HEIGHT);
+        Bitmap b = loadImageFromStorage(user.getLocalImagePath());
 
 
         return b;
@@ -388,29 +383,29 @@ public class DataHandler {
                 newPasswordStr, confirmPasswordStr);
     }
 
-    public void requestUdpateUser(final User user, final BaseResponseListener responseListner) {
+    public void requestUdpateUser(final User user, final BaseRequestStateListener responseListner) {
 
-        BaseResponseListener mResponseListner = new BaseResponseListener() {
+        BaseResponseListener baseResponseListener = new BaseResponseListener();
+        baseResponseListener.setOnResponseListner(new BaseRequestStateListener() {
             @Override
-            public void onResponse(JSONObject response) {
-                super.onResponse(response);
-                Log.d("update user", response.toString());
-                if(isStatusSuccess()){
-
-                    saveUser(user);
-                    responseListner.onResponse(response);
-                }else{
-                    Log.d("Update user", "fail");
-                }
+            public void failResponse(ServiceResponse response) {
+                Log.d("Update user", "fail");
             }
-        };
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+                Log.d("update user", response.toString());
+                saveUser(user);
+                responseListner.successResponse(response);
+            }
+        });
 
 
         ObjectMapper mapper =  new ObjectMapper();
         JSONObject userData = null;
         try {
             userData = new JSONObject(mapper.writeValueAsString(user));
-            userData.put("DeviceToken", getDeiveToken());
+            userData.put("DeviceToken", getDeviceToken());
             userData.put("OS", OS);
 
         } catch (JSONException e) {
@@ -420,13 +415,18 @@ public class DataHandler {
         }
 
 
-        serviceHandler.requestUpdateUser(userData, mResponseListner);
+        serviceHandler.requestUpdateUser(userData, baseResponseListener);
     }
 
-    public Bitmap getImage(Uri data) throws IOException {
+    public Bitmap getImage(Uri data)  {
 
-        return MediaStore.Images.Media.getBitmap(context.getContentResolver(),
-                data);
+        try {
+            return MediaStore.Images.Media.getBitmap(context.getContentResolver(),
+                    data);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -528,7 +528,7 @@ public class DataHandler {
             BitmapImage bitmapImage = new BitmapImage(images.get(i));
             String s = bitmapImage.path;
 
-            Bitmap b = loadImageFromStorage(s, PLACE_IMAGE_WIDTH, PLACE_IMAGE_HEIGHT);
+            Bitmap b = BitmapDecoder.from(s).decode();
             bitmapImage.setBitmap(b);
 
             images.set(i, bitmapImage);
@@ -647,6 +647,30 @@ public class DataHandler {
 
     public City getDefaultCity() {
         return sharedPreferences.getDefaultCity();
+    }
+
+//    todo make it servic
+    public void loadAndSaveUserNetworkImage(final Uri image,
+                                            final BaseRequestStateListener baseRequestStateListener) {
+        Picasso.with(context).load(image).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                saveUserImage(bitmap,"photo");
+                baseRequestStateListener.successResponse(null);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                baseRequestStateListener.failResponse(null);
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
     }
 }
 

@@ -116,7 +116,7 @@
     <string name="cities">المدن</string>
 
 
-    <string name="facebook_app_id">1759744457614418</string> <!--353641474978410</string>-->
+    <string name="facebook_app_id">353641474978410 </string> <!--1759744457614418</string>-->
     <string name="fb_login_protocol_scheme">fbAPP_ID</string>
     <string name="sat_day">السبت</string>
     <string name="sun_day">الاحد</string>

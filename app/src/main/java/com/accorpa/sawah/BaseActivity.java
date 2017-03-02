@@ -4,11 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.GravityCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +48,7 @@ public class BaseActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private CustomTextView toolbarTitle;
+    private CircleImageView userImage;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -102,11 +106,17 @@ public class BaseActivity extends AppCompatActivity
             User user = DataHandler.getInstance(this).getUser();
 
             CustomTextView userNameText = (CustomTextView) headerLayout.findViewById(R.id.user_name);
-            userNameText.setText(user.getUserName());
+            userNameText.setText(user.getFullName());
 
-            CircleImageView userImage = (CircleImageView) findViewById(R.id.profile_image);
+            userImage = (CircleImageView) headerLayout.findViewById(R.id.profile_image);
             if(!TextUtils.isEmpty((user.getLocalImagePath()))){
-                Picasso.with(this).load(user.getLocalImagePath()).into(userImage);
+                Log.d("local image path", user.getLocalImagePath());
+
+                Bitmap b = DataHandler.getInstance(this)
+                        .loadImageFromStorage(user.getLocalImagePath());
+
+                setNavBarUserImage(b);
+
             }
 
 
@@ -252,5 +262,10 @@ public class BaseActivity extends AppCompatActivity
 
     protected void setToolbarTitle(String s){
         toolbarTitle.setText(s);
+    }
+
+    protected void setNavBarUserImage(Bitmap navBarUserImage) {
+        if(userImage != null)
+            userImage.setImageBitmap(navBarUserImage);
     }
 }

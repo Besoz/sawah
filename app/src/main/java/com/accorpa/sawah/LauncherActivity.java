@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.accorpa.sawah.Authorization.AuthorizationManger;
+import com.accorpa.sawah.Authorization.AuthorizationController;
 import com.accorpa.sawah.Authorization.LoginListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
@@ -42,10 +42,10 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
 //        login user if exist else show login activity
         if(DataHandler.getInstance(this).userExist()){
             String userID = DataHandler.getInstance(this).getUser().getUserID();
-            AuthorizationManger authorizationManger =
-                    new AuthorizationManger(this.getApplicationContext(), this);
+            AuthorizationController authorizationController =
+                    new AuthorizationController(this.getApplicationContext(), this);
 //            showProgress(true);
-            authorizationManger.loginUser(userID);
+            authorizationController.loginUser(userID);
         }else{
             NavigationHandler.getInstance().startLoginActivity(this);
         }

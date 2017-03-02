@@ -31,7 +31,7 @@
         android:layout_margin="@dimen/listview_margin">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:src="@drawable/afa1b00e92014675b365903d8d133857"
+            android:id="@+id/profile_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_margin="@dimen/listview_margin"/>

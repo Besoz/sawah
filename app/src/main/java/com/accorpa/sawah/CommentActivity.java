@@ -1,6 +1,7 @@
 package com.accorpa.sawah;
 
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.provider.ContactsContract;
@@ -97,42 +98,14 @@ public class CommentActivity extends BaseActivity {
         userName.setText(user.getFullName());
 
         CircleImageView userImage = (CircleImageView) findViewById(R.id.profile_image);
+        Bitmap b = DataHandler.getInstance(this)
+                .loadImageFromStorage(user.getLocalImagePath());
+        userImage.setImageBitmap(b);
 
-        if(!TextUtils.isEmpty(user.getLocalImagePath())){
-            Picasso.with(this).load(user.getLocalImagePath()).into(userImage);
-        }
-
-        //        builder.set
-//        builder.setPositiveButton(R.string.agree, new DialogInterface.OnClickListener() {
-//                public void onClick(DialogInterface dialog, int id) {
-//                    dialog.dismiss();
-//                    CommentActivity.this.finish();
-//                }
-//        });
-//
-//        builder.setNegativeButton(R.string.agree, new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                dialog.dismiss();
-//                CommentActivity.this.finish();
-//            }
-//        });
-
-//        LinearLayout.LayoutParams positiveButtonLL = (LinearLayout.LayoutParams) dialog.getButton(AlertDialog.BUTTON_NEUTRAL).getLayoutParams();
-//                positiveButtonLL.gravity = Gravity.CENTER;
-//                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setLayoutParams(positiveButtonLL);
-//                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.parseColor("#000000"));
-//                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.parseColor("#000000"));
     }
 
     private void intializeRatingBar() {
         ratingBar = (SimpleRatingBar) findViewById(R.id.rating_bar);
-//        ratingBar.setOnRatingBarChangeListener(new SimpleRatingBar.OnRatingBarChangeListener() {
-//            @Override
-//            public void onRatingChanged(SimpleRatingBar simpleRatingBar, float rating, boolean fromUser) {
-////                ratingBar.setRating(rating);
-//
-//            }
-//        });
     }
 
 
@@ -210,9 +183,6 @@ public class CommentActivity extends BaseActivity {
                 .autoDismiss(true)
                 .titleGravity(GravityEnum.CENTER)
                 .contentGravity(GravityEnum.CENTER)
-//                .btnStackedGravity(GravityEnum.CENTER)
-//                .itemsGravity(GravityEnum.CENTER)
-//                .buttonsGravity(GravityEnum.CENTER)
                 .show();
 
         Log.d("Comment", "Post Success");

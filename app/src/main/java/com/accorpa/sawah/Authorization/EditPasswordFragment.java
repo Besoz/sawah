@@ -128,7 +128,7 @@ public class EditPasswordFragment extends Fragment {
             newPassword.setError(getString(R.string.error_field_required));
             focusView = newPassword;
             cancel = true;
-        } else if (!AuthorizationManger.isPasswordValid(newPasswordStr)) {
+        } else if (!AuthorizationController.isPasswordValid(newPasswordStr)) {
             newPassword.setError(getString(R.string.error_invalid_password));
             focusView = newPassword;
             cancel = true;

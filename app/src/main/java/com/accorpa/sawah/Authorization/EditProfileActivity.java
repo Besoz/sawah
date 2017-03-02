@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.accorpa.sawah.BaseActivity;
+import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.models.User;
 
 import org.json.JSONObject;
@@ -44,7 +47,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null &&
@@ -58,7 +61,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
                     public void onResponse(JSONObject response) {
                         super.onResponse(response);
                         if(isStatusSuccess()){
-
+                            setNavBarUserImage(bitmap);
                             editProfileFragment.setImageBitmap(bitmap);
                         }else{
                             Log.d("Update user", "fail");
@@ -68,7 +71,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
                 };
                 showProgress(true);
 
-                DataHandler.getInstance(this).requestUpdateUserImage(mResponseListner, this.getApplicationContext(),
+                DataHandler.getInstance(this).requestUpdateUserImage(mResponseListner,
                         data.getData());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -91,12 +94,14 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
 
     @Override
     public Bitmap getProfileImage() {
-        return null;
+
+        return DataHandler.getInstance(this)
+                .loadImageFromStorage(user.getLocalImagePath());
     }
 
     @Override
     public boolean hasProfileImage() {
-        return false;
+        return !TextUtils.isEmpty(user.getLocalImagePath());
     }
 
     @Override
@@ -109,20 +114,24 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
     @Override
     public void updateUser() {
 
-        BaseResponseListener responseListner = new BaseResponseListener() {
+        BaseRequestStateListener baseRequestStateListener =  new BaseRequestStateListener(){
             @Override
-            public void onResponse(JSONObject response) {
-                super.onResponse(response);
-                if(isStatusSuccess()){
-                    NavigationHandler.getInstance().startCategoriesListActivity(EditProfileActivity.this);
-                }else{
-                    Log.d("Update user", "fail");
-                }
+            public void failResponse(ServiceResponse response) {
+                Log.d("Update user", "fail");
+
                 showProgress(false);
             }
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+                NavigationHandler.getInstance().startCategoriesListActivity(EditProfileActivity.this);
+                showProgress(false);
+
+            }
         };
+
         showProgress(true);
-        DataHandler.getInstance(this).requestUdpateUser(user, responseListner);
+        DataHandler.getInstance(this).requestUdpateUser(user, baseRequestStateListener);
     }
 
     @Override

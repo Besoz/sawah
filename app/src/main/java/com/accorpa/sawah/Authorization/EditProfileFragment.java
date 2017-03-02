@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TableRow;
 
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
@@ -42,7 +43,7 @@ public class EditProfileFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private CircleImageView profileImage;
-    private CustomTextView birthDate;
+    private CustomEditText birthDate;
     private DatePickerDialog dpd;
     private CustomEditText userEmail, userName, userPhone;
 
@@ -78,6 +79,28 @@ public class EditProfileFragment extends Fragment {
         userName = (CustomEditText) view.findViewById(R.id.user_name);
         userEmail = (CustomEditText) view.findViewById(R.id.user_email);
         userPhone = (CustomEditText) view.findViewById(R.id.user_phone);
+//
+//        TableRow nameRow = (TableRow) view.findViewById(R.id.name_row);
+//        nameRow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                userName.requestFocus();
+//            }
+//        });
+//        TableRow mailRow = (TableRow) view.findViewById(R.id.mail_row);
+//        mailRow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                userEmail.requestFocus();
+//            }
+//        });
+//        TableRow phoneRow = (TableRow) view.findViewById(R.id.phone_row);
+//        mailRow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                userPhone.requestFocus();
+//            }
+//        });
 
         userName.setText(user.getFullName());
         userEmail.setText(user.getEmail());
@@ -97,7 +120,7 @@ public class EditProfileFragment extends Fragment {
             profileImage.setImageBitmap(mListener.getProfileImage());
         }
 
-        CustomTextView editPassword = (CustomTextView) view.findViewById(R.id.edit_password);
+        CustomEditText editPassword = (CustomEditText) view.findViewById(R.id.edit_password);
         editPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +147,7 @@ public class EditProfileFragment extends Fragment {
                 user.getBirthDateObject().getMonth(), user.getBirthDateObject().getDay());
         dpd.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
 
-        birthDate = (CustomTextView) view.findViewById(R.id.birth_date);
+        birthDate = (CustomEditText) view.findViewById(R.id.birth_date);
         birthDate.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -232,7 +255,7 @@ public class EditProfileFragment extends Fragment {
         boolean cancel = false;
         View focusView = null;
 
-        if (!TextUtils.isEmpty(userEmailStr) && !AuthorizationManger.isEmailValid(userEmailStr)) {
+        if (!TextUtils.isEmpty(userEmailStr) && !AuthorizationController.isEmailValid(userEmailStr)) {
             userEmail.setError(getString(R.string.error_invalid_email));
             focusView = userEmail;
             cancel = true;

@@ -52,7 +52,7 @@
             android:name=".CategoriesListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".place.PlacesListActivity"
+            android:name=".place.PlaceListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ListActivity"
