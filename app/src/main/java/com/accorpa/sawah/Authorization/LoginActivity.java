@@ -5,8 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -18,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -37,6 +40,7 @@ import com.accorpa.sawah.R;
 import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.custom_views.CustomButton;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -122,8 +126,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
 
-        authorizationController = new AuthorizationController(this, this);
+        setTypefaceToInputLayout((TextInputLayout) findViewById(R.id.emailTextLayout));
+        setTypefaceToInputLayout((TextInputLayout) findViewById(R.id.passwordTextLayout));
 
+        authorizationController = new AuthorizationController(this, this);
 
         baseRequestStateListener = new BaseRequestStateListener() {
             @Override
@@ -735,6 +741,32 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
+    }
+
+    private void setTypefaceToInputLayout(TextInputLayout inputLayout){
+
+        String fontFilePath = getResources().getString(R.string.default_font);
+
+        final Typeface tf = Typeface.createFromAsset(getAssets(), fontFilePath);
+
+        inputLayout.setTypeface(tf);
+        inputLayout.getEditText().setTypeface(tf);
+//        try {
+//            // Retrieve the CollapsingTextHelper Field
+//            final Field collapsingTextHelperField = inputLayout.getClass().getDeclaredField("mCollapsingTextHelper");
+//            collapsingTextHelperField.setAccessible(true);
+//
+//            // Retrieve an instance of CollapsingTextHelper and its TextPaint
+//            final Object collapsingTextHelper = collapsingTextHelperField.get(inputLayout);
+//            final Field tpf = collapsingTextHelper.getClass().getDeclaredField("mTextPaint");
+//            tpf.setAccessible(true);
+//
+//            // Apply your Typeface to the CollapsingTextHelper TextPaint
+//            ((TextPaint) tpf.get(collapsingTextHelper)).setTypeface(tf);
+//        } catch (Exception ignored) {
+//            // Nothing to do
+//            System.out.println("------------------------------------------ can't apply to hint");
+//        }
     }
 
 }

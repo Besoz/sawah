@@ -34,16 +34,23 @@
             android:layout_height="0dp"
             android:orientation="vertical"
             android:layout_weight="4"
-            android:gravity="center"
-            android:background="@color/black_85">
-
+            android:weightSum="6"
+            android:gravity="center">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"></RelativeLayout>
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/sawah_logo"
                 android:src="@drawable/sawah_logo"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
-
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="4"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"></RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -54,6 +61,7 @@
             android:layout_weight="6">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/emailTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/textColor"
@@ -72,11 +80,10 @@
                     android:textColorLink="@color/textColor"
                     android:theme="@style/AppTheme"
                     android:gravity="center"/>
-
-
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/passwordTextLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/textColor"
@@ -102,7 +109,7 @@
 
             <com.accorpa.sawah.custom_views.CustomButton
                 android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
+                style="?android:textAppearanceLarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -162,14 +169,17 @@
                     android:text="@string/social_login_text"
                     android:textColor="@color/textColor"
                     android:layout_width="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:textStyle="bold"
                     android:layout_height="wrap_content"/>
 
                 <LinearLayout
                     android:id="@+id/social_login_bar"
                     android:layout_width="match_parent"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     android:weightSum="4"
-                    android:layout_height="70dp">
+                    android:layout_height="50dp">
 
                     <!--<com.facebook.login.widget.LoginButton-->
                         <!--android:id="@+id/facebook_login_btn"-->
@@ -182,12 +192,12 @@
 
                     <ImageButton
                         android:id="@+id/facebook_login_btn"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/facebook_login_logo"
+                        android:src="@drawable/facebook"
                         android:background="@android:color/transparent"
-                        />
+                        android:scaleType="fitCenter"/>
 
                     <ImageButton
                         android:id="@+id/twitter_login_btn"
@@ -196,7 +206,7 @@
                         android:layout_weight="1"
                         android:src="@drawable/twitter_login_logo"
                         android:background="@android:color/transparent"
-                        />
+                        android:scaleType="fitCenter"/>
 
                     <ImageButton
                         android:id="@+id/gplus_login_btn"
@@ -204,8 +214,8 @@
                         android:layout_weight="1"
                         android:src="@drawable/gplus_login_logo"
                         android:background="@android:color/transparent"
-                        android:scaleType="fitCenter"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:scaleType="fitCenter"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -215,6 +225,7 @@
                 android:background="@android:color/transparent"
                 android:textColor="@color/textColor"
                 android:text="@string/skip_login_text"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
