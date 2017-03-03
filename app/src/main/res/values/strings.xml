@@ -51,7 +51,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
-    <string name="contact_us">اتصل بنا</string>
+    <string name="contact_us">اتصل بنا | Contact us</string>
+
     <string name="change_city">تغيير المدينة</string>
     <string name="add_place">إضافة مكان</string>
     <string name="favourites">المفضلة</string>
@@ -148,7 +149,7 @@
     <string name="must_user_data_add_comment">يجب إضافة اسم المستخدم لإضافة تعليق </string>
     <string name="general_instructions_text">نتطلع في تطبيق سواح إلى تغطية أبرز المناطق السياحية في مدن العالم، إذ يعمل فريق سواح لزيارة الأماكن المهمة في هذه المدن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدن العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
     >
-
+    <string name="login_button">تسجيل الدخول</string>
     >
 
 

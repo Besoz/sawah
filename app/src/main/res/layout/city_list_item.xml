@@ -25,8 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:orientation="vertical"
-            android:gravity="center">
-
+            android:gravity="center"
+            android:background="@drawable/gradiant_black_background_90"
+            android:paddingBottom="5dp">
 
             <com.accorpa.sawah.custom_views.CustomTextView
                 android:id="@+id/title_ar"

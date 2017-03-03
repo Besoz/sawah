@@ -4,20 +4,17 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <!--<item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
         <item name="colorAccent">@color/colorPrimary</item>
-
         <item name="colorControlNormal">@color/textColor</item>
         <item name="colorControlActivated">@color/textColor</item>
-        <!--<item name="colorControlHighlight">@color/textColor</item>-->
-        <!--<item name="android:textColorHint">@color/textColor</item>-->
-
-        <!--<item name="android:textColor">@color/textColor</item>-->
-
-        <!--<item name="android:alertDialogTheme">@style/sawahAlertDialogTheme</item>-->
-
+        <item name="android:textColor">@color/textColor</item>
     </style>
 
+    <style name="buttonWithIcon">
+        <item name="android:textSize">20dp</item>
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:gravity">center_vertical|right</item>
+    </style>
     <style name="sawahAlertDialogTheme">
         <item name="android:colorBackground">
             @color/buttonColor

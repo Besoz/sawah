@@ -11,6 +11,7 @@ import com.accorpa.sawah.Authorization.AuthorizationController;
 import com.accorpa.sawah.Authorization.LoginListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.models.User;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -40,7 +41,7 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
         service.putExtra("serviceType", "register");
         this.startService(service);
 
-
+        Utils.getInstance().changeStatusBarColor(this);
         new Handler().postDelayed(new Runnable()
         {
             @Override

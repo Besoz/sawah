@@ -97,14 +97,14 @@ public class NavigationHandler {
         DataHandler dataHandler =  DataHandler.getInstance(context.getApplicationContext());
         Intent intent = null;
 
-        if(dataHandler.hasDefaultCity()){
-
-            intent = new Intent(context, CategoriesListActivity.class);
-            intent.putExtra(dataHandler.CITY_ID_KEY, dataHandler.getDefaultCityID());
-
-        }else{
+//        if(dataHandler.hasDefaultCity()){
+//
+//            intent = new Intent(context, CategoriesListActivity.class);
+//            intent.putExtra(dataHandler.CITY_ID_KEY, dataHandler.getDefaultCityID());
+//
+//        }else{
             intent = new Intent(context, CitiesListActivity.class);
-        }
+//        }
 
         return intent;
     }
