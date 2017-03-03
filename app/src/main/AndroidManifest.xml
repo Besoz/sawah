@@ -92,7 +92,7 @@
             android:value="7" />
         <meta-data
             android:name="QUERY_LOG"
-            android:value="true" />
+            android:value="false" />
         <meta-data
             android:name="DOMAIN_PACKAGE_NAME"
             android:value="com.accorpa.sawah.models" />
@@ -128,7 +128,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme" />
+                <data android:scheme="@string/fb_login_protocol_scheme"
+                    tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
         <activity
@@ -138,11 +139,6 @@
             android:name="io.fabric.ApiKey"
             android:value="51e4547b1779ba1627f513e241a8b428d1e1e6b2" />
             android:theme="@style/Theme.AppCompat.NoActionBar.AlertLight" />
-        <activity
-            android:name=".place.PlaceListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
     </application>
 
 </manifest>

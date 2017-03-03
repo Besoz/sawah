@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.orm.annotation.Ignore;
+import com.orm.dsl.Ignore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

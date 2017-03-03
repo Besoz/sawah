@@ -18,7 +18,7 @@ public class CustomButton extends Button {
     }
 
     public CustomButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(context, attrs, R.attr.borderlessButtonStyle);
         applyUi();
         setFont(context, attrs);
     }
@@ -45,6 +45,8 @@ public class CustomButton extends Button {
             else
             {
                 fontFilePath = getResources().getString(R.string.default_font);
+                if(this.getTypeface().isBold())
+                    fontFilePath = getResources().getString(R.string.default_font_bold);
                 this.setTypeface(Typeface.createFromAsset(context.getAssets(),
                     fontFilePath));
             }

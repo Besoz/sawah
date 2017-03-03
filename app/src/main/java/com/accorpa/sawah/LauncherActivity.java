@@ -2,6 +2,7 @@ package com.accorpa.sawah;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -20,7 +21,7 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private static final String TWITTER_KEY = "64Ej42adLTs8VXNwbEE6JaOux";
     private static final String TWITTER_SECRET = "KaeNwQEFEX6ntN9z7NE7rz9SS3W6VgLnPd9vTVOZrHXgA8KWB6";
-
+    private final int SPLASH_DISPLAY_LENGTH = 1000;
 
     private View mSplashView, mProgressView;
     @Override
@@ -39,16 +40,25 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
         service.putExtra("serviceType", "register");
         this.startService(service);
 
-//        login user if exist else show login activity
-        if(DataHandler.getInstance(this).userExist()){
-            String userID = DataHandler.getInstance(this).getUser().getUserID();
-            AuthorizationController authorizationController =
-                    new AuthorizationController(this.getApplicationContext(), this);
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run() {
+                /* Create an Intent that will start the Menu-Activity. */
+                //        login user if exist else show login activity
+                if(DataHandler.getInstance(LauncherActivity.this).userExist()){
+                    String userID = DataHandler.getInstance(LauncherActivity.this).getUser().getUserID();
+                    AuthorizationController authorizationController =
+                            new AuthorizationController(LauncherActivity.this.getApplicationContext(),
+                                    LauncherActivity.this);
 //            showProgress(true);
-            authorizationController.loginUser(userID);
-        }else{
-            NavigationHandler.getInstance().startLoginActivity(this);
-        }
+                    authorizationController.loginUser(userID);
+                }else{
+                    NavigationHandler.getInstance().startLoginActivity(LauncherActivity.this);
+                }
+            }
+        }, SPLASH_DISPLAY_LENGTH);
     }
 
     @Override

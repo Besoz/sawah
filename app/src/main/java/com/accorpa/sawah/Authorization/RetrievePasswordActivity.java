@@ -2,13 +2,16 @@ package com.accorpa.sawah.Authorization;
 
 import android.support.annotation.NonNull;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatImageButton;
 import android.text.TextUtils;
 import android.view.View;
 
 import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.custom_views.CustomAutoCompleteTextView;
@@ -36,6 +39,15 @@ public class RetrievePasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
         ButterKnife.bind(this);
+
+        AppCompatImageButton backButton = (AppCompatImageButton) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.mail));
     }
 
 

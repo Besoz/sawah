@@ -22,6 +22,9 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         resValue "string", "google_maps_key", (project.findProperty("GOOGLE_MAPS_API_KEY") ?: "")
     }
+    dexOptions {
+//        preDexLibraries true
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -35,6 +38,10 @@ android {
     }
 
     sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/2'] } }
+    lintOptions {
+        disable 'ValidFragment'
+        abortOnError false
+    }
 }
 
 allprojects {
@@ -64,17 +71,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
-
-
-
-
-    compile project(':sugar')
-
-
-
-
-
+    compile 'com.github.satyan:sugar:1.5'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.volley:volley:1.0.0'
@@ -95,38 +92,25 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services-location:10.0.1'
     compile 'com.github.darsh2:MultipleImageSelect:v0.0.4'
-
     compile 'rapid.decoder:library:0.3.0'
     compile 'rapid.decoder:jpeg-decoder:0.3.0'
     compile 'rapid.decoder:png-decoder:0.3.0'
-
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
-//    compile('com.facebook.android:facebook-android-sdk:4.8.2') {
-//        exclude module: 'bolts-android'
-//    }
+    //    compile('com.facebook.android:facebook-android-sdk:4.8.2') {
+
+    //        exclude module: 'bolts-android'
+
+    //    }
     compile('com.twitter.sdk.android:twitter:1.12.1@aar') {
         transitive = true;
     }
-
     compile 'com.google.android.gms:play-services:10.0.1'
-
     compile 'com.android.support:cardview-v7:24.0.+'
-
     compile 'com.squareup.picasso:picasso:2.5.2'
-
     compile 'com.github.techery:properratingbar:0.0.5'
     compile 'com.iarcuschin:simpleratingbar:0.1.5'
-
     compile 'com.afollestad.material-dialogs:core:0.9.3.0'
-
     compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
-
 }
-
-
-
-
 
 apply plugin: 'com.google.gms.google-services'

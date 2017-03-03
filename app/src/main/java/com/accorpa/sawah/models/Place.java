@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 import com.orm.SugarRecord;
-import com.orm.annotation.Ignore;
+import com.orm.dsl.Ignore;
 
 import java.util.HashMap;
 import java.util.Map;

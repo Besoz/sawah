@@ -5,8 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -18,6 +20,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -33,10 +36,12 @@ import android.widget.TextView;
 import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.custom_views.CustomButton;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -122,8 +127,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
 
-        authorizationController = new AuthorizationController(this, this);
+        Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.emailTextLayout));
+        Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.passwordTextLayout));
 
+        authorizationController = new AuthorizationController(this, this);
 
         baseRequestStateListener = new BaseRequestStateListener() {
             @Override
@@ -736,6 +743,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
-
 }
 
