@@ -38,7 +38,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class BaseActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements View.OnClickListener {
 
     private int drawerGravity = Gravity.RIGHT;
 
@@ -91,17 +91,17 @@ public class BaseActivity extends AppCompatActivity
 //        toggle.setDrawerIndicatorEnabled(false);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+//        navigationView.setNavigationItemSelectedListener(this);
 
 //        version 23.1.0 switches NavigationView to using a RecyclerView This means it is not
 //        instantly available to call findViewById() -a layout pass is needed before it is attached to the
-        View headerLayout = navigationView.inflateHeaderView(R.layout.nav_header_base);
+        View headerLayout = findViewById(R.id.nav_header_base);
 
-        Menu nav_Menu = navigationView.getMenu();
+//        Menu nav_Menu = navigationView.getMenu();
 
         if(DataHandler.getInstance(this).userExist()){
             headerLayout.setVisibility(View.VISIBLE);
-            nav_Menu.findItem(R.id.nav_login).setVisible(false);
+            navigationView.findViewById(R.id.nav_login).setVisibility(View.GONE);
 
             User user = DataHandler.getInstance(this).getUser();
 
@@ -131,12 +131,9 @@ public class BaseActivity extends AppCompatActivity
 
 
         }else{
-
-            nav_Menu.findItem(R.id.nav_settings).setVisible(false);
-            nav_Menu.findItem(R.id.nav_fav_list).setVisible(false);
-            nav_Menu.findItem(R.id.nav_add_place).setVisible(false);
-            nav_Menu.findItem(R.id.nav_logout).setVisible(false);
-
+            navigationView.findViewById(R.id.nav_fav_list).setVisibility(View.GONE);
+            navigationView.findViewById(R.id.nav_add_place).setVisibility(View.GONE);
+            navigationView.findViewById(R.id.nav_logout).setVisibility(View.GONE);
         }
 
         mainLayout = (ViewGroup) findViewById(R.id.content_base);
@@ -180,9 +177,9 @@ public class BaseActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public void onClick(View v) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        int id = v.getId();
 
         if (id == R.id.nav_change_city) {
             // Handle the camera action
@@ -208,14 +205,15 @@ public class BaseActivity extends AppCompatActivity
         } else if (id == R.id.nav_logout) {
             DataHandler.getInstance(this).eraseCurrentUser();
             NavigationHandler.getInstance().startLoginActivity(this);
-        } else if (id == R.id.nav_settings) {
-            NavigationHandler.getInstance().startEditProfileActivity(BaseActivity.this);
         }
+//        else if (id == R.id.nav_settings) {
+//            NavigationHandler.getInstance().startEditProfileActivity(BaseActivity.this);
+//        }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(drawerGravity);
-        return true;
+//        return true;
     }
 
     protected int getLayoutResourceId() {
