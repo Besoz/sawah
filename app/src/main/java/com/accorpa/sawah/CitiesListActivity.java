@@ -1,14 +1,10 @@
 package com.accorpa.sawah;
 
-import android.app.SearchManager;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SearchViewCompat;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
@@ -18,7 +14,7 @@ import com.accorpa.sawah.models.City;
 
 public class CitiesListActivity extends ListActivity {
 
-    private City[] cities, shownCities;
+    private City[] cities;
     private CitiesAdapter citiesAdapter;
 
     @Override
@@ -35,7 +31,8 @@ public class CitiesListActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
                 City selectedCity = (City) mListView.getAdapter().getItem(position);
 
-                DataHandler.getInstance(context.getApplicationContext()).setDefaulCity(selectedCity);
+
+                DataHandler.getInstance(context.getApplicationContext()).setDefaultCity(selectedCity);
 
                 NavigationHandler.getInstance().startCategoriesListActivity(CitiesListActivity.this,
                         selectedCity.getCityID());
@@ -48,7 +45,7 @@ public class CitiesListActivity extends ListActivity {
 
 
 
-    public void recieveCitiesList(City[] cities) {
+    public void receiveCitiesList(City[] cities) {
 
         this.cities = cities;
         citiesAdapter = new CitiesAdapter(this, cities);

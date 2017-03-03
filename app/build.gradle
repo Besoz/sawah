@@ -71,7 +71,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.github.satyan:sugar:1.5'
+    //    compile 'com.github.satyan:sugar:1.5'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.volley:volley:1.0.0'
@@ -111,6 +111,7 @@ dependencies {
     compile 'com.iarcuschin:simpleratingbar:0.1.5'
     compile 'com.afollestad.material-dialogs:core:0.9.3.0'
     compile 'com.jakewharton:butterknife:8.5.1'
+    compile project(':sugar')
 }
 
 apply plugin: 'com.google.gms.google-services'

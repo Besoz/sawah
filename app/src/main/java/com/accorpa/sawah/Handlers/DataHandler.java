@@ -200,7 +200,7 @@ public class DataHandler {
 
         try {
             City[] arr = JacksonHelper.getInstance().convertToArray(response.toString(), City.class);
-            citiesListActivity.recieveCitiesList(arr);
+            citiesListActivity.receiveCitiesList(arr);
             Log.d("gg", String.valueOf(arr.length));
         } catch (IOException e) {
             e.printStackTrace();
@@ -215,11 +215,33 @@ public class DataHandler {
         return sharedPreferences.getDefaultCityID();
     }
 
-    public void setDefaulCity(City City){
+    public void setDefaultCity(City city){
 
-        sharedPreferences.setDefaultCity(City);
+        sharedPreferences.setDefaultCity(city);
 
     }
+    public void syncDefaultCityAndLocation(String city, String latitude, String longitude, String userID){
+
+        BaseResponseListener baseResponseListener = new BaseResponseListener();
+        baseResponseListener.setOnResponseListner(new BaseRequestStateListener() {
+            @Override
+            public void failResponse(ServiceResponse response) {
+                Log.d("change city service", "fail");
+            }
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+                Log.d("change city service", "success");
+
+            }
+        });
+
+
+        serviceHandler.changeCity(city,  getUser().getUserID(), latitude, longitude,
+                baseResponseListener);
+
+    }
+
 
     public void togglePlaceFavourite(Place place) {
         if(place.isFavourite()){
@@ -460,18 +482,6 @@ public class DataHandler {
         return images;
     }
 
-    public String[] getImagesNames(Intent data){
-
-        String[] imagesPath = data.getStringExtra("data").split("\\|");
-
-        String[] names = new String[imagesPath.length];
-
-        for (int i = 0; i < imagesPath.length; i++) {
-            names[i] = getImageName(Uri.parse(imagesPath[i]));
-        }
-
-        return names;
-    }
 
     public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place, final BaseRequestStateListener listner) {
         Log.d("add new Place", "2");
@@ -672,5 +682,7 @@ public class DataHandler {
         });
 
     }
+
+
 }
 

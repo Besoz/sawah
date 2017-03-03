@@ -33,6 +33,17 @@
     <string name="categories_list_service_url">/api/Categories/get</string>
     <string name="places_list_service_url">/api/points/GetByCategoryID</string>
     <string name="cities_service_url">/api/cities/get</string>
+    <string name="add_comment_url">/api/comments/add</string>
+
+    <string name="update_user_data_url">/api/users/update</string>
+    <string name="update_user_image_url">/api/users/changeImage</string>
+    <string name="change_password_url">/api/users/ChangePassword</string>
+    <string name="add_new_place_url">/api/draftpoints/add</string>
+    <string name="upload_place_images_url">/api/draftpoints/uploadImages</string>
+    <string name="retreive_assword_url">/api/users/ResetPassword</string>
+    <string name="social_login_url">/api/users/AddOrLoginBySocialMedia</string>
+    <string name="add_check_in_url">/api/points/AddCheckIn</string>
+    <string name="change_city_url">/api/users/ChangeCity</string>
 
     <string name="title_activity_base">BaseActivity</string>
 
@@ -66,11 +77,6 @@
     <string name="terms_of_use_notation">بضغطك على زر النشر بالأسفل تكون قد وافقت على شروط النشر والاستخدام والخصوصية الخاصة بتطبيق سوّاح.</string>
     <string name="max_comment_char_text">الحد الأقصى 300 حرف</string>
     <string name="comment_post_button_text">نشر</string>
-    <string name="add_comment_url">/api/comments/add</string>
-
-    <string name="update_user_data_url">/api/users/update</string>
-    <string name="update_user_image_url">/api/users/changeImage</string>
-    <string name="change_password_url">/api/users/ChangePassword</string>
 
 
     <string name="comment_in_review_text">نم إضافة تعليق\nسيتم نشر التعليق بعد مراجعته</string>
@@ -114,8 +120,7 @@
     <string name="next">التالي</string>
     <string name="send">إرسال</string>
     <string name="error_must_select_one_image">يجب اختيار صورة على الاقل</string>
-    <string name="add_new_place_url">/api/draftpoints/add</string>
-    <string name="upload_place_images_url">/api/draftpoints/uploadImages</string>
+
     <string name="search_for_city">ابحث عن مدينة</string>
 
     <string name="align_justify_icon">\ue9ad</string>
@@ -135,8 +140,7 @@
     <string name="work_time"> اوقات العمل</string>
     <string name="retreive_password">إستعادة كلمة المرور</string>
     <string name="password_sent_to_mail_successfuly">تم اسعادة كلمة المرور إلى ايميلك بنجاح</string>
-    <string name="retreive_assword_url">/api/users/ResetPassword</string>
-    <string name="social_login_url">/api/users/AddOrLoginBySocialMedia</string>
+
     <string name="log_out">خروج</string>
     <string name="settings">ألإعدادات</string>
     <string name="must_sign_in_to_add_comment">يجب تسجيل الدخول لإضافة تعليق</string>

@@ -448,6 +448,74 @@ public class ServiceHandler {
         return request;
     }
 
+    public void makeCheckin(String placeID, String userID, BaseResponseListener baseResponseListener) {
+
+        String url = urlHandler.getCheckinUrl();
+
+        JSONObject payload = getCheckinPayload(placeID, userID);
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, payload, baseResponseListener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
+    private JSONObject getCheckinPayload(String placeID, String userID){
+
+        JSONObject request = new JSONObject();
+        try {
+            request.put("PointID", placeID);
+            request.put("UserID", userID);
+
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return request;
+    }
+
+    public void changeCity(String cityID, String userID, String latitude, String longitude,
+                           BaseResponseListener baseResponseListener) {
+
+        String url = urlHandler.getCheckinUrl();
+
+        JSONObject payload = getChangeCityPayload(cityID, userID, latitude, longitude);
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, payload, baseResponseListener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+    }
+
+    private JSONObject getChangeCityPayload(String cityID, String userID, String latitude,
+                                         String longitude){
+
+        JSONObject request = new JSONObject();
+        try {
+            request.put("CityID", cityID);
+            request.put("UserID", userID);
+            request.put("LatLng", latitude+","+longitude);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return request;
+    }
+
+
+
 }
 
 

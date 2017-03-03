@@ -2,9 +2,9 @@ package com.accorpa.sawah.models;
 
 import android.net.Uri;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.orm.dsl.Ignore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,7 +49,7 @@ public class User {
     @JsonProperty("LocalImageLocation")
     private String localImagePath;
 
-    @Ignore
+    @JsonIgnore
     private Date date;
 
     public User(String email, String userName, String password, String fullName, String sex, String birthDate, String mobileNumber, String userID, String imageLocation, String localImagePath, Date date) {
