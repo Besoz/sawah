@@ -14,6 +14,7 @@ import android.widget.GridView;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.models.City;
 
 public class CitiesListActivity extends ListActivity {
@@ -24,8 +25,9 @@ public class CitiesListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.getInstance().changeStatusBarColor(this);
 
-        removeNavigationDrawer();
+//        removeNavigationDrawer();
 //        hideToolbarTitle();
 
         mListView = (GridView) findViewById(R.id.list);

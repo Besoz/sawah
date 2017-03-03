@@ -129,6 +129,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.emailTextLayout));
         Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.passwordTextLayout));
+        Utils.getInstance().changeStatusBarColor(this);
 
         authorizationController = new AuthorizationController(this, this);
 

@@ -84,6 +84,11 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
         return DataHandler.getInstance(this).getDefaultCity().getCityNameAR();
     }
 
+    @Override
+    protected int getActionBarMenuLayout() {
+        return R.menu.search_back_tool_bar;
+    }
+
     protected int getLayoutResourceId() {
         return R.layout.fragment_place_list;
     }

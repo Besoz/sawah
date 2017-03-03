@@ -4,11 +4,13 @@
     android:id="@+id/activity_categories_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/listview_margin"
+    android:paddingRight="@dimen/listview_margin"
+    android:paddingLeft="@dimen/listview_margin"
     tools:context="com.accorpa.sawah.CategoriesListActivity"
     android:gravity="center">
 
     <GridView
+        android:paddingTop="10dp"
         android:id="@+id/list"
         android:numColumns="2"
         android:layout_height="wrap_content"
