@@ -121,5 +121,9 @@ public class CategoriesRecycleAdapter extends  RecyclerView.Adapter<CategoriesRe
             frameAnimation.stop();
         }
     }
+    public void updateDataSource(Category[] dataSource) {
+        this.mDataSource = dataSource;
+        notifyDataSetChanged();
+    }
 
 }
