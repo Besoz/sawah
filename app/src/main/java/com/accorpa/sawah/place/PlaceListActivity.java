@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.models.Place;
 
@@ -32,7 +33,7 @@ public class PlaceListActivity extends BasePlacesListActivity {
 
         super.onCreate(savedInstanceState);
 
-
+        Utils.getInstance().changeStatusBarColor(this);
         DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
         showProgress(true);
     }
@@ -57,7 +58,7 @@ public class PlaceListActivity extends BasePlacesListActivity {
 
     @Override
     protected int getActionBarMenuLayout() {
-        return R.menu.search_tool_bar;
+        return R.menu.search_back_tool_bar;
     }
 
 

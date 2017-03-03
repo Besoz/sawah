@@ -3,7 +3,10 @@ package com.accorpa.sawah.place;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +21,11 @@ import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.RecycleAdapterListener;
 import com.accorpa.sawah.custom_views.CustomCheckBox;
+import com.accorpa.sawah.custom_views.CustomTextView;
 import com.accorpa.sawah.models.Place;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
+import com.google.android.gms.vision.text.Line;
 
 
 import java.net.PortUnreachableException;
@@ -35,7 +40,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
     private Context mContext;
 //    private LayoutInflater mInflater;
-
+    private View convertView;
     private ArrayList<Place> mDataSource;
 
     private RecycleAdapterListener mListener;
@@ -56,17 +61,13 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         this.specialPlaceLayout = specialPlaceLayout;
 
         rotation = AnimationUtils.loadAnimation(mContext, R.anim.shake);
-
-
     }
 
     @Override
     public PlaceRecycleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View convertView = LayoutInflater.from(parent.getContext())
+        convertView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.place_list_item, parent, false);
-
-
         ViewHolder vh = new ViewHolder(convertView, addLikeButton);
         return vh;
     }
@@ -75,32 +76,57 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
     public void onBindViewHolder(final PlaceRecycleAdapter.ViewHolder holder, int position) {
 
         final Place place = mDataSource.get(position);
+        System.out.println("Place: "+place.getPalceNameEng() + "----" + place.isSpecial());
+        if(place.isSpecial() && specialPlaceLayout)
+        {
+            holder.specialCard.setVisibility(View.VISIBLE);
+            holder.notSpecialCard.setVisibility(View.GONE);
+        }
+        else {
+            holder.specialCard.setVisibility(View.GONE);
+            holder.notSpecialCard.setVisibility(View.VISIBLE);
+        }
 
         holder.titleArabic.setText(place.getPalceNameArb());
         holder.titleEnglish.setText(place.getPalceNameEng());
+
+        holder.titleArabicSpecial.setText(place.getPalceNameArb());
+        holder.titleEnglishSpecial.setText(place.getPalceNameEng());
 
         ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
         String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
 
 
         LayerDrawable layer = (LayerDrawable) holder.mNetworkImageView.getBackground();
-        AnimationDrawable frameAnimation = (AnimationDrawable) layer.getDrawable(0);
-        frameAnimation.start();
+        if(layer != null) {
+            AnimationDrawable frameAnimation = (AnimationDrawable) layer.getDrawable(0);
+            frameAnimation.start();
+        }
+
+        layer = (LayerDrawable) holder.mNetworkImageViewSpecial.getBackground();
+        if(layer != null) {
+            AnimationDrawable frameAnimation = (AnimationDrawable) layer.getDrawable(0);
+            frameAnimation.start();
+        }
 
         holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
+        holder.mNetworkImageViewSpecial.setImageUrl(imageUrl, mImageLoader);
 
 
         holder.specialTag.setVisibility(place.isSpecial() && specialPlaceLayout ?
                 View.VISIBLE : View.GONE);
 
-
+        holder.specialTagSpecial.setVisibility(place.isSpecial() && specialPlaceLayout ?
+                View.VISIBLE : View.GONE);
 
         if(addLikeButton){
 
             if(place.isFavourite()){
                 holder.likeButton.setChecked();
+                holder.likeButtonSpecial.setChecked();
             }else{
                 holder.likeButton.setUnChecked();
+                holder.likeButtonSpecial.setUnChecked();
             }
 
             holder.likeButton.setOnClickListener(new View.OnClickListener() {
@@ -111,9 +137,19 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
                     holder.likeButton.toggleState();
                 }
             });
+
+            holder.likeButtonSpecial.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    DataHandler.getInstance(mContext).togglePlaceFavourite(place);
+                    holder.likeButtonSpecial.toggleState();
+                }
+            });
         }
 
         holder.specialTag.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
+        holder.specialTagSpecial.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
 
         if(addDeleteButton) {
             holder.deleteButton.setVisibility(View.VISIBLE);
@@ -146,9 +182,6 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
                 mListener.itemSelected(place);
             }
         });
-
-
-
     }
 
     @Override
@@ -178,6 +211,15 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         public CustomCheckBox likeButton;
         public CustomCheckBox deleteButton;
         public LinearLayout specialTag;
+
+        public TextView titleArabicSpecial;
+        public TextView titleEnglishSpecial;
+        public NetworkImageView mNetworkImageViewSpecial;
+        public CustomCheckBox likeButtonSpecial;
+        public LinearLayout specialTagSpecial;
+
+        public CardView specialCard;
+        public CardView notSpecialCard;
         public View v;
 
         public ViewHolder(View v, boolean addLikeButton) {
@@ -192,6 +234,16 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
             likeButton.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
             this.specialTag = (LinearLayout) v.findViewById(R.id.special_place_tag);
             this.deleteButton = (CustomCheckBox) v.findViewById(R.id.delete_button);
+
+            this.mNetworkImageViewSpecial = (NetworkImageView) v.findViewById(R.id.special_icon);
+            mNetworkImageViewSpecial.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+            this.titleArabicSpecial = (TextView) v.findViewById(R.id.special_place_title_ar);
+            this.titleEnglishSpecial = (TextView) v.findViewById(R.id.special_place_title_en);
+            this.likeButtonSpecial = (CustomCheckBox) v.findViewById(R.id.special_like_button);
+            this.specialTagSpecial = (LinearLayout) v.findViewById(R.id.special_special_place_tag);
+
+            this.specialCard = (CardView) v.findViewById(R.id.special_card);
+            this.notSpecialCard = (CardView)v.findViewById(R.id.not_special_card);
 
         }
     }
