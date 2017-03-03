@@ -36,6 +36,7 @@ import android.widget.TextView;
 import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.custom_views.CustomButton;
@@ -126,8 +127,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         setContentView(R.layout.activity_login);
 
-        setTypefaceToInputLayout((TextInputLayout) findViewById(R.id.emailTextLayout));
-        setTypefaceToInputLayout((TextInputLayout) findViewById(R.id.passwordTextLayout));
+        Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.emailTextLayout));
+        Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.passwordTextLayout));
 
         authorizationController = new AuthorizationController(this, this);
 
@@ -742,32 +743,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int ADDRESS = 0;
         int IS_PRIMARY = 1;
     }
-
-    private void setTypefaceToInputLayout(TextInputLayout inputLayout){
-
-        String fontFilePath = getResources().getString(R.string.default_font);
-
-        final Typeface tf = Typeface.createFromAsset(getAssets(), fontFilePath);
-
-        inputLayout.setTypeface(tf);
-        inputLayout.getEditText().setTypeface(tf);
-//        try {
-//            // Retrieve the CollapsingTextHelper Field
-//            final Field collapsingTextHelperField = inputLayout.getClass().getDeclaredField("mCollapsingTextHelper");
-//            collapsingTextHelperField.setAccessible(true);
-//
-//            // Retrieve an instance of CollapsingTextHelper and its TextPaint
-//            final Object collapsingTextHelper = collapsingTextHelperField.get(inputLayout);
-//            final Field tpf = collapsingTextHelper.getClass().getDeclaredField("mTextPaint");
-//            tpf.setAccessible(true);
-//
-//            // Apply your Typeface to the CollapsingTextHelper TextPaint
-//            ((TextPaint) tpf.get(collapsingTextHelper)).setTypeface(tf);
-//        } catch (Exception ignored) {
-//            // Nothing to do
-//            System.out.println("------------------------------------------ can't apply to hint");
-//        }
-    }
-
 }
 

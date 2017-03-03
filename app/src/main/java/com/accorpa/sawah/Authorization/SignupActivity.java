@@ -13,8 +13,10 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageButton;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.models.User;
@@ -68,6 +71,9 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
 
         setContentView(R.layout.activity_signup);
 
+        Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.signupEmailTextLayout));
+        Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.signupPasswordTextLayout));
+
         dataHandler = DataHandler.getInstance(getApplicationContext());
         serviceHandler = ServiceHandler.getInstance(getApplicationContext());
 
@@ -89,6 +95,14 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
                     return true;
                 }
                 return false;
+            }
+        });
+
+        AppCompatImageButton backButton = (AppCompatImageButton) findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
             }
         });
 

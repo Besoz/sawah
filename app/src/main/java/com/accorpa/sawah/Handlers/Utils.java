@@ -1,6 +1,11 @@
 package com.accorpa.sawah.Handlers;
 
+import android.content.Context;
+import android.graphics.Typeface;
+import android.support.design.widget.TextInputLayout;
 import android.util.Log;
+
+import com.accorpa.sawah.R;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -43,5 +48,13 @@ public class Utils {
     public int getTodayDayNumber() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.DAY_OF_WEEK);
+    }
+
+    public void setTypefaceToInputLayout(Context c, TextInputLayout inputLayout)
+    {
+        String fontFilePath = c.getResources().getString(R.string.default_font);
+        final Typeface tf = Typeface.createFromAsset(c.getAssets(), fontFilePath);
+        inputLayout.setTypeface(tf);
+        inputLayout.getEditText().setTypeface(tf);
     }
 }

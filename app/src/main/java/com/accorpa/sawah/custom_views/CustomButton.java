@@ -18,7 +18,7 @@ public class CustomButton extends Button {
     }
 
     public CustomButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        super(context, attrs, R.attr.borderlessButtonStyle);
         applyUi();
         setFont(context, attrs);
     }

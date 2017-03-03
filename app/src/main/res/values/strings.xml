@@ -2,7 +2,8 @@
     <string name="app_name">سواح</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">اسم المسنخدم</string>
+    <string name="prompt_email">الإيميل</string>
+    <string name="prompt_user_name">اسم المستخدم</string>
     <string name="prompt_password">كلمة المرور</string>
     <string name="action_sign_up">تسجيل</string>
     <string name="action_sign_in_short">دخول</string>
@@ -132,7 +133,7 @@
     <string name="fri_day">الجمعة</string>
     <string name="work_time_today">اوقات العمل اليوم</string>
     <string name="work_time"> اوقات العمل</string>
-    <string name="retreive_password">استعادة كلمة المرور</string>
+    <string name="retreive_password">إستعادة كلمة المرور</string>
     <string name="password_sent_to_mail_successfuly">تم اسعادة كلمة المرور إلى ايميلك بنجاح</string>
     <string name="retreive_assword_url">/api/users/ResetPassword</string>
     <string name="social_login_url">/api/users/AddOrLoginBySocialMedia</string>
