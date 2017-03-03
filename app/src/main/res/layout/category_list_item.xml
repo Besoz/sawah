@@ -25,7 +25,8 @@
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:layout_height="121dp"
-            android:layout_width="match_parent"/>
+            android:layout_width="match_parent"
+            android:background="@drawable/yellow_bird_progess_dialog" />
 
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="fill_parent"

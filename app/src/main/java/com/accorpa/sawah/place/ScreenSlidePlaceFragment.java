@@ -1,6 +1,7 @@
 package com.accorpa.sawah.place;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -61,7 +62,8 @@ public class ScreenSlidePlaceFragment extends Fragment {
 //                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
 
         mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
-        AnimationDrawable frameAnimation = (AnimationDrawable) mNetworkImageView.getBackground();
+        LayerDrawable layer = (LayerDrawable) mNetworkImageView.getBackground();
+        AnimationDrawable frameAnimation = (AnimationDrawable) layer.getDrawable(0);
         frameAnimation.start();
 
         mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
