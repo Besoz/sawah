@@ -2,6 +2,7 @@ package com.accorpa.sawah.place;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,7 +83,8 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
 
 
-        AnimationDrawable frameAnimation = (AnimationDrawable) holder.mNetworkImageView.getBackground();
+        LayerDrawable layer = (LayerDrawable) holder.mNetworkImageView.getBackground();
+        AnimationDrawable frameAnimation = (AnimationDrawable) layer.getDrawable(0);
         frameAnimation.start();
 
         holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
