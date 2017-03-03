@@ -12,7 +12,6 @@ import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.models.User;
-import com.google.android.gms.vision.text.Text;
 
 /**
  * Created by root on 16/01/17.
@@ -75,35 +74,8 @@ public class AuthorizationController implements LoginListener {
             @Override
             public void successResponse(ServiceResponse response) {
 
-                BaseRequestStateListener updateUserListener = new BaseRequestStateListener() {
-                    @Override
-                    public void failResponse(ServiceResponse response) {
-                        origionListener.failResponse(response);
-                    }
-                    @Override
-                    public void successResponse(ServiceResponse response) {
-
-                        final User updatedUser = response.getUser();
-                        saveUser(updatedUser);
-
-                        BaseRequestStateListener imageLoadAndSaveListner = new BaseRequestStateListener() {
-                            @Override
-                            public void failResponse(ServiceResponse response) {
-                                origionListener.failResponse(response);
-                            }
-
-                            @Override
-                            public void successResponse(ServiceResponse response) {
-                                origionListener.successResponse(response);
-                            }
-                        };
-
-
-//                        save image locally
-                        DataHandler.getInstance(context).loadAndSaveUserNetworkImage(image, imageLoadAndSaveListner);
-                    }
-                };
-
+                BaseRequestStateListener updateUserListener = getUpdateUserListener(origionListener,
+                        image);
 
                 final User user = response.getUser();
                 user.setEmail(email);
@@ -187,5 +159,39 @@ public class AuthorizationController implements LoginListener {
     public static boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
         return password.length() > 4;
+    }
+
+    public BaseRequestStateListener getUpdateUserListener(final BaseRequestStateListener origionListener,
+                                                          final Uri imageURI) {
+
+        BaseRequestStateListener updateUserListener = new BaseRequestStateListener() {
+            @Override
+            public void failResponse(ServiceResponse response) {
+                origionListener.failResponse(response);
+            }
+            @Override
+            public void successResponse(ServiceResponse response) {
+
+                final User updatedUser = response.getUser();
+                saveUser(updatedUser);
+
+                BaseRequestStateListener imageLoadAndSaveListner = new BaseRequestStateListener() {
+                    @Override
+                    public void failResponse(ServiceResponse response) {
+                        origionListener.failResponse(response);
+                    }
+
+                    @Override
+                    public void successResponse(ServiceResponse response) {
+                        origionListener.successResponse(response);
+                    }
+                };
+
+//                        save image locally
+                DataHandler.getInstance(context).loadAndSaveUserNetworkImage(imageURI, imageLoadAndSaveListner);
+            }
+        };
+
+        return updateUserListener;
     }
 }

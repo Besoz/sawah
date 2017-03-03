@@ -208,6 +208,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
+
         startLocationUpdates();
     }
 
@@ -271,7 +272,6 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
     public void onPause() {
 
         stopLocationUpdates();
-        mGoogleApiClient.disconnect();
 
         super.onPause();
     }

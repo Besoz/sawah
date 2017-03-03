@@ -14,6 +14,7 @@ public class URLHandler {
 
     private final String Serverpath, loginPath, registerPath, categoriesPath, placesPath, citiesPath,
             addCommentPath, updateUserDataPath, updateUserImagePath, changePasswordPath;
+    private String checkinUrl, changeCityUrl;
     private String addNewPlacePath, retrievePassword, addPlaceImagesUrl, socialLoginUrl;
 
 //    private DataHandler dataHandler;
@@ -44,6 +45,8 @@ public class URLHandler {
         addPlaceImagesUrl = context.getString(R.string.upload_place_images_url);
         retrievePassword = context.getString(R.string.retreive_assword_url);
         socialLoginUrl = context.getString(R.string.social_login_url);
+        checkinUrl = context.getString(R.string.add_check_in_url);
+        changeCityUrl = context.getString(R.string.change_city_url);
 
 
 
@@ -151,4 +154,13 @@ public class URLHandler {
     public String getSocialLoginUrl() {
         return Serverpath + socialLoginUrl;
     }
+
+    public String getCheckinUrl() {
+        return Serverpath + checkinUrl;
+    }
+    
+    public String changeCityUrl() {
+        return Serverpath + changeCityUrl;
+    }
+
 }
