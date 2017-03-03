@@ -2,6 +2,7 @@ package com.accorpa.sawah;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,7 +107,9 @@ public class CategoriesRecycleAdapter extends  RecyclerView.Adapter<CategoriesRe
 
             this.mNetworkImageView = (ImageView) v.findViewById(R.id.icon);
             mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
-            frameAnimation = (AnimationDrawable) mNetworkImageView.getBackground();
+            LayerDrawable layer = (LayerDrawable) mNetworkImageView.getBackground();
+            frameAnimation = (AnimationDrawable) layer.getDrawable(0);
+            frameAnimation.start();
             this.titleTextView = (TextView) v.findViewById(R.id.category_title);
         }
 

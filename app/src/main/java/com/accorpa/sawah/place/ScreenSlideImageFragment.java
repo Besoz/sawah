@@ -1,6 +1,7 @@
 package com.accorpa.sawah.place;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -45,7 +46,8 @@ public class ScreenSlideImageFragment extends Fragment {
         mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
 
         mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
-        AnimationDrawable frameAnimation = (AnimationDrawable) mNetworkImageView.getBackground();
+        LayerDrawable layer = (LayerDrawable) mNetworkImageView.getBackground();
+        AnimationDrawable  frameAnimation = (AnimationDrawable) layer.getDrawable(0);
         frameAnimation.start();
 
 

@@ -15,4 +15,5 @@
     android:scrollbars="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.accorpa.sawah.place.PlaceListFragment"/>
+    tools:context="com.accorpa.sawah.place.PlaceListFragment"
+    android:layout_margin="@dimen/listview_margin"/>

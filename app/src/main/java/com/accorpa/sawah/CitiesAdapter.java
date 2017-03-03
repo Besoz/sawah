@@ -2,6 +2,7 @@ package com.accorpa.sawah;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,9 @@ public class CitiesAdapter extends BaseAdapter {
 
 //        mImageLoader.get(imageUrl, getImageListener(holder.userPhotoImageView, R.drawable.sawah_logo, R.drawable.gplus_login_logo));
         holder.mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
-        AnimationDrawable frameAnimation = (AnimationDrawable) holder.mNetworkImageView.getBackground();
+        LayerDrawable layer = (LayerDrawable) holder.mNetworkImageView.getBackground();
+        AnimationDrawable frameAnimation = (AnimationDrawable) layer.getDrawable(0);
+
         frameAnimation.start();
 
         holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
