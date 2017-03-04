@@ -10,6 +10,7 @@ import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.BitmapImage;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.ServiceResponse;
@@ -38,7 +39,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.getInstance().changeStatusBarColor(this);
         newPlace = new Place();
 
         placeLocationFragment =  MapAllocationFragment.newInstance(newPlace);
@@ -128,6 +129,9 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
             Log.d("add new Place", "big error");
         }
 
+    }
+    protected String getToolbarTitle() {
+        return getString(R.string.add_place);
     }
 
 }

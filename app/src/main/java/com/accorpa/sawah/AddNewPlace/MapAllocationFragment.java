@@ -179,7 +179,6 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         this.googleMap = googleMap;
-
 //        nextButton.getHeight()
 
         ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) ((View) nextButton).getLayoutParams();

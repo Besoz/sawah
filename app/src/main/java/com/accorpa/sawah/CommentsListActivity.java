@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.accorpa.sawah.Handlers.JacksonHelper;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.models.PlaceComment;
+import com.bumptech.glide.util.Util;
 
 import java.io.IOException;
 
@@ -16,9 +18,10 @@ public class CommentsListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.getInstance().changeStatusBarColor(this);
         Intent intent = this.getIntent();
 
+        removeNavigationDrawer();
         String commentsJSONArray = (String) intent.getSerializableExtra("PlaceCommentsArray");
         try {
             comments = JacksonHelper.getInstance().convertToArray(commentsJSONArray,
@@ -34,5 +37,15 @@ public class CommentsListActivity extends ListActivity {
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_comments_list;
+    }
+
+    @Override
+    protected String getToolbarTitle() {
+        return getString(R.string.commments);
+    }
+
+    @Override
+    protected int getActionBarMenuLayout() {
+        return R.menu.back_tool_bar;
     }
 }

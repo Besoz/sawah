@@ -395,8 +395,10 @@
                 android:layout_below="@+id/map"
                 android:text="@string/more_comments_text"
                 android:textColor="@color/colorPrimary"
+                style="?android:textAppearanceMedium"
                 android:background="@drawable/frame_rounded_primary_color"
-                android:layout_margin="@dimen/listview_margin" />
+                android:layout_margin="10dp"
+                android:layout_marginBottom="0dp"/>
         </LinearLayout>
 
 

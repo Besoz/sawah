@@ -25,12 +25,11 @@
                 android:layout_weight="2"></RelativeLayout>
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/sawah_logo"
-                android:src="@drawable/sawah_logo"
+                android:src="@drawable/sawah_logo_dark"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="3"
-                android:background="@color/colorPrimary"/>
+                android:layout_weight="3" />
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -82,7 +81,7 @@
             <com.accorpa.sawah.custom_views.CustomButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/home"
+                android:drawableLeft="@drawable/twitter_small"
                 android:text="@string/twitter_sawah_name"
                 android:id="@+id/open_twitter_page_button"
                 android:textSize="16sp"
@@ -94,7 +93,7 @@
             <com.accorpa.sawah.custom_views.CustomButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/home"
+                android:drawableLeft="@drawable/link"
                 android:text="@string/sawah_website"
                 android:id="@+id/open_website_button"
                 android:textSize="16sp"

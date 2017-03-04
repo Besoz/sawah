@@ -52,9 +52,12 @@
 
     <string name="action_settings">Settings</string>
     <string name="contact_us">اتصل بنا | Contact us</string>
-
+    <string name="searh_city">ابحث عن مدينة</string>
+    <string name="searh_category">ابحث عن تصنيف</string>
+    <string name="search_places">ابحث عن مكان</string>
     <string name="change_city">تغيير المدينة</string>
     <string name="add_place">إضافة مكان</string>
+    <string name="place_name">اسم المكان</string>
     <string name="favourites">المفضلة</string>
     <string name="user_guide">إرشادات عامة</string>
     <string name="notifications">التنبيهات</string>
@@ -155,5 +158,5 @@
     <string name="login_button">تسجيل الدخول</string>
     <string name="empty_fav_list">لا توجد عناصر في مفضلتك</string>
 
-
+    <string name="enter_user_name">ادخل اسم المستخدم</string>
 </resources>

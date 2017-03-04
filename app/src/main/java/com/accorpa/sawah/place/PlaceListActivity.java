@@ -67,6 +67,7 @@ public class PlaceListActivity extends BasePlacesListActivity {
         super.onCreateOptionsMenu(menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
+        ((SearchView)item.getActionView()).setQueryHint(getString(R.string.search_places));
 
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
