@@ -75,7 +75,7 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:noHistory="true" />
         <activity
             android:name=".CommentActivity"
