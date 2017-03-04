@@ -5,120 +5,120 @@
     android:id="@+id/activity_about_sawah"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.accorpa.sawah.AboutSawahActivity"
-    android:weightSum="8"
-    android:orientation="vertical">
+    tools:context="com.accorpa.sawah.AboutSawahActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_weight="2"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_height="0dp">
-
-        <ImageView
+        android:layout_height="match_parent"
+        android:weightSum="10"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/white_progress_dialog_background"
-            app:srcCompat="@drawable/sawah_logo"
-            android:scaleType="fitCenter" />
+            android:layout_height="0dp"
+            android:orientation="horizontal"
+            android:layout_weight="2"
+            android:weightSum="7"
+            android:layout_marginTop="20dp">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"></RelativeLayout>
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/sawah_logo"
+                android:src="@drawable/sawah_logo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="3"
+                android:background="@color/colorPrimary"/>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"></RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="4"
+            android:orientation="vertical"
+            android:gravity="right"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_height="0dp">
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/version_text"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:layout_marginBottom="@dimen/listview_margin"
+                android:layout_marginTop="@dimen/listview_margin" />
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_text"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="@dimen/listview_margin"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="4"
+            android:background="@color/button_bar_grey"
+            android:orientation="vertical"
+            android:gravity="right"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingBottom="2dp"
+            android:paddingTop="2dp"
+            android:layout_height="0dp">
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/happy_to_contact_us"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:layout_marginBottom="2dp"
+                android:layout_marginTop="2dp" />
+            <com.accorpa.sawah.custom_views.CustomButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/home"
+                android:text="@string/twitter_sawah_name"
+                android:id="@+id/open_twitter_page_button"
+                android:textSize="16sp"
+                style="@style/buttonWithIcon"
+                android:layout_gravity="left"
+                android:gravity="left|center_vertical"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="50dp"/>
+            <com.accorpa.sawah.custom_views.CustomButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/home"
+                android:text="@string/sawah_website"
+                android:id="@+id/open_website_button"
+                android:textSize="16sp"
+                style="@style/buttonWithIcon"
+                android:layout_gravity="left"
+                android:gravity="left|center_vertical"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="50dp"/>
+            <com.accorpa.sawah.custom_views.CustomTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/share_app"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="2dp"/>
+            <ImageView
+                android:id="@+id/share_button"
+                android:src="@drawable/unnamed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="3"
-        android:orientation="vertical"
-        android:gravity="right"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_height="0dp">
-
-        <com.accorpa.sawah.custom_views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/version_text"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp"
-            android:layout_marginBottom="@dimen/listview_margin"
-            android:layout_marginTop="@dimen/listview_margin" />
-
-        <com.accorpa.sawah.custom_views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/about_text"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="@dimen/listview_margin"
-            android:layout_marginTop="@dimen/listview_margin"
-            android:textSize="16sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="3"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@color/dark_grey"
-        android:orientation="vertical"
-        android:gravity="right"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingBottom="2dp"
-        android:paddingTop="2dp"
-        android:layout_height="0dp">
-
-        <com.accorpa.sawah.custom_views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/happy_to_contact_us"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-
-        <com.accorpa.sawah.custom_views.CustomTextView
-            android:id="@+id/open_twitter_page_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/twitter_sawah_name"
-            android:textSize="18sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"
-            android:textColor="@android:color/black" />
-
-        <com.accorpa.sawah.custom_views.CustomTextView
-            android:id="@+id/open_website_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sawah_website"
-            android:textColor="@android:color/black"
-            android:textSize="18sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"/>
-
-        <com.accorpa.sawah.custom_views.CustomTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/share_app"
-            android:textColor="@color/colorPrimary"
-            android:textSize="18sp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp"/>
-
-        <ImageView
-            android:id="@+id/share_button"
-            android:src="@drawable/unnamed"
-            android:scaleType="fitCenter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="2dp"
-            android:layout_marginTop="2dp" />
-    </LinearLayout>
-
-
-
 </LinearLayout>

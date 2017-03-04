@@ -3,6 +3,7 @@ package com.accorpa.sawah.Authorization;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
@@ -29,6 +31,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+
+import static com.orm.util.ContextUtil.getAssets;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -166,7 +170,28 @@ public class EditProfileFragment extends Fragment {
         list.add(getString(R.string.male));
         list.add(getString(R.string.female));
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getContext(),
-                R.layout.spinner_item, list);
+                R.layout.spinner_item, list){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+
+                Typeface externalFont=Typeface.createFromAsset(getAssets(),
+                        getResources().getString(R.string.default_font));
+                ((TextView) v).setTypeface(externalFont);
+
+                return v;
+            }
+
+
+            public View getDropDownView(int position,  View convertView,  ViewGroup parent) {
+                View v =super.getDropDownView(position, convertView, parent);
+
+                Typeface externalFont=Typeface.createFromAsset(getAssets(),
+                        getResources().getString(R.string.default_font));
+                ((TextView) v).setTypeface(externalFont);
+
+                return v;
+            }
+        };
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
         spinner.setAdapter(dataAdapter);

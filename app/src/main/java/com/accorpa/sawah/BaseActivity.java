@@ -169,8 +169,6 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
         }
         catch (InflateException e)
         {
-            contentView = mainLayout.findViewById(getLayoutResourceId());
-            mainLayout.addView(contentView);
             System.out.println(e.getMessage());
         }
 
