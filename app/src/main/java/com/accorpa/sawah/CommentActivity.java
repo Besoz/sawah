@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.custom_views.CustomEditText;
 import com.accorpa.sawah.custom_views.CustomTextView;
 import com.accorpa.sawah.models.User;
@@ -50,6 +51,8 @@ public class CommentActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Utils.getInstance().changeStatusBarColor(this);
+        removeNavigationDrawer();
 
         placeID = (String) getIntent().getSerializableExtra("PlaceID");
 
@@ -122,6 +125,15 @@ public class CommentActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected int getActionBarMenuLayout() {
+        return R.menu.back_tool_bar;
+    }
+
+    @Override
+    protected String getToolbarTitle() {
+        return "";
+    }
     private boolean valideComment() {
         if(commentText.getText().toString().length() == 0){
             return false;

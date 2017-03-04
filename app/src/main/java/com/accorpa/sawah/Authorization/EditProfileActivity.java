@@ -12,6 +12,7 @@ import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.models.User;
@@ -35,7 +36,7 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.getInstance().changeStatusBarColor(this);
         user = DataHandler.getInstance(this).getUser();
 
         editProfileFragment =  EditProfileFragment.newInstance(user);
@@ -160,6 +161,11 @@ public class EditProfileActivity extends BaseActivity implements EditProfileFrag
         ft  = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment, editProfileFragment);
         ft.commit();
+    }
+
+    @Override
+    protected String getToolbarTitle() {
+        return "";
     }
 
 }

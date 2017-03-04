@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp"
+            android:background="@drawable/gradiant_black_background_90"
             android:layout_alignBottom="@+id/imagePager">
 
             <LinearLayout
@@ -99,6 +100,23 @@
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/imagePager"
+            android:gravity="center">
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabDots"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                android:layoutDirection="ltr"/>
+        </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -114,7 +132,7 @@
                 app:prb_symbolicTickNormalColor="@color/symbolic_green"
                 app:prb_symbolicTickSelectedColor="@color/symbolic_grey"
                 app:prb_totalTicks="5"
-
+                android:textSize="16dp"
                 app:prb_tickSpacing="2dp"/>
         </RelativeLayout>
 
@@ -144,7 +162,7 @@
             android:background="@color/button_bar_grey"
             android:weightSum="4"
             android:layout_height="70dp"
-            android:padding="@dimen/padding"
+            android:padding="10dp"
             android:layout_centerVertical="true"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin">
@@ -157,8 +175,8 @@
 
                 <ImageButton
                     android:id="@+id/website_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/globe"
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
@@ -168,6 +186,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/place_site"
+                    android:textSize="14dp"
+                    android:textStyle="italic"
                     android:textColor="@color/dark_text_color"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="4dp"/>
@@ -182,8 +202,8 @@
 
                 <ImageButton
                     android:id="@+id/call_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/call"
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
@@ -193,6 +213,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/palce_calling"
+                    android:textStyle="italic"
+                    android:textSize="14dp"
                     android:textColor="@color/dark_text_color"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="4dp"/>
@@ -207,9 +229,9 @@
 
                 <ImageButton
                     android:id="@+id/checkin_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/checkin_active"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/check"
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
                     android:scaleType="fitCenter"
@@ -218,6 +240,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/place_checkin"
+                    android:textStyle="italic"
+                    android:textSize="14dp"
                     android:textColor="@color/dark_text_color"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="4dp"/>
@@ -232,8 +256,8 @@
 
                 <ImageButton
                     android:id="@+id/share_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:src="@drawable/share"
                     android:background="@android:color/transparent"
                     android:layout_weight="1"
@@ -243,6 +267,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/place_share"
+                    android:textStyle="italic"
+                    android:textSize="14dp"
                     android:textColor="@color/dark_text_color"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="4dp" />
@@ -258,9 +284,9 @@
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_below="@+id/media_bar"
-            android:layout_height="200dp"
+            android:layout_height="150dp"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin" />
+            android:layout_marginTop="8dp" />
 
         <RelativeLayout
             android:id="@+id/work_time"
@@ -274,10 +300,10 @@
             <com.accorpa.sawah.custom_views.CustomRotatingButton
                 android:id="@+id/arrow"
                 android:background="@drawable/expand_arrow_48"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="20dp"
+                android:layout_height="10dp"
                 android:layout_alignParentLeft="true"
-                android:tint="@color/project_green"/>
+                android:layout_centerVertical="true"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -343,13 +369,15 @@
             android:orientation="vertical"
             android:layout_below="@+id/work_time"
             android:visibility="gone"
-            android:gravity="right">
+            android:gravity="right"
+            android:layout_marginTop="10dp">
 
             <com.accorpa.sawah.custom_views.CustomTextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/commments"
-                android:textColor="@color/dark_text_color"
+                android:textAlignment="center"
+                android:textColor="@color/comments_gray"
                 android:textSize="18sp" />
 
             <LinearLayout

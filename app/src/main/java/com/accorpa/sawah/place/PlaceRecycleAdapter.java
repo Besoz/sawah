@@ -51,7 +51,8 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
     public PlaceRecycleAdapter(Context mContext, RecycleAdapterListener mListener,
                                boolean addLikeButton,
-                               boolean specialPlaceLayout) {
+                               boolean specialPlaceLayout,
+                               boolean addDeleteButton) {
         this.mContext = mContext;
 
         this.mDataSource = new ArrayList<>();
@@ -59,6 +60,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         this.addLikeButton = addLikeButton;
         this.specialPlaceLayout = specialPlaceLayout;
+        this.addDeleteButton = addDeleteButton;
 
         rotation = AnimationUtils.loadAnimation(mContext, R.anim.shake);
     }
@@ -77,7 +79,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         final Place place = mDataSource.get(position);
         System.out.println("Place: "+place.getPalceNameEng() + "----" + place.isSpecial());
-        if(place.isSpecial() && specialPlaceLayout)
+        if(place.isSpecial() || !specialPlaceLayout)
         {
             holder.specialCard.setVisibility(View.VISIBLE);
             holder.notSpecialCard.setVisibility(View.GONE);
@@ -153,8 +155,8 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         if(addDeleteButton) {
             holder.deleteButton.setVisibility(View.VISIBLE);
-            holder.v.startAnimation(rotation);
-
+            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.shake);
+            holder.v.startAnimation(animation);
         }else {
             holder.deleteButton.setVisibility(View.GONE);
             holder.v.clearAnimation();
@@ -166,12 +168,18 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
                 @Override
                 public void onClick(View v) {
                     holder.v.clearAnimation();
+                    holder.v.setVisibility(View.GONE);
                     DataHandler.getInstance(mContext).togglePlaceFavourite(place);
-                    mDataSource.remove(place);
-                    holder.v.clearAnimation();
-                    PlaceRecycleAdapter.this.notifyDataSetChanged();
 
-
+                    int p = holder.getAdapterPosition();
+                    System.out.println("delete: "+p);
+                    mDataSource.remove(p);
+                    notifyItemRemoved(p);
+//                    notifyItemRangeChanged(p, mDataSource.size());
+                    System.out.println(mDataSource.size());
+                    if(mDataSource.size() == 0)
+                        mListener.showHideEmptyText();
+//                    PlaceRecycleAdapter.this.notifyDataSetChanged();
                 }
             });
         }
@@ -193,6 +201,12 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 //    public double aspectRatioForIndex(int i) {
 //        return 1;
 //    }
+
+    @Override
+    public void onViewDetachedFromWindow(final PlaceRecycleAdapter.ViewHolder holder)
+    {
+        holder.v.clearAnimation();
+    }
 
     public void setDataSource(ArrayList<Place> dataSource) {
         this.mDataSource = dataSource;
@@ -225,6 +239,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         public ViewHolder(View v, boolean addLikeButton) {
             super(v);
             this.v = v;
+
             this.mNetworkImageView = (NetworkImageView) v.findViewById(R.id.icon);
             mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
             this.titleArabic = (TextView) v.findViewById(R.id.place_title_ar);
@@ -241,6 +256,8 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
             this.titleEnglishSpecial = (TextView) v.findViewById(R.id.special_place_title_en);
             this.likeButtonSpecial = (CustomCheckBox) v.findViewById(R.id.special_like_button);
             this.specialTagSpecial = (LinearLayout) v.findViewById(R.id.special_special_place_tag);
+            likeButtonSpecial.setVisibility(addLikeButton? View.VISIBLE : View.GONE);
+            likeButtonSpecial.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
 
             this.specialCard = (CardView) v.findViewById(R.id.special_card);
             this.notSpecialCard = (CardView)v.findViewById(R.id.not_special_card);

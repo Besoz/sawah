@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:textSize="24dp"
+                android:textSize="22dp"
                 android:visibility="visible"/>
 
         </android.support.v7.widget.Toolbar>

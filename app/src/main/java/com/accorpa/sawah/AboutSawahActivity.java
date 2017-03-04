@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.accorpa.sawah.Handlers.SharingHandler;
 import com.accorpa.sawah.Handlers.URLHandler;
+import com.accorpa.sawah.Handlers.Utils;
 
 public class AboutSawahActivity extends BaseActivity {
 
@@ -12,7 +13,7 @@ public class AboutSawahActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.getInstance().changeStatusBarColor(this);
         sharingHandler = SharingHandler.getInstance();
 
         findViewById(R.id.open_website_button).setOnClickListener(new View.OnClickListener() {
@@ -41,5 +42,10 @@ public class AboutSawahActivity extends BaseActivity {
     @Override
     protected int getLayoutResourceId() {
         return R.layout.activity_about_sawah;
+    }
+
+    @Override
+    protected String getToolbarTitle() {
+        return getString(R.string.about_sawah_app);
     }
 }

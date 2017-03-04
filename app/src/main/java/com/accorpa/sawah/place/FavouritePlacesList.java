@@ -2,13 +2,19 @@ package com.accorpa.sawah.place;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.models.Place;
 
 import java.util.ArrayList;
@@ -22,6 +28,7 @@ public class FavouritePlacesList extends BasePlacesListActivity {
     private int nextResID, currentResID;
 //    private FavouritePlacesAdapter adapter;
     private boolean showDeleteButton;
+    private MenuItem editButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +36,19 @@ public class FavouritePlacesList extends BasePlacesListActivity {
         specialPlaceLayout = false;
         addLikeButton = false;
 
-
         super.onCreate(savedInstanceState);
+        Utils.getInstance().changeStatusBarColor(this);
 
         nextResID = R.drawable.cross;
-        currentResID = R.drawable.ic_action_edit;
+        currentResID = R.drawable.editfav;
+
+        if(getPlaces().size() == 0) {
+            mapToggleButton.setVisibility(View.GONE);
+            listFragment.setEmptyListText();
+            if(editButton != null)
+                editButton.setVisible(false);
+        }
 //
-//        mListView = (ListView) findViewById(R.id.list);
 //
 //        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -83,6 +96,14 @@ public class FavouritePlacesList extends BasePlacesListActivity {
 //    }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
+        editButton = menu.findItem(R.id.toggle_deletion_activation);
+        if(getPlaces().size() == 0)
+            editButton.setVisible(false);
+        return true;
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -102,10 +123,18 @@ public class FavouritePlacesList extends BasePlacesListActivity {
             if(listFragment.isVisible()){
                 listFragment.setShowDeleteButton(showDeleteButton);
             }else{
-                showListFragment();
+                listFragment = showListFragment();
                 listFragment.setShowDeleteButton(showDeleteButton);
-            }
 
+                mapToggleButton.setText(R.string.view_map);
+                mapView = false;
+            }
+            if(showDeleteButton)
+            {
+                findViewById(R.id.delete_text).setVisibility(View.VISIBLE);
+            }
+            else
+                findViewById(R.id.delete_text).setVisibility(View.GONE);
         }
 
         return super.onOptionsItemSelected(item);

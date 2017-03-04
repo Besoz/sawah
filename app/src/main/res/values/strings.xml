@@ -59,6 +59,7 @@
     <string name="user_guide">إرشادات عامة</string>
     <string name="notifications">التنبيهات</string>
     <string name="about_sawah">عن تطبيق سواح</string>
+    <string name="about_sawah_app">عن التطبيق</string>
     <string name="dashboard">الرئيسية</string>
     <string name="place_site">الموقع</string>
     <string name="palce_calling">الاتصال</string>
@@ -75,6 +76,7 @@
 
     <string name="title_activity_launcher">LauncherActivity</string>
     <string name="add_new_comment">إضافة تعليق</string>
+    <string name="add_comment_hint">أكتب تعليقك..</string>
     <string name="terms_of_use_notation">بضغطك على زر النشر بالأسفل تكون قد وافقت على شروط النشر والاستخدام والخصوصية الخاصة بتطبيق سوّاح.</string>
     <string name="max_comment_char_text">الحد الأقصى 300 حرف</string>
     <string name="comment_post_button_text">نشر</string>
@@ -90,10 +92,10 @@
     <string name="open_map_with_text">افتح الموقع باستخدام</string>
     <string name="close">إغلاق</string>
     <string name="delete">حذف</string>
-    <string name="about_text">نتطلع في تطبيق سوّاح إلى تغطية أبرز المناطق السياحية في مدينة لندن،  إذ يعمل فريق سوّاح لزيارة الأماكن المهمة في مدينة لندن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدينة العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى في العاصمة البريطانية لندن.</string>
+    <string name="about_text">نتطلع في تطبيق سوّاح إلى تغطية أبرز المناطق السياحية في مدينة لندن،  إذ يعمل فريق سوّاح لزيارة الأماكن المهمة في مدينة لندن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدينة العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
     <string name="version_text">الإصدار الرسمي 2.0</string>
-    <string name="happy_to_contact_us">نسعد بتواصلكم معنا</string>
-    <string name="share_app">شارك التطبيق مع من تحب</string>
+    <string name="happy_to_contact_us">نسعد بكم وبتواصلكم:</string>
+    <string name="share_app">شارك التطبيق مع من تحب:</string>
     <string name="twitter_sawah_name">\@Sawah_app</string>
     <string name="sawah_website">www.sawahapp.com</string>
     <string name="twitter_app_page_uri">twitter://user?user_id=762229045732007937</string>
@@ -104,7 +106,7 @@
     <string name="view_list">استعراض القائمة</string>
     <string name="view_map">استعراض بالخريطة</string>
     <string name="edit">تعديل</string>
-    <string name="personal_information">المعلومات الشخصية</string>
+    <string name="personal_information">المعلومات الشخصية:</string>
     <string name="save">حفظ</string>
     <string name="name">الاسم</string>
     <string name="gender">الجنس</string>
@@ -127,7 +129,7 @@
     <string name="align_justify_icon">\ue9ad</string>
     <string name="cities">المدن</string>
 
-
+    <string name="delete_text">اضغط علي علامة X لإزالة المادة من المفضلة</string>
     <string name="facebook_app_id">353641474978410 </string> <!--1759744457614418</string>-->
     <string name="fb_login_protocol_scheme">fbAPP_ID</string>
     <string name="sat_day">السبت</string>
@@ -149,7 +151,9 @@
     <string name="must_user_data_add_comment">يجب إضافة اسم المستخدم لإضافة تعليق </string>
     <string name="general_instructions_text">نتطلع في تطبيق سواح إلى تغطية أبرز المناطق السياحية في مدن العالم، إذ يعمل فريق سواح لزيارة الأماكن المهمة في هذه المدن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدن العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
     >
+    <string name="general_instructions_title">أرقام تهمك:</string>
     <string name="login_button">تسجيل الدخول</string>
+    <string name="empty_fav_list">لا توجد عناصر في مفضلتك</string>
     <string name="check_in_fail_title_text" >check_in_fail_title_text</string>
     <string name="check_in_done_title_text" >check_in_done_title_text</string>
     <string name="check_in_done_text" >check_in_done_text</string>
@@ -158,7 +162,6 @@
     <string name="cancel_text" >cancel_text</string>
     <string name="enable_gps_title">enable_gps_title</string>
     <string name="enable_gps_message">enable_gps_message</string>
-    >
 
 
 </resources>

@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -72,7 +74,7 @@ import io.techery.properratingbar.ProperRatingBar;
 public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
 
 
-    private static final int VIEW_COMMENTS_COUNT = 2, IMAGES_OFFSCREEN_COUNT= 4;
+    private static final int VIEW_COMMENTS_COUNT = 7, IMAGES_OFFSCREEN_COUNT= 4;
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
     private NetworkImageView placeImage;
 
@@ -154,6 +156,12 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         }
 
         mPager = (ViewPager) findViewById(R.id.imagePager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mPager, true);
+
+        if(place.getImages().length > 1)
+            tabLayout.setVisibility(View.VISIBLE);
+
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 //        mPager.setOffscreenPageLimit(IMAGES_OFFSCREEN_COUNT);

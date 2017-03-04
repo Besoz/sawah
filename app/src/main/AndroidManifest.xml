@@ -108,7 +108,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Authorization.EditProfileActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustPan"/>
         <activity
             android:name=".AddNewPlace.AddNewPlaceActivity"
             android:theme="@style/AppTheme.NoActionBar" />

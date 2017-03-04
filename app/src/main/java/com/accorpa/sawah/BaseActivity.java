@@ -22,6 +22,7 @@ import android.support.v4.view.GravityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -162,8 +163,15 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
         mProgressView = (LinearLayout) findViewById(R.id.base_progress_bar);
 
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(getLayoutResourceId(), null, false);
-        mainLayout.addView(contentView);
+        View contentView;
+        try {
+            contentView = inflater.inflate(getLayoutResourceId(), null, false);
+            mainLayout.addView(contentView);
+        }
+        catch (InflateException e)
+        {
+            System.out.println(e.getMessage());
+        }
 
 
         createLocationRequest();
@@ -395,7 +403,8 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(
+        if(mGoogleApiClient.isConnected())
+            LocationServices.FusedLocationApi.removeLocationUpdates(
                 mGoogleApiClient, this);
     }
 

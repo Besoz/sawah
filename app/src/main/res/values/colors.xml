@@ -17,4 +17,16 @@
     <color name="button_bar_grey">#E7E7E7</color>
     <color name="symbolic_grey">#D8D8D8</color>
     <color name="symbolic_green">#70C1B3</color>
+    <color name="comments_gray">#9B9B9B</color>
+    <color name="comment_text">#595959</color>
+    <color name="max_char">#9C9C9C</color>
+    <color name="add_comment_desc">#595959</color>
+    <color name="add_comment_button">#247BA0</color>
+    <color name="background_gray">#f2f2f2</color>
+    <color name="edit_profile_title">#2a659b</color>
+    <color name="underline">#c3d8ed</color>
+    <color name="light_gray">#f7f7f7</color>
+    <color name="edit_profile_titles">#b4b4b4</color>
+    <color name="delete_red">#fc0055</color>
+
 </resources>
