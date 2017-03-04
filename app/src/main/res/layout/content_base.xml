@@ -8,6 +8,6 @@
     tools:context="com.accorpa.sawah.BaseActivity"
     tools:showIn="@layout/app_bar_base"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:gravity="center">
+    android:gravity="top">
 
 </RelativeLayout>
