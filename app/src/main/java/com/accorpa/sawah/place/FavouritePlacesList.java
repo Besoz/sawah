@@ -59,7 +59,7 @@ public class FavouritePlacesList extends BasePlacesListActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
 //        todo move to datahandeler

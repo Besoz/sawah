@@ -24,6 +24,10 @@ public class ScreenSlideImageFragment extends Fragment {
 
     private String imageURL;
 
+    public ScreenSlideImageFragment() {
+
+    }
+
     public ScreenSlideImageFragment(String imageURL) {
 
         this.imageURL =imageURL;
@@ -37,18 +41,21 @@ public class ScreenSlideImageFragment extends Fragment {
 
 //        rootView.setOnClickListener(onClickListener);
 
-        NetworkImageView mNetworkImageView = (NetworkImageView) rootView.findViewById(R.id.icon);
+        if(imageURL != null){
+            NetworkImageView mNetworkImageView = (NetworkImageView) rootView.findViewById(R.id.icon);
 
-        ImageLoader mImageLoader = ServiceHandler.getInstance(container.getContext()).getImageLoader();
-        String imageUrl= imageURL.replaceAll(" ", "%20");
+            ImageLoader mImageLoader = ServiceHandler.getInstance(container.getContext()).getImageLoader();
+            String imageUrl= imageURL.replaceAll(" ", "%20");
 //        mImageLoader.get(imageUrl, ImageLoader.getImageListener(holder.thumbnailImageView,
 //                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
-        mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
+            mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
 
-        mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
-        LayerDrawable layer = (LayerDrawable) mNetworkImageView.getBackground();
-        AnimationDrawable  frameAnimation = (AnimationDrawable) layer.getDrawable(0);
-        frameAnimation.start();
+            mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+            LayerDrawable layer = (LayerDrawable) mNetworkImageView.getBackground();
+            AnimationDrawable  frameAnimation = (AnimationDrawable) layer.getDrawable(0);
+            frameAnimation.start();
+        }
+
 
 
         return rootView;

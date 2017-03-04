@@ -70,6 +70,9 @@ public class DataHandler {
     private Context context;
 
 
+    private boolean userLocationSynced;
+
+
     public final static String OS = "Android";
 
     private static final Map<Integer, String> dayMap = new HashMap<>();
@@ -683,6 +686,16 @@ public class DataHandler {
 
     }
 
+    public void assertUserLoacationSynced(){
+        userLocationSynced = true;
+    }
 
+    public boolean isUserLoacationSynced(){
+        return userLocationSynced;
+    }
+
+
+    public void checkInPlace(String placeID) {
+    }
 }
 

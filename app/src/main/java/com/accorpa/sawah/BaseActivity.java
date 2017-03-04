@@ -3,12 +3,21 @@ package com.accorpa.sawah;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,15 +40,24 @@ import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.SharingHandler;
 import com.accorpa.sawah.custom_views.CustomTextView;
 import com.accorpa.sawah.models.User;
+import com.accorpa.sawah.place.PlaceDetailsActivity;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class BaseActivity extends AppCompatActivity
-        implements View.OnClickListener {
+public class BaseActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, View.OnClickListener {
 
+    public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 1;
+    protected static final int PERISSION_ALLOWED = 10, PERMISSION_REQUESTED = 20, EXPLAINATION_NEEDED = 30;
     private int drawerGravity = Gravity.RIGHT;
 
     private LinearLayout mProgressView;
@@ -49,6 +67,11 @@ public class BaseActivity extends AppCompatActivity
     private ActionBarDrawerToggle toggle;
     private CustomTextView toolbarTitle;
     private CircleImageView userImage;
+
+
+    protected boolean mRequestingLocationUpdates;
+    protected GoogleApiClient mGoogleApiClient;
+    protected LocationRequest mLocationRequest;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -87,7 +110,6 @@ public class BaseActivity extends AppCompatActivity
 //        });
 
 
-
 //        toggle.setDrawerIndicatorEnabled(false);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -99,7 +121,7 @@ public class BaseActivity extends AppCompatActivity
 
 //        Menu nav_Menu = navigationView.getMenu();
 
-        if(DataHandler.getInstance(this).userExist()){
+        if (DataHandler.getInstance(this).userExist()) {
             headerLayout.setVisibility(View.VISIBLE);
             navigationView.findViewById(R.id.nav_login).setVisibility(View.GONE);
 
@@ -109,7 +131,7 @@ public class BaseActivity extends AppCompatActivity
             userNameText.setText(user.getFullName());
 
             userImage = (CircleImageView) headerLayout.findViewById(R.id.profile_image);
-            if(!TextUtils.isEmpty((user.getLocalImagePath()))){
+            if (!TextUtils.isEmpty((user.getLocalImagePath()))) {
                 Log.d("local image path", user.getLocalImagePath());
 
                 Bitmap b = DataHandler.getInstance(this)
@@ -129,8 +151,7 @@ public class BaseActivity extends AppCompatActivity
             });
 
 
-
-        }else{
+        } else {
             navigationView.findViewById(R.id.nav_fav_list).setVisibility(View.GONE);
             navigationView.findViewById(R.id.nav_add_place).setVisibility(View.GONE);
             navigationView.findViewById(R.id.nav_logout).setVisibility(View.GONE);
@@ -142,6 +163,18 @@ public class BaseActivity extends AppCompatActivity
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(getLayoutResourceId(), null, false);
         mainLayout.addView(contentView);
+
+
+        createLocationRequest();
+
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     @Override
@@ -186,17 +219,15 @@ public class BaseActivity extends AppCompatActivity
 
             NavigationHandler.getInstance().startCityActivity(this);
 
-        }
-        else if (id == R.id.nav_home) {
+        } else if (id == R.id.nav_home) {
             NavigationHandler.getInstance().startCategoriesListActivity(this);
-        }
-        else if (id == R.id.nav_fav_list) {
+        } else if (id == R.id.nav_fav_list) {
             NavigationHandler.getInstance().startFavouritePlacesList(this);
-        }else if (id == R.id.nav_about_sawah){
+        } else if (id == R.id.nav_about_sawah) {
             NavigationHandler.getInstance().startAboutSawah(this);
-        } else if (id == R.id.nav_general_inst){
+        } else if (id == R.id.nav_general_inst) {
             NavigationHandler.getInstance().startGeneralInstruction(this);
-        } else if (id == R.id.nav_contact_us){
+        } else if (id == R.id.nav_contact_us) {
             SharingHandler.getInstance().contactSawah(this);
         } else if (id == R.id.nav_add_place) {
             NavigationHandler.getInstance().AddNewPlace(this);
@@ -214,6 +245,8 @@ public class BaseActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(drawerGravity);
 //        return true;
+
+
     }
 
     protected int getLayoutResourceId() {
@@ -237,19 +270,19 @@ public class BaseActivity extends AppCompatActivity
 
 
     protected void showProgress(final boolean show) {
-            // and hide the relevant UI components.
+        // and hide the relevant UI components.
         mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
         mainLayout.setVisibility(show ? View.GONE : View.VISIBLE);
 
     }
 
-    protected void removeNavigationDrawer(){
+    protected void removeNavigationDrawer() {
         toggle.setDrawerIndicatorEnabled(false);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
     }
 
-    protected void hideToolbarTitle(){
+    protected void hideToolbarTitle() {
         toolbarTitle.setVisibility(View.GONE);
     }
 
@@ -257,12 +290,187 @@ public class BaseActivity extends AppCompatActivity
         return getString(R.string.app_name);
     }
 
-    protected void setToolbarTitle(String s){
+    protected void setToolbarTitle(String s) {
         toolbarTitle.setText(s);
     }
 
     protected void setNavBarUserImage(Bitmap navBarUserImage) {
-        if(userImage != null)
+        if (userImage != null)
             userImage.setImageBitmap(navBarUserImage);
     }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+        Log.d("Location", "Connected");
+        startLocationUpdates();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+
+    protected int startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowExplaination()) {
+
+                showPermissionDialog();
+                return EXPLAINATION_NEEDED;
+
+            } else {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                        PERMISSIONS_REQUEST_FINE_LOCATION);
+                return PERMISSION_REQUESTED;
+            }
+        } else {
+
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+            return PERISSION_ALLOWED;
+        }
+    }
+
+    protected void showPermissionDialog() {
+
+        new MaterialDialog.Builder(BaseActivity.this)
+                .title("permission")
+                .content("Please open permission")
+                .positiveText(R.string.agree)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", getPackageName(), null));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }).negativeText("cancel")
+                .autoDismiss(true)
+                .titleGravity(GravityEnum.CENTER)
+                .contentGravity(GravityEnum.CENTER)
+                .show();
+    }
+
+    protected boolean shouldShowExplaination() {
+
+        return ActivityCompat.shouldShowRequestPermissionRationale(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION) ||
+                ActivityCompat.shouldShowRequestPermissionRationale(this,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d("Location", "changed");
+        DataHandler.getInstance(this).assertUserLoacationSynced();
+
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(
+                mGoogleApiClient, this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mRequestingLocationUpdates && !DataHandler.getInstance(this).isUserLoacationSynced())
+            mGoogleApiClient.connect();
+    }
+
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000);
+        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if(mRequestingLocationUpdates){
+            stopLocationUpdates();
+            mGoogleApiClient.disconnect();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        // TODO: Consider calling
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                        return;
+                    }
+                    LocationServices.FusedLocationApi.requestLocationUpdates(
+                            mGoogleApiClient, mLocationRequest, this);
+
+                } else {
+
+
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    protected boolean requestOpenGps(){
+
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+        if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            Log.d("Request location", "1");
+
+            new MaterialDialog.Builder(BaseActivity.this)
+                    .title("gps")
+                    .content("Please open gps")
+                    .positiveText(R.string.agree)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    }).negativeText("cancel")
+                    .autoDismiss(true)
+                    .titleGravity(GravityEnum.CENTER)
+                    .contentGravity(GravityEnum.CENTER)
+                    .show();
+
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

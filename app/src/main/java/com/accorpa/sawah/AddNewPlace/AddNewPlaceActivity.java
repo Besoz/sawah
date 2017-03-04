@@ -97,7 +97,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         Log.d("on resume", "resume");
