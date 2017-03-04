@@ -102,7 +102,7 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
 
     @Override
     public void showHideEmptyText() {
-        
+
     }
 
     @Override

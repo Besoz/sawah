@@ -86,7 +86,9 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
 //                onPlaceSelected((Place) mListView.getAdapter().getItem(position));
 //            }
 //        });
-        showHideEmptyText();
+        if(showEmptyText) {
+            showHideEmptyText();
+        }
         mLayoutManager = new LinearLayoutManager(getContext());
 
         GridLayoutManager specialGridLayoutManager = new GridLayoutManager(getContext(), 2);
@@ -117,10 +119,8 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
     @Override
     public void showHideEmptyText()
     {
-        if(showEmptyText)
-        {
+
             listFragment.findViewById(R.id.empty_list).setVisibility(View.VISIBLE);
-        }
     }
 
     public void setEmptyListText()
