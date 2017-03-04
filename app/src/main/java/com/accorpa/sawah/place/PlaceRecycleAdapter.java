@@ -152,11 +152,11 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         holder.specialTag.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
         holder.specialTagSpecial.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
-        System.out.println(this);
+
         if(addDeleteButton) {
             holder.deleteButton.setVisibility(View.VISIBLE);
-            holder.v.startAnimation(rotation);
-
+            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.shake);
+            holder.v.startAnimation(animation);
         }else {
             holder.deleteButton.setVisibility(View.GONE);
             holder.v.clearAnimation();
@@ -168,12 +168,18 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
                 @Override
                 public void onClick(View v) {
                     holder.v.clearAnimation();
+                    holder.v.setVisibility(View.GONE);
                     DataHandler.getInstance(mContext).togglePlaceFavourite(place);
-                    mDataSource.remove(place);
-                    holder.v.clearAnimation();
-                    PlaceRecycleAdapter.this.notifyDataSetChanged();
 
-
+                    int p = holder.getAdapterPosition();
+                    System.out.println("delete: "+p);
+                    mDataSource.remove(p);
+                    notifyItemRemoved(p);
+//                    notifyItemRangeChanged(p, mDataSource.size());
+                    System.out.println(mDataSource.size());
+                    if(mDataSource.size() == 0)
+                        mListener.showHideEmptyText();
+//                    PlaceRecycleAdapter.this.notifyDataSetChanged();
                 }
             });
         }
@@ -195,6 +201,12 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 //    public double aspectRatioForIndex(int i) {
 //        return 1;
 //    }
+
+    @Override
+    public void onViewDetachedFromWindow(final PlaceRecycleAdapter.ViewHolder holder)
+    {
+        holder.v.clearAnimation();
+    }
 
     public void setDataSource(ArrayList<Place> dataSource) {
         this.mDataSource = dataSource;
@@ -227,6 +239,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         public ViewHolder(View v, boolean addLikeButton) {
             super(v);
             this.v = v;
+
             this.mNetworkImageView = (NetworkImageView) v.findViewById(R.id.icon);
             mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
             this.titleArabic = (TextView) v.findViewById(R.id.place_title_ar);

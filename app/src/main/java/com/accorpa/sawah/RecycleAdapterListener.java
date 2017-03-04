@@ -8,4 +8,5 @@ import com.accorpa.sawah.models.Category;
 
 public interface RecycleAdapterListener {
     void itemSelected(Object object);
+    void showHideEmptyText();
 }

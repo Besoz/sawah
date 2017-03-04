@@ -101,6 +101,11 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
     }
 
     @Override
+    public void showHideEmptyText() {
+        
+    }
+
+    @Override
     protected String getToolbarTitle() {
         return DataHandler.getInstance(this).getDefaultCity().getCityNameAR();
     }
