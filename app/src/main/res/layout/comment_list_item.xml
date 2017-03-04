@@ -14,10 +14,11 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
-            android:layout_height="70dp"
-            android:layout_width="70dp"
+            android:layout_height="50dp"
+            android:layout_width="50dp"
             android:layout_alignParentRight="true"
-            android:layout_margin="@dimen/listview_margin" />
+            android:layout_margin="@dimen/listview_margin"
+            android:src="@drawable/demoitem"/>
 
         <com.accorpa.sawah.custom_views.CustomTextView
             android:id="@+id/user_name"
@@ -50,6 +51,8 @@
             android:layout_marginLeft="@dimen/listview_margin"
             android:layout_marginRight="@dimen/listview_margin"
             android:layout_marginTop="@dimen/listview_margin"
+            android:textStyle="italic"
+            android:textSize="14dp"
             android:textColor="@android:color/black"/>
 
 

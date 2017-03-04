@@ -85,7 +85,7 @@ public class CommentsAdapter extends BaseAdapter{
         String imageUrl= comment.getImageLocation().replaceAll(" ", "%20");
 
 //        mImageLoader.get(imageUrl, getImageListener(holder.userPhotoImageView, R.drawable.sawah_logo, R.drawable.gplus_login_logo));
-        holder.userPhotoImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+//        holder.userPhotoImageView.setBackgroundResource(R.drawable.demoitem);
 
         if(!TextUtils.isEmpty(comment.getImageLocation())){
             Picasso.with(mContext).load(comment.getImageLocation()).into(holder.userPhotoImageView);

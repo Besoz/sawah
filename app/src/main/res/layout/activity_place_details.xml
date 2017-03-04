@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp"
+            android:background="@drawable/gradiant_black_background_90"
             android:layout_alignBottom="@+id/imagePager">
 
             <LinearLayout
@@ -99,6 +100,14 @@
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabDots"
+            android:layout_alignBottom="@id/imagePager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabBackground="@drawable/tab_selector"
+            app:tabGravity="center"
+            app:tabIndicatorHeight="0dp"/>
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -114,7 +123,7 @@
                 app:prb_symbolicTickNormalColor="@color/symbolic_green"
                 app:prb_symbolicTickSelectedColor="@color/symbolic_grey"
                 app:prb_totalTicks="5"
-
+                android:textSize="16dp"
                 app:prb_tickSpacing="2dp"/>
         </RelativeLayout>
 
@@ -274,10 +283,11 @@
             <com.accorpa.sawah.custom_views.CustomRotatingButton
                 android:id="@+id/arrow"
                 android:background="@drawable/expand_arrow_48"
-                android:layout_width="wrap_content"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:tint="@color/project_green"/>
+                android:tint="@color/project_green"
+                android:layout_marginTop="5dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -343,13 +353,16 @@
             android:orientation="vertical"
             android:layout_below="@+id/work_time"
             android:visibility="gone"
-            android:gravity="right">
+            android:gravity="right"
+            android:layout_marginTop="10dp">
 
             <com.accorpa.sawah.custom_views.CustomTextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/commments"
-                android:textColor="@color/dark_text_color"
+                android:textAlignment="center"
+                android:textColor="@color/button_bar_grey"
+                android:textStyle="bold"
                 android:textSize="18sp" />
 
             <LinearLayout
