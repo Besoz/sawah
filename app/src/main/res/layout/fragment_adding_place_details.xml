@@ -2,6 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@color/light_gray"
     tools:context="com.accorpa.sawah.AddNewPlace.AddingPlaceDetailsFragment">
 
     <LinearLayout
@@ -22,6 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_margin="@dimen/listview_margin"
+                android:gravity="right"
                 android:layout_toRightOf="@+id/places_photos_button" />
 
             <ImageButton
@@ -32,17 +35,15 @@
                 android:layout_margin="@dimen/listview_margin"
                 android:background="@drawable/camera"
                 android:layout_centerVertical="true" />
-
         </RelativeLayout>
-
-
-
 
         <com.accorpa.sawah.custom_views.CustomEditText
             android:id="@+id/place_desciption_edittext"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             tools:layout_margin="@dimen/listview_margin"
+            android:layout_marginTop="10dp"
+            android:gravity="right|top"
             android:padding="@dimen/listview_margin"
             android:background="@drawable/background_rounded_white" />
 

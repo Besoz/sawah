@@ -108,14 +108,27 @@
                     android:id="@+id/nav_about_sawah"
                     style="@style/buttonWithIcon"
                     android:onClick="onClick"/>
-                <com.accorpa.sawah.custom_views.CustomButton
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/bell"
-                    android:text="@string/notifications"
-                    android:id="@+id/nav_notifications"
-                    style="@style/buttonWithIcon"
-                    android:onClick="onClick"/>
+                    android:gravity="center_vertical">
+
+                    <com.accorpa.sawah.custom_views.CustomButton
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableRight="@drawable/bell"
+                        android:text="@string/notifications"
+                        android:id="@+id/nav_notifications"
+                        style="@style/buttonWithIcon"
+                        android:onClick="onClick"/>
+                    <android.support.v7.widget.SwitchCompat
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_vertical"/>
+                </RelativeLayout>
                 <com.accorpa.sawah.custom_views.CustomButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -189,7 +202,6 @@
             android:onClick="onClick"/>
         <com.accorpa.sawah.custom_views.CustomButton
             android:textSize="20dp"
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:drawableRight="@drawable/circle_cross"

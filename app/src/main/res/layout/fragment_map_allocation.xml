@@ -3,28 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.accorpa.sawah.AddNewPlace.MapAllocationFragment"
-    android:id="@+id/main_map_view">
-
+    android:id="@+id/main_map_view"
+    android:layout_marginTop="0dp"
+    android:paddingTop="0dp">
 
     <fragment
         android:id="@+id/map"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <com.accorpa.sawah.custom_views.CustomEditText
         android:id="@+id/place_name_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/listview_margin"
+        android:layout_margin="10dp"
         android:padding="@dimen/listview_margin"
+        android:hint="@string/place_name"
+        android:gravity="center"
         android:background="@drawable/background_rounded_white" />
 
     <com.accorpa.sawah.custom_views.CustomButton
         android:id="@+id/next_button"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
-        android:layout_margin="@dimen/listview_margin"
+        android:layout_margin="10dp"
         android:text="@string/next"
         android:background="@drawable/white_progress_dialog_background"
         android:textColor="@color/textColor"

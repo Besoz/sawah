@@ -120,6 +120,7 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
         super.onCreateOptionsMenu(menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
+        ((SearchView)item.getActionView()).setQueryHint(getString(R.string.searh_category));
 
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 
