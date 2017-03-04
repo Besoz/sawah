@@ -55,6 +55,7 @@
 
     <string name="change_city">تغيير المدينة</string>
     <string name="add_place">إضافة مكان</string>
+    <string name="place_name">اسم المكان</string>
     <string name="favourites">المفضلة</string>
     <string name="user_guide">إرشادات عامة</string>
     <string name="notifications">التنبيهات</string>
