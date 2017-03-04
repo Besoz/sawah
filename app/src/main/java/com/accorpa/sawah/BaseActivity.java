@@ -58,6 +58,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
     public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     protected static final int PERISSION_ALLOWED = 10, PERMISSION_REQUESTED = 20, EXPLAINATION_NEEDED = 30;
+    private static final int LOCATION_PERMISSION_REQUEST = 50;
     private int drawerGravity = Gravity.RIGHT;
 
     private LinearLayout mProgressView;
@@ -317,48 +318,63 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
 
-    protected int startLocationUpdates() {
+    protected void startLocationUpdates() {
+        Log.d("Location", "startLocationUpdates");
+
+
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
+            Log.d("Request location", "not granted");
 
             // Should we show an explanation?
             if (shouldShowExplaination()) {
+                Log.d("Request location", "explain");
 
                 showPermissionDialog();
-                return EXPLAINATION_NEEDED;
 
             } else {
+                Log.d("Request location", "request");
 
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSIONS_REQUEST_FINE_LOCATION);
-                return PERMISSION_REQUESTED;
             }
         } else {
 
+            Log.d("Request location", "requesting");
+
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
-            return PERISSION_ALLOWED;
+
+            if (requestOpenGps()) {
+                Log.d("Request location", "request open enabled 1");
+
+            }else{
+
+                Log.d("Request location", "Error gps enabled 1");
+
+            }
         }
     }
 
     protected void showPermissionDialog() {
 
         new MaterialDialog.Builder(BaseActivity.this)
-                .title("permission")
-                .content("Please open permission")
+                .title(R.string.permission_request_title)
+                .content(R.string.permission_request_message)
                 .positiveText(R.string.agree)
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                                 Uri.fromParts("package", getPackageName(), null));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
-                }).negativeText("cancel")
+                }).negativeText(R.string.cancel_text)
                 .autoDismiss(true)
                 .titleGravity(GravityEnum.CENTER)
                 .contentGravity(GravityEnum.CENTER)
@@ -376,8 +392,6 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onLocationChanged(Location location) {
         Log.d("Location", "changed");
-        DataHandler.getInstance(this).assertUserLoacationSynced();
-
     }
 
     protected void stopLocationUpdates() {
@@ -385,12 +399,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
                 mGoogleApiClient, this);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mRequestingLocationUpdates && !DataHandler.getInstance(this).isUserLoacationSynced())
-            mGoogleApiClient.connect();
-    }
+
 
 
     protected void createLocationRequest() {
@@ -404,34 +413,58 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onPause() {
         super.onPause();
 
-        if(mRequestingLocationUpdates){
+        if(mGoogleApiClient.isConnected() && mRequestingLocationUpdates){
             stopLocationUpdates();
             mGoogleApiClient.disconnect();
         }
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("Request location", "onResume");
+
+
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        Log.d("Request location", "onRequestPermissionsResult");
+
+
         switch (requestCode) {
             case PERMISSIONS_REQUEST_FINE_LOCATION: {
+
+                Log.d("Request location", "Granted");
+
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
+                    if (ActivityCompat.checkSelfPermission(this,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(this,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
                         return;
                     }
+
+                    Log.d("Request location", "Request");
+
+
                     LocationServices.FusedLocationApi.requestLocationUpdates(
                             mGoogleApiClient, mLocationRequest, this);
+
+                    if (requestOpenGps()) {
+                        Log.d("Request location", "request open enabled 1");
+
+                    }else{
+
+                        Log.d("Request location", "Error gps enabled 1");
+
+                    }
 
                 } else {
 
@@ -451,25 +484,37 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
         if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             Log.d("Request location", "1");
-
             new MaterialDialog.Builder(BaseActivity.this)
-                    .title("gps")
-                    .content("Please open gps")
-                    .positiveText(R.string.agree)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        }
-                    }).negativeText("cancel")
-                    .autoDismiss(true)
-                    .titleGravity(GravityEnum.CENTER)
-                    .contentGravity(GravityEnum.CENTER)
-                    .show();
+                                       .title(R.string.enable_gps_title)
+                                       .content(R.string.enable_gps_message)
+                                       .positiveText(R.string.agree)
+                                       .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                       @Override
+                                       public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                              startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                                       }}).negativeText("cancel")
+                                       .autoDismiss(true)
+                                       .titleGravity(GravityEnum.CENTER)
+                                       .contentGravity(GravityEnum.CENTER)
+                                        .show();
+
+            return false;
+        }else{
+
 
             return true;
-        }else{
-            return false;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                Log.d("Request location", "for result");
+
+            }
         }
     }
 

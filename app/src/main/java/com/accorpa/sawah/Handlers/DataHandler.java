@@ -245,6 +245,17 @@ public class DataHandler {
 
     }
 
+    public void syncDefaultCityAndLocation(String city, String latitude, String longitude,
+                                           String userID, final BaseRequestStateListener baseRequestStateListener){
+
+        BaseResponseListener baseResponseListener = new BaseResponseListener();
+        baseResponseListener.setOnResponseListner(baseRequestStateListener);
+
+        serviceHandler.changeCity(city,  getUser().getUserID(), latitude, longitude,
+                baseResponseListener);
+
+    }
+
 
     public void togglePlaceFavourite(Place place) {
         if(place.isFavourite()){
@@ -710,7 +721,12 @@ public class DataHandler {
     }
 
 
-    public void checkInPlace(String placeID) {
+    public void checkInPlace(String placeID, String userID, BaseRequestStateListener requestStateListener) {
+
+        BaseResponseListener baseResponseListener = new BaseResponseListener();
+        baseResponseListener.setOnResponseListner(requestStateListener);
+
+        serviceHandler.makeCheckin(placeID, userID, baseResponseListener);
     }
 }
 
