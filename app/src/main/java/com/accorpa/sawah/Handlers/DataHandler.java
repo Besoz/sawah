@@ -680,7 +680,7 @@ public class DataHandler {
 //    todo make it servic
     public void loadAndSaveUserNetworkImage(final Uri image,
                                             final BaseRequestStateListener baseRequestStateListener) {
-        Picasso.with(context).load(image).into(new Target() {
+        Target target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
@@ -697,7 +697,8 @@ public class DataHandler {
             public void onPrepareLoad(Drawable placeHolderDrawable) {
 
             }
-        });
+        };
+        Picasso.with(context).load(image).into(target);
 
     }
 

@@ -158,5 +158,5 @@
     <string name="login_button">تسجيل الدخول</string>
     <string name="empty_fav_list">لا توجد عناصر في مفضلتك</string>
 
-
+    <string name="enter_user_name">ادخل اسم المستخدم</string>
 </resources>
