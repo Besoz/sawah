@@ -151,6 +151,7 @@
     <string name="must_user_data_add_comment">يجب إضافة اسم المستخدم لإضافة تعليق </string>
     <string name="general_instructions_text">نتطلع في تطبيق سواح إلى تغطية أبرز المناطق السياحية في مدن العالم، إذ يعمل فريق سواح لزيارة الأماكن المهمة في هذه المدن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدن العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
     >
+    <string name="general_instructions_title">أرقام تهمك:</string>
     <string name="login_button">تسجيل الدخول</string>
     <string name="empty_fav_list">لا توجد عناصر في مفضلتك</string>
 

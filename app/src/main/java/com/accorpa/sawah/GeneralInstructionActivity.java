@@ -3,7 +3,9 @@ package com.accorpa.sawah;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.Utils;
+import com.accorpa.sawah.custom_views.CustomTextView;
 
 public class GeneralInstructionActivity extends BaseActivity {
 
@@ -12,6 +14,16 @@ public class GeneralInstructionActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         Utils.getInstance().changeStatusBarColor(this);
+
+        String advice = DataHandler.getInstance(this).getDefaultCity().getAdvices();
+        String numbers = DataHandler.getInstance(this).getDefaultCity().getNumbers();
+
+        CustomTextView ct = (CustomTextView) findViewById(R.id.general_text);
+        System.out.println(advice);
+        System.out.println(DataHandler.getInstance(this).getDefaultCity().getCityNameEN());
+        ct.setText(advice);
+        CustomTextView ct2 = (CustomTextView) findViewById(R.id.numbers_text);
+        ct2.setText(numbers);
     }
 
     @Override
