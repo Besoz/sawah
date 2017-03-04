@@ -43,6 +43,9 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
     private ArrayList<Place> places;
     private boolean addLikeButton, specialPlaceLayout;
 
+    public PlaceListFragment() {
+    }
+
     public PlaceListFragment(boolean addLikeButton, boolean specialPlaceLayout) {
         // Required empty public constructor
 

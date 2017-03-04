@@ -1,14 +1,23 @@
 package com.accorpa.sawah.place;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.location.Criteria;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -30,6 +39,7 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.accorpa.sawah.Authorization.RetrievePasswordActivity;
 import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.CommentActivity;
 import com.accorpa.sawah.CommentsAdapter;
@@ -55,6 +65,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.aakira.expandablelayout.ExpandableLayoutListener;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -306,13 +317,53 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             }
         });
 
-//        checkInButton = (ImageButton) findViewById(R.id.checkin_button);
-//        checkInButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                SharingHandler.getInstance().callNumber(PlaceDetailsActivity.this, place.getContactNumber());
-//            }
-//        });
+        checkInButton = (ImageButton) findViewById(R.id.checkin_button);
+        checkInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(DataHandler.getInstance(PlaceDetailsActivity.this).isUserLoacationSynced()){
+                    Log.d("Request location", "Synced");
+
+
+                    DataHandler.getInstance(PlaceDetailsActivity.this).checkInPlace(place.getPlaceID());
+                }else{
+
+                    mRequestingLocationUpdates = true;
+                    if(!mGoogleApiClient.isConnected()) {
+                        mGoogleApiClient.connect();
+
+                        if (requestOpenGps()) {
+                            Log.d("Request location", "request open enabled 1");
+
+                        }else{
+
+                            Log.d("Request location", "Error gps enabled 1");
+
+                        }
+
+                    } else if(shouldShowExplaination()){
+                        shouldShowExplaination();
+
+                    }else{
+
+                        if (requestOpenGps()) {
+                            Log.d("Request location", "request open enabled 1");
+
+                        }else{
+
+                            Log.d("Request location", "Error gps enabled 1");
+
+                        }
+
+                    }
+
+                }
+
+
+            }
+        });
 
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
@@ -401,7 +452,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         List<Place> places = Place.find(Place.class, "point_id = ?", this.place.getPlaceID());

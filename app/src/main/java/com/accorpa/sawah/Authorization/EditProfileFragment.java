@@ -51,8 +51,7 @@ public class EditProfileFragment extends Fragment {
 
 
     public EditProfileFragment() {
-        // Required empty public constructor
-        this.user = user;
+
 
     }
     public EditProfileFragment(User user) {

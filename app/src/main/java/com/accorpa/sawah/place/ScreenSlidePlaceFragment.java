@@ -28,6 +28,12 @@ public class ScreenSlidePlaceFragment extends Fragment {
 
     private View.OnClickListener onClickListener;
 
+
+    public ScreenSlidePlaceFragment() {
+
+    }
+
+
     public ScreenSlidePlaceFragment(Place place, View.OnClickListener onClickListener) {
         titleArabic = place.getPalceNameArb();
         titleEnglish = place.getPalceNameEng();

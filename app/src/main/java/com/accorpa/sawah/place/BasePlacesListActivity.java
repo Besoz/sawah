@@ -110,7 +110,7 @@ public class BasePlacesListActivity extends BaseActivity implements PlaceListFra
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
 
         super.onResume();
     }

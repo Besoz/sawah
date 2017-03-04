@@ -63,6 +63,12 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
     private FrameLayout frameLayout;
     private boolean locationDenied;
 
+
+    public MapAllocationFragment() {
+
+    }
+
+
     public MapAllocationFragment(Place place) {
         // Required empty public constructor
         this.place = place;
@@ -208,7 +214,6 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
         startLocationUpdates();
     }
 
@@ -272,6 +277,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
     public void onPause() {
 
         stopLocationUpdates();
+        mGoogleApiClient.disconnect();
 
         super.onPause();
     }
