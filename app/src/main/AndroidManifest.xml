@@ -41,47 +41,47 @@
         <activity
             android:name=".Authorization.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".Authorization.SignupActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".BaseActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".CategoriesListActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".place.PlaceListActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ListActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".place.PlaceDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".CitiesListActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".LauncherActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -99,12 +99,12 @@
         <activity
             android:name=".CommentActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".CommentsListActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
 
         <meta-data
@@ -123,35 +123,34 @@
         <activity
             android:name=".place.FavouritePlacesList"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".AboutSawahActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".GeneralInstructionActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name=".Authorization.EditProfileActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustPan"
-            android:configChanges="orientation"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".AddNewPlace.AddNewPlaceActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.darsh.multipleimageselect.activities.AlbumSelectActivity"
             android:theme="@style/MultipleImageSelectTheme"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            tools:replace="android:configChanges">
+            tools:replace="android:configChanges">>
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -159,7 +158,7 @@
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -167,18 +166,23 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme"
+                <data
+                    android:scheme="@string/fb_login_protocol_scheme"
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Authorization.RetrievePasswordActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar.AlertLight"
-            android:configChanges="orientation"
+
             android:screenOrientation="portrait"></activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="51e4547b1779ba1627f513e241a8b428d1e1e6b2" />
+
+        <activity
+            android:name=".Authorization.EditPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
     </application>
 
 </manifest>
