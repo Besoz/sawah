@@ -3,6 +3,13 @@ package com.accorpa.sawah;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -12,7 +19,9 @@ import android.util.Log;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.models.Category;
+import com.accorpa.sawah.models.City;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
@@ -37,7 +46,7 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.getInstance().changeStatusBarColor(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
 
         mRecyclerView.setHasFixedSize(true);
@@ -101,6 +110,36 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
         return R.menu.search_back_tool_bar;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                if(categories == null) return false;
+
+                Category[] queriedCities = DataHandler.getInstance(CategoriesListActivity.this).
+                        queryCategories(categories, newText);
+
+                ((CategoriesRecycleAdapter)mAdapter).updateDataSource(queriedCities);
+
+                return true;
+            }
+        });
+
+        return true;
+    }
     protected int getLayoutResourceId() {
         return R.layout.fragment_place_list;
     }

@@ -125,7 +125,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.getInstance().changeStatusBarColor(this);
+        removeNavigationDrawer();
         String placeJSONObject = (String) getIntent().getSerializableExtra("PlaceJSONObject");
 
         ObjectMapper mapper = new ObjectMapper();
@@ -441,7 +442,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         });
 
         ProperRatingBar priceLevel = (ProperRatingBar) findViewById(R.id.price_level_bar);
-        priceLevel.setRating((int) place.getPriceLevel());
+        priceLevel.setRating(5 - (int) place.getPriceLevel());
 
     }
 
@@ -580,6 +581,11 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         public int getCount() {
             return place.getPlaceImages().length;
         }
+    }
+
+    @Override
+    protected int getActionBarMenuLayout() {
+        return R.menu.back_tool_bar;
     }
 
 }

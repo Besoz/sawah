@@ -146,4 +146,5 @@ public class CategoriesAdapter extends BaseAdapter {
         }
     }
 
+
 }

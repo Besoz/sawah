@@ -63,7 +63,7 @@
     <string name="place_site">الموقع</string>
     <string name="palce_calling">الاتصال</string>
     <string name="place_share">مشاركة</string>
-    <string name="place_checkin">تسجيل الزيارة</string>
+    <string name="place_checkin">تسجيل زيارة</string>
     <string name="share_msg_a">قم بالإطلاع على</string>
     <string name="share_msg_b">في تطبيق سواح</string>
     <string name="share_msg_subject">تطبيق سواح</string>
@@ -102,7 +102,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="view_list">استعراض القائمة</string>
-    <string name="view_map">استعراض الخريطة</string>
+    <string name="view_map">استعراض بالخريطة</string>
     <string name="edit">تعديل</string>
     <string name="personal_information">المعلومات الشخصية</string>
     <string name="save">حفظ</string>
@@ -137,7 +137,7 @@
     <string name="wen_day">الاربعاء</string>
     <string name="thu_day">الخميس</string>
     <string name="fri_day">الجمعة</string>
-    <string name="work_time_today">اوقات العمل اليوم</string>
+    <string name="work_time_today">اوقات العمل اليوم:</string>
     <string name="work_time"> اوقات العمل</string>
     <string name="retreive_password">إستعادة كلمة المرور</string>
     <string name="password_sent_to_mail_successfuly">تم اسعادة كلمة المرور إلى ايميلك بنجاح</string>

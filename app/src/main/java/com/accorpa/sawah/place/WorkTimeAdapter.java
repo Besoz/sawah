@@ -82,8 +82,8 @@ public class WorkTimeAdapter extends BaseAdapter{
 
 
         if (dayNo == day.getDay()){
-            holder.day.setTypeface(null, Typeface.BOLD);
-            holder.time.setTypeface(null, Typeface.BOLD);
+            holder.day.setTypeface(holder.day.getTypeface(), Typeface.BOLD);
+            holder.time.setTypeface(holder.time.getTypeface(), Typeface.BOLD);
         }
 
 

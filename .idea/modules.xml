@@ -4,8 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/sawah.iml" filepath="$PROJECT_DIR$/sawah.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../sugar-master/library/sugar.iml" filepath="$PROJECT_DIR$/../sugar-master/library/sugar.iml" />
       <module fileurl="file://$PROJECT_DIR$/../../sawah/sugar-master/library/sugar.iml" filepath="$PROJECT_DIR$/../../sawah/sugar-master/library/sugar.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sugar/sugar.iml" filepath="$PROJECT_DIR$/sugar/sugar.iml" />
     </modules>
   </component>
 </project>

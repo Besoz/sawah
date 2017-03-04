@@ -589,6 +589,21 @@ public class DataHandler {
 
         return queriedCities.toArray(new City[queriedCities.size()]);
     }
+    public Category[] queryCategories(Category[] categories, String newText) {
+
+        if (TextUtils.isEmpty(newText)) return categories;
+
+        ArrayList<Category> queriedCities = new ArrayList<>();
+
+        for (int i = 0; i < categories.length; i++) {
+
+            if(categories[i].getName().contains(newText)){
+                queriedCities.add(categories[i]);
+            }
+        }
+
+        return queriedCities.toArray(new Category[queriedCities.size()]);
+    }
 
     public Place loadPlaceFromDataBase(Place place) {
 

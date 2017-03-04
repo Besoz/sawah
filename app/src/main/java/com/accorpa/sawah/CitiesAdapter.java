@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.accorpa.sawah.Handlers.ServiceHandler;
+import com.accorpa.sawah.models.Category;
 import com.accorpa.sawah.models.City;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
