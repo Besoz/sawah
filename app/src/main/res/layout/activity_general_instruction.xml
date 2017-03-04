@@ -10,11 +10,13 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:gravity="top"
     tools:context="com.accorpa.sawah.GeneralInstructionActivity">
 
     <com.accorpa.sawah.custom_views.CustomTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:textAlignment="viewStart"
         android:text="@string/general_instructions_text"
         android:textColor="@color/colorPrimary"/>
 </RelativeLayout>

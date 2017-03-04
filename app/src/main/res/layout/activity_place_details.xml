@@ -100,15 +100,23 @@
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabDots"
-            android:layout_alignBottom="@id/imagePager"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabBackground="@drawable/tab_selector"
-            app:tabGravity="center"
-            app:tabIndicatorHeight="0dp"
-            android:layoutDirection="ltr"/>
+            android:layout_alignBottom="@id/imagePager"
+            android:gravity="center">
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabDots"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:tabBackground="@drawable/tab_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                android:layoutDirection="ltr"/>
+        </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

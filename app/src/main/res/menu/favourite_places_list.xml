@@ -6,7 +6,7 @@
         android:id="@+id/toggle_deletion_activation"
         android:orderInCategory="100"
         android:title="@string/delete"
-        android:icon="@drawable/ic_action_edit"
+        android:icon="@drawable/editfav"
         app:showAsAction="ifRoom" />
 
 </menu>

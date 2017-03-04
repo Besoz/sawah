@@ -170,6 +170,10 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         mPager = (ViewPager) findViewById(R.id.imagePager);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
+
+        if(place.getImages().length > 1)
+            tabLayout.setVisibility(View.VISIBLE);
+
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);
 //        mPager.setOffscreenPageLimit(IMAGES_OFFSCREEN_COUNT);

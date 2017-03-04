@@ -102,10 +102,11 @@ public class BasePlacesListActivity extends BaseActivity implements PlaceListFra
         ft.commit();
     }
 
-    protected void showListFragment() {
+    protected PlaceListFragment showListFragment() {
         ft  = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment, listFragment);
         ft.commit();
+        return listFragment;
     }
 
 

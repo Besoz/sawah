@@ -27,5 +27,6 @@
     <color name="underline">#c3d8ed</color>
     <color name="light_gray">#f7f7f7</color>
     <color name="edit_profile_titles">#b4b4b4</color>
+    <color name="delete_red">#fc0055</color>
 
 </resources>

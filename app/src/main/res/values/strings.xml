@@ -129,7 +129,7 @@
     <string name="align_justify_icon">\ue9ad</string>
     <string name="cities">المدن</string>
 
-
+    <string name="delete_text">اضغط علي علامة X لإزالة المادة من المفضلة</string>
     <string name="facebook_app_id">353641474978410 </string> <!--1759744457614418</string>-->
     <string name="fb_login_protocol_scheme">fbAPP_ID</string>
     <string name="sat_day">السبت</string>
@@ -152,7 +152,7 @@
     <string name="general_instructions_text">نتطلع في تطبيق سواح إلى تغطية أبرز المناطق السياحية في مدن العالم، إذ يعمل فريق سواح لزيارة الأماكن المهمة في هذه المدن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدن العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
     >
     <string name="login_button">تسجيل الدخول</string>
-    >
+    <string name="empty_fav_list">لا توجد عناصر في مفضلتك</string>
 
 
 </resources>

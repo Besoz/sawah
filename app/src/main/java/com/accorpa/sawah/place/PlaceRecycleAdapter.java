@@ -51,7 +51,8 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
     public PlaceRecycleAdapter(Context mContext, RecycleAdapterListener mListener,
                                boolean addLikeButton,
-                               boolean specialPlaceLayout) {
+                               boolean specialPlaceLayout,
+                               boolean addDeleteButton) {
         this.mContext = mContext;
 
         this.mDataSource = new ArrayList<>();
@@ -59,6 +60,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         this.addLikeButton = addLikeButton;
         this.specialPlaceLayout = specialPlaceLayout;
+        this.addDeleteButton = addDeleteButton;
 
         rotation = AnimationUtils.loadAnimation(mContext, R.anim.shake);
     }
@@ -77,7 +79,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         final Place place = mDataSource.get(position);
         System.out.println("Place: "+place.getPalceNameEng() + "----" + place.isSpecial());
-        if(place.isSpecial() && specialPlaceLayout)
+        if(place.isSpecial() || !specialPlaceLayout)
         {
             holder.specialCard.setVisibility(View.VISIBLE);
             holder.notSpecialCard.setVisibility(View.GONE);
@@ -150,7 +152,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         holder.specialTag.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
         holder.specialTagSpecial.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
-
+        System.out.println(this);
         if(addDeleteButton) {
             holder.deleteButton.setVisibility(View.VISIBLE);
             holder.v.startAnimation(rotation);

@@ -7,15 +7,24 @@
     <!--android:visibility="visible"-->
     <!--tools:context="com.accorpa.sawah.place.PlaceListFragment">-->
 <!--</GridView>-->
-
-<android.support.v7.widget.RecyclerView
+<RelativeLayout android:layout_height="match_parent" android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:scrollbars="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingRight="8dp"
-    android:paddingTop="8dp"
-    android:paddingLeft="8dp"
-    tools:context="com.accorpa.sawah.place.PlaceListFragment"/>
+    tools:context="com.accorpa.sawah.place.PlaceListFragment">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:paddingLeft="8dp"/>
+    <com.accorpa.sawah.custom_views.CustomTextView
+        android:id="@+id/empty_list"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/empty_fav_list"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center"/>
+</RelativeLayout>

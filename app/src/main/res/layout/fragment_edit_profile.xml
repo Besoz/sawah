@@ -146,6 +146,7 @@
                         android:textColor="@color/edit_profile_titles"
                         android:textSize="16sp"
                         android:layout_marginRight="@dimen/listview_margin"
+                        android:focusable="false"
                         android:layout_gravity="right|center_vertical" />
                         <com.accorpa.sawah.custom_views.CustomEditText
                             android:id="@+id/edit_password"

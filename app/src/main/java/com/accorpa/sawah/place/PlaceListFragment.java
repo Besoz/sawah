@@ -41,7 +41,8 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
     private OnFragmentInteractionListener mListener;
 
     private ArrayList<Place> places;
-    private boolean addLikeButton, specialPlaceLayout;
+    private boolean addLikeButton, specialPlaceLayout, addDeleteButton, showEmptyText;
+
 
     public PlaceListFragment() {
     }
@@ -85,7 +86,10 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
 //                onPlaceSelected((Place) mListView.getAdapter().getItem(position));
 //            }
 //        });
-
+        if(showEmptyText)
+        {
+            listFragment.findViewById(R.id.empty_list).setVisibility(View.VISIBLE);
+        }
         mLayoutManager = new LinearLayoutManager(getContext());
 
         GridLayoutManager specialGridLayoutManager = new GridLayoutManager(getContext(), 2);
@@ -101,7 +105,7 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
 
 
         // specify an adapter (see also next example)
-        mAdapter = new PlaceRecycleAdapter(getContext(), this, addLikeButton, specialPlaceLayout);
+        mAdapter = new PlaceRecycleAdapter(getContext(), this, addLikeButton, specialPlaceLayout, addDeleteButton);
 
 
         mRecyclerView.setLayoutManager(specialPlaceLayout?
@@ -113,7 +117,10 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
 
         return listFragment;
     }
-
+    public void setEmptyListText()
+    {
+        showEmptyText = true;
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onPlaceSelected(Place place) {
         if (mListener != null) {
@@ -151,10 +158,9 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
     }
 
     public void setShowDeleteButton(boolean showDeleteButton) {
-
+        addDeleteButton = showDeleteButton;
         mAdapter.setShowDeletionButton(showDeleteButton);
     }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
