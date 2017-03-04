@@ -6,6 +6,7 @@ import android.content.Intent;
 
 import com.accorpa.sawah.AboutSawahActivity;
 import com.accorpa.sawah.AddNewPlace.AddNewPlaceActivity;
+import com.accorpa.sawah.Authorization.EditPasswordActivity;
 import com.accorpa.sawah.Authorization.EditProfileActivity;
 import com.accorpa.sawah.Authorization.RetrievePasswordActivity;
 import com.accorpa.sawah.CategoriesListActivity;
@@ -193,6 +194,11 @@ public class NavigationHandler {
 
     public void startRetrievePasswordActivity(Context context) {
         Intent activity = new Intent(context, RetrievePasswordActivity.class);
+        context.startActivity(activity);
+    }
+
+    public void startEditPasswordActivity(Context context) {
+        Intent activity = new Intent(context, EditPasswordActivity.class);
         context.startActivity(activity);
     }
 }

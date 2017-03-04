@@ -4,11 +4,16 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorControlNormal">@color/textColor</item>
-        <item name="colorControlActivated">@color/textColor</item>
+        <!--for date picker-->
+        <item name="colorControlActivated">@color/colorPrimary</item>
         <item name="android:textColor">@color/textColor</item>
     </style>
+
+
+
 
     <style name="buttonWithIcon">
         <item name="android:textSize">20dp</item>
