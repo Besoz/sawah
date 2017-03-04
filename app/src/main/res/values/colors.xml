@@ -14,4 +14,7 @@
     <color name="greenee">#70C1B3</color>
     <color name="place_name">#247BA0</color>
     <color name="sub_yellow">#F3FFBD</color>
+    <color name="button_bar_grey">#E7E7E7</color>
+    <color name="symbolic_grey">#D8D8D8</color>
+    <color name="symbolic_green">#70C1B3</color>
 </resources>

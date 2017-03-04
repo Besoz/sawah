@@ -391,7 +391,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         });
 
         ProperRatingBar priceLevel = (ProperRatingBar) findViewById(R.id.price_level_bar);
-        priceLevel.setRating((int) place.getPriceLevel());
+        priceLevel.setRating(5 - (int) place.getPriceLevel());
 
     }
 
