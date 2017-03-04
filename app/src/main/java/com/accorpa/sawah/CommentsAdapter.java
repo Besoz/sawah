@@ -87,6 +87,7 @@ public class CommentsAdapter extends BaseAdapter{
 //        mImageLoader.get(imageUrl, getImageListener(holder.userPhotoImageView, R.drawable.sawah_logo, R.drawable.gplus_login_logo));
 //        holder.userPhotoImageView.setBackgroundResource(R.drawable.demoitem);
 
+        System.out.println(comment.getFullName() + " : " + comment.getImageLocation());
         if(!TextUtils.isEmpty(comment.getImageLocation())){
             Picasso.with(mContext).load(comment.getImageLocation()).into(holder.userPhotoImageView);
         }

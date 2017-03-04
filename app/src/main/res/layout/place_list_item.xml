@@ -41,7 +41,9 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:background="@drawable/heart"
-                        android:layout_gravity="bottom"/>
+                        android:layout_gravity="bottom"
+                        android:paddingLeft="2dp"
+                        android:paddingBottom="2dp"/>
                     <LinearLayout
                         android:id="@+id/special_place_tag"
                         android:visibility="gone"
@@ -123,7 +125,9 @@
                         android:layout_height="wrap_content"
                         android:visibility="gone"
                         android:background="@drawable/heart"
-                        android:layout_gravity="bottom"/>
+                        android:layout_gravity="bottom"
+                        android:paddingLeft="2dp"
+                        android:paddingBottom="2dp"/>
                     <LinearLayout
                         android:id="@+id/special_special_place_tag"
                         android:visibility="gone"

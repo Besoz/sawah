@@ -72,6 +72,7 @@ public class PlacesAdapter extends BaseAdapter{
             holder.mNetworkImageView = (NetworkImageView) convertView.findViewById(R.id.icon);
             holder.titleArabic = (TextView) convertView.findViewById(R.id.place_title_ar);
             holder.titleEnglish = (TextView) convertView.findViewById(R.id.place_title_en);
+
             holder.customCheckBox = (CustomCheckBox) convertView.findViewById(R.id.like_button);
             holder.customCheckBox.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
 

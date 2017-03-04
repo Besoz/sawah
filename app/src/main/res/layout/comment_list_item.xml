@@ -14,8 +14,8 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profile_image"
-            android:layout_height="50dp"
-            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_width="40dp"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/listview_margin"
             android:src="@drawable/demoitem"/>
@@ -27,8 +27,11 @@
             android:layout_centerVertical="false"
             android:layout_toLeftOf="@+id/profile_image"
             android:text="7amda"
-            android:layout_margin="@dimen/listview_margin"
-            android:textColor="@color/colorPrimary"/>
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="6dp"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimary"
+            />
 
         <com.accorpa.sawah.custom_views.CustomTextView
             android:id="@+id/comment_date"
@@ -50,10 +53,9 @@
             android:layout_below="@+id/user_name"
             android:layout_marginLeft="@dimen/listview_margin"
             android:layout_marginRight="@dimen/listview_margin"
-            android:layout_marginTop="@dimen/listview_margin"
-            android:textStyle="italic"
             android:textSize="14dp"
-            android:textColor="@android:color/black"/>
+            android:textStyle="italic"
+            android:textColor="@color/comments_gray"/>
 
 
     </RelativeLayout>

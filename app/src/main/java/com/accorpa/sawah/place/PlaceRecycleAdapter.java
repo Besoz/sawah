@@ -241,6 +241,8 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
             this.titleEnglishSpecial = (TextView) v.findViewById(R.id.special_place_title_en);
             this.likeButtonSpecial = (CustomCheckBox) v.findViewById(R.id.special_like_button);
             this.specialTagSpecial = (LinearLayout) v.findViewById(R.id.special_special_place_tag);
+            likeButtonSpecial.setVisibility(addLikeButton? View.VISIBLE : View.GONE);
+            likeButtonSpecial.setBackgroundResIDs(R.drawable.heart_active, R.drawable.heart);
 
             this.specialCard = (CardView) v.findViewById(R.id.special_card);
             this.notSpecialCard = (CardView)v.findViewById(R.id.not_special_card);

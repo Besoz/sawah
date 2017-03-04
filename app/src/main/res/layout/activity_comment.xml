@@ -10,7 +10,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.accorpa.sawah.CommentActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background_gray">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -30,8 +31,8 @@
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_alignParentRight="true"
-                android:layout_height="70dp"
-                android:layout_width="70dp"/>
+                android:layout_height="40dp"
+                android:layout_width="40dp"/>
 
             <com.accorpa.sawah.custom_views.CustomTextView
                 android:id="@+id/user_name"
@@ -51,10 +52,11 @@
                 app:srb_numberOfStars="5"
                 app:srb_rating="0"
                 app:srb_stepSize="0.5"
+                app:srb_borderColor="@color/tw__transparent"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                app:srb_borderColor="@color/colorPrimary"
-                app:srb_fillColor="@color/buttonColor"/>
+                app:srb_starBackgroundColor="@color/tw__solid_white"
+                app:srb_fillColor="@color/project_green"/>
         </RelativeLayout>
 
 
@@ -63,7 +65,12 @@
             android:layout_below="@+id/top_bar"
             android:layout_width="match_parent"
             android:layout_margin="@dimen/listview_margin"
-            android:layout_height="200dp" />
+            android:layout_height="200dp"
+            android:gravity="top"
+            android:padding="5dp"
+            android:paddingTop="10dp"
+            android:hint="@string/add_comment_hint"
+            android:background="@drawable/edit_text_rounded_corners" />
 
         <com.accorpa.sawah.custom_views.CustomTextView
             android:layout_width="wrap_content"
@@ -72,7 +79,7 @@
             android:layout_below="@+id/comment_edit_text"
             android:layout_alignParentLeft="true"
             android:text="@string/max_comment_char_text"
-            android:textColor="@color/dark_text_color" />
+            android:textColor="@color/max_char" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,15 +94,16 @@
                 android:layout_height="wrap_content"
                 android:text="@string/terms_of_use_notation"
                 android:layout_margin="@dimen/listview_margin"
-                android:textColor="@color/dark_text_color"
+                android:textColor="@color/add_comment_desc"
                 android:maxLength="300"/>
 
             <com.accorpa.sawah.custom_views.CustomButton
                 android:id="@+id/post_comment_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/white_progress_dialog_background"
+                android:background="@drawable/add_comment_button"
                 android:text="@string/comment_post_button_text"
+                style="?android:textAppearanceMedium"
                 android:textColor="@color/textColor" />
 
         </LinearLayout>
