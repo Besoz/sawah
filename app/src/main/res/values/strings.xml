@@ -52,7 +52,9 @@
 
     <string name="action_settings">Settings</string>
     <string name="contact_us">اتصل بنا | Contact us</string>
-
+    <string name="searh_city">ابحث عن مدينة</string>
+    <string name="searh_category">ابحث عن تصنيف</string>
+    <string name="search_places">ابحث عن مكان</string>
     <string name="change_city">تغيير المدينة</string>
     <string name="add_place">إضافة مكان</string>
     <string name="place_name">اسم المكان</string>

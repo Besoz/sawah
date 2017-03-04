@@ -70,6 +70,7 @@ public class CitiesListActivity extends ListActivity {
         super.onCreateOptionsMenu(menu);
 
         MenuItem item = menu.findItem(R.id.action_search);
+        ((SearchView)item.getActionView()).setQueryHint(getString(R.string.searh_city));
 
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 

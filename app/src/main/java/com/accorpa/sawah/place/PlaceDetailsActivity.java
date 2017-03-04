@@ -87,7 +87,7 @@ import io.techery.properratingbar.ProperRatingBar;
 public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
 
 
-    private static final int VIEW_COMMENTS_COUNT = 2, IMAGES_OFFSCREEN_COUNT= 4;
+    private static final int VIEW_COMMENTS_COUNT = 7, IMAGES_OFFSCREEN_COUNT= 4;
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
     private NetworkImageView placeImage;
 
