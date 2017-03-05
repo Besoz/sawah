@@ -29,10 +29,10 @@ public class SignupResponseListener implements Response.Listener<JSONObject> {
         Log.d("gg", jsonResponse.toString());
         ServiceResponse response = null;
         try {
-            Log.d("gg", jsonResponse.getString("Data"));
+//            Log.d("gg", jsonResponse.getString("Data"));
 
             response = mapper.readValue(jsonResponse.toString(), ServiceResponse.class);
-            Log.d("ggrr", jsonResponse.getString("Data"));
+//            Log.d("ggrr", jsonResponse.getString("Data"));
 
 //            user = mapper.readValue(jsonResponse.getString("Data"), User.class);
 //            Log.d("gg", user.getUserID());
@@ -48,9 +48,10 @@ public class SignupResponseListener implements Response.Listener<JSONObject> {
         } catch (IOException e) {
             e.printStackTrace();
             signupActivity.signupError();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
+//        catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
 

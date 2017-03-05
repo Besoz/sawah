@@ -1,6 +1,7 @@
 package com.accorpa.sawah.Authorization;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,10 +16,12 @@ import android.widget.TableRow;
 import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.DialogHelper;
 import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONObject;
 
@@ -145,7 +148,15 @@ public class EditPasswordActivity extends BaseActivity {
             public void onResponse(JSONObject response) {
                 super.onResponse(response);
                 if(isStatusSuccess()){
-                    updatePasswordSuccess();
+                    MaterialDialog m = DialogHelper.getInstance()
+                            .showSuccess(EditPasswordActivity.this,
+                                    getString(R.string.password_update_success));
+                    m.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            updatePasswordSuccess();
+                        }
+                    });
                 }else{
                     currentPassword.requestFocus();
                     currentPassword.setError(getString(R.string.error_incorrect_password));

@@ -27,12 +27,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.DialogHelper;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.models.User;
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -310,8 +313,9 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
 
     public void signupFailed(String message) {
         showProgress(false);
-        mPasswordView.setError(message);
-        mPasswordView.requestFocus();
+//        mPasswordView.setError(message);
+//        mPasswordView.requestFocus();
+        DialogHelper.getInstance().showError(this,message);
     }
 
     public void signupError() {

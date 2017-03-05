@@ -41,7 +41,8 @@
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
-                    android:padding="8dp"/>
+                    android:padding="8dp"
+                    android:src="@drawable/demoitem"/>
             </RelativeLayout>
 
             <com.accorpa.sawah.custom_views.CustomButton
@@ -123,7 +124,8 @@
                             android:layout_gravity="right|center_vertical" />
                         <com.accorpa.sawah.custom_views.CustomEditText
                             android:id="@+id/user_email"
-                            style="@style/rowEditText"/>
+                            style="@style/rowEditText"
+                            android:inputType="textEmailAddress"/>
                     </TableRow>
 
                     <TableRow android:gravity="right"
