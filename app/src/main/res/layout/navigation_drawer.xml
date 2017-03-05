@@ -127,7 +127,9 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerInParent="true"
-                        android:gravity="center_vertical"/>
+                        android:gravity="center_vertical"
+                        android:checked="false"
+                        android:theme="@style/switchCompat"/>
                 </RelativeLayout>
                 <com.accorpa.sawah.custom_views.CustomButton
                     android:layout_width="match_parent"

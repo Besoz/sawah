@@ -1,15 +1,11 @@
 package com.accorpa.sawah.place;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
-import android.location.Criteria;
-import android.location.LocationManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,34 +22,27 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.RotateAnimation;
 import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import com.accorpa.sawah.Authorization.RetrievePasswordActivity;
 import com.accorpa.sawah.BaseActivity;
-import com.accorpa.sawah.CommentActivity;
+import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.CommentsAdapter;
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
-import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.Handlers.SharingHandler;
 import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomCheckBox;
 import com.accorpa.sawah.custom_views.CustomRotatingButton;
 import com.accorpa.sawah.custom_views.CustomTextView;
-import com.accorpa.sawah.custom_views.ExpandArrow;
 import com.accorpa.sawah.models.Place;
 import com.accorpa.sawah.models.PlaceComment;
 import com.accorpa.sawah.models.WorkTime;
@@ -63,9 +52,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.aakira.expandablelayout.ExpandableLayoutListener;
-import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -121,6 +108,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     private int mCurrRotation = 0;
 
     private LinearLayout header;
+    private BaseRequestStateListener checkInStateListner;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -322,52 +310,57 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         });
 
         checkInButton = (ImageButton) findViewById(R.id.checkin_button);
-        checkInButton.setOnClickListener(new View.OnClickListener() {
+
+        checkInStateListner = new BaseRequestStateListener() {
             @Override
-            public void onClick(View v) {
+            public void failResponse(ServiceResponse response) {
+                showCheckInFail(response.getMessage());
+            }
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+
+                showCheckInSuccessful();
+            }
+        };
+
+        if(DataHandler.getInstance(this).userExist()){
+
+            checkInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 
-                if(DataHandler.getInstance(PlaceDetailsActivity.this).isUserLoacationSynced()){
-                    Log.d("Request location", "Synced");
+                    if(DataHandler.getInstance(PlaceDetailsActivity.this).isUserLoacationSynced()){
+                        Log.d("Request location", "Synced");
 
+                        String userID =
+                                DataHandler.getInstance(PlaceDetailsActivity.this).getUser().getUserID();
 
-                    DataHandler.getInstance(PlaceDetailsActivity.this).checkInPlace(place.getPlaceID());
-                }else{
-
-                    mRequestingLocationUpdates = true;
-                    if(!mGoogleApiClient.isConnected()) {
-                        mGoogleApiClient.connect();
-
-                        if (requestOpenGps()) {
-                            Log.d("Request location", "request open enabled 1");
-
-                        }else{
-
-                            Log.d("Request location", "Error gps enabled 1");
-
-                        }
-
-                    } else if(shouldShowExplaination()){
-                        shouldShowExplaination();
-
+                        DataHandler.getInstance(PlaceDetailsActivity.this)
+                                .checkInPlace(place.getPlaceID(), userID, checkInStateListner);
                     }else{
 
-                        if (requestOpenGps()) {
-                            Log.d("Request location", "request open enabled 1");
-
-                        }else{
-
-                            Log.d("Request location", "Error gps enabled 1");
+                        mRequestingLocationUpdates = true;
+                        if(!mGoogleApiClient.isConnected()) {
+                            mGoogleApiClient.connect();
 
                         }
 
+                        else if(shouldShowExplaination()){
+                            showPermissionDialog();
+                        }
+
+
+                        showWaitingLocationUpdate();
+
                     }
-
                 }
+            });
+        }else{
+            checkInButton.setBackgroundResource(R.drawable.check);
+        }
 
-
-            }
-        });
 
         // Get the SupportMapFragment and request notification
         // when the map is ready to be used.
@@ -453,11 +446,49 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     }
 
+    private void showCheckInFail(String message) {
+
+        new MaterialDialog.Builder(PlaceDetailsActivity.this)
+                .title(R.string.check_in_fail_title_text)
+                .content(message)
+                .positiveText(R.string.agree)
+                .autoDismiss(true)
+                .titleGravity(GravityEnum.CENTER)
+                .contentGravity(GravityEnum.CENTER)
+                .show();
+    }
+
+    private void showCheckInSuccessful(){
+        new MaterialDialog.Builder(PlaceDetailsActivity.this)
+                .title(R.string.check_in_done_title_text)
+                .content(R.string.check_in_done_text)
+                .positiveText(R.string.agree)
+                .autoDismiss(true)
+                .titleGravity(GravityEnum.CENTER)
+                .contentGravity(GravityEnum.CENTER)
+                .show();
+    }
+
+    private void showWaitingLocationUpdate() {
+
+        Toast.makeText(this, "waiting location update", Toast.LENGTH_SHORT);
+    }
 
 
     @Override
     public void onResume() {
+        Log.d("Request location", "onResume 2");
+
         super.onResume();
+        Log.d("Request location", "onResume 2");
+
+        Log.d("Location", mRequestingLocationUpdates+" uuuuuuuuuuuuuuuuuuu" );
+
+        if (mRequestingLocationUpdates){
+            mGoogleApiClient.connect();
+            Log.d("Location", mRequestingLocationUpdates+" in " );
+
+        }
 
         List<Place> places = Place.find(Place.class, "point_id = ?", this.place.getPlaceID());
         if(places.size() > 0){
@@ -594,5 +625,41 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     protected int getActionBarMenuLayout() {
         return R.menu.back_tool_bar;
     }
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        super.onLocationChanged(location);
+
+        final String userID = DataHandler.getInstance(this).getUser().getUserID();
+
+        showProgress(true);
+        DataHandler.getInstance(this)
+                .syncDefaultCityAndLocation(DataHandler.getInstance(this).getDefaultCityID(),
+                        location.getLatitude() + "", location.getLongitude() + "",userID
+                        ,
+                        new BaseRequestStateListener() {
+                            @Override
+                            public void failResponse(ServiceResponse response) {
+                                showProgress(false);
+
+                            }
+
+                            @Override
+                            public void successResponse(ServiceResponse response) {
+
+                                DataHandler.getInstance(PlaceDetailsActivity.this).assertUserLoacationSynced();
+
+                                showProgress(false);
+
+                                DataHandler.getInstance(PlaceDetailsActivity.this)
+                                        .checkInPlace(place.getPlaceID(), userID, checkInStateListner);
+
+                                stopLocationUpdates();
+                            }
+                        });
+
+    }
+
 
 }

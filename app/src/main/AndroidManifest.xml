@@ -4,7 +4,6 @@
     package="com.accorpa.sawah">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -149,8 +148,9 @@
         <activity
             android:name="com.darsh.multipleimageselect.activities.AlbumSelectActivity"
             android:theme="@style/MultipleImageSelectTheme"
-
-            android:screenOrientation="portrait">
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            tools:replace="android:configChanges">>
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -166,7 +166,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme"
+                <data
+                    android:scheme="@string/fb_login_protocol_scheme"
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
@@ -178,6 +179,10 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="51e4547b1779ba1627f513e241a8b428d1e1e6b2" />
+
+        <activity
+            android:name=".Authorization.EditPasswordActivity"
+            android:theme="@style/AppTheme.NoActionBar" ></activity>
     </application>
 
 </manifest>

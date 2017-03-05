@@ -92,7 +92,8 @@
                         android:textColor="@color/edit_profile_titles"
                         android:textSize="16sp"
                         android:layout_marginRight="@dimen/listview_margin"
-                        android:layout_gravity="right|center_vertical" />
+                        android:layout_gravity="right|center_vertical"
+                        android:background="@color/black_85"/>
                         <com.accorpa.sawah.custom_views.CustomEditText
                             android:id="@+id/user_name"
                             android:textColor="@color/colorPrimary"
@@ -106,7 +107,8 @@
                             style="@style/myAutoCompleteTextLabel"
                             android:textColorLink="@color/textColor"
                             android:theme="@style/AppTheme"
-                            android:gravity="center"/>
+                            android:gravity="center"
+                            android:background="@color/tw__composer_red"/>
                 </TableRow>
 
                 <TableRow android:gravity="right"
@@ -119,7 +121,8 @@
                         android:textColor="@color/edit_profile_titles"
                         android:textSize="16sp"
                         android:layout_marginRight="@dimen/listview_margin"
-                        android:layout_gravity="right|center_vertical" />
+                        android:layout_gravity="right|center_vertical"
+                        android:background="@color/black_85"/>
                         <com.accorpa.sawah.custom_views.CustomEditText
                             android:id="@+id/user_email"
                             android:textColor="@color/colorPrimary"
@@ -133,12 +136,14 @@
                             style="@style/myAutoCompleteTextLabel"
                             android:textColorLink="@color/textColor"
                             android:theme="@style/AppTheme"
-                            android:gravity="center"/>
+                            android:gravity="center"
+                            android:background="@color/tw__composer_red"/>
                 </TableRow>
 
                 <TableRow android:gravity="right"
                     android:background="@drawable/under_line"
-                    android:padding="@dimen/listview_margin">
+                    android:padding="@dimen/listview_margin"
+                    android:minHeight="50dp">
                     <com.accorpa.sawah.custom_views.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -147,8 +152,9 @@
                         android:textSize="16sp"
                         android:layout_marginRight="@dimen/listview_margin"
                         android:focusable="false"
-                        android:layout_gravity="right|center_vertical" />
-                        <com.accorpa.sawah.custom_views.CustomEditText
+                        android:layout_gravity="right|center_vertical"
+                        android:background="@color/black_85"/>
+                    <com.accorpa.sawah.custom_views.CustomEditText
                             android:id="@+id/edit_password"
                             android:textColor="@color/colorPrimary"
                             android:textSize="16sp"
@@ -163,7 +169,10 @@
                             style="@style/myAutoCompleteTextLabel"
                             android:textColorLink="@color/textColor"
                             android:theme="@style/AppTheme"
-                            android:gravity="center"/>
+                            android:gravity="center"
+                            android:background="@color/tw__composer_red"/>
+                    <ImageView android:src="@drawable/left_arrow"
+                        android:layout_gravity="left"/>
                 </TableRow>
 
                 <TableRow android:gravity="right"

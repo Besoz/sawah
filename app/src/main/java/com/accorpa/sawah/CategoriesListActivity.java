@@ -155,10 +155,18 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
     public void onLocationChanged(Location location) {
         super.onLocationChanged(location);
 
+        DataHandler.getInstance(this).assertUserLoacationSynced();
         String userId = DataHandler.getInstance(this).getUser().getUserID();
         DataHandler.getInstance(this).syncDefaultCityAndLocation(cityID, location.getLatitude()+"",
                 location.getLongitude()+"", userId);
         stopLocationUpdates();
         mGoogleApiClient.disconnect();
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mRequestingLocationUpdates && !DataHandler.getInstance(this).isUserLoacationSynced())
+            mGoogleApiClient.connect();
+    }
+
 }

@@ -2,14 +2,17 @@ package com.accorpa.sawah.AddNewPlace;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -22,10 +25,14 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
 import com.accorpa.sawah.models.Place;
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.GravityEnum;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -135,7 +142,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
 
         if (TextUtils.isEmpty(placeNamedStr)) {
-            placeNameEditText.setError(getString(R.string.error_field_required));
+            placeNameEditText.setError(getString(R.string.enter_place_name));
             focusView = placeNameEditText;
             cancel = true;
         }
@@ -233,43 +240,97 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
         super.onResume();
     }
 
-    private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) !=
+    protected void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                android.Manifest.permission.ACCESS_COARSE_LOCATION) !=
                 PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.ACCESS_FINE_LOCATION) ||
-                    ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                            Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            if (shouldShowExplaination()) {
 
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                showPermissionDialog();
 
             } else {
 
                 ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSIONS_REQUEST_FINE_LOCATION);
             }
         } else {
-
             LocationServices.FusedLocationApi.requestLocationUpdates(
                     mGoogleApiClient, mLocationRequest, this);
 
-//            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-//                    mGoogleApiClient);
+            if (requestOpenGps()) {
+                Log.d("Request location", "request open enabled 1");
 
-//            if (mLastLocation != null) {
-//                userSelectedLocation = mLastLocation;
-//
-//                mLastLocation.getLatitude();
-//                mLastLocation.getLongitude();
-//            }
+            }else{
+
+                Log.d("Request location", "Error gps enabled 1");
+
+            }
+
+
+
+
         }
+    }
+
+    protected boolean requestOpenGps(){
+
+        final LocationManager manager = (LocationManager) getActivity().getSystemService( Context.LOCATION_SERVICE );
+
+        if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            Log.d("Request location", "1");
+            new MaterialDialog.Builder(getContext())
+                    .title(R.string.enable_gps_title)
+                    .content(R.string.enable_gps_message)
+                    .positiveText(R.string.agree)
+                    .onPositive(new MaterialDialog.SingleButtonCallback() {
+                        @Override
+                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }}).negativeText("cancel")
+                    .autoDismiss(true)
+                    .titleGravity(GravityEnum.CENTER)
+                    .contentGravity(GravityEnum.CENTER)
+                    .show();
+
+            return false;
+        }else{
+
+
+            return true;
+        }
+    }
+
+    protected void showPermissionDialog() {
+
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.permission_request_title)
+                .content(R.string.permission_request_message)
+                .positiveText(R.string.agree)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                Uri.fromParts("package", getContext().getPackageName(), null));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                    }
+                }).negativeText(R.string.cancel_text)
+                .autoDismiss(true)
+                .titleGravity(GravityEnum.CENTER)
+                .contentGravity(GravityEnum.CENTER)
+                .show();
+    }
+
+    protected boolean shouldShowExplaination() {
+
+        return ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION) ||
+                ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION);
     }
 
     @Override
@@ -295,14 +356,31 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
+                    if (ActivityCompat.checkSelfPermission(getActivity(),
+                            android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                            && ActivityCompat.checkSelfPermission(getContext(),
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                        return;
+                    }
+
+
+
+                    LocationServices.FusedLocationApi.requestLocationUpdates(
+                            mGoogleApiClient, mLocationRequest, this);
+
+                    if (requestOpenGps()) {
+                        Log.d("Request location", "request open enabled 1");
+
+                    }else{
+
+                        Log.d("Request location", "Error gps enabled 1");
+
+                    }
 
                 } else {
 
-                    locationDenied = true;
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
+
                 }
                 return;
             }

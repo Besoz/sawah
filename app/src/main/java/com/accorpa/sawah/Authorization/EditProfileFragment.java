@@ -153,6 +153,7 @@ public class EditProfileFragment extends Fragment {
 
         dpd = new DatePickerDialog(getContext(), date, user.getBirthDateObject().getYear(),
                 user.getBirthDateObject().getMonth(), user.getBirthDateObject().getDay());
+
         dpd.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
 
         birthDate = (CustomEditText) view.findViewById(R.id.birth_date);
