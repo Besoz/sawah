@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TableRow;
 
 import com.accorpa.sawah.BaseActivity;
@@ -42,27 +43,34 @@ public class EditPasswordActivity extends BaseActivity {
         removeNavigationDrawer();
 
         TableRow row1 = (TableRow) findViewById(R.id.r1);
-        TableRow row2 = (TableRow) findViewById(R.id.r2);
+        TableRow row3 = (TableRow) findViewById(R.id.r3);
         TableRow row4 = (TableRow) findViewById(R.id.r4);
 
         row1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentPassword.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(currentPassword, InputMethodManager.SHOW_IMPLICIT);
             }
         });
 
-        row2.setOnClickListener(new View.OnClickListener() {
+        row3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newPassword.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(newPassword, InputMethodManager.SHOW_IMPLICIT);
             }
         });
 
-        row2.setOnClickListener(new View.OnClickListener() {
+        row4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 confirmPassword.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(confirmPassword, InputMethodManager.SHOW_IMPLICIT);
             }
         });
 

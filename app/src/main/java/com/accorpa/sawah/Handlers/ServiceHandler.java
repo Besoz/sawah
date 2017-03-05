@@ -283,7 +283,7 @@ public class ServiceHandler {
 
     public void updatePassword(BaseResponseListener listener, String userID, String currentPasswordStr, String newPasswordStr, String confirmPasswordStr) {
 
-        String url = urlHandler.getUpdateUserImageUrl();
+        String url = urlHandler.getChangePasswordUrl();
 
         JSONObject request = new JSONObject();
         try {

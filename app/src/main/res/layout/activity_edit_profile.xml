@@ -91,7 +91,9 @@
                         android:background="@drawable/under_line"
                         android:paddingRight="@dimen/listview_margin"
                         android:paddingLeft="@dimen/listview_margin"
-                        android:minHeight="50dp">
+                        android:minHeight="50dp"
+                        android:id="@+id/name_row"
+                        android:onClick="onClickFocus">
                         <com.accorpa.sawah.custom_views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -108,7 +110,9 @@
                     <TableRow android:gravity="right"
                         android:background="@drawable/under_line"
                         android:padding="@dimen/listview_margin"
-                        android:minHeight="50dp">
+                        android:minHeight="50dp"
+                        android:id="@+id/email_row"
+                        android:onClick="onClickFocus">
                         <com.accorpa.sawah.custom_views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -134,6 +138,7 @@
                             android:textColor="@color/edit_profile_titles"
                             android:textSize="16sp"
                             android:layout_marginRight="@dimen/listview_margin"
+                            android:layout_marginLeft="@dimen/listview_margin"
                             android:focusable="false"
                             android:layout_gravity="right|center_vertical" />
 
@@ -160,7 +165,9 @@
                     <TableRow android:gravity="right"
                         android:background="@drawable/under_line"
                         android:padding="@dimen/listview_margin"
-                        android:minHeight="50dp">
+                        android:minHeight="50dp"
+                        android:id="@+id/phone_row"
+                        android:onClick="onClickFocus">
 
                         <com.accorpa.sawah.custom_views.CustomTextView
                             android:layout_width="wrap_content"
@@ -172,11 +179,15 @@
                             android:layout_gravity="right|center_vertical" />
                         <com.accorpa.sawah.custom_views.CustomEditText
                             android:id="@+id/user_phone"
-                            style="@style/rowEditText"/>
+                            style="@style/rowEditText"
+                            android:inputType="phone"/>
                     </TableRow>
                     <TableRow android:gravity="right"
                         android:background="@drawable/under_line"
-                        android:padding="@dimen/listview_margin">
+                        android:padding="@dimen/listview_margin"
+                        android:id="@+id/date_row"
+                        android:onClick="onClickFocus"
+                        android:minHeight="50dp">
                         <com.accorpa.sawah.custom_views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -186,14 +197,18 @@
                             android:focusable="false"
                             android:layout_marginRight="@dimen/listview_margin"
                             android:layout_gravity="right|center_vertical" />
-                        <com.accorpa.sawah.custom_views.CustomEditText
+                        <com.accorpa.sawah.custom_views.CustomTextView
                             android:id="@+id/birth_date"
-                            style="@style/rowEditText"/>
+                            style="@style/rowEditText"
+                            android:gravity="center_vertical"
+                            android:layout_height="match_parent"/>
                     </TableRow>
                     <TableRow android:gravity="right"
                         android:background="@drawable/under_line"
                         android:padding="@dimen/listview_margin"
-                        android:minHeight="50dp">
+                        android:minHeight="50dp"
+                        android:id="@+id/sex_row"
+                        android:onClick="onClickFocus">
                         <com.accorpa.sawah.custom_views.CustomTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
