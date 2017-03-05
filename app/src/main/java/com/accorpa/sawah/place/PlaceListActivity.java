@@ -150,7 +150,7 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
 
             if (accChange && (System.currentTimeMillis() - lastShake ) > 500 ) {
                 Log.d("sensor", "shake detected w/ speed: ==============" );
-                Toast.makeText(this, "shake detected w/ speed: ", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "shake detected w/ speed: ", Toast.LENGTH_SHORT).show();
                 lastShake = System.currentTimeMillis();
                 executeShakeAction();
 
