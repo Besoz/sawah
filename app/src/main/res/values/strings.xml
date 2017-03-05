@@ -159,14 +159,14 @@
     <string name="general_instructions_title">أرقام تهمك:</string>
     <string name="login_button">تسجيل الدخول</string>
     <string name="empty_fav_list">لا توجد عناصر في مفضلتك</string>
-    <string name="check_in_fail_title_text">check_in_fail_title_text</string>
-    <string name="check_in_done_title_text">check_in_done_title_text</string>
-    <string name="check_in_done_text">check_in_done_text</string>
-    <string name="permission_request_title">permission_request_title</string>
-    <string name="permission_request_message">permission_request_message</string>
-    <string name="cancel_text">cancel_text</string>
-    <string name="enable_gps_title">enable_gps_title</string>
-    <string name="enable_gps_message">enable_gps_message</string>
+    <string name="check_in_fail_title_text">فشل تسجيل الزيارة</string>
+    <string name="check_in_done_title_text">تم تسجيل الزيارة</string>
+    <string name="check_in_done_text">تم تسجيل الزيارة</string>
+    <string name="permission_request_title">Turn On Location Service</string>
+    <string name="permission_request_message">Turn On Location Service to Determine Your Location</string>
+    <string name="cancel_text">الغاء</string>
+    <string name="enable_gps_title">فعل الGPS</string>
+    <string name="enable_gps_message">قم بتفعيل الGPS لنتمكن من تحديد مكانك</string>
 
     <string name="enter_user_name">ادخل اسم المستخدم</string>
     <string name="enter_place_name">ادخل اسم المكان</string>
