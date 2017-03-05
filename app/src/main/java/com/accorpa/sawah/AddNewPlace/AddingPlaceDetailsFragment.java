@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.accorpa.sawah.BitmapImage;
+import com.accorpa.sawah.Handlers.DialogHelper;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
@@ -107,13 +108,13 @@ public class AddingPlaceDetailsFragment extends Fragment {
 
         // Store values at the time of the login attempt.
         String nameStr = placeNameEditText.getText().toString();
-        String desciptionStr = placeDescriptioEditText.getText().toString();
+        String descriptionString = placeDescriptioEditText.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(desciptionStr)){
-            placeDescriptioEditText.setError(getString(R.string.error_field_required));
+        if (TextUtils.isEmpty(descriptionString)){
+            placeDescriptioEditText.setError(getString(R.string.please_add_place_description));
             focusView = placeDescriptioEditText;
             cancel = true;
         }
@@ -123,10 +124,12 @@ public class AddingPlaceDetailsFragment extends Fragment {
             Log.d("add new Place", "imge error");
             focusView = selectPhotosButton;
             cancel = true;
+
+            showSelectImageDialog();
         }
 
         if (TextUtils.isEmpty(nameStr)) {
-            placeNameEditText.setError(getString(R.string.error_field_required));
+            placeNameEditText.setError(getString(R.string.enter_place_name));
             focusView = placeNameEditText;
             cancel = true;
         }
@@ -136,10 +139,14 @@ public class AddingPlaceDetailsFragment extends Fragment {
             focusView.requestFocus();
         } else {
             Log.d("latlong",place.getLongitude()+ " "+ place.getLongitude());
-
+            place.setBiography(descriptionString);
             mListener.addNewPlace(place);
         }
 
+    }
+
+    private void showSelectImageDialog() {
+        DialogHelper.getInstance().showSelectImageDialog(getContext());
     }
 
 

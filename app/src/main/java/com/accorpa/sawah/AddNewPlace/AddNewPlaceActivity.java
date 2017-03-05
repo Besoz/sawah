@@ -1,5 +1,8 @@
 package com.accorpa.sawah.AddNewPlace;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -10,12 +13,14 @@ import android.util.Log;
 import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.BitmapImage;
 import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.DialogHelper;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.models.Place;
+import com.accorpa.sawah.place.PlaceDetailsActivity;
 import com.darsh.multipleimageselect.helpers.Constants;
 
 import java.util.ArrayList;
@@ -76,7 +81,12 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
             @Override
             public void successResponse(ServiceResponse response) {
                 showProgress(false);
-                NavigationHandler.getInstance().startCategoriesListActivity(AddNewPlaceActivity.this);
+
+//                ActivityManager am = (ActivityManager)AddNewPlaceActivity.this.getSystemService(Context.ACTIVITY_SERVICE);
+//                ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+
+                DialogHelper.getInstance().showPLaceAddedDialog(AddNewPlaceActivity.this);
+
             }
 
         });
