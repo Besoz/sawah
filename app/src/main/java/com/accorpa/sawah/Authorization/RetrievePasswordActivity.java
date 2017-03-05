@@ -1,5 +1,6 @@
 package com.accorpa.sawah.Authorization;
 
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -9,12 +10,15 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.accorpa.sawah.BaseRequestStateListener;
+import com.accorpa.sawah.Handlers.DialogHelper;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.ServiceHandler;
 import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.ServiceResponse;
 import com.accorpa.sawah.custom_views.CustomAutoCompleteTextView;
+import com.accorpa.sawah.custom_views.CustomButton;
+import com.accorpa.sawah.custom_views.CustomEditText;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -25,13 +29,10 @@ import butterknife.OnClick;
 
 public class RetrievePasswordActivity extends AppCompatActivity {
 
-    @BindView(R.id.progress_view)  View mProgressView;
-    @BindView(R.id.form)  View mFormView;
+    View mProgressView;
+    View mFormView;
 
-    @BindView(R.id.email) CustomAutoCompleteTextView mEmailView;
-    @OnClick(R.id.submit) void submit() {
-        attempt();
-    }
+    CustomAutoCompleteTextView mEmailView;
 
 
     @Override
@@ -48,6 +49,18 @@ public class RetrievePasswordActivity extends AppCompatActivity {
             }
         });
         Utils.getInstance().setTypefaceToInputLayout(this, (TextInputLayout) findViewById(R.id.mail));
+
+        CustomButton submit = (CustomButton) findViewById(R.id.submit);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                attempt();
+            }
+        });
+
+        mProgressView = findViewById(R.id.progress_view);
+        mFormView = findViewById(R.id.form);
+        mEmailView = (CustomAutoCompleteTextView) findViewById(R.id.email);
     }
 
 
@@ -89,38 +102,24 @@ public class RetrievePasswordActivity extends AppCompatActivity {
                         public void failResponse(ServiceResponse response) {
 
                             showProgress(false);
-
-                            new MaterialDialog.Builder(RetrievePasswordActivity.this)
-                                    .title(R.string.done_text)
-                                    .content(response.getMessage())
-                                    .positiveText(R.string.agree)
-                                    .autoDismiss(true)
-                                    .titleGravity(GravityEnum.CENTER)
-                                    .contentGravity(GravityEnum.CENTER)
-                                    .show();
+                            DialogHelper.getInstance().showError(RetrievePasswordActivity.this,
+                                    response.getMessage());
                         }
 
                         @Override
                         public void successResponse(ServiceResponse message) {
                             showProgress(false);
-
-                            new MaterialDialog.Builder(RetrievePasswordActivity.this)
-                                    .title(R.string.done_text)
-                                    .content(R.string.password_sent_to_mail_successfuly)
-                                    .positiveText(R.string.agree)
-                                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                                        @Override
-                                        public void onClick(@NonNull MaterialDialog dialog,
-                                                            @NonNull DialogAction which) {
-                                            NavigationHandler.getInstance()
-                                                    .startLoginActivity(RetrievePasswordActivity
-                                                            .this);
-                                        }
-                                    })
-                                    .autoDismiss(true)
-                                    .titleGravity(GravityEnum.CENTER)
-                                    .contentGravity(GravityEnum.CENTER)
-                                    .show();
+                            MaterialDialog m = DialogHelper.getInstance().showSuccess
+                                    (RetrievePasswordActivity.this,
+                                    getString(R.string.password_sent_to_mail_successfuly));
+                            m.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    NavigationHandler.getInstance()
+                                            .startLoginActivity(RetrievePasswordActivity
+                                                    .this);
+                                }
+                            });
                         }
                     });
         }

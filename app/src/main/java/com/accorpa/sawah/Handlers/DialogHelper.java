@@ -13,6 +13,7 @@ import com.accorpa.sawah.R;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 
 /**
  * Created by root on 05/03/17.
@@ -37,6 +38,26 @@ public class DialogHelper {
                 .titleGravity(GravityEnum.CENTER)
                 .contentGravity(GravityEnum.CENTER)
                 .show();
+    }
+
+    public MaterialDialog showSuccess(Context context, String message)
+    {
+        return new MaterialDialog.Builder(context)
+                .theme(Theme.LIGHT)
+                .title(R.string.done_text).titleGravity(GravityEnum.CENTER)
+                .content(message).contentGravity(GravityEnum.CENTER)
+                .autoDismiss(true)
+                .positiveText(R.string.agree).show();
+    }
+
+    public MaterialDialog showError(Context context, String message)
+    {
+        return new MaterialDialog.Builder(context)
+                .title(R.string.error).titleGravity(GravityEnum.CENTER)
+                .theme(Theme.LIGHT)
+                .content(message)
+                .contentGravity(GravityEnum.CENTER).autoDismiss(true)
+                .positiveText(R.string.agree).show();
     }
 
     public void showPLaceAddedDialog(final Context context) {

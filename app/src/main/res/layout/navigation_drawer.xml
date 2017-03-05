@@ -54,7 +54,8 @@
                             android:layout_height="match_parent"
                             android:layout_centerVertical="true"
                             android:layout_centerHorizontal="true"
-                            android:padding="8dp"/>
+                            android:padding="8dp"
+                            android:src="@drawable/demoitem"/>
                     </RelativeLayout>
                     <ImageButton
                         android:id="@+id/settings_button"

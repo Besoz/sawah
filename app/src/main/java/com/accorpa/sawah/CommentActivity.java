@@ -101,10 +101,11 @@ public class CommentActivity extends BaseActivity {
         userName.setText(user.getFullName());
 
         CircleImageView userImage = (CircleImageView) findViewById(R.id.profile_image);
-        Bitmap b = DataHandler.getInstance(this)
-                .loadImageFromStorage(user.getLocalImagePath());
-        userImage.setImageBitmap(b);
-
+        if(!TextUtils.isEmpty(user.getLocalImagePath())){
+            Bitmap b = DataHandler.getInstance(this)
+                    .loadImageFromStorage(user.getLocalImagePath());
+            userImage.setImageBitmap(b);
+        }
     }
 
     private void intializeRatingBar() {

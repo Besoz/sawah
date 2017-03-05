@@ -2,6 +2,7 @@ package com.accorpa.sawah.Authorization;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -24,6 +25,7 @@ import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.DialogHelper;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
@@ -32,6 +34,7 @@ import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
 import com.accorpa.sawah.custom_views.CustomTextView;
 import com.accorpa.sawah.models.User;
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.json.JSONObject;
 
@@ -229,7 +232,6 @@ public class EditProfileActivity extends BaseActivity {
             try {
 
                 final Bitmap bitmap = DataHandler.getInstance(this).getImage(data.getData());
-
                 BaseResponseListener mResponseListner = new BaseResponseListener() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -286,15 +288,25 @@ public class EditProfileActivity extends BaseActivity {
             @Override
             public void failResponse(ServiceResponse response) {
                 Log.d("Update user", "fail");
-
                 showProgress(false);
+                MaterialDialog m = DialogHelper.getInstance()
+                        .showError(EditProfileActivity.this,
+                                response.getMessage());
             }
 
             @Override
             public void successResponse(ServiceResponse response) {
-                NavigationHandler.getInstance().startCategoriesListActivity(EditProfileActivity.this);
                 showProgress(false);
-
+                MaterialDialog m = DialogHelper.getInstance()
+                        .showSuccess(EditProfileActivity.this,
+                                getString(R.string.profile_update_success));
+                m.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+//                        NavigationHandler.getInstance().startCategoriesListActivity(EditProfileActivity.this);
+                        onBackPressed();
+                    }
+                });
             }
         };
 

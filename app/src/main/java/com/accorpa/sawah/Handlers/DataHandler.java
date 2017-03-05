@@ -683,6 +683,13 @@ public class DataHandler {
 //        remove user
         sharedPreferences.deleteUser();
 
+        File directory = context.getDir("user_image", Context.MODE_PRIVATE);
+        if(directory.exists())
+        {
+            File f=new File(directory, "profile.png");
+            if(f.exists())
+                f.delete();
+        }
 //        remove fav places
         Place.deleteAll(Place.class);
         PlaceComment.deleteAll(PlaceComment.class);

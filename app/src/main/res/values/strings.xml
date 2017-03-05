@@ -178,4 +178,8 @@
     <string name="add_new_place_request_sent"> تم إرسال طلب إضافة المكان سيتم إضافة المكان بعد مراجعة البيانات نشكركم على المساهمة في بناء تطبيق سواح</string>
     <string name="please_add_place_description">يرجو إضافة وصف للمكان</string>
 
+    <string name="error">خطأ</string>
+    <string name="password_update_success">تم تعديل كلمة المرور بنجاح</string>
+    <string name="profile_update_success">تم تعديل بياناتك بنجاح</string>
+
 </resources>
