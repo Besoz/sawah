@@ -68,7 +68,7 @@ public class DataHandler {
     private ObjectMapper mapper;
 
     private Context context;
-
+    private Target target;
 
     private boolean userLocationSynced;
 
@@ -696,7 +696,7 @@ public class DataHandler {
 //    todo make it servic
     public void loadAndSaveUserNetworkImage(final Uri image,
                                             final BaseRequestStateListener baseRequestStateListener) {
-        Target target = new Target() {
+        target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 

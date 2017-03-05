@@ -34,19 +34,19 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
         Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_launcher);
 
-        ActivityCycleListener listener = new ActivityCycleListener() {
-            @Override
-            public void onBecameForeground() {
-                NavigationHandler.getInstance().startMainctivity(LauncherActivity.this);
-            }
-
-            @Override
-            public void onBecameBackground() {
-
-            }
-        };
-        Foreground f = Foreground.init(getApplication());
-        f.addListener(listener);
+//        ActivityCycleListener listener = new ActivityCycleListener() {
+//            @Override
+//            public void onBecameForeground() {
+//                NavigationHandler.getInstance().startMainctivity(LauncherActivity.this);
+//            }
+//
+//            @Override
+//            public void onBecameBackground() {
+//
+//            }
+//        };
+//        Foreground f = Foreground.init(getApplication());
+//        f.addListener(listener);
 //        intializing view
         mSplashView = findViewById(R.id.splash_view);
         mProgressView = findViewById(R.id.progress_view);
