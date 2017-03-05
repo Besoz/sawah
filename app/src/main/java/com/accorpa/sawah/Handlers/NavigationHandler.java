@@ -84,6 +84,11 @@ public class NavigationHandler {
         }
     }
 
+    public void startMainctivity(Context context) {
+        startCityActivity(context);
+
+    }
+
     public void startAfterLoginctivity(Context context) {
 
         Intent afterLoginActivity = getCategoriesListActivityIntent(context);
