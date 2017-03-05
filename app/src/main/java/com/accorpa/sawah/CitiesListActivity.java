@@ -24,8 +24,7 @@ public class CitiesListActivity extends ListActivity {
         Utils.getInstance().changeStatusBarColor(this);
 
 //        if(DataHandler.getInstance(this).getDefaultCity() == null)
-            removeNavigationDrawer();
-//        hideToolbarTitle();
+        removeNavigationDrawer();
 
         mListView = (GridView) findViewById(R.id.list);
 
