@@ -113,22 +113,8 @@ public class AuthorizationController implements LoginListener {
 //        save user
             saveUser(user);
 
+            loginListener.loginSuccess(user);
 
-
-//        load user image
-            dataHandler.loadAndSaveUserNetworkImage(Uri.parse(user.getImageLocation()), new BaseRequestStateListener() {
-                @Override
-                public void failResponse(ServiceResponse response) {
-                    loginListener.loginFailed("");
-
-                }
-
-                @Override
-                public void successResponse(ServiceResponse response) {
-                    //        notify calling activity
-                    loginListener.loginSuccess(user);
-                }
-            });
         }
     }
 

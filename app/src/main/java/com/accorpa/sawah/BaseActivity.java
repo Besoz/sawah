@@ -131,7 +131,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
             headerLayout.setVisibility(View.VISIBLE);
             navigationView.findViewById(R.id.nav_login).setVisibility(View.GONE);
 
-            User user = DataHandler.getInstance(this).getUser();
+            final User user = DataHandler.getInstance(this).getUser();
 
             CustomTextView userNameText = (CustomTextView) headerLayout.findViewById(R.id.user_name);
             userNameText.setText(user.getFullName());
@@ -145,7 +145,30 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 setNavBarUserImage(b);
 
+            }else if(!TextUtils.isEmpty((user.getImageLocation()))){
+                
+                DataHandler.getInstance(this).loadAndSaveUserNetworkImage(Uri.parse(user.getImageLocation()), new BaseRequestStateListener() {
+                    @Override
+                    public void failResponse(ServiceResponse response) {
+                        Log.d("Image load", "Fail");
+                    }
+
+                    @Override
+                    public void successResponse(ServiceResponse response) {
+                        Log.d("Image load", "Success");
+
+                        Bitmap b = DataHandler.getInstance(BaseActivity.this)
+                                .loadImageFromStorage(user.getLocalImagePath());
+
+                        setNavBarUserImage(b);
+
+
+                    }
+                });
             }
+
+            //        load user image
+
 
 
             ImageButton settingsButton = (ImageButton) headerLayout.findViewById(R.id.settings_button);
