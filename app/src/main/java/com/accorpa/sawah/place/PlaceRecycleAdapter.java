@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import com.accorpa.sawah.models.Place;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.gms.vision.text.Line;
+import com.squareup.picasso.Picasso;
 
 
 import java.net.PortUnreachableException;
@@ -106,11 +108,14 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         }
 
         layer = (LayerDrawable) holder.mNetworkImageViewSpecial.getBackground();
+        final AnimationDrawable frameAnimation;
         if(layer != null) {
-            AnimationDrawable frameAnimation = (AnimationDrawable) layer.getDrawable(0);
+            frameAnimation = (AnimationDrawable) layer.getDrawable(0);
             frameAnimation.start();
         }
 
+        if(imageUrl == "")
+            imageUrl = "http://sawahapp.com/Uploads/ssss.ssss";
         holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
         holder.mNetworkImageViewSpecial.setImageUrl(imageUrl, mImageLoader);
 
@@ -241,7 +246,9 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
             this.v = v;
 
             this.mNetworkImageView = (NetworkImageView) v.findViewById(R.id.icon);
-            mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+            this.mNetworkImageView.setErrorImageResId(R.drawable.demoitem);
+            this.mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+
             this.titleArabic = (TextView) v.findViewById(R.id.place_title_ar);
             this.titleEnglish = (TextView) v.findViewById(R.id.place_title_en);
             this.likeButton = (CustomCheckBox) v.findViewById(R.id.like_button);
@@ -251,7 +258,9 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
             this.deleteButton = (CustomCheckBox) v.findViewById(R.id.delete_button);
 
             this.mNetworkImageViewSpecial = (NetworkImageView) v.findViewById(R.id.special_icon);
-            mNetworkImageViewSpecial.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+            this.mNetworkImageViewSpecial.setErrorImageResId(R.drawable.demoitem);
+            this.mNetworkImageViewSpecial.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+
             this.titleArabicSpecial = (TextView) v.findViewById(R.id.special_place_title_ar);
             this.titleEnglishSpecial = (TextView) v.findViewById(R.id.special_place_title_en);
             this.likeButtonSpecial = (CustomCheckBox) v.findViewById(R.id.special_like_button);

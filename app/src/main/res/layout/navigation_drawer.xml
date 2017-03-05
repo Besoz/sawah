@@ -4,12 +4,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="15"
+    android:weightSum="10"
     android:padding="10dp">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="13"
+        android:layout_weight="9"
         android:weightSum="13"
         android:orientation="vertical">
 
@@ -50,7 +50,7 @@
 
                         <de.hdodenhof.circleimageview.CircleImageView
                             android:id="@+id/profile_image"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_centerVertical="true"
                             android:layout_centerHorizontal="true"
@@ -190,14 +190,14 @@
         android:layout_height="0dp"
         android:layout_gravity="bottom"
         android:clickable="true"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:orientation="vertical">
         <com.accorpa.sawah.custom_views.CustomButton
             android:layout_margin="@dimen/listview_margin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@drawable/background_rounded"
-            style="?android:textAppearanceLarge"
+            style="?android:textAppearanceMedium"
             android:textColor="@color/textColor"
             android:text="@string/login_button"
             android:id="@+id/nav_login"

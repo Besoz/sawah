@@ -1,6 +1,7 @@
 package com.accorpa.sawah.Authorization;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -10,9 +11,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -52,7 +55,7 @@ public class EditProfileActivity extends BaseActivity {
     private User user;
 
     private CircleImageView profileImage;
-    private CustomEditText birthDate;
+    private CustomTextView birthDate;
     private DatePickerDialog dpd;
     private CustomEditText userEmail, userName, userPhone;
 
@@ -126,9 +129,11 @@ public class EditProfileActivity extends BaseActivity {
         dpd.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
 
 
-        birthDate = (CustomEditText) findViewById(R.id.birth_date);
+        birthDate = (CustomTextView) findViewById(R.id.birth_date);
         birthDate.setText(user.getBirthDate());
-        birthDate.setOnClickListener(new View.OnClickListener() {
+        TableRow birthDateRow = (TableRow) findViewById(R.id.date_row);
+
+        birthDateRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dpd.setTitle("");
@@ -195,6 +200,24 @@ public class EditProfileActivity extends BaseActivity {
             }
         });
 
+    }
+
+    protected void onClickFocus(View v)
+    {
+        int id = v.getId();
+        v.requestFocus();
+        CustomEditText et = null;
+        if(id == R.id.name_row)
+            et = userName;
+        else if(id == R.id.email_row)
+            et = userEmail;
+        else if(id == R.id.phone_row)
+            et = userPhone;
+        if(et != null)
+        {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     @Override

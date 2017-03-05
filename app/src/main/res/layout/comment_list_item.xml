@@ -41,7 +41,7 @@
             android:layout_alignParentLeft="true"
             android:text="2 w"
             android:layout_margin="@dimen/listview_margin"
-            android:textColor="@color/buttonColor"/>
+            android:textColor="@color/project_green"/>
 
         <com.accorpa.sawah.custom_views.CustomTextView
             android:id="@+id/comment_text"
@@ -55,6 +55,7 @@
             android:layout_marginRight="@dimen/listview_margin"
             android:textSize="14dp"
             android:textStyle="italic"
+            android:gravity="right"
             android:textColor="@color/comments_gray"/>
 
 

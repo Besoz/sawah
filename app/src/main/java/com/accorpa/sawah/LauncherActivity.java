@@ -22,15 +22,14 @@ import io.fabric.sdk.android.Fabric;
 public class LauncherActivity extends AppCompatActivity implements LoginListener {
 
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "64Ej42adLTs8VXNwbEE6JaOux";
-    private static final String TWITTER_SECRET = "KaeNwQEFEX6ntN9z7NE7rz9SS3W6VgLnPd9vTVOZrHXgA8KWB6";
     private final int SPLASH_DISPLAY_LENGTH = 1000;
 
     private View mSplashView, mProgressView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.TWITTER_KEY),
+                getString(R.string.TWITTER_SECRET));
         Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_launcher);
 
