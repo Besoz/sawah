@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -18,7 +19,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,6 +38,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
@@ -200,6 +204,18 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(getActionBarMenuLayout(), menu);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+        if(item != null) {
+            SearchView sv = (SearchView) item.getActionView();
+            TextView searchText = (TextView)
+                    sv.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            searchText.setTextColor(ContextCompat.getColor(BaseActivity.this,R.color.textColor));
+            searchText.setHintTextColor(ContextCompat.getColor(BaseActivity.this,R.color.textColor));
+            Typeface myCustomFont = Typeface.createFromAsset(getAssets(),getString(R.string.default_font));
+            searchText.setTypeface(myCustomFont);
+        }
+
         return true;
     }
 
