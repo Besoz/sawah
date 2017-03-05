@@ -6,12 +6,13 @@
     android:background="@color/light_gray"
     tools:context="com.accorpa.sawah.AddNewPlace.AddingPlaceDetailsFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/top_bar"
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -37,28 +38,54 @@
                 android:layout_centerVertical="true" />
         </RelativeLayout>
 
-        <com.accorpa.sawah.custom_views.CustomEditText
-            android:id="@+id/place_desciption_edittext"
+
+        <com.accorpa.sawah.custom_views.CustomButton
+            android:layout_alignParentBottom="true"
+            android:id="@+id/send_button"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            tools:layout_margin="@dimen/listview_margin"
-            android:layout_marginTop="10dp"
-            android:gravity="right|top"
-            android:padding="@dimen/listview_margin"
-            android:background="@drawable/background_rounded_white" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/listview_margin"
+            android:text="@string/send"
+            android:background="@drawable/white_progress_dialog_background"
+            android:textColor="@color/textColor"
+            android:textSize="20sp" />
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/middle_area"
+            android:layout_above="@id/send_button"
+            android:layout_below="@id/top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+            <com.accorpa.sawah.custom_views.CustomEditText
+                android:id="@+id/place_desciption_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6"
+                tools:layout_margin="@dimen/listview_margin"
+                android:layout_marginTop="10dp"
+                android:gravity="right|top"
+                android:padding="@dimen/listview_margin"
+                android:background="@drawable/background_rounded_white" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/image_recycle_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                tools:layout_margin="@dimen/listview_margin"
+                android:padding="@dimen/listview_margin"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
 
 
-    <com.accorpa.sawah.custom_views.CustomButton
-        android:id="@+id/send_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_margin="@dimen/listview_margin"
-        android:text="@string/send"
-        android:background="@drawable/white_progress_dialog_background"
-        android:textColor="@color/textColor"
-        android:textSize="20sp" />
+    </RelativeLayout>
+
+
+
 
 </FrameLayout>

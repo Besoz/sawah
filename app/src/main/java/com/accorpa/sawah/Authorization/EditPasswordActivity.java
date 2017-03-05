@@ -65,7 +65,7 @@ public class EditPasswordActivity extends BaseActivity {
                 confirmPassword.requestFocus();
             }
         });
-        
+
         CustomButton updatePasswordButton = (CustomButton) findViewById(R.id.edit_password_button);
         updatePasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override

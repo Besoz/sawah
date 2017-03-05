@@ -521,6 +521,14 @@ public class DataHandler {
         placeDataResponseListener.setOnResponseListner(new BaseRequestStateListener() {
             @Override
             public void failResponse(ServiceResponse response) {
+                Log.d("dd new place", "fail");
+                listner.failResponse(response);
+            }
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+
+
                 String[] bitmapsEndcoded = new String[bitmapImages.size()];
 
                 for (int i = 0; i < bitmapsEndcoded.length ; i++) {
@@ -530,11 +538,8 @@ public class DataHandler {
 
                 serviceHandler.addPlaceImages(response.getDraftPointID(), bitmapsEndcoded,
                         placeImageResponseListener);
-            }
 
-            @Override
-            public void successResponse(ServiceResponse message) {
-                Log.d("dd new place", "fail");
+
 
             }
         });

@@ -1,20 +1,30 @@
 package com.accorpa.sawah.AddNewPlace;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import com.accorpa.sawah.BitmapImage;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
 import com.accorpa.sawah.models.Place;
+import com.accorpa.sawah.place.PlaceRecycleAdapter;
+import com.android.volley.toolbox.NetworkImageView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,6 +43,10 @@ public class AddingPlaceDetailsFragment extends Fragment {
     
     private ImageButton selectPhotosButton;
     private CustomButton sendButton;
+
+    private RecyclerView imageRecyclerView;
+    private ImageRecycleAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public AddingPlaceDetailsFragment() {
         // Required empty public constructor
@@ -75,7 +89,14 @@ public class AddingPlaceDetailsFragment extends Fragment {
             }
         });
 
-        
+        imageRecyclerView = (RecyclerView) view.findViewById(R.id.image_recycle_view);
+        LinearLayoutManager layoutManager
+                = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        mAdapter = new ImageRecycleAdapter(getContext());
+        imageRecyclerView.setLayoutManager(layoutManager);
+        imageRecyclerView.setAdapter(mAdapter);
+
+
         return view;
     }
 
@@ -153,5 +174,60 @@ public class AddingPlaceDetailsFragment extends Fragment {
         void addNewPlace(Place place);
 
         boolean isImageSelected();
+    }
+
+    public void showSelectedImages(ArrayList<BitmapImage> bitmaps){
+        mAdapter.setDataSource(bitmaps);
+    }
+
+    private class ImageRecycleAdapter extends RecyclerView.Adapter<ImageRecycleAdapter.ViewHolder> {
+
+        private Context mContext;
+        //    private LayoutInflater mInflater;
+        private View convertView;
+        private ArrayList<BitmapImage> mDataSource;
+
+        public ImageRecycleAdapter(Context context) {
+            super();
+            mDataSource = new ArrayList<>();
+        }
+
+        public void setDataSource(ArrayList<BitmapImage> bitmaps){
+            this.mDataSource = bitmaps;
+            notifyDataSetChanged();
+        }
+
+
+        @Override
+        public ImageRecycleAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            convertView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.image_item, parent, false);
+            ImageRecycleAdapter.ViewHolder vh = new ImageRecycleAdapter.ViewHolder(convertView);
+            return vh;
+        }
+
+        @Override
+        public void onBindViewHolder(ImageRecycleAdapter.ViewHolder holder, int position) {
+            holder.imageView.setImageBitmap(mDataSource.get(position).getBitmap());
+        }
+
+
+        @Override
+        public int getItemCount() {
+            return mDataSource.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            private ImageView imageView;
+
+            public ViewHolder(View v){
+                super(v);
+
+                this.imageView = (ImageView) v.findViewById(R.id.image);
+
+            }
+        }
     }
 }

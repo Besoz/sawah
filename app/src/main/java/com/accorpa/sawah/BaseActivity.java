@@ -478,18 +478,22 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
                     Log.d("Request location", "Request");
 
+                    if(mGoogleApiClient.isConnected()){
+                        LocationServices.FusedLocationApi.requestLocationUpdates(
+                                mGoogleApiClient, mLocationRequest, this);
 
-                    LocationServices.FusedLocationApi.requestLocationUpdates(
-                            mGoogleApiClient, mLocationRequest, this);
+                        if (requestOpenGps()) {
+                            Log.d("Request location", "request open enabled 1");
 
-                    if (requestOpenGps()) {
-                        Log.d("Request location", "request open enabled 1");
+                        }else{
 
-                    }else{
+                            Log.d("Request location", "Error gps enabled 1");
 
-                        Log.d("Request location", "Error gps enabled 1");
-
+                        }
                     }
+
+
+
 
                 } else {
 

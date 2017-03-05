@@ -235,9 +235,9 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
     @Override
     public void onResume() {
+        super.onResume();
 
         mGoogleApiClient.connect();
-        super.onResume();
     }
 
     protected void startLocationUpdates() {
@@ -317,6 +317,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
                                 Uri.fromParts("package", getContext().getPackageName(), null));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+                        dialog.dismiss();
                     }
                 }).negativeText(R.string.cancel_text)
                 .autoDismiss(true)
@@ -336,8 +337,11 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
     @Override
     public void onPause() {
 
-        stopLocationUpdates();
-        mGoogleApiClient.disconnect();
+        if(mGoogleApiClient.isConnected()){
+            stopLocationUpdates();
+            mGoogleApiClient.disconnect();
+        }
+
 
         super.onPause();
     }
@@ -366,8 +370,6 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
 
 
-                    LocationServices.FusedLocationApi.requestLocationUpdates(
-                            mGoogleApiClient, mLocationRequest, this);
 
                     if (requestOpenGps()) {
                         Log.d("Request location", "request open enabled 1");

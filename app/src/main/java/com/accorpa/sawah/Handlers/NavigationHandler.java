@@ -169,15 +169,15 @@ public class NavigationHandler {
         context.startActivity(activity);
     }
 
-    public void startImagePickerForResult(Activity activity, int pickImageRequest, boolean multiSelect) {
+    public void startImagePickerForResult(Activity activity, int pickImageRequest, int maxNo) {
 
 
 
 
-        if(multiSelect){
+        if(maxNo > 1){
             Intent intent = new Intent(activity, AlbumSelectActivity.class);
 //set limit on number of images that can be selected, default is 10
-            intent.putExtra(Constants.INTENT_EXTRA_LIMIT, 10);
+            intent.putExtra(Constants.INTENT_EXTRA_LIMIT, maxNo);
             activity.startActivityForResult(intent, Constants.REQUEST_CODE);
             return;
         }

@@ -239,7 +239,7 @@ public class EditProfileActivity extends BaseActivity {
 
     public void selectImage() {
         NavigationHandler.getInstance().startImagePickerForResult(EditProfileActivity.this,
-                PICK_IMAGE_REQUEST, false);
+                PICK_IMAGE_REQUEST, 1);
     }
 
     public Bitmap getProfileImage() {

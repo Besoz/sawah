@@ -1,6 +1,7 @@
 package com.accorpa.sawah.AddNewPlace;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -59,7 +60,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
     @Override
     public void selectPlaceImages() {
         NavigationHandler.getInstance().startImagePickerForResult(AddNewPlaceActivity.this,
-                PICK_IMAGE_REQUEST, true);
+                PICK_IMAGE_REQUEST, 5);
     }
 
     @Override
@@ -108,8 +109,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d("add new Place", (requestCode) +" "+ resultCode +" "+ data  +" "+
-                data.getData());
+
         if (requestCode == Constants.REQUEST_CODE && resultCode == RESULT_OK && data != null ) {
 
             bitmapImages= data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
@@ -118,6 +118,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
 
 
             if (bitmapImages.size() > 0 ){
+                addingPlaceDetailsFragment.showSelectedImages(bitmapImages);
                 imageSelcted = true;
             }else{
                 imageSelcted = false;
@@ -133,5 +134,16 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
     protected String getToolbarTitle() {
         return getString(R.string.add_place);
     }
+
+//    todo remove location from the fragment or find better structure
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        if(placeLocationFragment.isVisible()){
+            placeLocationFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+
 
 }
