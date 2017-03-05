@@ -169,4 +169,6 @@
     <string name="enable_gps_message">enable_gps_message</string>
 
     <string name="enter_user_name">ادخل اسم المستخدم</string>
+    <string name="enter_place_name">ادخل اسم المكان</string>
+    <string name="enter_password">ادخل كلمة المرور</string>
 </resources>

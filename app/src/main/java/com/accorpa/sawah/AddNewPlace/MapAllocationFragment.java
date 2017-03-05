@@ -142,7 +142,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
 
         if (TextUtils.isEmpty(placeNamedStr)) {
-            placeNameEditText.setError(getString(R.string.error_field_required));
+            placeNameEditText.setError(getString(R.string.enter_place_name));
             focusView = placeNameEditText;
             cancel = true;
         }

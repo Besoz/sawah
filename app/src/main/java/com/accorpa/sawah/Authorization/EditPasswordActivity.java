@@ -94,7 +94,7 @@ public class EditPasswordActivity extends BaseActivity {
 
 
         if (TextUtils.isEmpty(confirmPasswordStr)) {
-            confirmPassword.setError(getString(R.string.error_field_required));
+            confirmPassword.setError(getString(R.string.enter_password));
             focusView = newPassword;
             cancel = true;
         } else if (!TextUtils.equals(newPasswordStr, confirmPasswordStr)) {
@@ -104,7 +104,7 @@ public class EditPasswordActivity extends BaseActivity {
         }
 
         if (TextUtils.isEmpty(newPasswordStr)) {
-            newPassword.setError(getString(R.string.error_field_required));
+            newPassword.setError(getString(R.string.enter_password));
             focusView = newPassword;
             cancel = true;
         } else if (!AuthorizationController.isPasswordValid(newPasswordStr)) {
@@ -114,7 +114,7 @@ public class EditPasswordActivity extends BaseActivity {
         }
 
         if (TextUtils.isEmpty(currentPasswordStr)) {
-            currentPassword.setError(getString(R.string.error_field_required));
+            currentPassword.setError(getString(R.string.enter_password));
             focusView = currentPassword;
             cancel = true;
         }
