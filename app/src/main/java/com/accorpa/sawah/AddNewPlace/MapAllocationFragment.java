@@ -38,6 +38,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -282,19 +283,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
         if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             Log.d("Request location", "1");
-            new MaterialDialog.Builder(getContext())
-                    .title(R.string.enable_gps_title)
-                    .content(R.string.enable_gps_message)
-                    .positiveText(R.string.agree)
-                    .onPositive(new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        }}).negativeText("cancel")
-                    .autoDismiss(true)
-                    .titleGravity(GravityEnum.CENTER)
-                    .contentGravity(GravityEnum.CENTER)
-                    .show();
+
 
             return false;
         }else{
@@ -400,6 +389,9 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
         if (googleMap != null) {
             if (!locationDenied && !(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
                 googleMap.setMyLocationEnabled(true);
+                googleMap.animateCamera(CameraUpdateFactory
+                        .newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),
+                                20));
             }
 
 //            addMarker();
@@ -409,19 +401,6 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
 
     }
 
-    private void addMarker() {
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
-
-        Matrix m = new Matrix();
-        m.setRectToRect(new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight()), new RectF(0, 0, 100, 100), Matrix.ScaleToFit.CENTER);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
-
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
-
-        LatLng position = new LatLng(mLastLocation.getAltitude(), mLastLocation.getLongitude());
-        googleMap.addMarker(new MarkerOptions().position(position).icon(bitmapDescriptor));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10));
-    }
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);

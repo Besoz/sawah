@@ -12,6 +12,16 @@
         <item name="android:textColor">@color/textColor</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.Transparent" parent="AppTheme.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+
     <style name="buttonWithIcon">
         <item name="android:textSize">20dp</item>
         <item name="android:drawablePadding">10dp</item>

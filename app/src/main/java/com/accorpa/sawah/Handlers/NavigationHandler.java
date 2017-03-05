@@ -51,6 +51,7 @@ public class NavigationHandler {
     public void startLoginActivity(Context context) {
 
         Intent loginActivity = new Intent(context, LoginActivity.class);
+        loginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(loginActivity);
     }
 

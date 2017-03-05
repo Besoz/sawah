@@ -331,12 +331,11 @@ public class ServiceHandler {
 
         String url = urlHandler.getAddNewPlaceUrl();
 
-
         Log.d("place data", placeData.toString());
         try {
             placeData.put("CityID", cityID);
             placeData.put("UserID", userID);
-
+            placeData.put("Description", placeData.getString("BIO"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

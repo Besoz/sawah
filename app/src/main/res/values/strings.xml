@@ -173,4 +173,9 @@
     <string name="enter_user_name">ادخل اسم المستخدم</string>
     <string name="enter_place_name">ادخل اسم المكان</string>
     <string name="enter_password">ادخل كلمة المرور</string>
+    <string name="choose_place_image_message"> تأكد من إضافة صورة على الأقل للمكان</string>
+    <string name="alert_title">تنبيه!</string>
+    <string name="add_new_place_request_sent"> تم إرسال طلب إضافة المكان سيتم إضافة المكان بعد مراجعة البيانات نشكركم على المساهمة في بناء تطبيق سواح</string>
+    <string name="please_add_place_description">يرجو إضافة وصف للمكان</string>
+
 </resources>
