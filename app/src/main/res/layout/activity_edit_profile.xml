@@ -183,6 +183,7 @@
                             android:text="@string/birth_date"
                             android:textColor="@color/edit_profile_titles"
                             android:textSize="16sp"
+                            android:focusable="false"
                             android:layout_marginRight="@dimen/listview_margin"
                             android:layout_gravity="right|center_vertical" />
                         <com.accorpa.sawah.custom_views.CustomEditText
