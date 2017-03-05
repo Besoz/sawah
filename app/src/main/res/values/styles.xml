@@ -75,7 +75,18 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-
+    <style name="rowEditText">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginRight">@dimen/listview_margin</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColorLink">@color/textColor</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">20dp</item>
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -126,9 +137,10 @@
     </style>
 
     <style name="MyDatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
-
-        <!--<item name="android:datePickerStyle">@style/MyDatePickerStyle</item>-->
-        <item name="colorAccent">@color/tw__composer_red</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <!--<item name="android:windowBackground">@color/black_85</item>-->
+        <!--<item name="android:windowNoTitle">true</item>-->
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
     <!--<style name="MyDatePickerStyle" parent="@android:style/Widget.Material.Light.DatePicker">-->
         <!--<item name="android:headerBackground">@color/prim</item>-->

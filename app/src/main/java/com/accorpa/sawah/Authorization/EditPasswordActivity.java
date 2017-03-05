@@ -14,6 +14,7 @@ import android.widget.TableRow;
 import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.BaseResponseListener;
 import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.custom_views.CustomButton;
 import com.accorpa.sawah.custom_views.CustomEditText;
@@ -33,11 +34,12 @@ public class EditPasswordActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Utils.getInstance().changeStatusBarColor(this);
         currentPassword = (CustomEditText)  findViewById(R.id.current_password_edit_text);
         newPassword = (CustomEditText) findViewById(R.id.edit_password_edit_text);
         confirmPassword = (CustomEditText) findViewById(R.id.confirm_password_edit_text);
 
+        removeNavigationDrawer();
 
         TableRow row1 = (TableRow) findViewById(R.id.r1);
         TableRow row2 = (TableRow) findViewById(R.id.r2);
@@ -158,4 +160,10 @@ public class EditPasswordActivity extends BaseActivity {
         return R.layout.activity_edit_password_acitvity;
     }
 
+    protected String getToolbarTitle() {
+        return getString(R.string.change_password);
+    }
+    protected int getActionBarMenuLayout() {
+        return R.menu.back_tool_bar;
+    }
 }

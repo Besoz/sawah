@@ -136,6 +136,7 @@
     <string name="facebook_app_id">314025735620741</string> <!--1759744457614418</string>-->
     <string name="fb_login_protocol_scheme">fbAPP_ID</string>
     <string name="google_app">AIzaSyDQVH24VD6t76UIc0KyqOcsMCsYpVVRWBg</string>
+    <string name="change_password">تغيير كلمة السر</string>
     <string name="sat_day">السبت</string>
     <string name="sun_day">الاحد</string>
     <string name="mon_day">الاثنين</string>

@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.accorpa.sawah.BaseActivity;
@@ -93,12 +94,17 @@ public class EditProfileActivity extends BaseActivity {
             }
         });
 
+        TableRow tr = (TableRow)findViewById(R.id.edit_password_row);
+        tr.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editPassword();
+            }
+        });
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-
-
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 DateFormat formatter = new SimpleDateFormat(User.DATE_FORMAT);
@@ -112,11 +118,10 @@ public class EditProfileActivity extends BaseActivity {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(user.getBirthDateObject());
 
-        dpd = new DatePickerDialog(this, date, calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_WEEK));
-
+        dpd = new DatePickerDialog(this,R.style.MyDatePickerDialogTheme ,date, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dpd.updateDate(calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_WEEK));
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         dpd.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
 
@@ -126,6 +131,7 @@ public class EditProfileActivity extends BaseActivity {
         birthDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dpd.setTitle("");
                 dpd.show();
             }
         });
