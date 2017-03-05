@@ -106,7 +106,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="view_list">استعراض القائمة</string>
+    <string name="view_list">استعراض بالقائمة</string>
     <string name="view_map">استعراض بالخريطة</string>
     <string name="edit">تعديل</string>
     <string name="personal_information">المعلومات الشخصية:</string>
@@ -138,10 +138,10 @@
     <string name="google_app">AIzaSyDQVH24VD6t76UIc0KyqOcsMCsYpVVRWBg</string>
     <string name="change_password">تغيير كلمة السر</string>
     <string name="sat_day">السبت</string>
-    <string name="sun_day">الاحد</string>
-    <string name="mon_day">الاثنين</string>
+    <string name="sun_day">الأحد</string>
+    <string name="mon_day">الإثنين</string>
     <string name="tue_day">الثلاثاء</string>
-    <string name="wen_day">الاربعاء</string>
+    <string name="wen_day">الأربعاء</string>
     <string name="thu_day">الخميس</string>
     <string name="fri_day">الجمعة</string>
     <string name="work_time_today">اوقات العمل اليوم:</string>

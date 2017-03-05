@@ -26,6 +26,7 @@ import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
 import android.widget.Toast;
@@ -358,7 +359,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                 }
             });
         }else{
-            checkInButton.setBackgroundResource(R.drawable.check);
+            checkInButton.setImageResource(R.drawable.check);
         }
 
 
@@ -371,6 +372,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
 
         final CustomRotatingButton arrow = (CustomRotatingButton) findViewById(R.id.arrow);
+        final RelativeLayout arrow_layout = (RelativeLayout) findViewById(R.id.work_time);
         final ExpandableRelativeLayout body
                 = (ExpandableRelativeLayout) findViewById(R.id.body);
         header = (LinearLayout) findViewById(R.id.header);
@@ -433,7 +435,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         });
 
 
-        arrow.setOnClickListener(new View.OnClickListener() {
+        arrow_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 arrow.rotate();
