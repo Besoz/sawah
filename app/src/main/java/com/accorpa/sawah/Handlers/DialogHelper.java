@@ -10,6 +10,7 @@ import com.accorpa.sawah.AlertDialog;
 import com.accorpa.sawah.Authorization.LoginActivity;
 import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.R;
+import com.accorpa.sawah.place.PlaceDetailsActivity;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -65,5 +66,15 @@ public class DialogHelper {
         Intent intent = new Intent(context, AlertDialog.class);
         intent.putExtra("DialogID", AlertDialog.ADD_PLACE_DONE);
         context.startActivity(intent);
+    }
+
+    public MaterialDialog showAlert(Context context, String s) {
+
+        return new MaterialDialog.Builder(context)
+                .title(R.string.error).titleGravity(GravityEnum.CENTER)
+                .theme(Theme.LIGHT)
+                .content(s)
+                .contentGravity(GravityEnum.CENTER).autoDismiss(true)
+                .positiveText(R.string.agree).show();
     }
 }

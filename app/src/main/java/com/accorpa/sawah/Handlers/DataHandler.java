@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
@@ -31,6 +32,8 @@ import com.accorpa.sawah.models.User;
 import com.accorpa.sawah.place.PlaceListActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -76,6 +79,7 @@ public class DataHandler {
     public final static String OS = "Android";
 
     private static final Map<Integer, String> dayMap = new HashMap<>();
+    private Location userLocation;
 
 
     public static DataHandler getInstance(Context context) {
@@ -725,12 +729,17 @@ public class DataHandler {
 
     }
 
-    public void assertUserLoacationSynced(){
+    public void assertUserLoacationSynced(Location location){
+        this.userLocation = location;
         userLocationSynced = true;
     }
 
     public boolean isUserLoacationSynced(){
         return userLocationSynced;
+    }
+
+    public Location getUserLocation(){
+        return this.userLocation;
     }
 
 

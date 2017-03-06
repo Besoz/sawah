@@ -1,19 +1,15 @@
 package com.accorpa.sawah.place;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -35,6 +31,7 @@ import com.accorpa.sawah.BaseActivity;
 import com.accorpa.sawah.BaseRequestStateListener;
 import com.accorpa.sawah.CommentsAdapter;
 import com.accorpa.sawah.Handlers.DataHandler;
+import com.accorpa.sawah.Handlers.DialogHelper;
 import com.accorpa.sawah.Handlers.NavigationHandler;
 import com.accorpa.sawah.Handlers.SharingHandler;
 import com.accorpa.sawah.Handlers.Utils;
@@ -76,6 +73,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
 
     private static final int VIEW_COMMENTS_COUNT = 7, IMAGES_OFFSCREEN_COUNT= 4;
+    private static final float CHECK_IN_MAX_DISTANCE_METER = 1000;
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
     private NetworkImageView placeImage;
 
@@ -92,10 +90,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     private SimpleExpandableListAdapter mAdapter;
     ExpandableListView simpleExpandableListView;
-
-    private String groupItems[] = {"Animals"};
-    private String[][] childItems = {{"Dog", "Cat", "Tiger"}};
-
+    
     private Place place;
 
     private static final String NAME = "NAME";
@@ -337,11 +332,24 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                     if(DataHandler.getInstance(PlaceDetailsActivity.this).isUserLoacationSynced()){
                         Log.d("Request location", "Synced");
 
-                        String userID =
-                                DataHandler.getInstance(PlaceDetailsActivity.this).getUser().getUserID();
+                        Location userLocation = DataHandler.getInstance(PlaceDetailsActivity.this)
+                                .getUserLocation();
 
-                        DataHandler.getInstance(PlaceDetailsActivity.this)
-                                .checkInPlace(place.getPlaceID(), userID, checkInStateListner);
+                        double dist  = Utils.getInstance().distance(userLocation.getLatitude(),
+                                userLocation.getLongitude(), place.getLattitude(),
+                                place.getLongitude());
+
+
+                        if( dist < CHECK_IN_MAX_DISTANCE_METER){
+                            String userID =
+                                    DataHandler.getInstance(PlaceDetailsActivity.this).getUser().getUserID();
+
+                            DataHandler.getInstance(PlaceDetailsActivity.this)
+                                    .checkInPlace(place.getPlaceID(), userID, checkInStateListner);
+                        }else {
+                            showCheckAlert(dist);
+                        }
+
                     }else{
 
                         mRequestingLocationUpdates = true;
@@ -364,17 +372,29 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             checkInButton.setImageResource(R.drawable.check);
         }
 
-
-        // Get the SupportMapFragment and request notification
-        // when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
 
+        final RelativeLayout arrow_layout = (RelativeLayout) findViewById(R.id.work_time);
+        WorkTime[] workTimes = place.getWorkTimes();
+
+        if(workTimes.length > 0){
+            initializeWorkTimeLayout(workTimes, arrow_layout);
+        }else{
+            arrow_layout.setVisibility(View.GONE);
+        }
+
+
+        ProperRatingBar priceLevel = (ProperRatingBar) findViewById(R.id.price_level_bar);
+        priceLevel.setRating(5 - (int) place.getPriceLevel());
+
+    }
+
+    private void initializeWorkTimeLayout(WorkTime[] workTimes, RelativeLayout arrow_layout) {
 
         final CustomRotatingButton arrow = (CustomRotatingButton) findViewById(R.id.arrow);
-        final RelativeLayout arrow_layout = (RelativeLayout) findViewById(R.id.work_time);
         final ExpandableRelativeLayout body
                 = (ExpandableRelativeLayout) findViewById(R.id.body);
         header = (LinearLayout) findViewById(R.id.header);
@@ -382,7 +402,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         CustomTextView headerTitle = (CustomTextView) findViewById(R.id.work_time_title);
         CustomTextView headerTitleTime = (CustomTextView) findViewById(R.id.work_time_title_time);
 
-        WorkTime[] workTimes = place.getWorkTimes();
         Arrays.sort(workTimes);
 
         int dayNo = Utils.getInstance().getTodayDayNumber();
@@ -445,9 +464,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             }
         });
 
-        ProperRatingBar priceLevel = (ProperRatingBar) findViewById(R.id.price_level_bar);
-        priceLevel.setRating(5 - (int) place.getPriceLevel());
-
     }
 
     private void showCheckInFail(String message) {
@@ -475,7 +491,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     private void showWaitingLocationUpdate() {
 
-        Toast.makeText(this, "waiting location update", Toast.LENGTH_SHORT);
     }
 
 
@@ -632,37 +647,56 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(final Location location) {
         super.onLocationChanged(location);
 
-        final String userID = DataHandler.getInstance(this).getUser().getUserID();
+        DataHandler.getInstance(PlaceDetailsActivity.this).assertUserLoacationSynced(location);
+        stopLocationUpdates();
 
-        showProgress(true);
-        DataHandler.getInstance(this)
-                .syncDefaultCityAndLocation(DataHandler.getInstance(this).getDefaultCityID(),
-                        location.getLatitude() + "", location.getLongitude() + "",userID
-                        ,
-                        new BaseRequestStateListener() {
-                            @Override
-                            public void failResponse(ServiceResponse response) {
-                                showProgress(false);
 
-                            }
+        double dist  = Utils.getInstance().distance(location.getLatitude(),
+                location.getLongitude(), place.getLattitude(),
+                place.getLongitude());
 
-                            @Override
-                            public void successResponse(ServiceResponse response) {
+        if( dist < CHECK_IN_MAX_DISTANCE_METER){
 
-                                DataHandler.getInstance(PlaceDetailsActivity.this).assertUserLoacationSynced();
+            final String userID = DataHandler.getInstance(this).getUser().getUserID();
 
-                                showProgress(false);
+            showProgress(true);
+            DataHandler.getInstance(this)
+                    .syncDefaultCityAndLocation(DataHandler.getInstance(this).getDefaultCityID(),
+                            location.getLatitude() + "", location.getLongitude() + "",userID
+                            ,
+                            new BaseRequestStateListener() {
+                                @Override
+                                public void failResponse(ServiceResponse response) {
+                                    showProgress(false);
 
-                                DataHandler.getInstance(PlaceDetailsActivity.this)
-                                        .checkInPlace(place.getPlaceID(), userID, checkInStateListner);
+                                }
 
-                                stopLocationUpdates();
-                            }
-                        });
+                                @Override
+                                public void successResponse(ServiceResponse response) {
 
+
+                                    showProgress(false);
+
+                                    DataHandler.getInstance(PlaceDetailsActivity.this)
+                                            .checkInPlace(place.getPlaceID(), userID, checkInStateListner);
+
+                                }
+                            });
+        }else{
+            showCheckAlert(dist);
+        }
+
+
+
+    }
+
+    private void showCheckAlert(double dist) {
+
+        DialogHelper.getInstance().showAlert(PlaceDetailsActivity.this,
+                getString(R.string.cant_checkin)+ " " + ((int)(dist/1000)) + "km");
     }
 
 

@@ -155,7 +155,7 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
     public void onLocationChanged(Location location) {
         super.onLocationChanged(location);
 
-        DataHandler.getInstance(this).assertUserLoacationSynced();
+        DataHandler.getInstance(this).assertUserLoacationSynced(location);
         String userId = DataHandler.getInstance(this).getUser().getUserID();
         DataHandler.getInstance(this).syncDefaultCityAndLocation(cityID, location.getLatitude()+"",
                 location.getLongitude()+"", userId);
