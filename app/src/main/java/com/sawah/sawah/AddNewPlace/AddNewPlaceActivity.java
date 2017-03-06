@@ -122,7 +122,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
 
         if (requestCode == Constants.REQUEST_CODE && resultCode == RESULT_OK && data != null ) {
 
-            bitmapImages= data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
+            bitmapImages = data.getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
 
             DataHandler.getInstance(this).loadImageBitmaps(bitmapImages);
 

@@ -14,7 +14,6 @@ import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.arasthel.asyncjob.AsyncJob;
 import com.sawah.sawah.BaseResponseListener;
@@ -34,8 +33,6 @@ import com.sawah.sawah.models.User;
 import com.sawah.sawah.place.PlaceListActivity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.gms.maps.LocationSource;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -65,6 +62,7 @@ public class DataHandler {
     private static final int PROFILE_IMAGE_WIDTH = 200, PROFILE_IMAGE_HEIGHT = 200;
     private static final int PLACE_IMAGE_WIDTH = 640, PLACE_IMAGE_HEIGHT = 360;
     public static final String CITY_NAME_KEY = "CityName";
+    private static final float IMAGE_MAX_SIZE = 400;
     private static DataHandler ourInstance;
     private SharedPreferencesController sharedPreferences;
 
@@ -344,7 +342,7 @@ public class DataHandler {
 
     private String getBase64Encoding(Bitmap userImage) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        userImage.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        userImage.compress(Bitmap.CompressFormat.JPEG, 90, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
 
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
@@ -574,7 +572,15 @@ public class DataHandler {
             BitmapImage bitmapImage = new BitmapImage(images.get(i));
             String s = bitmapImage.path;
 
-            Bitmap b = BitmapDecoder.from(s).decode();
+            File f = new File(s);
+            float size  = f.length()/1024; // KB
+
+            float scale = 1;
+            if(size > IMAGE_MAX_SIZE){
+                scale = IMAGE_MAX_SIZE/ size;
+            }
+            Log.d("SAWAH","scale: " + String.valueOf(scale));
+            Bitmap b = BitmapDecoder.from(s).scaleBy(scale).decode();
             bitmapImage.setBitmap(b);
 
             images.set(i, bitmapImage);

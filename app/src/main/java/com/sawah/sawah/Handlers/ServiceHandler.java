@@ -370,7 +370,7 @@ public class ServiceHandler {
 
             request.put("Images", images);
 
-            Log.d("add new place", request.toString());
+//            Log.d("add new place", request.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();
