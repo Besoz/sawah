@@ -14,7 +14,9 @@ import android.provider.OpenableColumns;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.arasthel.asyncjob.AsyncJob;
 import com.sawah.sawah.BaseResponseListener;
 import com.sawah.sawah.BitmapImage;
 import com.sawah.sawah.CategoriesListActivity;
@@ -530,20 +532,31 @@ public class DataHandler {
             }
 
             @Override
-            public void successResponse(ServiceResponse response) {
+            public void successResponse(final ServiceResponse response) {
 
+                new AsyncJob.AsyncJobBuilder<Boolean>()
+                        .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
+                            @Override
+                            public Boolean doAsync() {
+                                // Do some background work
+                                String[] bitmapsEndcoded = new String[bitmapImages.size()];
 
-                String[] bitmapsEndcoded = new String[bitmapImages.size()];
+                                for (int i = 0; i < bitmapsEndcoded.length ; i++) {
+                                    bitmapsEndcoded[i] = concateImageNameAndEncoding(bitmapImages.get(i).name,
+                                            getBase64Encoding(bitmapImages.get(i).getBitmap()));
+                                }
 
-                for (int i = 0; i < bitmapsEndcoded.length ; i++) {
-                    bitmapsEndcoded[i] = concateImageNameAndEncoding(bitmapImages.get(i).name,
-                            getBase64Encoding(bitmapImages.get(i).getBitmap()));
-                }
-
-                serviceHandler.addPlaceImages(response.getDraftPointID(), bitmapsEndcoded,
-                        placeImageResponseListener);
-
-
+                                serviceHandler.addPlaceImages(response.getDraftPointID(), bitmapsEndcoded,
+                                        placeImageResponseListener);
+                                return true;
+                            }
+                        })
+                        .doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
+                            @Override
+                            public void onResult(Boolean result) {
+//                                Toast.makeText(context, "Result was: " + result, Toast.LENGTH_SHORT).show();
+                            }
+                        }).create().start();
 
             }
         });

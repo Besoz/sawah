@@ -26,6 +26,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.sawah.sawah.BaseActivity;
+import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.R;
 import com.sawah.sawah.custom_views.CustomButton;
 import com.sawah.sawah.custom_views.CustomEditText;
@@ -284,6 +285,7 @@ public class MapAllocationFragment extends Fragment implements OnMapReadyCallbac
         if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             Log.d("Request location", "1");
 
+            DialogHelper.getInstance().showRequestOpenGPS(getContext());
 
             return false;
         }else{

@@ -87,4 +87,23 @@ public class DialogHelper {
 //                .contentGravity(GravityEnum.CENTER).autoDismiss(true)
 //                .positiveText(R.string.agree).show();
 //    }
+
+    public void showRequestOpenGPS(final Context context){
+
+        new MaterialDialog.Builder(context)
+                .title(R.string.enable_gps_title)
+                .content(R.string.enable_gps_message)
+                .positiveText(R.string.agree)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                @Override
+                public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            context.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                }}).negativeText("cancel")
+                .autoDismiss(true)
+                .titleGravity(GravityEnum.CENTER)
+                .contentGravity(GravityEnum.CENTER)
+                .show();
+
+
+    }
 }
