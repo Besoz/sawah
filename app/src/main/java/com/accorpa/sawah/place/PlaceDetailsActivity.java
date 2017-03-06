@@ -328,8 +328,9 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             }
         };
 
-        if(DataHandler.getInstance(this).userExist()){
-
+        if(DataHandler.getInstance(this).userExist())
+        {
+            checkInButton.setImageResource(R.drawable.check);
             checkInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -362,7 +363,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                 }
             });
         }else{
-            checkInButton.setImageResource(R.drawable.check);
+            checkInButton.setImageResource(R.drawable.check_disabled);
         }
 
 
