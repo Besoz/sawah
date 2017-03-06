@@ -61,6 +61,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kennyc.bottomsheet.BottomSheet;
 import com.kennyc.bottomsheet.BottomSheetListener;
@@ -520,43 +521,51 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
 
-        googleMap.addMarker(new MarkerOptions().position(place.getPosition()).icon(bitmapDescriptor));
+        Marker marker = googleMap.addMarker(new MarkerOptions().position(place.getPosition()).icon(bitmapDescriptor));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(place.getPosition()));
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
         googleMap.getUiSettings().setAllGesturesEnabled(false);
 
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                openSheet();
+                return false;
+            }
+        });
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
 
-                new BottomSheet.Builder(PlaceDetailsActivity.this)
-                        .setSheet(R.menu.map_application_options)
-                        .setTitle(R.string.open_map_with_text)
-                        .setNegativeButton(R.string.close)
-                        .setListener(new BottomSheetListener() {
-                            @Override
-                            public void onSheetShown(@NonNull BottomSheet bottomSheet) {
-
-                            }
-
-                            @Override
-                            public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem) {
-                                onMenuItemClick(menuItem);
-                            }
-
-                            @Override
-                            public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @DismissEvent int i) {
-
-                            }
-                        }).setStyle(R.style.MyBottomSheetStyle)
-                        .show();
+                openSheet();
             }
         });
-
-
     }
 
+    protected void openSheet()
+    {
+        new BottomSheet.Builder(PlaceDetailsActivity.this)
+                .setSheet(R.menu.map_application_options)
+                .setTitle(R.string.open_map_with_text)
+                .setNegativeButton(R.string.close)
+                .setListener(new BottomSheetListener() {
+                    @Override
+                    public void onSheetShown(@NonNull BottomSheet bottomSheet) {
 
+                    }
+
+                    @Override
+                    public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem) {
+                        onMenuItemClick(menuItem);
+                    }
+
+                    @Override
+                    public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @DismissEvent int i) {
+
+                    }
+                }).setStyle(R.style.MyBottomSheetStyle)
+                .show();
+    }
     @Override
     public void onClick(View v) {
 //        switch (v.getId()) {
@@ -601,7 +610,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                 return true;
             case R.id.request_uber:
                 SharingHandler.getInstance().requestUberRide(PlaceDetailsActivity.this,
-                        place.getLattitude(), place.getLongitude());
+                        place.getLattitude(), place.getLongitude(), place.getPalceNameEng());
                 return true;
             default:
                 return false;

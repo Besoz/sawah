@@ -119,20 +119,21 @@ public class SharingHandler {
         context.startActivity(mapIntent);
     }
 
-    public void requestUberRide(Context context, double dropLat, double dropLong){
+    public void requestUberRide(Context context, double dropLat, double dropLong, String name){
         try {
             PackageManager pm = context.getPackageManager();
             pm.getPackageInfo("com.ubercab", PackageManager.GET_ACTIVITIES);
-            String uri = "uber://?dropoff[latitude]="+dropLat+"&dropoff[longitude]="+dropLong;
+            String uri = "uber://?action=setPickup&dropoff[latitude]="+dropLat+"&dropoff[longitude]="+dropLong+"&dropoff[nickname]="+name+"&link_text="+context.getString(R.string.app_name);
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(uri));
             context.startActivity(intent);
         } catch (PackageManager.NameNotFoundException e) {
             // No Uber app! Open mobile website.
-            String url = "https://m.uber.com/sign-up?client_id=<CLIENT_ID>";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            context.startActivity(i);
+//            String url = "https://m.uber.com/sign-up?client_id=<CLIENT_ID>";
+//            Intent i = new Intent(Intent.ACTION_VIEW);
+//            i.setData(Uri.parse(url));
+//            context.startActivity(i);
+            DialogHelper.getInstance().showAlert(context,context.getString(R.string.no_uber));
         }
     }
 

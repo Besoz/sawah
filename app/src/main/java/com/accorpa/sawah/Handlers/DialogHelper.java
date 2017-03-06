@@ -60,6 +60,16 @@ public class DialogHelper {
                 .positiveText(R.string.agree).show();
     }
 
+    public MaterialDialog showAlert(Context context, String message)
+    {
+        return new MaterialDialog.Builder(context)
+                .title(R.string.alert_title).titleGravity(GravityEnum.CENTER)
+                .theme(Theme.LIGHT)
+                .content(message)
+                .contentGravity(GravityEnum.CENTER).autoDismiss(true)
+                .positiveText(R.string.agree).show();
+    }
+
     public void showPLaceAddedDialog(final Context context) {
 
         Intent intent = new Intent(context, AlertDialog.class);

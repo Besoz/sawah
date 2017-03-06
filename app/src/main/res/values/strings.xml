@@ -185,5 +185,6 @@
     <string name="edit_your_profile">تعديل البيانات</string>
     <string name="cancel">إلغاء</string>
     <string name="search_in">ابحث في </string>
+    <string name="no_uber">تأكد من تحميل تطبيق أوبر</string>
 
 </resources>
