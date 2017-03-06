@@ -476,7 +476,11 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onResume() {
         super.onResume();
         Log.d("Request location", "onResume");
-
+        SearchView searchView = (SearchView)findViewById(R.id.customSeatch);
+        if(searchView != null)
+        {
+            searchView.clearFocus();
+        }
 
     }
 

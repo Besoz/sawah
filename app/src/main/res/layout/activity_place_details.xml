@@ -344,7 +344,8 @@
                     app:ael_expanded="false"
                     app:ael_duration="200"
                     app:ael_interpolator="accelerate"
-                    app:ael_orientation="vertical">
+                    app:ael_orientation="vertical"
+                    android:gravity="right">
 
                     <TableLayout
                         android:id="@+id/work_time_table"
