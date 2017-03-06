@@ -34,7 +34,7 @@
         android:background="@drawable/gradiant_black_background_90"
         android:gravity="right"
         android:layout_gravity="bottom">
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:id="@+id/category_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             <!--android:layout_height="121dp"-->
             <!--android:layout_width="match_parent" />-->
 
-        <!--<com.accorpa.sawah.custom_views.CustomTextView-->
+        <!--<com.sawah.sawah.custom_views.CustomTextView-->
             <!--android:id="@+id/firstLine"-->
             <!--android:layout_width="fill_parent"-->
             <!--android:layout_height="wrap_content"-->
@@ -96,7 +96,7 @@
             <!--android:layout_height="121dp"-->
             <!--android:layout_width="match_parent" />-->
 
-        <!--<com.accorpa.sawah.custom_views.CustomTextView-->
+        <!--<com.sawah.sawah.custom_views.CustomTextView-->
             <!--android:id="@+id/firstLine"-->
             <!--android:layout_width="fill_parent"-->
             <!--android:layout_height="wrap_content"-->

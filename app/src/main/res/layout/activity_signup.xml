@@ -10,12 +10,12 @@
     android:paddingRight="10dp"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/colorPrimaryDark"
-    tools:context="com.accorpa.sawah.Authorization.SignupActivity"
+    tools:context="com.sawah.sawah.Authorization.SignupActivity"
     android:gravity="center">
 
     <!-- Login progress -->
     <!-- Login progress -->
-    <com.accorpa.sawah.custom_views.CustomProgressDialog
+    <com.sawah.sawah.custom_views.CustomProgressDialog
         android:id="@+id/signup_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
@@ -123,7 +123,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <com.accorpa.sawah.custom_views.CustomButton
+            <com.sawah.sawah.custom_views.CustomButton
                 android:id="@+id/email_sign_up_button"
                 style="?android:textAppearanceLarge"
                 android:layout_width="match_parent"

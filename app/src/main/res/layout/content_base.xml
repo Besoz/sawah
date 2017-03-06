@@ -5,7 +5,7 @@
     android:id="@+id/content_base"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.accorpa.sawah.BaseActivity"
+    tools:context="com.sawah.sawah.BaseActivity"
     tools:showIn="@layout/app_bar_base"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:gravity="top">

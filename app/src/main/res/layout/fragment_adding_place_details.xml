@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:padding="10dp"
     android:background="@color/light_gray"
-    tools:context="com.accorpa.sawah.AddNewPlace.AddingPlaceDetailsFragment">
+    tools:context="com.sawah.sawah.AddNewPlace.AddingPlaceDetailsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.accorpa.sawah.custom_views.CustomEditText
+            <com.sawah.sawah.custom_views.CustomEditText
                 android:id="@+id/place_name_edittext"
                 android:padding="@dimen/listview_margin"
                 android:background="@drawable/background_rounded_white"
@@ -39,7 +39,7 @@
         </RelativeLayout>
 
 
-        <com.accorpa.sawah.custom_views.CustomButton
+        <com.sawah.sawah.custom_views.CustomButton
             android:layout_alignParentBottom="true"
             android:id="@+id/send_button"
             android:layout_width="match_parent"
@@ -60,7 +60,7 @@
             android:orientation="vertical"
             android:weightSum="10">
 
-            <com.accorpa.sawah.custom_views.CustomEditText
+            <com.sawah.sawah.custom_views.CustomEditText
                 android:id="@+id/place_desciption_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

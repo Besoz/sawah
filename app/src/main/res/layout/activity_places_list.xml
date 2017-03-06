@@ -4,7 +4,7 @@
     android:id="@+id/activity_places_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.accorpa.sawah.place.BasePlacesListActivity">
+    tools:context="com.sawah.sawah.place.BasePlacesListActivity">
 
     <LinearLayout
         android:id="@+id/main_view"
@@ -14,7 +14,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="40dp">
-            <com.accorpa.sawah.custom_views.CustomButton
+            <com.sawah.sawah.custom_views.CustomButton
                 android:id="@+id/map_toggle_button"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -23,7 +23,7 @@
                 android:text="@string/view_map"
                 style="?android:textAppearanceMedium"/>
 
-            <com.accorpa.sawah.custom_views.CustomButton
+            <com.sawah.sawah.custom_views.CustomButton
                 android:id="@+id/delete_text"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -56,7 +56,7 @@
         android:background="@drawable/white_progress_dialog_background"
         android:visibility="gone" >
 
-        <com.accorpa.sawah.custom_views.CustomProgressDialog
+        <com.sawah.sawah.custom_views.CustomProgressDialog
 
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"

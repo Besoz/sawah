@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.accorpa.sawah.CommentActivity"
+    tools:context="com.sawah.sawah.CommentActivity"
     android:orientation="vertical"
     android:background="@color/background_gray">
 
@@ -35,7 +35,7 @@
                 android:layout_width="40dp"
                 android:src="@drawable/demoitem"/>
 
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
         </RelativeLayout>
 
 
-        <com.accorpa.sawah.custom_views.CustomEditText
+        <com.sawah.sawah.custom_views.CustomEditText
             android:id="@+id/comment_edit_text"
             android:layout_below="@+id/top_bar"
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
             android:hint="@string/add_comment_hint"
             android:background="@drawable/edit_text_rounded_corners" />
 
-        <com.accorpa.sawah.custom_views.CustomTextView
+        <com.sawah.sawah.custom_views.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/listview_margin"
@@ -90,7 +90,7 @@
             android:orientation="vertical"
             android:layout_alignParentBottom="true">
 
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/terms_of_use_notation"
@@ -98,7 +98,7 @@
                 android:textColor="@color/add_comment_desc"
                 android:maxLength="300"/>
 
-            <com.accorpa.sawah.custom_views.CustomButton
+            <com.sawah.sawah.custom_views.CustomButton
                 android:id="@+id/post_comment_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -10,10 +10,10 @@
     android:paddingRight="45dp"
     android:background="@color/colorPrimary"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.accorpa.sawah.Authorization.LoginActivity">
+    tools:context="com.sawah.sawah.Authorization.LoginActivity">
 
     <!-- Login progress -->
-    <com.accorpa.sawah.custom_views.CustomProgressDialog
+    <com.sawah.sawah.custom_views.CustomProgressDialog
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
@@ -108,7 +108,7 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <com.accorpa.sawah.custom_views.CustomButton
+            <com.sawah.sawah.custom_views.CustomButton
                 android:id="@+id/email_sign_in_button"
                 style="?android:textAppearanceLarge"
                 android:layout_width="match_parent"
@@ -124,7 +124,7 @@
                 android:gravity="center"
                 android:layout_height="wrap_content">
 
-                <com.accorpa.sawah.custom_views.CustomButton
+                <com.sawah.sawah.custom_views.CustomButton
                     android:text="@string/new_user_text"
                     android:id="@+id/new_user_button"
                     android:textColor="@color/textColor"
@@ -132,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent" />
 
-                <com.accorpa.sawah.custom_views.CustomTextView
+                <com.sawah.sawah.custom_views.CustomTextView
                     android:text="@string/sperator"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
@@ -141,7 +141,7 @@
                     android:layout_height="wrap_content" />
 
 
-                <com.accorpa.sawah.custom_views.CustomButton
+                <com.sawah.sawah.custom_views.CustomButton
                     android:id="@+id/forget_password_button"
                     android:text="@string/forget_password_text"
                     android:textColor="@color/textColor"
@@ -168,7 +168,7 @@
                 android:gravity="center"
                 android:paddingTop="10dp">
 
-                <com.accorpa.sawah.custom_views.CustomTextView
+                <com.sawah.sawah.custom_views.CustomTextView
                     android:id="@+id/socail_login_title"
                     android:text="@string/social_login_text"
                     android:textColor="@color/textColor"
@@ -225,7 +225,7 @@
             </LinearLayout>
 
 
-            <com.accorpa.sawah.custom_views.CustomButton
+            <com.sawah.sawah.custom_views.CustomButton
                 android:id="@+id/skip_login_button"
                 android:background="@android:color/transparent"
                 android:textColor="@color/textColor"

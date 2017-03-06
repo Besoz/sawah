@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:716276737770:android:64cbd9a534b486db",
         "android_client_info": {
-          "package_name": "com.accorpa.sawah"
+          "package_name": "com.sawah.sawah"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "716276737770-0rv1knpm88uq57ojanhlgd56orninq75.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.accorpa.sawah",
+            "package_name": "com.sawah.sawah",
             "certificate_hash": "988C6B6334C50E62DAF6B51A64015C3C4EC6CC83"
           }
         },

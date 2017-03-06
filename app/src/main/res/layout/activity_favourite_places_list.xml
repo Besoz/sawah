@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.accorpa.sawah.place.FavouritePlacesList">
+    tools:context="com.sawah.sawah.place.FavouritePlacesList">
 
     <LinearLayout
         android:id="@+id/progress_bar"
@@ -17,7 +17,7 @@
         android:background="@drawable/white_progress_dialog_background"
         android:visibility="gone" >
 
-        <com.accorpa.sawah.custom_views.CustomProgressDialog
+        <com.sawah.sawah.custom_views.CustomProgressDialog
 
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"

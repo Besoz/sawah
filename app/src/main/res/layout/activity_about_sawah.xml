@@ -5,7 +5,7 @@
     android:id="@+id/activity_about_sawah"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.accorpa.sawah.AboutSawahActivity">
+    tools:context="com.sawah.sawah.AboutSawahActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_height="0dp">
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/version_text"
@@ -51,7 +51,7 @@
                 android:textSize="18sp"
                 android:layout_marginBottom="@dimen/listview_margin"
                 android:layout_marginTop="@dimen/listview_margin" />
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/about_text"
@@ -70,7 +70,7 @@
             android:paddingBottom="2dp"
             android:paddingTop="2dp"
             android:layout_height="0dp">
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/happy_to_contact_us"
@@ -78,7 +78,7 @@
                 android:textSize="18sp"
                 android:layout_marginBottom="2dp"
                 android:layout_marginTop="2dp" />
-            <com.accorpa.sawah.custom_views.CustomButton
+            <com.sawah.sawah.custom_views.CustomButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/twitter_small"
@@ -90,7 +90,7 @@
                 android:gravity="left|center_vertical"
                 android:textColor="@android:color/black"
                 android:layout_marginLeft="50dp"/>
-            <com.accorpa.sawah.custom_views.CustomButton
+            <com.sawah.sawah.custom_views.CustomButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/link"
@@ -102,7 +102,7 @@
                 android:gravity="left|center_vertical"
                 android:textColor="@android:color/black"
                 android:layout_marginLeft="50dp"/>
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/share_app"

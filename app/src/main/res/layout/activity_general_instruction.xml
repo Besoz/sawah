@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:gravity="top"
-    tools:context="com.accorpa.sawah.GeneralInstructionActivity">
+    tools:context="com.sawah.sawah.GeneralInstructionActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,14 +21,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:id="@+id/general_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="viewStart"
                 android:text="@string/general_instructions_text"
                 android:textColor="@color/colorPrimary"/>
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:id="@+id/numbers_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:text="@string/general_instructions_title"
                 android:textColor="@color/colorPrimary"
                 android:layout_marginTop="20dp"/>
-            <com.accorpa.sawah.custom_views.CustomTextView
+            <com.sawah.sawah.custom_views.CustomTextView
                 android:id="@+id/numbers_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

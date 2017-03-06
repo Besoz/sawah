@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center">
 
-    <com.accorpa.sawah.custom_views.CustomTextView
+    <com.sawah.sawah.custom_views.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/done_text"
@@ -13,7 +13,7 @@
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
-    <com.accorpa.sawah.custom_views.CustomTextView
+    <com.sawah.sawah.custom_views.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/comment_in_review_text"

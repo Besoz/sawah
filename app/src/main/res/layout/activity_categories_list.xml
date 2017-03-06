@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:paddingRight="@dimen/listview_margin"
     android:paddingLeft="@dimen/listview_margin"
-    tools:context="com.accorpa.sawah.CategoriesListActivity"
+    tools:context="com.sawah.sawah.CategoriesListActivity"
     android:gravity="top">
 
     <GridView

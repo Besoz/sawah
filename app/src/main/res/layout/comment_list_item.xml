@@ -20,7 +20,7 @@
             android:layout_margin="@dimen/listview_margin"
             android:src="@drawable/demoitem"/>
 
-        <com.accorpa.sawah.custom_views.CustomTextView
+        <com.sawah.sawah.custom_views.CustomTextView
             android:id="@+id/user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:textColor="@color/colorPrimary"
             />
 
-        <com.accorpa.sawah.custom_views.CustomTextView
+        <com.sawah.sawah.custom_views.CustomTextView
             android:id="@+id/comment_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:layout_margin="@dimen/listview_margin"
             android:textColor="@color/project_green"/>
 
-        <com.accorpa.sawah.custom_views.CustomTextView
+        <com.sawah.sawah.custom_views.CustomTextView
             android:id="@+id/comment_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

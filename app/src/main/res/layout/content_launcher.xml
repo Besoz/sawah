@@ -5,11 +5,11 @@
     android:id="@+id/content_launcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.accorpa.sawah.LauncherActivity"
+    tools:context="com.sawah.sawah.LauncherActivity"
     tools:showIn="@layout/activity_launcher"
     android:background="@color/colorPrimary">
 
-    <com.accorpa.sawah.custom_views.CustomProgressDialog
+    <com.sawah.sawah.custom_views.CustomProgressDialog
         android:id="@+id/progress_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

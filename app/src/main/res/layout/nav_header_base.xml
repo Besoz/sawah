@@ -35,7 +35,7 @@
             android:layout_height="100dp"
             android:layout_margin="@dimen/listview_margin"/>
 
-        <com.accorpa.sawah.custom_views.CustomTextView
+        <com.sawah.sawah.custom_views.CustomTextView
             android:id="@+id/user_name"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
