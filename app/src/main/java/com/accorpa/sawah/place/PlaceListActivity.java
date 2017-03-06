@@ -24,6 +24,7 @@ import java.util.Arrays;
 
 public class PlaceListActivity extends BasePlacesListActivity implements SensorEventListener {
 
+    private static final long CHECK_FREQUENCY = 100;
     private String cityID, catID, catName;
 
     private SensorManager sensorManager;
@@ -143,26 +144,22 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
 
         long curTime = System.currentTimeMillis();
 
-        if ((curTime - lastUpdate) > 100) {
-//            Log.d("sensor", "shake detected w/ speed: here" );
+        if ((curTime - lastUpdate) > CHECK_FREQUENCY) {
+
             long diffTime = (curTime - lastUpdate);
             lastUpdate = curTime;
 
-
-
             boolean accChange =  Utils.getInstance().isAccelerationChanged(xPreviousAccel,
-                    yPreviousAccel, zPreviousAccel, event.values[0], event.values[1], event.values[2],  diffTime);
-
+                    yPreviousAccel, zPreviousAccel, event.values[0], event.values[1],
+                    event.values[2],  diffTime,  System.currentTimeMillis(), lastShake);
+            
             if (accChange && (System.currentTimeMillis() - lastShake ) > 500 ) {
 //                Log.d("sensor", "shake detected w/ speed: ==============" );
 //                Toast.makeText(this, "shake detected w/ speed: ", Toast.LENGTH_SHORT).show();
                 lastShake = System.currentTimeMillis();
                 executeShakeAction();
-
             }
-
-            updateAccelParameters(event.values[0], event.values[1], event.values[2]);   // (1)
-
+            updateAccelParameters(event.values[0], event.values[1], event.values[2]);
         }
 
     }

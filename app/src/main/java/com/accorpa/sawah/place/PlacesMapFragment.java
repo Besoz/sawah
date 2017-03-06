@@ -3,8 +3,6 @@ package com.accorpa.sawah.place;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,12 +10,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 
+import com.accorpa.sawah.Handlers.Utils;
 import com.accorpa.sawah.R;
 import com.accorpa.sawah.models.Place;
 import com.google.android.gms.maps.CameraUpdate;
@@ -33,6 +33,7 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.labo.kaji.fragmentanimations.FlipAnimation;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -50,6 +51,7 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
     private SupportMapFragment mapFragment;
 
     private GoogleMap map;
+    private Bitmap pin;
 
 
     public PlacesMapFragment() {
@@ -94,10 +96,7 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
             public void onPageSelected(int position) {
 
                 Log.d("map frag", position+"");
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(places.get(position).getPosition(),
-                        20));
-
-
+                animateCameraToPlace(places.get(position));
             }
 
             @Override
@@ -106,7 +105,17 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        int px = Utils.getInstance().dpToPx(25, getContext().getResources().getDisplayMetrics());
+
+        pin = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
+        pin = Utils.getInstance().resizeBitmapInDp(pin, px, px, getResources().getDisplayMetrics());
+
         return fragView;
+    }
+
+    private void animateCameraToPlace(Place place) {
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getPosition(),
+                20));
     }
 
     @Override
@@ -196,6 +205,41 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
 
         mClusterManager.setRenderer(new PlaceRenderer(getContext(), googleMap, mClusterManager));
 
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<Place>() {
+            @Override
+            public boolean onClusterItemClick(Place place) {
+
+                animateCameraToPlace(place);
+
+//                todo hash<place id, place position in pager> O(1)
+
+                for(int i =0 ; i < places.size(); i++){
+                    if (TextUtils.equals(places.get(i).getPlaceID(), place.getPlaceID())){
+                        mPager.setCurrentItem(i, true);
+                    }
+                }
+
+                return true;
+            }
+        });
+
+        mClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<Place>() {
+            @Override
+            public boolean onClusterClick(Cluster<Place> cluster) {
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                for (Place marker : cluster.getItems()) {
+                    builder.include(marker.getPosition());
+                }
+                LatLngBounds bounds = builder.build();
+
+                int padding = 100; // offset from edges of the map in pixels
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                map.animateCamera(cu);
+
+                return true;
+            }
+        });
         googleMap.setOnCameraIdleListener(mClusterManager);
         googleMap.setOnMarkerClickListener(mClusterManager);
 
@@ -205,6 +249,7 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
     private void addItems() {
 
         for (int i = 0; i < places.size(); i++) {
+
             mClusterManager.addItem(places.get(i));
         }
     }
@@ -219,14 +264,7 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
             super(context, map, clusterManager);
 
 
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
-
-            Matrix m = new Matrix();
-            m.setRectToRect(new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight()), new RectF(0,
-                    0, 100, 100), Matrix.ScaleToFit.CENTER);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
-
-            bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
+            bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(pin);
         }
 
         @Override
@@ -235,6 +273,7 @@ public class PlacesMapFragment extends Fragment implements OnMapReadyCallback {
             Log.d("map frag", mPagerAdapter.getItemPosition(place)+" "+mPager.getCurrentItem()+" "+place.getPalceName());
 
             markerOptions.icon(bitmapDescriptor);
+
         }
 
         @Override
