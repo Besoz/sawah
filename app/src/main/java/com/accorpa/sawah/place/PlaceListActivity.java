@@ -36,6 +36,7 @@ public class PlaceListActivity extends BasePlacesListActivity {
         Utils.getInstance().changeStatusBarColor(this);
         DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
         showProgress(true);
+        setupSearch();
     }
 
     public void recievePlacesList(Place[] arr) {
@@ -58,7 +59,7 @@ public class PlaceListActivity extends BasePlacesListActivity {
 
     @Override
     protected int getActionBarMenuLayout() {
-        return R.menu.search_back_tool_bar;
+        return R.menu.back_tool_bar;
     }
 
 
@@ -66,10 +67,20 @@ public class PlaceListActivity extends BasePlacesListActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        ((SearchView)item.getActionView()).setQueryHint(getString(R.string.search_places));
+//        MenuItem item = menu.findItem(R.id.action_search);
+//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
 
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+        return true;
+    }
+    @Override
+    protected String getToolbarTitle() {
+        return "";
+    }
+
+    protected void setupSearch()
+    {
+        SearchView searchView = styleSearch();
+        searchView.setQueryHint(getString(R.string.search_in) + " " + catName);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -90,11 +101,5 @@ public class PlaceListActivity extends BasePlacesListActivity {
                 return true;
             }
         });
-
-        return true;
-    }
-    @Override
-    protected String getToolbarTitle() {
-        return catName;
     }
 }

@@ -33,6 +33,7 @@ public class AlertDialog extends AppCompatActivity {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 NavigationHandler.getInstance().startCategoriesListActivity(AlertDialog.this);
+                                finish();
                             }
                         })
                         .titleGravity(GravityEnum.CENTER)
@@ -63,6 +64,5 @@ public class AlertDialog extends AppCompatActivity {
             default:
                 break;
         }
-        finish();
     }
 }

@@ -61,6 +61,7 @@ public class EditProfileActivity extends BaseActivity {
     private CustomTextView birthDate;
     private DatePickerDialog dpd;
     private CustomEditText userEmail, userName, userPhone;
+//    private Spinner gender_spinner;
 
 
     @Override
@@ -73,6 +74,7 @@ public class EditProfileActivity extends BaseActivity {
         userName = (CustomEditText) findViewById(R.id.user_name);
         userEmail = (CustomEditText) findViewById(R.id.user_email);
         userPhone = (CustomEditText) findViewById(R.id.user_phone);
+//        gender_spinner = (Spinner) findViewById(R.id.gender_spinner);
 
         userName.setText(user.getFullName());
         userEmail.setText(user.getEmail());
@@ -193,6 +195,11 @@ public class EditProfileActivity extends BaseActivity {
             }
 
         });
+
+        if(user.getSex().equals(User.FEMALE))
+            spinner.setSelection(1);
+        else
+            spinner.setSelection(0);
 
         CustomButton updateProfileButton = (CustomButton) this.findViewById(R.id.update_profile_buttton);
         updateProfileButton.setOnClickListener(new View.OnClickListener() {

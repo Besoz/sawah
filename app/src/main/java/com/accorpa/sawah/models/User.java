@@ -31,6 +31,10 @@ public class User {
     @JsonProperty("FullName")
     private String fullName;
 
+    public String getSex() {
+        return sex;
+    }
+
     @JsonProperty("Sex")
     private String sex;
 
