@@ -152,7 +152,7 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
             boolean accChange =  Utils.getInstance().isAccelerationChanged(xPreviousAccel,
                     yPreviousAccel, zPreviousAccel, event.values[0], event.values[1],
                     event.values[2],  diffTime,  System.currentTimeMillis(), lastShake);
-            
+
             if (accChange && (System.currentTimeMillis() - lastShake ) > 500 ) {
 //                Log.d("sensor", "shake detected w/ speed: ==============" );
 //                Toast.makeText(this, "shake detected w/ speed: ", Toast.LENGTH_SHORT).show();

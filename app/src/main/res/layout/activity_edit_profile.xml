@@ -105,6 +105,7 @@
                             android:layout_gravity="right|center_vertical" />
                         <com.accorpa.sawah.custom_views.CustomEditText
                             android:id="@+id/user_name"
+                            android:inputType="textVisiblePassword"
                             style="@style/rowEditText"/>
                     </TableRow>
 
