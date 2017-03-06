@@ -47,9 +47,10 @@
                     <LinearLayout
                         android:id="@+id/special_place_tag"
                         android:visibility="gone"
+                        android:gravity="top|left" android:width="80dp" android:height="80dp"
                         android:layout_gravity="left"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="@drawable/special_tag_layer"
                         android:orientation="horizontal">
                     </LinearLayout>

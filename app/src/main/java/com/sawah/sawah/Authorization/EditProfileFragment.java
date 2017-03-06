@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,12 +19,17 @@ import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
+import com.orm.util.ContextUtil;
 import com.sawah.sawah.R;
 import com.sawah.sawah.custom_views.CustomButton;
 import com.sawah.sawah.custom_views.CustomEditText;
 import com.sawah.sawah.custom_views.CustomTextView;
 import com.sawah.sawah.models.User;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,7 +58,7 @@ public class EditProfileFragment extends Fragment {
     private CustomEditText userEmail, userName, userPhone;
 
     private User user;
-
+    private Context context;
 
     public EditProfileFragment() {
 
@@ -151,16 +157,21 @@ public class EditProfileFragment extends Fragment {
             }
         };
 
-        dpd = new DatePickerDialog(getContext(), date, user.getBirthDateObject().getYear(),
+        dpd = new DatePickerDialog(getContext(),android.R.style.Theme_Holo_Dialog_MinWidth,
+                date, user.getBirthDateObject().getYear(),
                 user.getBirthDateObject().getMonth(), user.getBirthDateObject().getDay());
-
         dpd.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
-
+        dpd.getDatePicker().setSpinnersShown(true);
         birthDate = (CustomEditText) view.findViewById(R.id.birth_date);
         birthDate.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-                dpd.show();
+            DatePickerBuilder dpb2 = new DatePickerBuilder()
+                    .setFragmentManager(getFragmentManager())
+                    .setStyleResId(R.style.BetterPickersDialogFragment)
+                    .setYearOptional(true);
+            dpb2.show();
+//            dpd.show();
             }
         });
 
@@ -235,6 +246,7 @@ public class EditProfileFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.context = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

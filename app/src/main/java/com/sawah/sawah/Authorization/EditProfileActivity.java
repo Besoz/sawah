@@ -1,6 +1,5 @@
 package com.sawah.sawah.Authorization;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
 import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.BaseResponseListener;
@@ -34,6 +34,7 @@ import com.sawah.sawah.custom_views.CustomEditText;
 import com.sawah.sawah.custom_views.CustomTextView;
 import com.sawah.sawah.models.User;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONObject;
 
@@ -58,7 +59,7 @@ public class EditProfileActivity extends BaseActivity {
 
     private CircleImageView profileImage;
     private CustomTextView birthDate;
-    private DatePickerDialog dpd;
+//    private DatePickerDialog dpd;
     private CustomEditText userEmail, userName, userPhone;
     private Spinner genderSpinner;
 
@@ -109,28 +110,49 @@ public class EditProfileActivity extends BaseActivity {
             }
         });
 
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                DateFormat formatter = new SimpleDateFormat(User.DATE_FORMAT);
-                String date = formatter.format(newDate.getTime());
-
-                user.setBirthDate(date);
-                birthDate.setText(date);
-            }
-        };
+//        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+//                Calendar newDate = Calendar.getInstance();
+//                newDate.set(year, monthOfYear, dayOfMonth);
+//                DateFormat formatter = new SimpleDateFormat(User.DATE_FORMAT);
+//                String date = formatter.format(newDate.getTime());
+//
+//                user.setBirthDate(date);
+//                birthDate.setText(date);
+//            }
+//        };
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(user.getBirthDateObject());
 
-        dpd = new DatePickerDialog(this,R.style.MyDatePickerDialogTheme ,date, calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-        dpd.updateDate(calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+//        dpd = new DatePickerDialog(this,R.style.MyDatePickerDialogTheme ,date, calendar.get(Calendar.YEAR),
+//                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+//        dpd.updateDate(calendar.get(Calendar.YEAR),
+//                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+//
+//        dpd.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
 
-        dpd.getDatePicker().setMaxDate(Calendar.getInstance().getTimeInMillis());
+        Calendar now = Calendar.getInstance();
+        final DatePickerDialog dpd = DatePickerDialog.newInstance(
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar newDate = Calendar.getInstance();
+                        newDate.set(year, monthOfYear, dayOfMonth);
+                        DateFormat formatter = new SimpleDateFormat(User.DATE_FORMAT);
+                        String date = formatter.format(newDate.getTime());
+
+                        user.setBirthDate(date);
+                        birthDate.setText(date);
+                    }
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+//                dpd.setVersion(com.wdullaer.materialdatetimepicker.date.DatePickerDialog.Version.VERSION_1);
+        dpd.showYearPickerFirst(true);
 
 
         birthDate = (CustomTextView) findViewById(R.id.birth_date);
@@ -140,8 +162,15 @@ public class EditProfileActivity extends BaseActivity {
         birthDateRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dpd.setTitle("");
-                dpd.show();
+//                dpd.setTitle("");
+//                dpd.show();
+//                DatePickerBuilder dpb2 = new DatePickerBuilder()
+//                        .setFragmentManager(getSupportFragmentManager())
+//                        .setStyleResId(R.style.BetterPickersDialogFragment)
+//                        .setYearOptional(true);
+//                dpb2.show();
+
+                dpd.show(getFragmentManager(), "Datepickerdialog");
             }
         });
 
