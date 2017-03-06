@@ -336,7 +336,7 @@
                 </LinearLayout>
 
 
-                <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+                <com.github.aakira.expandablelayout.ExpandableLinearLayout
                     android:id="@+id/body"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -354,7 +354,7 @@
                         android:gravity="right">
 
                     </TableLayout>
-                </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+                </com.github.aakira.expandablelayout.ExpandableLinearLayout >
 
             </LinearLayout>
 
