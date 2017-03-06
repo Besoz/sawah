@@ -1,12 +1,20 @@
 package com.accorpa.sawah;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
+import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.NavigationHandler;
@@ -43,6 +51,8 @@ public class CitiesListActivity extends ListActivity {
         DataHandler.getInstance(getApplicationContext()).requestCitiesArray(this);
         showProgress(true);
 
+        setupSearch();
+
     }
 
 
@@ -55,24 +65,32 @@ public class CitiesListActivity extends ListActivity {
         showProgress(false);
     }
 
-    @Override
-    protected int getActionBarMenuLayout() {
-        return R.menu.search_tool_bar;
-    }
+//    @Override
+//    protected int getActionBarMenuLayout() {
+//        return R.menu.search_tool_bar;
+//    }
 
     @Override
     protected String getToolbarTitle() {
-        return getString(R.string.cities);
+//        return getString(R.string.cities);
+        return "";
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        ((SearchView)item.getActionView()).setQueryHint(getString(R.string.searh_city));
+//        MenuItem item = menu.findItem(R.id.action_search);
+//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+
+        return true;
+    }
+
+    protected void setupSearch()
+    {
+        SearchView searchView = styleSearch();
+        searchView.setQueryHint(getString(R.string.searh_city));
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -93,8 +111,6 @@ public class CitiesListActivity extends ListActivity {
                 return true;
             }
         });
-
-        return true;
     }
 
 }

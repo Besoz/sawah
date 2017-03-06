@@ -155,7 +155,7 @@
     <string name="settings">ألإعدادات</string>
     <string name="must_sign_in_to_add_comment">يجب تسجيل الدخول لإضافة تعليق</string>
     <string name="user_data">البيانات الشخصية</string>
-    <string name="must_user_data_add_comment">يجب إضافة اسم المستخدم لإضافة تعليق </string>
+    <string name="must_user_data_add_comment">لتتمكن من إضافة تعليق يجب عليك اكمال بياناتك في ملفك الشخصي\n البيانات المطلوبة هي: \n الاسم وتاريخ الميلاد والجنس</string>
     <string name="general_instructions_text">نتطلع في تطبيق سواح إلى تغطية أبرز المناطق السياحية في مدن العالم، إذ يعمل فريق سواح لزيارة الأماكن المهمة في هذه المدن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدن العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
     >
     <string name="general_instructions_title">أرقام تهمك:</string>
@@ -175,11 +175,15 @@
     <string name="enter_password">ادخل كلمة المرور</string>
     <string name="choose_place_image_message"> تأكد من إضافة صورة على الأقل للمكان</string>
     <string name="alert_title">تنبيه!</string>
-    <string name="add_new_place_request_sent"> تم إرسال طلب إضافة المكان سيتم إضافة المكان بعد مراجعة البيانات نشكركم على المساهمة في بناء تطبيق سواح</string>
+    <string name="add_new_place_request_sent"> تم إرسال طلب إضافة المكان \n سيتم إضافة المكان بعد مراجعة البيانات \n نشكركم على المساهمه في بناء تطبيق سواح</string>
     <string name="please_add_place_description">يرجو إضافة وصف للمكان</string>
 
     <string name="error">خطأ</string>
     <string name="password_update_success">تم تعديل كلمة المرور بنجاح</string>
     <string name="profile_update_success">تم تعديل بياناتك بنجاح</string>
+
+    <string name="edit_your_profile">تعديل البيانات</string>
+    <string name="cancel">إلغاء</string>
+    <string name="search_in">ابحث في </string>
 
 </resources>

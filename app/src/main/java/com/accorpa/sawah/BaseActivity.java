@@ -2,11 +2,14 @@ package com.accorpa.sawah;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
@@ -36,7 +39,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -570,4 +575,31 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
         }
     }
 
+    public SearchView styleSearch()
+    {
+        findViewById(R.id.toolbar_title).setVisibility(View.GONE);
+        findViewById(R.id.customSeatch).setVisibility(View.VISIBLE);
+        SearchView searchView = (SearchView)findViewById(R.id.customSeatch);
+        searchView.setIconified(false);
+        searchView.clearFocus();
+
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+
+        searchView.setSearchableInfo(searchableInfo);
+        searchView.setIconifiedByDefault(true);
+
+        EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        ImageView close = (ImageView)searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        close.setImageDrawable(null);
+        close.setMaxWidth(0);
+        searchEditText.setBackgroundResource(R.drawable.search_background);
+        searchEditText.setTextColor(getResources().getColor(R.color.symbolic_grey));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.symbolic_grey));
+
+        Typeface myCustomFont = Typeface.createFromAsset(getAssets(),getString(R.string.default_font));
+        searchEditText.setTypeface(myCustomFont);
+
+        return searchView;
+    }
 }

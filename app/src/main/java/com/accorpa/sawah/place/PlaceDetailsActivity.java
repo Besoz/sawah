@@ -211,12 +211,14 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                 DataHandler dataHandler = DataHandler.getInstance(PlaceDetailsActivity.this);
                 if(dataHandler.userExist()){
 
-                    if(TextUtils.isEmpty(dataHandler.getUser().getFullName())){
+                    if(TextUtils.isEmpty(dataHandler.getUser().getFullName())
+                            || TextUtils.isEmpty(dataHandler.getUser().getBirthDate())
+                            || TextUtils.isEmpty(dataHandler.getUser().getSex())){
                         new MaterialDialog.Builder(PlaceDetailsActivity.this)
-                                .title(R.string.user_data)
+                                .title(R.string.alert_title)
                                 .content(R.string.must_user_data_add_comment)
-                                .positiveText(R.string.agree)
-                                .negativeText(R.string.close)
+                                .positiveText(R.string.edit_your_profile)
+                                .negativeText(R.string.cancel)
                                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                                     @Override
                                     public void onClick(@NonNull MaterialDialog dialog,
