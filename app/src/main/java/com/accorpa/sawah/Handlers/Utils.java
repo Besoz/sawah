@@ -2,18 +2,26 @@ package com.accorpa.sawah.Handlers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import com.accorpa.sawah.BitmapImage;
 import com.accorpa.sawah.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -25,6 +33,7 @@ import java.util.Map;
 public class Utils {
 
     private static final float SHAKE_THRESHOLD = 500;
+    private static final long SHAKE_FREQUENCY = 500;
     private final float shakeThreshold = 1.5f;
 
     private static Utils ourInstance;
@@ -87,15 +96,42 @@ public class Utils {
 
     public boolean isAccelerationChanged(float xPreviousAccel, float yPreviousAccel,
                                          float zPreviousAccel, float xAccel, float yAccel,
-                                         float zAccel, long diffTime) {
+                                         float zAccel, long diffTime, long currShake, long lastShake) {
         float deltaX = Math.abs(xPreviousAccel - xAccel);
         float deltaY = Math.abs(yPreviousAccel - yAccel);
         float deltaZ = Math.abs(zPreviousAccel - zAccel);
 
         float speed = Math.abs(deltaX + deltaY + deltaZ) / diffTime * 10000;
 
-        System.out.println(diffTime+" "+xPreviousAccel+" "+yPreviousAccel+" "+zPreviousAccel+" "+xAccel+" "+yAccel+" "+zAccel+" "+speed);
+        return (speed > SHAKE_THRESHOLD && (currShake - lastShake ) > SHAKE_FREQUENCY );
+    }
 
-        return (speed > SHAKE_THRESHOLD);
+
+
+
+    public int pxToDp(float px,  DisplayMetrics displayMetrics) {
+
+//        because utils is un aware of context
+//        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return Math.round(px / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+
+    public int dpToPx(float dp, DisplayMetrics displayMetrics) {
+
+//        because utils is un aware of context
+//        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
+    public Bitmap resizeBitmapInDp(Bitmap b, float dpH, float dpW, DisplayMetrics displayMetrics){
+
+        float pxH = dpToPx(dpH, displayMetrics);
+        float pxW = dpToPx(dpW, displayMetrics);
+
+        Matrix m = new Matrix();
+        m.setRectToRect(new RectF(0, 0, b.getWidth(), b.getHeight()), new RectF(0, 0, dpW, pxH), Matrix.ScaleToFit.CENTER);
+        return Bitmap.createBitmap(b, 0, 0, b.getWidth(), b.getHeight(), m, true);
+
     }
 }
