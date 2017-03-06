@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.google.firebase.crash.FirebaseCrash;
 import com.sawah.sawah.Authorization.AuthorizationController;
 import com.sawah.sawah.Authorization.LoginListener;
 import com.sawah.sawah.Handlers.ActivityCycleListener;
@@ -33,6 +34,7 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
         Fabric.with(this, new Twitter(authConfig));
         setContentView(R.layout.activity_launcher);
 
+        FirebaseCrash.log("Activity created SAWAH");
 //        ActivityCycleListener listener = new ActivityCycleListener() {
 //            @Override
 //            public void onBecameForeground() {
@@ -51,9 +53,9 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
         mProgressView = findViewById(R.id.progress_view);
 
 //        starting firebase cloud service
-        Intent service = new Intent(this, FCMService.class);
-        service.putExtra("serviceType", "register");
-        this.startService(service);
+//        Intent service = new Intent(this, FCMService.class);
+//        service.putExtra("serviceType", "register");
+//        this.startService(service);
 
         Utils.getInstance().changeStatusBarColor(this);
         new Handler().postDelayed(new Runnable()

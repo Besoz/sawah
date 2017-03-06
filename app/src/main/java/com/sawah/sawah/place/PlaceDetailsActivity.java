@@ -1,5 +1,6 @@
 package com.sawah.sawah.place;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -16,6 +17,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.InflateException;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.URLUtil;
@@ -562,27 +565,55 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     protected void openSheet()
     {
-        new BottomSheet.Builder(PlaceDetailsActivity.this)
-                .setSheet(R.menu.map_application_options)
-                .setTitle(R.string.open_map_with_text)
-                .setNegativeButton(R.string.close)
-                .setListener(new BottomSheetListener() {
-                    @Override
-                    public void onSheetShown(@NonNull BottomSheet bottomSheet) {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View contentView;
+        try {
+            contentView = inflater.inflate(R.layout.bottom_sheet, null, false);
+            new BottomSheet.Builder(PlaceDetailsActivity.this)
+//                .setSheet(R.menu.map_application_options)
+                    .setView(contentView)
+                    .setTitle(R.string.open_map_with_text)
+                    .setNegativeButton(R.string.close)
+                    .show();
+            CustomButton map = (CustomButton) contentView.findViewById(R.id.open_maps);
+            map.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharingHandler.getInstance().openMapIntent(PlaceDetailsActivity.this,
+                            place.getLattitude(), place.getLongitude());
+                }
+            });
+            CustomButton uber = (CustomButton) contentView.findViewById(R.id.open_uber);
+            uber.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SharingHandler.getInstance().requestUberRide(PlaceDetailsActivity.this,
+                            place.getLattitude(), place.getLongitude(), place.getPalceNameEng());
+                }
+            });
+        }
+        catch (InflateException e)
+        {
+            System.out.println(e.getMessage());
+        }
 
-                    }
-
-                    @Override
-                    public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem) {
-                        onMenuItemClick(menuItem);
-                    }
-
-                    @Override
-                    public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @DismissEvent int i) {
-
-                    }
-                }).setStyle(R.style.MyBottomSheetStyle)
-                .show();
+//                .setListener(new BottomSheetListener() {
+//                    @Override
+//                    public void onSheetShown(@NonNull BottomSheet bottomSheet) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem) {
+//                        onMenuItemClick(menuItem);
+//                    }
+//
+//                    @Override
+//                    public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @DismissEvent int i) {
+//
+//                    }
+//                }).setStyle(R.style.MyBottomSheetStyle)
+//                .show();
     }
     @Override
     public void onClick(View v) {

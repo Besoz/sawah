@@ -35,6 +35,7 @@ import android.widget.TextView;
 
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.Handlers.DataHandler;
+import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.R;
@@ -267,7 +268,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private void signInWithTwitter() {
         mtwitterLoginButton = (ImageButton) findViewById(R.id.twitter_login_btn);
-        twitterLoginButton = (TwitterLoginButton) new TwitterLoginButton(this);
+        twitterLoginButton = new TwitterLoginButton(this);
         twitterLoginButton.setCallback(new Callback<TwitterSession>() {
             @Override
             public void success(Result<TwitterSession> result) {
@@ -302,9 +303,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
             @Override
             public void failure(TwitterException exception) {
-//                 Do  on failureLsomethingog.d("g", "Failed twitter Login");
                 Log.d("twitter failure", "TwitterSession"); // "com.twitter.android"
-//                ViewHandler.getInstance().openPlayStoreToInstallApp(LoginFragment.this.getContext(), "com.twitter.android");
+                DialogHelper.getInstance().showError(LoginActivity.this, exception.getMessage());
 
             }
         });

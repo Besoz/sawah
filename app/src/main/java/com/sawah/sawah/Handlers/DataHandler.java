@@ -62,7 +62,7 @@ public class DataHandler {
     private static final int PROFILE_IMAGE_WIDTH = 200, PROFILE_IMAGE_HEIGHT = 200;
     private static final int PLACE_IMAGE_WIDTH = 640, PLACE_IMAGE_HEIGHT = 360;
     public static final String CITY_NAME_KEY = "CityName";
-    private static final float IMAGE_MAX_SIZE = 400;
+    private static final float IMAGE_MAX_SIZE = 200;
     private static DataHandler ourInstance;
     private SharedPreferencesController sharedPreferences;
 
