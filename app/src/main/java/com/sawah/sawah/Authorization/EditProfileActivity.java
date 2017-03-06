@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -61,7 +60,7 @@ public class EditProfileActivity extends BaseActivity {
     private CustomTextView birthDate;
     private DatePickerDialog dpd;
     private CustomEditText userEmail, userName, userPhone;
-//    private Spinner gender_spinner;
+    private Spinner genderSpinner;
 
 
     @Override
@@ -147,7 +146,7 @@ public class EditProfileActivity extends BaseActivity {
         });
 
 
-        Spinner spinner = (Spinner) findViewById(R.id.gender_spinner);
+        genderSpinner = (Spinner) findViewById(R.id.gender_spinner);
 
         List<String> list = new ArrayList<String>();
         list.add(getString(R.string.male));
@@ -177,9 +176,9 @@ public class EditProfileActivity extends BaseActivity {
         };
         dataAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
-        spinner.setAdapter(dataAdapter);
+        genderSpinner.setAdapter(dataAdapter);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
@@ -197,9 +196,9 @@ public class EditProfileActivity extends BaseActivity {
         });
 
         if(user.getSex().equals(User.FEMALE))
-            spinner.setSelection(1);
+            genderSpinner.setSelection(1);
         else
-            spinner.setSelection(0);
+            genderSpinner.setSelection(0);
 
         CustomButton updateProfileButton = (CustomButton) this.findViewById(R.id.update_profile_buttton);
         updateProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -210,25 +209,48 @@ public class EditProfileActivity extends BaseActivity {
             }
         });
 
+        TableRow row1 = (TableRow) findViewById(R.id.name_row);
+        TableRow row2 = (TableRow) findViewById(R.id.email_row);
+        TableRow row3 = (TableRow) findViewById(R.id.phone_row);
+        TableRow row4 = (TableRow) findViewById(R.id.sex_row);
+
+
+        row1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userName.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(userName, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+        row2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userEmail.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(userEmail, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+        row3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                userPhone.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(userPhone, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+
+        row4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                genderSpinner.performClick();
+            }
+        });
     }
 
-    protected void onClickFocus(View v)
-    {
-        int id = v.getId();
-        v.requestFocus();
-        CustomEditText et = null;
-        if(id == R.id.name_row)
-            et = userName;
-        else if(id == R.id.email_row)
-            et = userEmail;
-        else if(id == R.id.phone_row)
-            et = userPhone;
-        if(et != null)
-        {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(et, InputMethodManager.SHOW_IMPLICIT);
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
