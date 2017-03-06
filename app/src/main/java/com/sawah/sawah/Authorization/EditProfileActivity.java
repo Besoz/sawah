@@ -353,7 +353,8 @@ public class EditProfileActivity extends BaseActivity {
             }
 
             @Override
-            public void successResponse(ServiceResponse response) {
+            public void successResponse(ServiceResponse response)
+            {
                 showProgress(false);
                 MaterialDialog m = DialogHelper.getInstance()
                         .showSuccess(EditProfileActivity.this,

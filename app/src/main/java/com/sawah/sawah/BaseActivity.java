@@ -78,7 +78,8 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     private ActionBarDrawerToggle toggle;
     private CustomTextView toolbarTitle;
     private CircleImageView userImage;
-
+    private NavigationView navigationView;
+    private View headerLayout;
 
     protected boolean mRequestingLocationUpdates;
     protected GoogleApiClient mGoogleApiClient;
@@ -123,68 +124,25 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
 //        toggle.setDrawerIndicatorEnabled(false);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
 //        navigationView.setNavigationItemSelectedListener(this);
 
 //        version 23.1.0 switches NavigationView to using a RecyclerView This means it is not
 //        instantly available to call findViewById() -a layout pass is needed before it is attached to the
-        View headerLayout = findViewById(R.id.nav_header_base);
+        headerLayout = findViewById(R.id.nav_header_base);
+        updateUserDrawer();
 
+        ImageButton settingsButton = (ImageButton) headerLayout.findViewById(R.id.settings_button);
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavigationHandler.getInstance().startEditProfileActivity(BaseActivity.this);
+            }
+        });
 //        Menu nav_Menu = navigationView.getMenu();
 
         if (DataHandler.getInstance(this).userExist()) {
-            headerLayout.setVisibility(View.VISIBLE);
-            navigationView.findViewById(R.id.nav_login).setVisibility(View.GONE);
-
-            final User user = DataHandler.getInstance(this).getUser();
-
-            CustomTextView userNameText = (CustomTextView) headerLayout.findViewById(R.id.user_name);
-            userNameText.setText(user.getFullName());
-
-            userImage = (CircleImageView) headerLayout.findViewById(R.id.profile_image);
-            if (!TextUtils.isEmpty((user.getLocalImagePath()))) {
-                Log.d("local image path", user.getLocalImagePath());
-
-                Bitmap b = DataHandler.getInstance(this)
-                        .loadImageFromStorage(user.getLocalImagePath());
-
-                setNavBarUserImage(b);
-
-            }else if(!TextUtils.isEmpty((user.getImageLocation()))){
-                
-                DataHandler.getInstance(this).loadAndSaveUserNetworkImage(Uri.parse(user.getImageLocation()), new BaseRequestStateListener() {
-                    @Override
-                    public void failResponse(ServiceResponse response) {
-                        Log.d("Image load", "Fail");
-                    }
-
-                    @Override
-                    public void successResponse(ServiceResponse response) {
-                        Log.d("Image load", "Success");
-
-                        Bitmap b = DataHandler.getInstance(BaseActivity.this)
-                                .loadImageFromStorage(user.getLocalImagePath());
-
-                        setNavBarUserImage(b);
-
-
-                    }
-                });
-            }
-
-            //        load user image
-
-
-
-            ImageButton settingsButton = (ImageButton) headerLayout.findViewById(R.id.settings_button);
-            settingsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    NavigationHandler.getInstance().startEditProfileActivity(BaseActivity.this);
-                }
-            });
-
-
+            updateUserDrawer();
         } else {
             navigationView.findViewById(R.id.nav_fav_list).setVisibility(View.GONE);
             navigationView.findViewById(R.id.nav_add_place).setVisibility(View.GONE);
@@ -216,6 +174,50 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
                     .addApi(LocationServices.API)
                     .build();
         }
+    }
+
+    protected void updateUserDrawer()
+    {
+        headerLayout.setVisibility(View.VISIBLE);
+        navigationView.findViewById(R.id.nav_login).setVisibility(View.GONE);
+
+        final User user = DataHandler.getInstance(this).getUser();
+
+        CustomTextView userNameText = (CustomTextView) headerLayout.findViewById(R.id.user_name);
+        userNameText.setText(user.getFullName());
+
+        userImage = (CircleImageView) headerLayout.findViewById(R.id.profile_image);
+        if (!TextUtils.isEmpty((user.getLocalImagePath()))) {
+            Log.d("local image path", user.getLocalImagePath());
+
+            Bitmap b = DataHandler.getInstance(this)
+                    .loadImageFromStorage(user.getLocalImagePath());
+
+            setNavBarUserImage(b);
+
+        }else if(!TextUtils.isEmpty((user.getImageLocation()))){
+
+            DataHandler.getInstance(this).loadAndSaveUserNetworkImage(Uri.parse(user.getImageLocation()), new BaseRequestStateListener() {
+                @Override
+                public void failResponse(ServiceResponse response) {
+                    Log.d("Image load", "Fail");
+                }
+
+                @Override
+                public void successResponse(ServiceResponse response) {
+                    Log.d("Image load", "Success");
+
+                    Bitmap b = DataHandler.getInstance(BaseActivity.this)
+                            .loadImageFromStorage(user.getLocalImagePath());
+
+                    setNavBarUserImage(b);
+
+
+                }
+            });
+        }
+
+        //        load user image
     }
 
     @Override
@@ -481,7 +483,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
         {
             searchView.clearFocus();
         }
-
+        updateUserDrawer();
     }
 
 

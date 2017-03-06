@@ -435,7 +435,8 @@ public class DataHandler {
             @Override
             public void successResponse(ServiceResponse response) {
                 Log.d("update user", response.toString());
-                saveUser(user);
+
+                saveUser(response.getUser());
                 responseListner.successResponse(response);
             }
         });
