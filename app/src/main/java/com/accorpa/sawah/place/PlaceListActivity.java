@@ -140,6 +140,8 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
     @Override
     public void onSensorChanged(SensorEvent event) {
 
+//        Log.d("sensor", "shake detected w/ speed: here 3" );
+
         long curTime = System.currentTimeMillis();
 
         if ((curTime - lastUpdate) > CHECK_FREQUENCY) {
@@ -151,7 +153,9 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
                     yPreviousAccel, zPreviousAccel, event.values[0], event.values[1],
                     event.values[2],  diffTime,  System.currentTimeMillis(), lastShake);
 
-            if (accChange) {
+            if (accChange && (System.currentTimeMillis() - lastShake ) > 500 ) {
+//                Log.d("sensor", "shake detected w/ speed: ==============" );
+//                Toast.makeText(this, "shake detected w/ speed: ", Toast.LENGTH_SHORT).show();
                 lastShake = System.currentTimeMillis();
                 executeShakeAction();
             }

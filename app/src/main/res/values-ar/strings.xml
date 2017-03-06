@@ -106,7 +106,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="view_list">استعراض القائمة</string>
+    <string name="view_list">استعراض بالقائمة</string>
     <string name="view_map">استعراض بالخريطة</string>
     <string name="edit">تعديل</string>
     <string name="personal_information">المعلومات الشخصية:</string>
@@ -136,12 +136,14 @@
     <string name="facebook_app_id">314025735620741</string> <!--1759744457614418</string>-->
     <string name="fb_login_protocol_scheme">fbAPP_ID</string>
     <string name="google_app">AIzaSyDQVH24VD6t76UIc0KyqOcsMCsYpVVRWBg</string>
+    <string name="TWITTER_KEY">dJDWsHrAaYXqnxPXDmMEZlfga</string>
+    <string name="TWITTER_SECRET">2OaBpdyNXWascnYtPe1WLmoqATJukf6IfVx1gqsQO1roYyo3zX</string>
     <string name="change_password">تغيير كلمة السر</string>
     <string name="sat_day">السبت</string>
-    <string name="sun_day">الاحد</string>
-    <string name="mon_day">الاثنين</string>
+    <string name="sun_day">الأحد</string>
+    <string name="mon_day">الإثنين</string>
     <string name="tue_day">الثلاثاء</string>
-    <string name="wen_day">الاربعاء</string>
+    <string name="wen_day">الأربعاء</string>
     <string name="thu_day">الخميس</string>
     <string name="fri_day">الجمعة</string>
     <string name="work_time_today">اوقات العمل اليوم:</string>
@@ -153,7 +155,7 @@
     <string name="settings">ألإعدادات</string>
     <string name="must_sign_in_to_add_comment">يجب تسجيل الدخول لإضافة تعليق</string>
     <string name="user_data">البيانات الشخصية</string>
-    <string name="must_user_data_add_comment">يجب إضافة اسم المستخدم لإضافة تعليق </string>
+    <string name="must_user_data_add_comment">لتتمكن من إضافة تعليق يجب عليك اكمال بياناتك في ملفك الشخصي\n البيانات المطلوبة هي: \n الاسم وتاريخ الميلاد والجنس</string>
     <string name="general_instructions_text">نتطلع في تطبيق سواح إلى تغطية أبرز المناطق السياحية في مدن العالم، إذ يعمل فريق سواح لزيارة الأماكن المهمة في هذه المدن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدن العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
     >
     <string name="general_instructions_title">أرقام تهمك:</string>
@@ -171,4 +173,18 @@
     <string name="enter_user_name">ادخل اسم المستخدم</string>
     <string name="enter_place_name">ادخل اسم المكان</string>
     <string name="enter_password">ادخل كلمة المرور</string>
+    <string name="choose_place_image_message"> تأكد من إضافة صورة على الأقل للمكان</string>
+    <string name="alert_title">تنبيه!</string>
+    <string name="add_new_place_request_sent"> تم إرسال طلب إضافة المكان \n سيتم إضافة المكان بعد مراجعة البيانات \n نشكركم على المساهمه في بناء تطبيق سواح</string>
+    <string name="please_add_place_description">يرجو إضافة وصف للمكان</string>
+
+    <string name="error">خطأ</string>
+    <string name="password_update_success">تم تعديل كلمة المرور بنجاح</string>
+    <string name="profile_update_success">تم تعديل بياناتك بنجاح</string>
+
+    <string name="edit_your_profile">تعديل البيانات</string>
+    <string name="cancel">إلغاء</string>
+    <string name="search_in">ابحث في </string>
+    <string name="no_uber">تأكد من تحميل تطبيق أوبر</string>
+
 </resources>
