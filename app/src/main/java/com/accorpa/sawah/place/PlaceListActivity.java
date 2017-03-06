@@ -1,11 +1,18 @@
 package com.accorpa.sawah.place;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.accorpa.sawah.Handlers.DataHandler;
 import com.accorpa.sawah.Handlers.Utils;
@@ -15,9 +22,28 @@ import com.accorpa.sawah.models.Place;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PlaceListActivity extends BasePlacesListActivity {
+public class PlaceListActivity extends BasePlacesListActivity implements SensorEventListener {
 
     private String cityID, catID, catName;
+
+    private SensorManager sensorManager;
+
+
+
+    /* And here the previous ones */
+    private float xPreviousAccel;
+    private float yPreviousAccel;
+    private float zPreviousAccel;
+
+    /* Used to suppress the first shaking */
+    private boolean firstUpdate = true;
+
+    /* Has a shaking motion been started (one direction) */
+    private boolean shakeInitiated = false;
+
+    private long lastUpdate, lastShake;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +62,12 @@ public class PlaceListActivity extends BasePlacesListActivity {
         Utils.getInstance().changeStatusBarColor(this);
         DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
         showProgress(true);
+
         setupSearch();
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void recievePlacesList(Place[] arr) {
@@ -101,5 +132,63 @@ public class PlaceListActivity extends BasePlacesListActivity {
                 return true;
             }
         });
+    }
+
+
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        Log.d("sensor", "shake detected w/ speed: here 3" );
+
+        long curTime = System.currentTimeMillis();
+
+        if ((curTime - lastUpdate) > 100) {
+            Log.d("sensor", "shake detected w/ speed: here" );
+            long diffTime = (curTime - lastUpdate);
+            lastUpdate = curTime;
+
+
+
+            boolean accChange =  Utils.getInstance().isAccelerationChanged(xPreviousAccel,
+                    yPreviousAccel, zPreviousAccel, event.values[0], event.values[1], event.values[2],  diffTime);
+
+            if (accChange && (System.currentTimeMillis() - lastShake ) > 500 ) {
+                Log.d("sensor", "shake detected w/ speed: ==============" );
+//                Toast.makeText(this, "shake detected w/ speed: ", Toast.LENGTH_SHORT).show();
+                lastShake = System.currentTimeMillis();
+                executeShakeAction();
+
+            }
+
+            updateAccelParameters(event.values[0], event.values[1], event.values[2]);   // (1)
+
+        }
+
+    }
+
+    private void executeShakeAction() {
+        Log.d("Shake", "shaked");
+
+        if (specialPlaceLayout)
+            listFragment.setNormalLayoutManager();
+        else
+            listFragment.setSpecialLayoutManager();
+
+        specialPlaceLayout = !specialPlaceLayout;
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    private void updateAccelParameters(float xNewAccel, float yNewAccel,
+                                       float zNewAccel) {
+
+        xPreviousAccel = xNewAccel;
+        yPreviousAccel = yNewAccel;
+        zPreviousAccel = zNewAccel;
+
     }
 }

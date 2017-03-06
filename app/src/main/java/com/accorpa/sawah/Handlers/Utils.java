@@ -23,6 +23,10 @@ import java.util.Map;
  * Created by root on 25/02/17.
  */
 public class Utils {
+
+    private static final float SHAKE_THRESHOLD = 500;
+    private final float shakeThreshold = 1.5f;
+
     private static Utils ourInstance;
 
     public static Utils getInstance() {
@@ -79,5 +83,19 @@ public class Utils {
             window.setStatusBarColor(ContextCompat.getColor(activity,R.color.colorPrimary));
         }
 
+    }
+
+    public boolean isAccelerationChanged(float xPreviousAccel, float yPreviousAccel,
+                                         float zPreviousAccel, float xAccel, float yAccel,
+                                         float zAccel, long diffTime) {
+        float deltaX = Math.abs(xPreviousAccel - xAccel);
+        float deltaY = Math.abs(yPreviousAccel - yAccel);
+        float deltaZ = Math.abs(zPreviousAccel - zAccel);
+
+        float speed = Math.abs(deltaX + deltaY + deltaZ) / diffTime * 10000;
+
+        System.out.println(diffTime+" "+xPreviousAccel+" "+yPreviousAccel+" "+zPreviousAccel+" "+xAccel+" "+yAccel+" "+zAccel+" "+speed);
+
+        return (speed > SHAKE_THRESHOLD);
     }
 }

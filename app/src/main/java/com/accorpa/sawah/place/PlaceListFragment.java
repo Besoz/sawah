@@ -42,6 +42,8 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
 
     private ArrayList<Place> places;
     private boolean addLikeButton, specialPlaceLayout, addDeleteButton, showEmptyText;
+    private GridLayoutManager normalGridLayoutManager;
+    protected GridLayoutManager specialGridLayoutManager;
 
 
     public PlaceListFragment() {
@@ -91,7 +93,7 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
         }
         mLayoutManager = new LinearLayoutManager(getContext());
 
-        GridLayoutManager specialGridLayoutManager = new GridLayoutManager(getContext(), 2);
+        specialGridLayoutManager = new GridLayoutManager(getContext(), 2);
         GridLayoutManager.SpanSizeLookup onSpanSizeLookup = new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(int position) {
@@ -100,7 +102,7 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
         };
         specialGridLayoutManager.setSpanSizeLookup(onSpanSizeLookup);
 
-        GridLayoutManager normalGridLayoutManager = new GridLayoutManager(getContext(), 1);
+        normalGridLayoutManager = new GridLayoutManager(getContext(), 1);
 
 
         // specify an adapter (see also next example)
@@ -167,6 +169,20 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
         addDeleteButton = showDeleteButton;
         mAdapter.setShowDeletionButton(showDeleteButton);
     }
+
+    public void setNormalLayoutManager() {
+
+        int x = specialGridLayoutManager.findFirstVisibleItemPosition();
+        normalGridLayoutManager.scrollToPosition(x);
+
+        mRecyclerView.setLayoutManager(normalGridLayoutManager);
+    }
+
+    public void setSpecialLayoutManager() {
+        specialGridLayoutManager.scrollToPosition(normalGridLayoutManager.findFirstCompletelyVisibleItemPosition());
+        mRecyclerView.setLayoutManager(specialGridLayoutManager);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -201,4 +217,6 @@ public class PlaceListFragment extends Fragment implements RecycleAdapterListene
         setPlacesList(places);
         Log.d("Fragment", "+++++++++++++++++=");
     }
+    
+
 }
