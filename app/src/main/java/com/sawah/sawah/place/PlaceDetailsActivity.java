@@ -27,6 +27,7 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.CommentsAdapter;
@@ -397,8 +398,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     private void initializeWorkTimeLayout(WorkTime[] workTimes, RelativeLayout arrow_layout) {
 
         final CustomRotatingButton arrow = (CustomRotatingButton) findViewById(R.id.arrow);
-        final ExpandableRelativeLayout body
-                = (ExpandableRelativeLayout) findViewById(R.id.body);
+        final ExpandableLinearLayout body
+                = (ExpandableLinearLayout) findViewById(R.id.body);
         header = (LinearLayout) findViewById(R.id.header);
 
         CustomTextView headerTitle = (CustomTextView) findViewById(R.id.work_time_title);
@@ -419,7 +420,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         }
         WorkTimeAdapter adapter =  new WorkTimeAdapter(this, workTimes);
 
-        TableLayout tableLayout = (TableLayout) findViewById(R.id.work_time_table);
+        final TableLayout tableLayout = (TableLayout) findViewById(R.id.work_time_table);
 
         for(int i = 0; i < workTimes.length; i++){
             tableLayout.addView(adapter.getView(i, null, null));
@@ -432,7 +433,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
             @Override
             public void onAnimationEnd() {
-
+                tableLayout.invalidate();
+                tableLayout.refreshDrawableState();
             }
 
             @Override

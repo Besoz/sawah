@@ -142,25 +142,31 @@
                             android:layout_marginLeft="@dimen/listview_margin"
                             android:focusable="false"
                             android:layout_gravity="right|center_vertical" />
-
-                        <com.sawah.sawah.custom_views.CustomTextView
-                            android:id="@+id/edit_password"
-                            android:textColor="@color/colorPrimary"
-                            android:textSize="16sp"
-                            android:text="hhhhh"
-                            android:inputType="textPassword"
-                            android:layout_marginRight="@dimen/listview_margin"
-                            android:layout_gravity="right|center_vertical"
+                        <RelativeLayout android:layout_height="match_parent"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxLines="1"
-                            style="@style/myAutoCompleteTextLabel"
-                            android:textColorLink="@color/textColor"
-                            android:theme="@style/AppTheme"
-                            android:gravity="right"
-                            android:layout_weight="1"/>
-                        <ImageView android:src="@drawable/left_arrow"
-                            android:layout_gravity="left|center_vertical" />
+                            android:layout_weight="1"
+                            android:gravity="center_vertical">
+                            <com.sawah.sawah.custom_views.CustomTextView
+                                android:id="@+id/edit_password"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="16sp"
+                                android:text="hhhhh"
+                                android:inputType="textPassword"
+                                android:layout_marginRight="@dimen/listview_margin"
+                                android:layout_gravity="right|center_vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                style="@style/myAutoCompleteTextLabel"
+                                android:textColorLink="@color/textColor"
+                                android:theme="@style/AppTheme"
+                                android:gravity="right" />
+                            <ImageView android:src="@drawable/left_arrow"
+                                android:layout_height="wrap_content"
+                                android:layout_width="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:layout_alignParentLeft="true"/>
+                        </RelativeLayout>
                     </TableRow>
 
                     <TableRow android:gravity="right"
