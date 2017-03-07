@@ -192,7 +192,6 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
             Bitmap b = DataHandler.getInstance(this)
                     .loadImageFromStorage(user.getLocalImagePath());
-
             setNavBarUserImage(b);
 
         }else if(!TextUtils.isEmpty((user.getImageLocation()))){
@@ -350,7 +349,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     protected void setNavBarUserImage(Bitmap navBarUserImage) {
-        if (userImage != null)
+        if (userImage != null && navBarUserImage != null)
             userImage.setImageBitmap(navBarUserImage);
     }
 

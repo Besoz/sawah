@@ -162,6 +162,10 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         if(place.getImages().length > 1)
             tabLayout.setVisibility(View.VISIBLE);
+        if(place.getImages().length == 0)
+        {
+            mPager.setBackgroundResource(R.drawable.demoitem);
+        }
 
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mPagerAdapter);

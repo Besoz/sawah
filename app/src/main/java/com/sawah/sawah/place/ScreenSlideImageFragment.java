@@ -48,6 +48,9 @@ public class ScreenSlideImageFragment extends Fragment {
             String imageUrl= imageURL.replaceAll(" ", "%20");
 //        mImageLoader.get(imageUrl, ImageLoader.getImageListener(holder.thumbnailImageView,
 //                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
+            if(imageUrl == "")
+                imageUrl = "http://sawahapp.com/Uploads/ssss.ssss";
+            mNetworkImageView.setErrorImageResId(R.drawable.demoitem);
             mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
 
             mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
