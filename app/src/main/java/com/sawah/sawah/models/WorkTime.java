@@ -14,6 +14,7 @@ import java.util.HashMap;
  */
 public class WorkTime extends SugarRecord implements Comparable<WorkTime>{
 
+//    todo jackson notation for saving
     private int day;
     private String time;
     private boolean isNow;

@@ -26,6 +26,8 @@ public class ScreenSlideImageFragment extends Fragment {
 
     private String imageURL;
 
+    private ImageView mNetworkImageView;
+
     public ScreenSlideImageFragment() {
 
     }
@@ -44,7 +46,7 @@ public class ScreenSlideImageFragment extends Fragment {
 //        rootView.setOnClickListener(onClickListener);
 
         if(imageURL != null){
-            ImageView mNetworkImageView = (ImageView) rootView.findViewById(R.id.icon);
+            mNetworkImageView = (ImageView) rootView.findViewById(R.id.icon);
 
 //            ImageLoader mImageLoader = ServiceHandler.getInstance(container.getContext()).getImageLoader();
             String imageUrl= imageURL.replaceAll(" ", "%20");
@@ -73,4 +75,9 @@ public class ScreenSlideImageFragment extends Fragment {
 
         return rootView;
     }
+
+    public ImageView getNetworkImageView() {
+        return mNetworkImageView;
+    }
+
 }
