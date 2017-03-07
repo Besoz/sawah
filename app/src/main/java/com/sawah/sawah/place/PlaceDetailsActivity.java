@@ -686,6 +686,15 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         public int getCount() {
             return place.getPlaceImages().length;
         }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            super.destroyItem(container, position, object);
+
+            Glide.clear( ((ScreenSlideImageFragment) object).getNetworkImageView() );
+
+
+        }
     }
 
     @Override
