@@ -299,6 +299,7 @@ public class EditProfileActivity extends BaseActivity {
                         super.onResponse(response);
                         if(isStatusSuccess()){
                             setNavBarUserImage(bitmap);
+                            user.setLocalImagePath(data.getDataString());
                             profileImage.setImageBitmap(bitmap);
                         }else{
                             Log.d("Update user", "fail");
