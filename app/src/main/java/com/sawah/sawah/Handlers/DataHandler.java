@@ -47,6 +47,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -459,17 +460,57 @@ public class DataHandler {
         serviceHandler.requestUpdateUser(userData, baseResponseListener);
     }
 
-    public Bitmap getImage(Uri data)  {
-
+    public Bitmap getImage(Uri uri)
+    {
         try {
-            return MediaStore.Images.Media.getBitmap(context.getContentResolver(),
-                    data);
+            InputStream input = context.getContentResolver().openInputStream(uri);
+
+            BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
+            onlyBoundsOptions.inJustDecodeBounds = true;
+            onlyBoundsOptions.inDither = true;//optional
+            onlyBoundsOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//optional
+            BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+            input.close();
+
+            if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1)) {
+                return null;
+            }
+
+            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+
+            double ratio = (originalSize > 200) ? (originalSize / 200) : 1.0;
+
+            BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+            bitmapOptions.inSampleSize = getPowerOfTwoForSampleRatio(ratio);
+            bitmapOptions.inDither = true; //optional
+            bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//
+            input = context.getContentResolver().openInputStream(uri);
+            Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+            input.close();
+            return bitmap;
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
+//        try {
+
+//            return MediaStore.Images.Media.getBitmap(context.getContentResolver(),
+//                    data);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
     }
 
+    private static int getPowerOfTwoForSampleRatio(double ratio){
+        int k = Integer.highestOneBit((int)Math.floor(ratio));
+        if(k==0) return 1;
+        else return k;
+    }
 
     private String concateImageNameAndEncoding(String name, String encoding){
 //        string builder for encoding is very large and full of terrror
