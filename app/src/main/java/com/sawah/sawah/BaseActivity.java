@@ -270,11 +270,10 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
         if (id == R.id.nav_change_city) {
             // Handle the camera action
-
-            NavigationHandler.getInstance().startCityActivity(this);
+            NavigationHandler.getInstance().startCityActivity(this, Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         } else if (id == R.id.nav_home) {
-            NavigationHandler.getInstance().startCategoriesListActivity(this);
+            NavigationHandler.getInstance().startCityActivity(this, Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (id == R.id.nav_fav_list) {
             NavigationHandler.getInstance().startFavouritePlacesList(this);
         } else if (id == R.id.nav_about_sawah) {

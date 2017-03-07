@@ -87,7 +87,7 @@ public class NavigationHandler {
     }
 
     public void startMainctivity(Context context) {
-        startCityActivity(context);
+        startCityActivity(context,Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
     }
 
@@ -128,9 +128,10 @@ public class NavigationHandler {
         context.startActivity(cityActivity);
     }
 
-    public void startCityActivity(Context context){
+    public void startCityActivity(Context context, int flag){
 
         Intent intent = new Intent(context, CitiesListActivity.class);
+        intent.setFlags(flag);
         context.startActivity(intent);
     }
 

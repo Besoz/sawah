@@ -95,9 +95,6 @@ public class CitiesAdapter extends BaseAdapter {
 
         frameAnimation.start();
 
-//        holder.imageView.setImageUrl(imageUrl, mImageLoader);
-
-
         Log.d("Glide", city.getImageLocation());
 
         Glide.with(mContext)
@@ -111,7 +108,6 @@ public class CitiesAdapter extends BaseAdapter {
                         frameAnimation.stop();
                         return false;
                     }
-
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
 
@@ -120,9 +116,6 @@ public class CitiesAdapter extends BaseAdapter {
                     }
                 })
                 .into(holder.imageView);
-
-
-
         return convertView;
     }
 

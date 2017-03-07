@@ -16,6 +16,7 @@ import com.sawah.sawah.Handlers.Foreground;
 import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.models.User;
+import com.squareup.leakcanary.LeakCanary;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import io.fabric.sdk.android.Fabric;
@@ -35,6 +36,14 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
         setContentView(R.layout.activity_launcher);
 
         FirebaseCrash.log("Activity created SAWAH");
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this.getApplication());
+
+
 //        ActivityCycleListener listener = new ActivityCycleListener() {
 //            @Override
 //            public void onBecameForeground() {

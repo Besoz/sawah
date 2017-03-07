@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.sawah.sawah.Handlers.ServiceHandler;
 import com.sawah.sawah.models.Category;
+import com.sawah.sawah.place.PlaceRecycleAdapter;
 
 /**
  * Created by root on 26/02/17.
@@ -109,6 +110,15 @@ public class CategoriesRecycleAdapter extends  RecyclerView.Adapter<CategoriesRe
             }
         });
 
+    }
+
+    @Override
+    public void onViewRecycled(CategoriesRecycleAdapter.CategoryViewHolder holder) {
+        super.onViewRecycled(holder);
+//        if (holder instanceof PlaceRecycleAdapter.ViewHolder) {
+//            ItemViewHolder itemHolder = (ItemViewHolder) holder;
+        Glide.clear(holder.mNetworkImageView);
+//        }
     }
 
     @Override
