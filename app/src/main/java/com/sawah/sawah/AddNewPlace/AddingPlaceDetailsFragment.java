@@ -22,8 +22,6 @@ import com.sawah.sawah.R;
 import com.sawah.sawah.custom_views.CustomButton;
 import com.sawah.sawah.custom_views.CustomEditText;
 import com.sawah.sawah.models.Place;
-import com.sawah.sawah.place.PlaceRecycleAdapter;
-import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 

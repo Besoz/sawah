@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +18,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.ServiceHandler;
 import com.sawah.sawah.R;
@@ -25,7 +30,6 @@ import com.sawah.sawah.custom_views.CustomCheckBox;
 import com.sawah.sawah.custom_views.CustomTextView;
 import com.sawah.sawah.models.Place;
 import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.google.android.gms.vision.text.Line;
 import com.squareup.picasso.Picasso;
 
@@ -116,8 +120,50 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
 
         if(imageUrl == "")
             imageUrl = "http://sawahapp.com/Uploads/ssss.ssss";
-        holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
-        holder.mNetworkImageViewSpecial.setImageUrl(imageUrl, mImageLoader);
+
+        Log.d("Glide", imageUrl);
+
+        Glide.with(mContext)
+                .load(imageUrl)
+                .error(R.drawable.demoitem)
+                .centerCrop()
+                .crossFade().listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+                        holder.stopAnimation();
+                        return false;
+                    }
+                })
+                .into(holder.mNetworkImageView);
+
+
+        Glide.with(mContext)
+                .load(imageUrl)
+                .error(R.drawable.demoitem)
+                .centerCrop()
+                .crossFade().listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+                        holder.stopSpecialAnimation();
+                        return false;
+                    }
+                })
+                .into(holder.mNetworkImageViewSpecial);
+
+//        holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
+//        holder.mNetworkImageViewSpecial.setImageUrl(imageUrl, mImageLoader);
 
 
         holder.specialTag.setVisibility(place.isSpecial() && specialPlaceLayout ?
@@ -226,16 +272,18 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         // each data item is just a string in this case
         public TextView titleArabic;
         public TextView titleEnglish;
-        public NetworkImageView mNetworkImageView;
+        public ImageView mNetworkImageView;
         public CustomCheckBox likeButton;
         public CustomCheckBox deleteButton;
         public LinearLayout specialTag;
+        private AnimationDrawable specialFrameAnimation;
 
         public TextView titleArabicSpecial;
         public TextView titleEnglishSpecial;
-        public NetworkImageView mNetworkImageViewSpecial;
+        public ImageView mNetworkImageViewSpecial;
         public CustomCheckBox likeButtonSpecial;
         public LinearLayout specialTagSpecial;
+        private AnimationDrawable frameAnimation;
 
         public CardView specialCard;
         public CardView notSpecialCard;
@@ -245,9 +293,12 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
             super(v);
             this.v = v;
 
-            this.mNetworkImageView = (NetworkImageView) v.findViewById(R.id.icon);
-            this.mNetworkImageView.setErrorImageResId(R.drawable.demoitem);
+            this.mNetworkImageView = (ImageView) v.findViewById(R.id.icon);
+//            this.mNetworkImageView.setErrorImageResId(R.drawable.demoitem);
             this.mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+            LayerDrawable layer = (LayerDrawable) mNetworkImageView.getBackground();
+            frameAnimation = (AnimationDrawable) layer.getDrawable(0);
+
 
             this.titleArabic = (TextView) v.findViewById(R.id.place_title_ar);
             this.titleEnglish = (TextView) v.findViewById(R.id.place_title_en);
@@ -257,9 +308,10 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
             this.specialTag = (LinearLayout) v.findViewById(R.id.special_place_tag);
             this.deleteButton = (CustomCheckBox) v.findViewById(R.id.delete_button);
 
-            this.mNetworkImageViewSpecial = (NetworkImageView) v.findViewById(R.id.special_icon);
-            this.mNetworkImageViewSpecial.setErrorImageResId(R.drawable.demoitem);
+            this.mNetworkImageViewSpecial = (ImageView) v.findViewById(R.id.special_icon);
             this.mNetworkImageViewSpecial.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
+            LayerDrawable specialLayer = (LayerDrawable) mNetworkImageView.getBackground();
+            specialFrameAnimation = (AnimationDrawable) specialLayer.getDrawable(0);
 
             this.titleArabicSpecial = (TextView) v.findViewById(R.id.special_place_title_ar);
             this.titleEnglishSpecial = (TextView) v.findViewById(R.id.special_place_title_en);
@@ -272,6 +324,22 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
             this.notSpecialCard = (CardView)v.findViewById(R.id.not_special_card);
 
         }
+        public void startSpecialAnimation() {
+            frameAnimation.start();
+        }
+
+        public void stopSpecialAnimation() {
+            frameAnimation.stop();
+        }
+
+        public void startAnimation() {
+            frameAnimation.start();
+        }
+
+        public void stopAnimation() {
+            frameAnimation.stop();
+        }
+
     }
 
 }

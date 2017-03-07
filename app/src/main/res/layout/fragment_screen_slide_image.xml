@@ -16,7 +16,7 @@
         android:background="@drawable/yellow_progress_dialog_background">
 
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:id="@+id/icon"
             android:layout_gravity="center"
             android:scaleType="centerCrop"

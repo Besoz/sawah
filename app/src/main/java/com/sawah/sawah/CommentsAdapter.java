@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.sawah.sawah.Handlers.ServiceHandler;
 import com.sawah.sawah.models.PlaceComment;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.NetworkImageView;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;

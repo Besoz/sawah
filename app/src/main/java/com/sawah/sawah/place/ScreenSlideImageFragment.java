@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.sawah.sawah.Handlers.ServiceHandler;
 import com.sawah.sawah.R;
 import com.sawah.sawah.models.Place;
@@ -42,16 +44,24 @@ public class ScreenSlideImageFragment extends Fragment {
 //        rootView.setOnClickListener(onClickListener);
 
         if(imageURL != null){
-            NetworkImageView mNetworkImageView = (NetworkImageView) rootView.findViewById(R.id.icon);
+            ImageView mNetworkImageView = (ImageView) rootView.findViewById(R.id.icon);
 
-            ImageLoader mImageLoader = ServiceHandler.getInstance(container.getContext()).getImageLoader();
+//            ImageLoader mImageLoader = ServiceHandler.getInstance(container.getContext()).getImageLoader();
             String imageUrl= imageURL.replaceAll(" ", "%20");
 //        mImageLoader.get(imageUrl, ImageLoader.getImageListener(holder.thumbnailImageView,
 //                R.drawable.sawah_logo, R.drawable.gplus_login_logo));
             if(imageUrl == "")
                 imageUrl = "http://sawahapp.com/Uploads/ssss.ssss";
-            mNetworkImageView.setErrorImageResId(R.drawable.demoitem);
-            mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
+//            mNetworkImageView.setErrorImageResId(R.drawable.demoitem);
+//            mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
+
+            Glide.with(this)
+                    .load(imageUrl)
+                    .error(R.drawable.demoitem)
+                    .centerCrop()
+                    .crossFade()
+                    .into(mNetworkImageView);
+
 
             mNetworkImageView.setBackgroundResource(R.drawable.yellow_bird_progess_dialog);
             LayerDrawable layer = (LayerDrawable) mNetworkImageView.getBackground();

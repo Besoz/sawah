@@ -14,7 +14,7 @@
         android:background="@drawable/yellow_progress_dialog_background"
         android:layout_margin="@dimen/listview_margin">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:id="@+id/icon"
             android:layout_gravity="center"
             android:scaleType="centerCrop"

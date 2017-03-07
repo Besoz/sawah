@@ -29,7 +29,7 @@
                     android:layout_gravity="center"
                     android:background="@color/buttonColor"
                     android:layout_weight="2">
-                    <com.android.volley.toolbox.NetworkImageView
+                    <ImageView
                         android:id="@+id/icon"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"
@@ -115,7 +115,7 @@
                     android:layout_gravity="center"
                     android:background="@color/buttonColor"
                     android:layout_weight="2">
-                    <com.android.volley.toolbox.NetworkImageView
+                    <ImageView
                         android:id="@+id/special_icon"
                         android:layout_gravity="center"
                         android:scaleType="centerCrop"

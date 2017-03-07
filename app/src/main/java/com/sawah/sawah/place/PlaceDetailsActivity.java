@@ -24,6 +24,7 @@ import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
@@ -51,7 +52,6 @@ import com.sawah.sawah.models.WorkTime;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.android.volley.toolbox.NetworkImageView;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.aakira.expandablelayout.ExpandableLayoutListener;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -80,7 +80,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     private static final int VIEW_COMMENTS_COUNT = 7, IMAGES_OFFSCREEN_COUNT= 4;
     private static final float CHECK_IN_MAX_DISTANCE_METER = 1000;
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
-    private NetworkImageView placeImage;
+    private ImageView placeImage;
 
     private ImageButton shareButtton, callButton, openSiteButton, checkInButton;
 
@@ -157,6 +157,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         }
 
         mPager = (ViewPager) findViewById(R.id.imagePager);
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
 
