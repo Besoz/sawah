@@ -18,6 +18,7 @@ import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.R;
 import com.sawah.sawah.models.Place;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,6 +60,11 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
         specialPlaceLayout = true;
 
         super.onCreate(savedInstanceState);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
 
         Utils.getInstance().changeStatusBarColor(this);
         DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
