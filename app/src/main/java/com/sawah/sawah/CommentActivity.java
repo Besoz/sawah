@@ -103,7 +103,7 @@ public class CommentActivity extends BaseActivity {
         CircleImageView userImage = (CircleImageView) findViewById(R.id.profile_image);
         if(!TextUtils.isEmpty(user.getLocalImagePath())){
             Bitmap b = DataHandler.getInstance(this)
-                    .loadImageFromStorage(user.getLocalImagePath());
+                    .loadImageFromStorage(user.getLocalImagePath(), this);
             userImage.setImageBitmap(b);
         }
     }

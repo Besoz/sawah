@@ -26,22 +26,14 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
     // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
     private final int SPLASH_DISPLAY_LENGTH = 1000;
 
-    private View mSplashView, mProgressView;
+//    private View mSplashView, mProgressView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.TWITTER_KEY),
-                getString(R.string.TWITTER_SECRET));
-        Fabric.with(this, new Twitter(authConfig));
+
         setContentView(R.layout.activity_launcher);
 
         FirebaseCrash.log("Activity created SAWAH");
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
-        LeakCanary.install(this.getApplication());
 
 
 //        ActivityCycleListener listener = new ActivityCycleListener() {
@@ -58,8 +50,8 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
 //        Foreground f = Foreground.init(getApplication());
 //        f.addListener(listener);
 //        intializing view
-        mSplashView = findViewById(R.id.splash_view);
-        mProgressView = findViewById(R.id.progress_view);
+//        mSplashView = findViewById(R.id.splash_view);
+//        mProgressView = findViewById(R.id.progress_view);
 
 //        starting firebase cloud service
 //        Intent service = new Intent(this, FCMService.class);
@@ -103,8 +95,8 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
 //        todo handle network error
     }
 
-    private void showProgress(final boolean show) {
-        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-        mSplashView.setVisibility(show ? View.GONE : View.VISIBLE);
-    }
+//    private void showProgress(final boolean show) {
+//        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//        mSplashView.setVisibility(show ? View.GONE : View.VISIBLE);
+//    }
 }

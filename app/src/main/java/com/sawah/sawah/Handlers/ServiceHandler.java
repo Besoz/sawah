@@ -37,7 +37,7 @@ public class ServiceHandler {
 
     private static ServiceHandler ourInstance;
 
-    private Context context;
+//    private Context context;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
     private URLHandler urlHandler;
@@ -52,11 +52,11 @@ public class ServiceHandler {
     }
 
     private ServiceHandler(Context context) {
-        this.context = context.getApplicationContext();
+//        this.context = context.getApplicationContext();
         hostName = context.getString(R.string.host_name);
 
 // Instantiate the cache
-        Cache cache = new DiskBasedCache(this.context.getCacheDir(), 100*1024 * 1024); // 1MB cap*100
+        Cache cache = new DiskBasedCache(context.getCacheDir(), 100*1024 * 1024); // 1MB cap*100
 
 // Set up the network to use HttpURLConnection as the HTTP client.
         Network network = new BasicNetwork(new HurlStack());
@@ -66,9 +66,9 @@ public class ServiceHandler {
 
         mRequestQueue.start();
 
-        mImageLoader = new ImageLoader(mRequestQueue, new LruBitmapCache(this.context));
+        mImageLoader = new ImageLoader(mRequestQueue, new LruBitmapCache(context));
 
-        urlHandler = URLHandler.getInstance(this.context);
+        urlHandler = URLHandler.getInstance(context);
     }
 
 

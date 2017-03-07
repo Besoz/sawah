@@ -292,7 +292,7 @@ public class EditProfileActivity extends BaseActivity {
                 data.getData() != null) {
             try {
 
-                final Bitmap bitmap = DataHandler.getInstance(this).getImage(data.getData());
+                final Bitmap bitmap = DataHandler.getInstance(this).getImage(data.getData(), this);
                 BaseResponseListener mResponseListner = new BaseResponseListener() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -309,7 +309,7 @@ public class EditProfileActivity extends BaseActivity {
                 };
                 showProgress(true);
                 DataHandler.getInstance(this).requestUpdateUserImage(mResponseListner,
-                        data.getData());
+                        data.getData(), this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -331,7 +331,7 @@ public class EditProfileActivity extends BaseActivity {
     public Bitmap getProfileImage() {
 
         return DataHandler.getInstance(this)
-                .loadImageFromStorage(user.getLocalImagePath());
+                .loadImageFromStorage(user.getLocalImagePath(), this);
     }
 
     public boolean hasProfileImage() {

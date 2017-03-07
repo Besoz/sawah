@@ -88,7 +88,7 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         holder.titleArabic.setText(place.getPalceNameArb());
         holder.titleEnglish.setText(place.getPalceNameEng());
 
-        ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
+//        ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
         String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
 
 

@@ -106,13 +106,13 @@ public class AuthorizationController implements LoginListener {
             saveUser(user);
 
             loginListener.loginSuccess(user);
+            loginListener = null;
 
         }else{
 //        save user
             saveUser(user);
-
             loginListener.loginSuccess(user);
-
+            loginListener = null;
         }
     }
 
@@ -121,13 +121,14 @@ public class AuthorizationController implements LoginListener {
 
         //        notify calling activity
         loginListener.loginFailed(message);
-
+        loginListener = null;
     }
 
     @Override
     public void loginError() {
         //        notify calling activity
         loginListener.loginError();
+        loginListener = null;
     }
 
     public void skipLogin(Context context){
@@ -172,7 +173,7 @@ public class AuthorizationController implements LoginListener {
                 };
 
 //                        save image locally
-                DataHandler.getInstance(context).loadAndSaveUserNetworkImage(imageURI, imageLoadAndSaveListner);
+                DataHandler.getInstance(context).loadAndSaveUserNetworkImage(imageURI, imageLoadAndSaveListner, context);
             }
         };
 

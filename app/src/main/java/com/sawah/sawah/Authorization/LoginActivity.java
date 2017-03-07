@@ -81,6 +81,8 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import io.fabric.sdk.android.Fabric;
+
 
 /**
  * A login screen that offers login via email/password.
@@ -210,53 +212,48 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onStart() {
         super.onStart();
-
-
-        mGoogleApiClient.connect();
     }
 
     protected void onStop() {
         super.onStop();
-        if (mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
 
     private void signInWithGoogle() {
         mgplusLoginButton = (ImageButton) findViewById(R.id.gplus_login_btn);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
+        mgplusLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
 
 //        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 //                .requestIdToken(getString(R.string.google_app))
 //                .requestEmail()
 //                .build();
 
-        GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
-            @Override
-            public void onConnectionFailed(@NonNull ConnectionResult result) {
-                Log.d("onConnectionFailed", "onConnectionFailed");
-                if (!result.hasResolution()) {
-                    GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), LoginActivity.this,
-                            0).show();
-                    return;
-                }
+                GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(@NonNull ConnectionResult result) {
+                        Log.d("onConnectionFailed", "onConnectionFailed");
+                        if (!result.hasResolution()) {
+                            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), LoginActivity.this,
+                                    0).show();
+                            return;
+                        }
 
-            }
-        };
+                    }
+                };
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, connectionFailedListener)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-
-
-
-        mgplusLoginButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+                mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
+                        .enableAutoManage(LoginActivity.this, connectionFailedListener)
+                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                        .build();
+                mGoogleApiClient.connect();
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -311,6 +308,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mtwitterLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.TWITTER_KEY),
+                        getString(R.string.TWITTER_SECRET));
+                Fabric.with(LoginActivity.this, new Twitter(authConfig));
                 twitterLoginButton.callOnClick();
             }
         });
@@ -322,7 +322,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //        final LoginButton facebookLoginButton = (LoginButton) new LoginButton(this);
 //        facebookLoginButton.setReadPermissions("public_profile","email", "user_location");
 
-        callbackManager = CallbackManager.Factory.create();
+
 
         Log.d("Facbook", AccessToken.getCurrentAccessToken()+" "+ Profile.getCurrentProfile());
 
@@ -330,46 +330,47 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mFacebookLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                callbackManager = CallbackManager.Factory.create();
+                LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        // App code
+
+                        Log.d("facebook login", loginResult.getAccessToken().getToken());
+
+                        Uri pictureUri = Profile.getCurrentProfile().getProfilePictureUri(200, 200);
+                        final String userName = Profile.getCurrentProfile().getName();
+
+                        Log.d("Facebook", pictureUri.toString()+" "+name);
+//                attemptFacebookLogin(loginResult);
+
+                        showProgress(true);
+                        authorizationController.socialLogin(Profile.getCurrentProfile().getId(), "FB",
+                                "", userName, "", pictureUri, baseRequestStateListener, LoginActivity.this);
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                        showProgress(false);
+
+                        Log.d("facebook login", "onCancel");
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                        showProgress(false);
+
+                        Log.d("facebook login", "onError");
+
+                    }
+                });
                 LoginManager.getInstance().logOut();
                 LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
                         Arrays.asList("public_profile"));
-            }
-        });
-
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                // App code
-
-                Log.d("facebook login", loginResult.getAccessToken().getToken());
-
-                Uri pictureUri = Profile.getCurrentProfile().getProfilePictureUri(200, 200);
-                final String userName = Profile.getCurrentProfile().getName();
-
-                Log.d("Facebook", pictureUri.toString()+" "+name);
-//                attemptFacebookLogin(loginResult);
-
-                showProgress(true);
-                authorizationController.socialLogin(Profile.getCurrentProfile().getId(), "FB",
-                        "", userName, "", pictureUri, baseRequestStateListener, LoginActivity.this);
-            }
-
-            @Override
-            public void onCancel() {
-                // App code
-                showProgress(false);
-
-                Log.d("facebook login", "onCancel");
-
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                // App code
-                showProgress(false);
-
-                Log.d("facebook login", "onError");
-
             }
         });
     }

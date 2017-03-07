@@ -140,4 +140,10 @@ public class BasePlacesListActivity extends BaseActivity implements PlaceListFra
 //        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
 //        mainView.setVisibility(show ? View.GONE : View.VISIBLE);
 //    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

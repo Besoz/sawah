@@ -71,7 +71,7 @@ public class DataHandler {
 
     private ObjectMapper mapper;
 
-    private Context context;
+//    private Context context;
     private Target target;
 
     private boolean userLocationSynced;
@@ -96,7 +96,7 @@ public class DataHandler {
 
         serviceHandler = ServiceHandler.getInstance(context);
 
-        this.context = context.getApplicationContext();
+        context = context.getApplicationContext();
 
 
         dayMap.put(7, context.getString(R.string.sat_day));
@@ -304,11 +304,11 @@ public class DataHandler {
 
 // todo split the method getimage and and send to server
     public Bitmap requestUpdateUserImage(final BaseResponseListener listner,
-                                         Uri userSelectedImage) throws IOException {
+                                         Uri userSelectedImage, final Context context) throws IOException {
 
-        final String imageName = getImageName(userSelectedImage);
+        final String imageName = getImageName(userSelectedImage, context);
 
-        final Bitmap userImage = getImage(userSelectedImage);
+        final Bitmap userImage = getImage(userSelectedImage, context);
 
         final User user = getUser();
 
@@ -318,7 +318,7 @@ public class DataHandler {
             public void onResponse(JSONObject response) {
                 super.onResponse(response);
                 if(isStatusSuccess()){
-                    saveUserImage(userImage, imageName);
+                    saveUserImage(userImage, imageName, context);
                     listner.onResponse(response);
                 }else{
                     Log.d("Update user", "fail");
@@ -333,7 +333,7 @@ public class DataHandler {
         return userImage;
     }
 
-    private String getImageName(Uri userSelectedImage) {
+    private String getImageName(Uri userSelectedImage, Context context) {
         Cursor returnCursor =
                 context.getContentResolver().query(userSelectedImage, null, null, null, null);
         int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
@@ -349,7 +349,7 @@ public class DataHandler {
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
-    public Bitmap saveUserImage(Bitmap userImage, String imageName) {
+    public Bitmap saveUserImage(Bitmap userImage, String imageName, Context context) {
 
         ContextWrapper cw = new ContextWrapper(context.getApplicationContext());
         // path to /data/data/yourapp/app_data/imageDir
@@ -386,7 +386,7 @@ public class DataHandler {
         return userImage;
     }
 
-    public Bitmap loadImageFromStorage(String path)
+    public Bitmap loadImageFromStorage(String path, Context context)
     {
 
         try {
@@ -407,12 +407,12 @@ public class DataHandler {
         return null;
     }
 
-    public Bitmap loadProfileImage() {
+    public Bitmap loadProfileImage(Context context) {
 
         User user = getUser();
 
 
-        Bitmap b = loadImageFromStorage(user.getLocalImagePath());
+        Bitmap b = loadImageFromStorage(user.getLocalImagePath(), context);
 
 
         return b;
@@ -460,7 +460,7 @@ public class DataHandler {
         serviceHandler.requestUpdateUser(userData, baseResponseListener);
     }
 
-    public Bitmap getImage(Uri uri)
+    public Bitmap getImage(Uri uri, Context context)
     {
         try {
             InputStream input = context.getContentResolver().openInputStream(uri);
@@ -525,7 +525,7 @@ public class DataHandler {
 
     }
 
-    public Bitmap[] getImages(Intent data) throws IOException {
+    public Bitmap[] getImages(Intent data, Context context) throws IOException {
 
 //        ArrayList<String> imagesPathList = new ArrayList<String>();
         Log.d("Add new Place", data.getStringExtra("data"));
@@ -534,7 +534,7 @@ public class DataHandler {
         Bitmap[] images = new Bitmap[imagesPath.length];
 
         for (int i = 0; i < images.length; i++) {
-            images[i] = getImage(Uri.parse(imagesPath[i]));
+            images[i] = getImage(Uri.parse(imagesPath[i]), context);
         }
 
         Log.d("add new Place", images.length+"========");
@@ -743,7 +743,7 @@ public class DataHandler {
         return queriedPlaces;
     }
 
-    public void eraseCurrentUser() {
+    public void eraseCurrentUser(Context context) {
 
 //        remove user
         sharedPreferences.deleteUser();
@@ -767,12 +767,14 @@ public class DataHandler {
 
 //    todo make it servic
     public void loadAndSaveUserNetworkImage(final Uri image,
-                                            final BaseRequestStateListener baseRequestStateListener) {
+                                            final BaseRequestStateListener baseRequestStateListener
+                                            , final Context context)
+    {
         target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
 
-                saveUserImage(bitmap,"photo");
+                saveUserImage(bitmap,"photo", context);
                 baseRequestStateListener.successResponse(null);
             }
 

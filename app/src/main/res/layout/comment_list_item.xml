@@ -18,7 +18,7 @@
             android:layout_width="40dp"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/listview_margin"
-            android:src="@drawable/demoitem"/>
+            android:src="@drawable/demoitem_avatar"/>
 
         <com.sawah.sawah.custom_views.CustomTextView
             android:id="@+id/user_name"

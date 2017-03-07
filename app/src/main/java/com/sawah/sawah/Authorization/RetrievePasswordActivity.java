@@ -39,7 +39,7 @@ public class RetrievePasswordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
 
         AppCompatImageButton backButton = (AppCompatImageButton) findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {

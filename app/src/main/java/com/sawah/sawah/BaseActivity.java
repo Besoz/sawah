@@ -44,7 +44,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.arasthel.asyncjob.AsyncJob;
+import com.bumptech.glide.Glide;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.SharingHandler;
@@ -58,6 +61,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.sawah.sawah.place.PlaceListActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.Locale;
@@ -90,6 +94,9 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onCreate(Bundle savedInstanceState) {
 //        setLocle();
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        Glide.get(BaseActivity.this).clearMemory();
+        Toast.makeText(BaseActivity.this, "Clear Cache", Toast.LENGTH_SHORT).show();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
 
@@ -130,7 +137,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 //        version 23.1.0 switches NavigationView to using a RecyclerView This means it is not
 //        instantly available to call findViewById() -a layout pass is needed before it is attached to the
         headerLayout = findViewById(R.id.nav_header_base);
-        updateUserDrawer();
+//        updateUserDrawer();
 
         ImageButton settingsButton = (ImageButton) headerLayout.findViewById(R.id.settings_button);
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +149,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 //        Menu nav_Menu = navigationView.getMenu();
 
         if (DataHandler.getInstance(this).userExist()) {
-            updateUserDrawer();
+//            updateUserDrawer();
         } else {
             navigationView.findViewById(R.id.nav_fav_list).setVisibility(View.GONE);
             navigationView.findViewById(R.id.nav_add_place).setVisibility(View.GONE);
@@ -178,7 +185,8 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
     protected void updateUserDrawer()
     {
-        if (DataHandler.getInstance(this).userExist()){
+        if (DataHandler.getInstance(this).userExist())
+        {
             headerLayout.setVisibility(View.VISIBLE);
             navigationView.findViewById(R.id.nav_login).setVisibility(View.GONE);
 
@@ -192,7 +200,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
                 Log.d("local image path", user.getLocalImagePath());
 
                 Bitmap b = DataHandler.getInstance(this)
-                        .loadImageFromStorage(user.getLocalImagePath());
+                        .loadImageFromStorage(user.getLocalImagePath(), this);
                 setNavBarUserImage(b);
 
             }else if(!TextUtils.isEmpty((user.getImageLocation()))){
@@ -208,13 +216,13 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
                         Log.d("Image load", "Success");
 
                         Bitmap b = DataHandler.getInstance(BaseActivity.this)
-                                .loadImageFromStorage(user.getLocalImagePath());
+                                .loadImageFromStorage(user.getLocalImagePath(),BaseActivity.this);
 
                         setNavBarUserImage(b);
 
 
                     }
-                });
+                },BaseActivity.this);
             }
         }
     }
@@ -270,10 +278,10 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 
         if (id == R.id.nav_change_city) {
             // Handle the camera action
-            NavigationHandler.getInstance().startCityActivity(this, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            NavigationHandler.getInstance().startCityActivity(this, Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         } else if (id == R.id.nav_home) {
-            NavigationHandler.getInstance().startCityActivity(this, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            NavigationHandler.getInstance().startCityActivity(this, Intent.FLAG_ACTIVITY_CLEAR_TOP);
         } else if (id == R.id.nav_fav_list) {
             NavigationHandler.getInstance().startFavouritePlacesList(this);
         } else if (id == R.id.nav_about_sawah) {
@@ -287,7 +295,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
         } else if (id == R.id.nav_login) {
             NavigationHandler.getInstance().startLoginActivity(this);
         } else if (id == R.id.nav_logout) {
-            DataHandler.getInstance(this).eraseCurrentUser();
+            DataHandler.getInstance(this).eraseCurrentUser(this);
             NavigationHandler.getInstance().startLoginActivity(this);
         }
 //        else if (id == R.id.nav_settings) {
@@ -605,5 +613,14 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
         searchEditText.setTypeface(myCustomFont);
 
         return searchView;
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("Memory", "Cleared isa ");
+        Glide.get(BaseActivity.this).clearMemory();
+        Toast.makeText(BaseActivity.this, "Clear Cache", Toast.LENGTH_SHORT).show();
+
+        super.onDestroy();
     }
 }

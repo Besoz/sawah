@@ -118,11 +118,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
         Utils.getInstance().changeStatusBarColor(this);
         removeNavigationDrawer();
         String placeJSONObject = (String) getIntent().getSerializableExtra("PlaceJSONObject");

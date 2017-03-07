@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.arasthel.asyncjob.AsyncJob;
+import com.bumptech.glide.Glide;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.R;
@@ -60,11 +62,7 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
         specialPlaceLayout = true;
 
         super.onCreate(savedInstanceState);
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
+
 
         Utils.getInstance().changeStatusBarColor(this);
         DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
@@ -73,8 +71,21 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
         setupSearch();
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+//        sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+//                SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    public void onPause() {
+        sensorManager.unregisterListener(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
         sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+        super.onResume();
     }
 
     public void recievePlacesList(Place[] arr) {
@@ -140,8 +151,6 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
             }
         });
     }
-
-
 
     @Override
     public void onSensorChanged(SensorEvent event) {

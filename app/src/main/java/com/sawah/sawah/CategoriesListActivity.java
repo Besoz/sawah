@@ -21,12 +21,6 @@ import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.models.Category;
-import com.sawah.sawah.models.City;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.squareup.leakcanary.LeakCanary;
 
 public class CategoriesListActivity extends BaseActivity implements RecycleAdapterListener {
 
@@ -46,11 +40,7 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
-            return;
-        }
+
         Utils.getInstance().changeStatusBarColor(this);
         mRecyclerView = (RecyclerView) findViewById(R.id.list);
 

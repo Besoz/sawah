@@ -51,8 +51,9 @@ public class NavigationHandler {
     public void startLoginActivity(Context context) {
 
         Intent loginActivity = new Intent(context, LoginActivity.class);
-        loginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        context.startActivity(loginActivity);
+        loginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        context.getApplicationContext().startActivity(loginActivity);
+        ((Activity)context).finish();
     }
 
 
@@ -87,14 +88,14 @@ public class NavigationHandler {
     }
 
     public void startMainctivity(Context context) {
-        startCityActivity(context,Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startCityActivity(context,Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
     }
 
     public void startAfterLoginctivity(Context context) {
 
         Intent afterLoginActivity = getCategoriesListActivityIntent(context);
-        afterLoginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        afterLoginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(afterLoginActivity);
 
     }
@@ -133,6 +134,7 @@ public class NavigationHandler {
         Intent intent = new Intent(context, CitiesListActivity.class);
         intent.setFlags(flag);
         context.startActivity(intent);
+        ((Activity)context).finish();
     }
 
     public void startCommentActivity(Context context, String placeID) {

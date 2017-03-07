@@ -14,7 +14,7 @@ import java.lang.reflect.Type;
 public class ComplexSharedPreferences {
     private String namePreferences = "XparkSharedPreference";
     private static ComplexSharedPreferences       complexPreferences;
-    private final Context context;
+//    private final Context context;
     private final SharedPreferences preferences;
     private final SharedPreferences.Editor  editor;
     private static Gson                     GSON            = new Gson();
@@ -22,7 +22,7 @@ public class ComplexSharedPreferences {
             .getType();
 
     private ComplexSharedPreferences(Context context) {
-        this.context = context;
+//        this.context = context;
         preferences = context.getSharedPreferences(namePreferences, 0);//context.MODE_PRIVATE);
         editor = preferences.edit();
     }

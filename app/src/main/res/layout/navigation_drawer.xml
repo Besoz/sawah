@@ -55,7 +55,7 @@
                             android:layout_centerVertical="true"
                             android:layout_centerHorizontal="true"
                             android:padding="8dp"
-                            android:src="@drawable/demoitem"/>
+                            android:src="@drawable/demoitem_avatar"/>
                     </RelativeLayout>
                     <ImageButton
                         android:id="@+id/settings_button"
