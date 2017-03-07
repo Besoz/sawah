@@ -24,7 +24,6 @@ public class AuthorizationController implements LoginListener {
 //    todo use BaseListeners
 
     private static AuthorizationController authMan;
-    private Context context;
     private LoginListener loginListener;
 
     private DataHandler dataHandler;
@@ -34,12 +33,11 @@ public class AuthorizationController implements LoginListener {
 
 
     public AuthorizationController(Context context, LoginListener loginListener){
-        this.context = context;
         this.loginListener = loginListener;
 
         loginResponseListener =  new LoginResponseListener(this);
-        dataHandler = DataHandler.getInstance(this.context.getApplicationContext());
-        serviceHandler = ServiceHandler.getInstance(this.context.getApplicationContext());;
+        dataHandler = DataHandler.getInstance(context.getApplicationContext());
+        serviceHandler = ServiceHandler.getInstance(context.getApplicationContext());;
     }
 
 
@@ -75,7 +73,7 @@ public class AuthorizationController implements LoginListener {
             public void successResponse(ServiceResponse response) {
 
                 BaseRequestStateListener updateUserListener = getUpdateUserListener(origionListener,
-                        image);
+                        image, context);
 
                 final User user = response.getUser();
                 user.setEmail(email);
@@ -132,7 +130,7 @@ public class AuthorizationController implements LoginListener {
         loginListener.loginError();
     }
 
-    public void skipLogin(){
+    public void skipLogin(Context context){
         NavigationHandler.getInstance().startCategoriesListActivity(context);
     }
 
@@ -148,7 +146,7 @@ public class AuthorizationController implements LoginListener {
     }
 
     public BaseRequestStateListener getUpdateUserListener(final BaseRequestStateListener origionListener,
-                                                          final Uri imageURI) {
+                                                          final Uri imageURI, final Context context) {
 
         BaseRequestStateListener updateUserListener = new BaseRequestStateListener() {
             @Override

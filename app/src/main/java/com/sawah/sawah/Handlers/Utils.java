@@ -62,7 +62,7 @@ public class Utils {
     }
 
     public int mapDay(String day) {
-        Log.d("day", day);
+//        Log.d("day", day);
         return dayMap.get(day);
     }
 

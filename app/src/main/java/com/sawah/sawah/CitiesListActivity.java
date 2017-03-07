@@ -7,11 +7,14 @@ import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -21,10 +24,13 @@ import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.models.City;
 
-public class CitiesListActivity extends ListActivity {
+public class CitiesListActivity extends BaseActivity implements RecycleAdapterListener {
 
     private City[] cities;
-    private CitiesAdapter citiesAdapter;
+//    private CitiesAdapter citiesAdapter;
+
+    private RecyclerView mRecyclerView;
+    private CityRecyclerViewAdapter cityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,25 +40,15 @@ public class CitiesListActivity extends ListActivity {
 //        if(DataHandler.getInstance(this).getDefaultCity() == null)
         removeNavigationDrawer();
 
-        mListView = (GridView) findViewById(R.id.list);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
-                City selectedCity = (City) mListView.getAdapter().getItem(position);
+        mRecyclerView = (RecyclerView) findViewById(R.id.list);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
 
 
-                DataHandler.getInstance(context.getApplicationContext()).setDefaultCity(selectedCity);
-
-                NavigationHandler.getInstance().startCategoriesListActivity(CitiesListActivity.this,
-                        selectedCity.getCityID());
-            }
-        });
         DataHandler.getInstance(getApplicationContext()).requestCitiesArray(this);
         showProgress(true);
 
         setupSearch();
-
     }
 
 
@@ -60,8 +56,10 @@ public class CitiesListActivity extends ListActivity {
     public void receiveCitiesList(City[] cities) {
 
         this.cities = cities;
-        citiesAdapter = new CitiesAdapter(this, cities);
-        mListView.setAdapter(citiesAdapter);
+
+        cityAdapter = new CityRecyclerViewAdapter(this, this, cities);
+        mRecyclerView.setAdapter(cityAdapter);
+
         showProgress(false);
     }
 
@@ -106,10 +104,32 @@ public class CitiesListActivity extends ListActivity {
                 City[] queriedCities = DataHandler.getInstance(CitiesListActivity.this).
                         queryCities(cities, newText);
 
-                citiesAdapter.updateDataSource(queriedCities);
+                cityAdapter.updateDataSource(queriedCities);
 
                 return true;
             }
         });
     }
+
+    @Override
+    public void itemSelected(Object object) {
+
+        City selectedCity = (City) object;
+
+        DataHandler.getInstance(CitiesListActivity.this.getApplicationContext())
+                .setDefaultCity(selectedCity);
+
+        NavigationHandler.getInstance().startCategoriesListActivity(CitiesListActivity.this,
+                selectedCity.getCityID());
+    }
+
+    @Override
+    public void showHideEmptyText() {
+
+    }
+    protected int getLayoutResourceId() {
+        return R.layout.fragment_place_list;
+    }
+
+
 }

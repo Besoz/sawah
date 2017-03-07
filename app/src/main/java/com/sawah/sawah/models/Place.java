@@ -271,7 +271,7 @@ public class Place extends SugarRecord implements ClusterItem {
 
     public void setAppointments(HashMap<String, String> appointments) {
 
-        Log.d("appointments", String.valueOf(appointments));
+//        Log.d("appointments", String.valueOf(appointments));
 
         if(appointments != null){
             workTimes = new WorkTime[appointments.size()];

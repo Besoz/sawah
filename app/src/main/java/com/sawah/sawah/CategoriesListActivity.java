@@ -38,7 +38,6 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private Category[] categories;
 
 
