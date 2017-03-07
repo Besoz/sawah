@@ -97,7 +97,7 @@ public class NavigationHandler {
         Intent afterLoginActivity = getCategoriesListActivityIntent(context);
         afterLoginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(afterLoginActivity);
-
+        ((Activity)context).finish();
     }
 
     private Intent getCategoriesListActivityIntent(Context context){

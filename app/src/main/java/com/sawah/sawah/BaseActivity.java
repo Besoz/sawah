@@ -95,7 +95,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
 //        setLocle();
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         Glide.get(BaseActivity.this).clearMemory();
-        Toast.makeText(BaseActivity.this, "Clear Cache", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(BaseActivity.this, "Clear Cache", Toast.LENGTH_SHORT).show();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
@@ -619,7 +619,7 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onDestroy() {
         Log.d("Memory", "Cleared isa ");
         Glide.get(BaseActivity.this).clearMemory();
-        Toast.makeText(BaseActivity.this, "Clear Cache", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(BaseActivity.this, "Clear Cache", Toast.LENGTH_SHORT).show();
 
         super.onDestroy();
     }
