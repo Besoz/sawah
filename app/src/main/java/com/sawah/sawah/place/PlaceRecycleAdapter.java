@@ -80,26 +80,13 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         return vh;
     }
 
-    @Override
-    public void onBindViewHolder(final PlaceRecycleAdapter.ViewHolder holder, int position) {
-
-        final Place place = mDataSource.get(position);
-        System.out.println("Place: "+place.getPalceNameEng() + "----" + place.isSpecial());
-        if(place.isSpecial() || !specialPlaceLayout)
-        {
-            holder.specialCard.setVisibility(View.VISIBLE);
-            holder.notSpecialCard.setVisibility(View.GONE);
-        }
-        else {
-            holder.specialCard.setVisibility(View.GONE);
-            holder.notSpecialCard.setVisibility(View.VISIBLE);
-        }
+    private void loadSpecialCard(final PlaceRecycleAdapter.ViewHolder holder, int position, final Place place)
+    {
+        holder.specialCard.setVisibility(View.VISIBLE);
+        holder.notSpecialCard.setVisibility(View.GONE);
 
         holder.titleArabic.setText(place.getPalceNameArb());
         holder.titleEnglish.setText(place.getPalceNameEng());
-
-        holder.titleArabicSpecial.setText(place.getPalceNameArb());
-        holder.titleEnglishSpecial.setText(place.getPalceNameEng());
 
         ImageLoader mImageLoader = ServiceHandler.getInstance(mContext.getApplicationContext()).getImageLoader();
         String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
@@ -108,13 +95,6 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
         LayerDrawable layer = (LayerDrawable) holder.mNetworkImageView.getBackground();
         if(layer != null) {
             AnimationDrawable frameAnimation = (AnimationDrawable) layer.getDrawable(0);
-            frameAnimation.start();
-        }
-
-        layer = (LayerDrawable) holder.mNetworkImageViewSpecial.getBackground();
-        final AnimationDrawable frameAnimation;
-        if(layer != null) {
-            frameAnimation = (AnimationDrawable) layer.getDrawable(0);
             frameAnimation.start();
         }
 
@@ -127,61 +107,30 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
                 .load(imageUrl)
                 .error(R.drawable.demoitem)
                 .centerCrop()
+//                .skipMemoryCache(true)
                 .crossFade().listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                return false;
+            }
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
 
-                        holder.stopAnimation();
-                        return false;
-                    }
-                })
-                .into(holder.mNetworkImageView);
-
-
-        Glide.with(mContext)
-                .load(imageUrl)
-                .error(R.drawable.demoitem)
-                .centerCrop()
-                .crossFade().listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-
-                        holder.stopSpecialAnimation();
-                        return false;
-                    }
-                })
-                .into(holder.mNetworkImageViewSpecial);
-
-//        holder.mNetworkImageView.setImageUrl(imageUrl, mImageLoader);
-//        holder.mNetworkImageViewSpecial.setImageUrl(imageUrl, mImageLoader);
-
+                holder.stopAnimation();
+                return false;
+            }
+        }).into(holder.mNetworkImageView);
 
         holder.specialTag.setVisibility(place.isSpecial() && specialPlaceLayout ?
                 View.VISIBLE : View.GONE);
 
-        holder.specialTagSpecial.setVisibility(place.isSpecial() && specialPlaceLayout ?
-                View.VISIBLE : View.GONE);
-
         if(addLikeButton){
-
             if(place.isFavourite()){
                 holder.likeButton.setChecked();
-                holder.likeButtonSpecial.setChecked();
             }else{
                 holder.likeButton.setUnChecked();
-                holder.likeButtonSpecial.setUnChecked();
             }
-
             holder.likeButton.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -190,19 +139,81 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
                     holder.likeButton.toggleState();
                 }
             });
+        }
+        holder.specialTag.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
+    }
 
-            holder.likeButtonSpecial.setOnClickListener(new View.OnClickListener() {
+    private void loadCard(final PlaceRecycleAdapter.ViewHolder holder, int position, final Place place)
+    {
+        holder.specialCard.setVisibility(View.GONE);
+        holder.notSpecialCard.setVisibility(View.VISIBLE);
 
-                @Override
-                public void onClick(View v) {
-                    DataHandler.getInstance(mContext).togglePlaceFavourite(place);
-                    holder.likeButtonSpecial.toggleState();
-                }
-            });
+        holder.titleArabicSpecial.setText(place.getPalceNameArb());
+        holder.titleEnglishSpecial.setText(place.getPalceNameEng());
+
+        String imageUrl= place.getImageLocation().replaceAll(" ", "%20");
+        LayerDrawable layer = (LayerDrawable) holder.mNetworkImageViewSpecial.getBackground();
+        final AnimationDrawable frameAnimation;
+        if(layer != null) {
+            frameAnimation = (AnimationDrawable) layer.getDrawable(0);
+            frameAnimation.start();
         }
 
-        holder.specialTag.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
+        if(imageUrl == "")
+            imageUrl = "http://sawahapp.com/Uploads/ssss.ssss";
+
+        Log.d("Glide", imageUrl);
+        Glide.with(mContext)
+                .load(imageUrl)
+                .error(R.drawable.demoitem)
+                .centerCrop()
+//                .skipMemoryCache(true)
+                .crossFade().listener(new RequestListener<String, GlideDrawable>() {
+            @Override
+            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                return false;
+            }
+
+            @Override
+            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+
+                holder.stopSpecialAnimation();
+                return false;
+            }
+        }).into(holder.mNetworkImageViewSpecial);
+
+        holder.specialTagSpecial.setVisibility(place.isSpecial() && specialPlaceLayout ?
+                View.VISIBLE : View.GONE);
+
+        if(place.isFavourite()){
+            holder.likeButtonSpecial.setChecked();
+        }else{
+            holder.likeButtonSpecial.setUnChecked();
+        }
+
+        holder.likeButtonSpecial.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                DataHandler.getInstance(mContext).togglePlaceFavourite(place);
+                holder.likeButtonSpecial.toggleState();
+            }
+        });
         holder.specialTagSpecial.setVisibility(specialPlaceLayout && place.isSpecial() ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void onBindViewHolder(final PlaceRecycleAdapter.ViewHolder holder, int position) {
+
+        final Place place = mDataSource.get(position);
+        System.out.println("Place: "+place.getPalceNameEng() + "----" + place.isSpecial());
+        if(place.isSpecial() || !specialPlaceLayout)
+        {
+            loadSpecialCard(holder, position, place);
+        }
+        else {
+            loadCard(holder, position, place);
+        }
 
         if(addDeleteButton) {
             holder.deleteButton.setVisibility(View.VISIBLE);
@@ -226,11 +237,10 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
                     System.out.println("delete: "+p);
                     mDataSource.remove(p);
                     notifyItemRemoved(p);
-//                    notifyItemRangeChanged(p, mDataSource.size());
+
                     System.out.println(mDataSource.size());
                     if(mDataSource.size() == 0)
                         mListener.showHideEmptyText();
-//                    PlaceRecycleAdapter.this.notifyDataSetChanged();
                 }
             });
         }
@@ -241,6 +251,16 @@ public class PlaceRecycleAdapter extends  RecyclerView.Adapter<PlaceRecycleAdapt
                 mListener.itemSelected(place);
             }
         });
+    }
+
+    @Override
+    public void onViewRecycled(PlaceRecycleAdapter.ViewHolder holder) {
+        super.onViewRecycled(holder);
+//        if (holder instanceof PlaceRecycleAdapter.ViewHolder) {
+//            ItemViewHolder itemHolder = (ItemViewHolder) holder;
+            Glide.clear(holder.mNetworkImageView);
+        Glide.clear(holder.mNetworkImageViewSpecial);
+//        }
     }
 
     @Override
