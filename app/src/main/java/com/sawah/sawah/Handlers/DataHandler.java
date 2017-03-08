@@ -18,6 +18,8 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.arasthel.asyncjob.AsyncJob;
+import com.sawah.sawah.ArrayRequestListener;
+import com.sawah.sawah.BaseArrayResponseListener;
 import com.sawah.sawah.BaseResponseListener;
 import com.sawah.sawah.BitmapImage;
 import com.sawah.sawah.CategoriesListActivity;
@@ -207,6 +209,16 @@ public class DataHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void searchPlacesList(ArrayRequestListener<Place> respLstnr, String cityID,
+                                 String searchQuery){
+
+        BaseArrayResponseListener baseArrayResponseListener = new BaseArrayResponseListener(Place.class);
+        baseArrayResponseListener.setOnResponseListener(respLstnr);
+
+        serviceHandler.requestPlacesArray(baseArrayResponseListener, cityID, searchQuery);
+
     }
 
 
@@ -489,7 +501,8 @@ public class DataHandler {
                 return null;
             }
 
-            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ?
+                    onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
 
             double ratio = (originalSize > 200) ? (originalSize / 200) : 1.0;
 
@@ -556,7 +569,8 @@ public class DataHandler {
     }
 
 
-    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place, final BaseRequestStateListener listner) {
+    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place,
+                            final BaseRequestStateListener listner) {
         Log.d("add new Place", "2");
 
         String cityID = getDefaultCityID(), userID = getUser().getUserID();

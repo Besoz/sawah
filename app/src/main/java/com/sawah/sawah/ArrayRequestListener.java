@@ -3,11 +3,11 @@ package com.sawah.sawah;
 /**
  * Created by root on 22/02/17.
  */
-public interface ArrayRequestListener {
+public interface ArrayRequestListener<T> {
 
     void failResponse();
 
-    void successResponse(Object[] response);
+    void successResponse(T[] response);
 
 
 }

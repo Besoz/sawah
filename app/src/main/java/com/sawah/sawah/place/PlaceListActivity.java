@@ -28,7 +28,7 @@ import java.util.Arrays;
 public class PlaceListActivity extends BasePlacesListActivity implements SensorEventListener {
 
     private static final long CHECK_FREQUENCY = 100;
-    private String cityID, catID, catName;
+    protected String cityID, catID, catName;
 
     private SensorManager sensorManager;
 
@@ -65,8 +65,12 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
 
 
         Utils.getInstance().changeStatusBarColor(this);
-        DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
-        showProgress(true);
+
+        if(cityID != null && catID != null){
+            DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
+            showProgress(true);
+        }
+
 
         setupSearch();
 

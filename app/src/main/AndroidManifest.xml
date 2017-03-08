@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name="com.sawah.sawah.SawahApplication"
+        android:name=".SawahApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -170,8 +170,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AlertDialog"
-            android:theme="@style/AppTheme.NoActionBar.Transparent"
             android:noHistory="true"
+            android:theme="@style/AppTheme.NoActionBar.Transparent" />
+        <activity
+            android:name=".place.PlaceSearchActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
             ></activity>
     </application>
 
