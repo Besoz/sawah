@@ -9,6 +9,7 @@ import com.sawah.sawah.Authorization.AuthorizationController;
 import com.sawah.sawah.Authorization.LoginListener;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.NavigationHandler;
+import com.sawah.sawah.Handlers.SharedPreferencesController;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.models.User;
 
@@ -25,6 +26,9 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
         setContentView(R.layout.activity_launcher);
 
         Utils.getInstance().changeStatusBarColor(this);
+
+        SharedPreferencesController.getInstance(this).updateBadgeNumber(0);
+
         new Handler().postDelayed(new Runnable()
         {
             @Override

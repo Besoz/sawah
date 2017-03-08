@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
 import rapid.decoder.BitmapDecoder;
 
 /**
@@ -819,6 +820,16 @@ public class DataHandler {
         baseResponseListener.setOnResponseListner(requestStateListener);
 
         serviceHandler.makeCheckin(placeID, userID, baseResponseListener);
+    }
+
+    public void updateAppNotification(Context activity) {
+        if (activity != null)
+        {
+            int badgeCount = sharedPreferences.getBadgeNumber();
+            ShortcutBadger.applyCount(activity, badgeCount); //for 1.1.4+
+//        ShortcutBadger.with(getApplicationContext()).count(badgeCount); //for 1.1.3
+        }
+
     }
 }
 

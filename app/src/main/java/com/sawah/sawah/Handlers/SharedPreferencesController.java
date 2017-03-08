@@ -15,7 +15,7 @@ public class SharedPreferencesController {
     private ComplexSharedPreferences sharedPreferences;
 
     private final static String DEVICE_TOKEN_KEY = "device_Token", USER_DATA_KEY = "user_data",
-    CITY_ID_KEY = "city_id", CITY_DATA_KEY = "city_data";
+    CITY_ID_KEY = "city_id", CITY_DATA_KEY = "city_data", BADGE_NUMBER_KEY = "badge_nuumber";
 
 
     public static SharedPreferencesController getInstance(Context context) {
@@ -74,4 +74,18 @@ public class SharedPreferencesController {
     public City getDefaultCity() {
         return sharedPreferences.getObject(CITY_DATA_KEY, City.class);
     }
+
+    public void updateBadgeNumber(int badgeCount) {
+        sharedPreferences.putObject(BADGE_NUMBER_KEY, badgeCount);
+        sharedPreferences.commit();
+
+    }
+
+
+    public int getBadgeNumber() {
+        if(sharedPreferences.hasKey(BADGE_NUMBER_KEY))
+            return sharedPreferences.getObject(BADGE_NUMBER_KEY, Integer.class);
+        return 0;
+    }
+
 }

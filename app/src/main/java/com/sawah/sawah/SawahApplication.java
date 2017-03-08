@@ -5,6 +5,7 @@ import android.os.StrictMode;
 
 import com.google.firebase.crash.FirebaseCrash;
 import com.orm.SugarApp;
+import com.sawah.sawah.Handlers.DataHandler;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -20,7 +21,7 @@ public class SawahApplication extends SugarApp {
             return;
         }
         LeakCanary.install(this);
-
+        DataHandler.getInstance(this).updateAppNotification(this);
 //        FirebaseCrash.log("Application start SAWAH");
 
         boolean isDebuggable = ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
