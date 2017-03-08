@@ -21,6 +21,10 @@ public class ServiceResponse {
     private String message;
 
 
+    @JsonProperty("Version")
+    private String version;
+
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -62,5 +66,9 @@ public class ServiceResponse {
 
     public String getDraftPointID() {
         return draftPointID;
+    }
+
+    public String getVersion() {
+        return version;
     }
 }

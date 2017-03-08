@@ -25,6 +25,7 @@ import com.darsh.multipleimageselect.activities.AlbumSelectActivity;
 import com.darsh.multipleimageselect.helpers.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sawah.sawah.place.PlaceSearchActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -209,5 +210,11 @@ public class NavigationHandler {
     public void startEditPasswordActivity(Context context) {
         Intent activity = new Intent(context, EditPasswordActivity.class);
         context.startActivity(activity);
+    }
+
+    public void startPlaceSearchActivity(Context context, String cityID) {
+        Intent intent = new Intent(context, PlaceSearchActivity.class);
+        intent.putExtra(DataHandler.getInstance(context.getApplicationContext()).CITY_ID_KEY, cityID);
+        context.startActivity(intent);
     }
 }

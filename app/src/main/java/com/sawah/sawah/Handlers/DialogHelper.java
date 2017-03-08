@@ -9,6 +9,7 @@ import com.sawah.sawah.AddNewPlace.AddNewPlaceActivity;
 import com.sawah.sawah.AlertDialog;
 import com.sawah.sawah.Authorization.LoginActivity;
 import com.sawah.sawah.BaseRequestStateListener;
+import com.sawah.sawah.LauncherActivity;
 import com.sawah.sawah.R;
 import com.sawah.sawah.place.PlaceDetailsActivity;
 import com.afollestad.materialdialogs.DialogAction;
@@ -106,4 +107,36 @@ public class DialogHelper {
 
 
     }
+
+    public void showNewVersionDialog(final LauncherActivity launcherActivity, String message) {
+        new MaterialDialog.Builder(launcherActivity)
+                .title(R.string.app_version_title)
+                .content(R.string.app_version_message)
+                .positiveText(R.string.agree)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                        SharingHandler.getInstance().openWebsite(launcherActivity,
+                                "market://details?id=com.sawah.sawah");
+                    }
+                })
+                .negativeText(R.string.cancel_text)
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .dismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        launcherActivity.continueLaunch();
+                    }
+                })
+                .titleGravity(GravityEnum.CENTER)
+                .contentGravity(GravityEnum.CENTER)
+                .show();
+    }
+
 }

@@ -16,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.NavigationHandler;
@@ -119,6 +120,13 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
 
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 
+//        searchView.setOnSearchClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                NavigationHandler.getInstance()
+//                        .startPlaceSearchActivity(CategoriesListActivity.this, cityID);
+//            }
+//        });
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
