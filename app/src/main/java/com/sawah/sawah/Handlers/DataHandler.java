@@ -128,7 +128,11 @@ public class DataHandler {
 
         if(token ==  null){
             token = FirebaseInstanceId.getInstance().getToken();
-            updateDeviceToken(token);
+            if(token !=  null){
+                updateDeviceToken(token);
+            }else{
+                token = "";
+            }
         }
 
         return token;
