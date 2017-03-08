@@ -16,6 +16,7 @@ public class URLHandler {
             addCommentPath, updateUserDataPath, updateUserImagePath, changePasswordPath;
     private String checkinUrl, changeCityUrl;
     private String addNewPlacePath, retrievePassword, addPlaceImagesUrl, socialLoginUrl;
+    private String addVisitUrl, appVersionUrl;
 
 //    private DataHandler dataHandler;
 
@@ -47,6 +48,8 @@ public class URLHandler {
         socialLoginUrl = context.getString(R.string.social_login_url);
         checkinUrl = context.getString(R.string.add_check_in_url);
         changeCityUrl = context.getString(R.string.change_city_url);
+        addVisitUrl = context.getString(R.string.add_visit_url);
+        appVersionUrl = context.getString(R.string.get_application_version);
 
 
 
@@ -112,6 +115,18 @@ public class URLHandler {
         return placesListUrlStr;
     }
 
+    public String getPlacesSearchServiceUrl(String cityID, String searchQuery) {
+
+        Uri.Builder placesParams = new Uri.Builder();
+        placesParams.appendQueryParameter("searchkey", searchQuery)
+                .appendQueryParameter("cityID", cityID);
+        String placesListUrlStr = placesParams.build().toString();
+
+        placesListUrlStr = Serverpath + placesPath + placesParams;
+
+        return placesListUrlStr;
+    }
+
     public String getCitiesServiceUrl() {
         return Serverpath + citiesPath;
     }
@@ -162,5 +177,14 @@ public class URLHandler {
     public String changeCityUrl() {
         return Serverpath + changeCityUrl;
     }
+
+    public String getAddVisitUrl() {
+        return Serverpath + addVisitUrl;
+    }
+
+    public String getAppVersionUrl(){
+        return Serverpath + appVersionUrl;
+    }
+
 
 }

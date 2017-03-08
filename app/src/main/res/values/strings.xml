@@ -187,5 +187,10 @@
     <string name="search_in">ابحث في </string>
     <string name="no_uber">تأكد من تحميل تطبيق أوبر</string>
     <string name="cant_checkin">لا يمكنك تسجيل زيارة أنت تبعد عن هذه النقطة</string>
+    <string name="add_visit_url">/api/Points/AddVisit</string>
+    <string name="get_application_version">/api/settings/GetApplicationVersion</string>
+    <string name="app_version_title">نسخة التطبيق</string>
+    <string name="app_version_message">نزل النسخة الجديدة</string>
+    <string name="app_version">0</string>
 
 </resources>

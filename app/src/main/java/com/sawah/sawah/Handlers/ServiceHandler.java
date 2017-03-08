@@ -3,6 +3,8 @@ package com.sawah.sawah.Handlers;
 import android.content.Context;
 import android.util.Log;
 
+import com.sawah.sawah.ArrayRequestListener;
+import com.sawah.sawah.BaseArrayResponseListener;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.BaseResponseListener;
 import com.sawah.sawah.CategoriesListActivity;
@@ -10,7 +12,7 @@ import com.sawah.sawah.CitiesListActivity;
 import com.sawah.sawah.Authorization.LoginResponseListener;
 import com.sawah.sawah.LruBitmapCache;
 import com.sawah.sawah.R;
-import com.sawah.sawah.place.BasePlacesListActivity;
+import com.sawah.sawah.RequestListener;
 import com.sawah.sawah.Authorization.SignupResponseListener;
 import com.sawah.sawah.place.PlaceListActivity;
 import com.android.volley.Cache;
@@ -183,6 +185,25 @@ public class ServiceHandler {
         });
 
         mRequestQueue.add(categoriesArrayRequest);
+
+    }
+
+    public void requestPlacesArray(BaseArrayResponseListener baseResponseListener, String cityID,
+                                   String searchQuery) {
+        Log.d("gg", "requesting");
+
+        String serviceUrl = urlHandler.getPlacesSearchServiceUrl(cityID, searchQuery);
+        Log.d("gg", "requesting"+urlHandler);
+
+        JsonArrayRequest placesArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                serviceUrl, null, baseResponseListener,new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                mTextView.setText("That didn't work!");
+            }
+        });
+
+        mRequestQueue.add(placesArrayRequest);
 
     }
 
@@ -513,6 +534,56 @@ public class ServiceHandler {
         return request;
     }
 
+
+    public void notifyPlaceVisit(String placeID, BaseResponseListener baseResponseListener) {
+
+        String url = urlHandler.getAddVisitUrl();
+
+        JSONObject request = new JSONObject();
+        try {
+            request.put("PointID", placeID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("gg", request.toString());
+
+        JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, request, baseResponseListener, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        mRequestQueue.add(jsonObjectRequest);
+
+    }
+
+    public void getAppVersion(final RequestListener requestListener) {
+
+        final String url = urlHandler.getAppVersionUrl();
+
+        final JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            requestListener.successResponse(response.get("Version"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        requestListener.failResponse(null);
+
+                    }
+                });
+
+        mRequestQueue.add(jsObjRequest);
+    }
 
 
 }

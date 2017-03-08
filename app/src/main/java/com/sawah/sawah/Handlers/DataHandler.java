@@ -3,6 +3,8 @@ package com.sawah.sawah.Handlers;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +24,7 @@ import com.sawah.sawah.CategoriesListActivity;
 import com.sawah.sawah.CitiesListActivity;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.R;
+import com.sawah.sawah.RequestListener;
 import com.sawah.sawah.ServiceResponse;
 import com.sawah.sawah.models.PlaceComment;
 import com.sawah.sawah.models.PlaceImage;
@@ -54,6 +57,9 @@ import java.util.List;
 import java.util.Map;
 
 import rapid.decoder.BitmapDecoder;
+
+import static com.orm.util.ContextUtil.getPackageManager;
+import static com.orm.util.ContextUtil.getPackageName;
 
 /**
  * Created by Bassem on 15/01/17.
@@ -819,6 +825,56 @@ public class DataHandler {
         baseResponseListener.setOnResponseListner(requestStateListener);
 
         serviceHandler.makeCheckin(placeID, userID, baseResponseListener);
+    }
+
+    public void incrementPlaceVisits(String placeID) {
+
+        BaseResponseListener baseResponseListener = new BaseResponseListener();
+        baseResponseListener.setOnResponseListner(new BaseRequestStateListener() {
+            @Override
+            public void failResponse(ServiceResponse response) {
+                Log.d("Visit", "Fail");
+            }
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+                Log.d("Visit", "Success "+ response.getMessage());
+            }
+        });
+
+        serviceHandler.notifyPlaceVisit(placeID, baseResponseListener);
+    }
+
+    public void checkAppVersion(final RequestListener baseRequestStateListener) throws PackageManager.NameNotFoundException {
+
+        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        String version = pInfo.versionName;
+        int verCode = pInfo.versionCode;
+
+        final String appVersion = sharedPreferences.getAppVersion();
+
+        RequestListener requestListener = new RequestListener() {
+            @Override
+            public void failResponse(Object response) {
+                Log.d("Visit", "Fail");
+                baseRequestStateListener.failResponse(response);
+            }
+
+            @Override
+            public void successResponse(Object response) {
+                Log.d("Visit", "Success " + (String) response);
+
+                if (TextUtils.equals(appVersion, (String) response)) {
+                    baseRequestStateListener.failResponse(response);
+
+                } else {
+                    baseRequestStateListener.successResponse(response);
+//                }
+                }
+            }
+        };
+
+        serviceHandler.getAppVersion(requestListener);
     }
 }
 

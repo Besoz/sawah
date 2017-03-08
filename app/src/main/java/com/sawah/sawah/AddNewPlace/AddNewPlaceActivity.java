@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFragment.OnFragmentInteractionListener, AddingPlaceDetailsFragment.OnFragmentInteractionListener {
 
     private static final int PICK_IMAGE_REQUEST = 100;
+    private static final int MAX_NO_IMAGE = 5;
     private Place newPlace;
     private MapAllocationFragment placeLocationFragment;
     private AddingPlaceDetailsFragment addingPlaceDetailsFragment;
@@ -65,7 +66,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
     @Override
     public void selectPlaceImages() {
         NavigationHandler.getInstance().startImagePickerForResult(AddNewPlaceActivity.this,
-                PICK_IMAGE_REQUEST, 5);
+                PICK_IMAGE_REQUEST, MAX_NO_IMAGE);
     }
 
     @Override

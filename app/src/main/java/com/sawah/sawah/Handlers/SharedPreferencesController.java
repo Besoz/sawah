@@ -2,6 +2,7 @@ package com.sawah.sawah.Handlers;
 
 import android.content.Context;
 
+import com.sawah.sawah.R;
 import com.sawah.sawah.models.City;
 import com.sawah.sawah.models.User;
 
@@ -11,32 +12,35 @@ import com.sawah.sawah.models.User;
 
 public class SharedPreferencesController {
 
+    private static String APP_VERSION = "1";
     private static SharedPreferencesController ourInstance;
     private ComplexSharedPreferences sharedPreferences;
 
     private final static String DEVICE_TOKEN_KEY = "device_Token", USER_DATA_KEY = "user_data",
-    CITY_ID_KEY = "city_id", CITY_DATA_KEY = "city_data";
+            CITY_ID_KEY = "city_id", CITY_DATA_KEY = "city_data", APP_VERSION_KEY = "app_version";
 
 
     public static SharedPreferencesController getInstance(Context context) {
-        if(ourInstance == null){
+        if (ourInstance == null) {
             ourInstance = new SharedPreferencesController(context);
         }
+
+        APP_VERSION = context.getString(R.string.app_version);
         return ourInstance;
     }
 
-    private SharedPreferencesController(Context context){
-        sharedPreferences =  ComplexSharedPreferences.getComplexPreferences(context);
+    private SharedPreferencesController(Context context) {
+        sharedPreferences = ComplexSharedPreferences.getComplexPreferences(context);
 
     }
 
-    public void setDeviceToken(String token){
+    public void setDeviceToken(String token) {
         sharedPreferences.putObject(DEVICE_TOKEN_KEY, token);
         sharedPreferences.commit();
 
     }
 
-    public String getDeviceToken(){
+    public String getDeviceToken() {
         return sharedPreferences.getObject(DEVICE_TOKEN_KEY, String.class);
     }
 
@@ -54,7 +58,7 @@ public class SharedPreferencesController {
         return sharedPreferences.getObject(CITY_DATA_KEY, City.class).getCityID();
     }
 
-    public void setDefaultCity(City city){
+    public void setDefaultCity(City city) {
         sharedPreferences.putObject(CITY_DATA_KEY, city);
         sharedPreferences.commit();
     }
@@ -74,4 +78,17 @@ public class SharedPreferencesController {
     public City getDefaultCity() {
         return sharedPreferences.getObject(CITY_DATA_KEY, City.class);
     }
+
+    public String getAppVersion() {
+
+//        if (!sharedPreferences.hasKey(APP_VERSION_KEY)){
+//            sharedPreferences.putObject(APP_VERSION_KEY, APP_VERSION);
+//            sharedPreferences.commit();
+//        }
+//
+//        return sharedPreferences.getObject(APP_VERSION_KEY,String.class);
+
+        return APP_VERSION;
+    }
+
 }

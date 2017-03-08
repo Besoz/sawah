@@ -41,30 +41,9 @@ public class BasePlacesListActivity extends BaseActivity implements PlaceListFra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-
-
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_places_list);
 
-
-
-
-//        mListView = (GridView) findViewById(R.id.list);
-//
-//        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, android.view.View view, int position, long id) {
-//                Place selectedPlace= (Place) mListView.getAdapter().getItem(position);
-//
-//                NavigationHandler.getInstance().startPlaceDetailsActivity(BasePlacesListActivity.this, selectedPlace);
-//            }
-//        });
-//        adapter = new PlacesAdapter(this, new Place[0]);
-//        mListView.setAdapter(adapter);
         places =  new ArrayList<>();
-
-//        mProgressView = (LinearLayout) findViewById(R.id.progress_bar);
-//        mainView = (View) findViewById(R.id.main_view);
 
         listFragment = PlaceListFragment.newInstance(addLikeButton, specialPlaceLayout);
         mapFragment = PlacesMapFragment.newInstance();
@@ -130,16 +109,6 @@ public class BasePlacesListActivity extends BaseActivity implements PlaceListFra
     protected int getLayoutResourceId() {
         return R.layout.activity_places_list;
     }
-
-
-
-
-    //    protected void showProgress(final boolean show) {
-//        // The ViewPropertyAnimator APIs are not available, so simply show
-//        // and hide the relevant UI components.
-//        mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-//        mainView.setVisibility(show ? View.GONE : View.VISIBLE);
-//    }
 
 
     @Override

@@ -132,22 +132,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         loadPlaceData();
 
-
-//        new AsyncJob.AsyncJobBuilder<Boolean>()
-//                .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
-//                    @Override
-//                    public Boolean doAsync() {
-//
-//                        return true;
-//                    }
-//                })
-//                .doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
-//                    @Override
-//                    public void onResult(Boolean result) {
-//
-//                    }
-//        }).create().start();
-
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -417,6 +401,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         ProperRatingBar priceLevel = (ProperRatingBar) findViewById(R.id.price_level_bar);
         priceLevel.setRating(5 - (int) place.getPriceLevel());
+
     }
 
     private void initializeWorkTimeLayout(WorkTime[] workTimes, RelativeLayout arrow_layout) {
@@ -544,6 +529,10 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 //            likeButton.setUnChecked();
 //
 //        }
+
+
+        DataHandler.getInstance(this).incrementPlaceVisits(place.getPlaceID());
+
     }
 
     @Override
