@@ -26,7 +26,8 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-
+        SharedPreferencesController.getInstance(this).updateBadgeNumber(0);
+        DataHandler.getInstance(this).updateAppNotification(this);
 
     }
 
@@ -59,7 +60,7 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
     public void continueLaunch() {
         Utils.getInstance().changeStatusBarColor(this);
 
-        SharedPreferencesController.getInstance(this).updateBadgeNumber(0);
+
 
         new Handler().postDelayed(new Runnable()
         {

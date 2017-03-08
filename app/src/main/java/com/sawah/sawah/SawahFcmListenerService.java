@@ -35,10 +35,13 @@ public class SawahFcmListenerService  extends FirebaseMessagingService {
 
         Log.d("SawahFcmListenerService", "test");
 
-        DataHandler.getInstance(this).updateAppNotification(this);
+
         int badgeNumber = SharedPreferencesController.getInstance(this).getBadgeNumber();
         Log.d("SawahFcmListenerService", badgeNumber + "");
         SharedPreferencesController.getInstance(this).updateBadgeNumber(badgeNumber + 1);
+        DataHandler.getInstance(this).updateAppNotification(this);
+
+
         Intent notificationIntent = new Intent(this, LauncherActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
