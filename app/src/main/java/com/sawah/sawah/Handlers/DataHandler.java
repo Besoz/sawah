@@ -3,6 +3,8 @@ package com.sawah.sawah.Handlers;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,12 +18,15 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.arasthel.asyncjob.AsyncJob;
+import com.sawah.sawah.ArrayRequestListener;
+import com.sawah.sawah.BaseArrayResponseListener;
 import com.sawah.sawah.BaseResponseListener;
 import com.sawah.sawah.BitmapImage;
 import com.sawah.sawah.CategoriesListActivity;
 import com.sawah.sawah.CitiesListActivity;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.R;
+import com.sawah.sawah.RequestListener;
 import com.sawah.sawah.ServiceResponse;
 import com.sawah.sawah.models.PlaceComment;
 import com.sawah.sawah.models.PlaceImage;
@@ -55,6 +60,9 @@ import java.util.Map;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
 import rapid.decoder.BitmapDecoder;
+
+import static com.orm.util.ContextUtil.getPackageManager;
+import static com.orm.util.ContextUtil.getPackageName;
 
 /**
  * Created by Bassem on 15/01/17.
@@ -202,6 +210,16 @@ public class DataHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void searchPlacesList(ArrayRequestListener<Place> respLstnr, String cityID,
+                                 String searchQuery){
+
+        BaseArrayResponseListener baseArrayResponseListener = new BaseArrayResponseListener(Place.class);
+        baseArrayResponseListener.setOnResponseListener(respLstnr);
+
+        serviceHandler.requestPlacesArray(baseArrayResponseListener, cityID, searchQuery);
+
     }
 
 
@@ -484,7 +502,8 @@ public class DataHandler {
                 return null;
             }
 
-            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+            int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth) ?
+                    onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
 
             double ratio = (originalSize > 200) ? (originalSize / 200) : 1.0;
 
@@ -551,7 +570,8 @@ public class DataHandler {
     }
 
 
-    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place, final BaseRequestStateListener listner) {
+    public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place,
+                            final BaseRequestStateListener listner) {
         Log.d("add new Place", "2");
 
         String cityID = getDefaultCityID(), userID = getUser().getUserID();
@@ -820,6 +840,56 @@ public class DataHandler {
         baseResponseListener.setOnResponseListner(requestStateListener);
 
         serviceHandler.makeCheckin(placeID, userID, baseResponseListener);
+    }
+
+    public void incrementPlaceVisits(String placeID) {
+
+        BaseResponseListener baseResponseListener = new BaseResponseListener();
+        baseResponseListener.setOnResponseListner(new BaseRequestStateListener() {
+            @Override
+            public void failResponse(ServiceResponse response) {
+                Log.d("Visit", "Fail");
+            }
+
+            @Override
+            public void successResponse(ServiceResponse response) {
+                Log.d("Visit", "Success "+ response.getMessage());
+            }
+        });
+
+        serviceHandler.notifyPlaceVisit(placeID, baseResponseListener);
+    }
+
+    public void checkAppVersion(final RequestListener baseRequestStateListener) throws PackageManager.NameNotFoundException {
+
+        PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+        String version = pInfo.versionName;
+        int verCode = pInfo.versionCode;
+
+        final String appVersion = sharedPreferences.getAppVersion();
+
+        RequestListener requestListener = new RequestListener() {
+            @Override
+            public void failResponse(Object response) {
+                Log.d("Visit", "Fail");
+                baseRequestStateListener.failResponse(response);
+            }
+
+            @Override
+            public void successResponse(Object response) {
+                Log.d("Visit", "Success " + (String) response);
+
+                if (TextUtils.equals(appVersion, (String) response)) {
+                    baseRequestStateListener.failResponse(response);
+
+                } else {
+                    baseRequestStateListener.successResponse(response);
+//                }
+                }
+            }
+        };
+
+        serviceHandler.getAppVersion(requestListener);
     }
 
     public void updateAppNotification(Context activity) {

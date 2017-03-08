@@ -1,13 +1,16 @@
 package com.sawah.sawah;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.*;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.sawah.sawah.Authorization.AuthorizationController;
 import com.sawah.sawah.Authorization.LoginListener;
 import com.sawah.sawah.Handlers.DataHandler;
+import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.SharedPreferencesController;
 import com.sawah.sawah.Handlers.Utils;
@@ -22,9 +25,38 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_launcher);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        try {
+            DataHandler.getInstance(this).checkAppVersion(new RequestListener() {
+                @Override
+                public void failResponse(Object response) {
+//                    version the same
+                    continueLaunch();
+                }
+
+                @Override
+                public void successResponse(Object response) {
+//                    new version
+                    DialogHelper.getInstance().showNewVersionDialog(LauncherActivity.this,
+                            (String) response);
+                    Log.d("Version", "Success");
+
+                }
+            });
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void continueLaunch() {
         Utils.getInstance().changeStatusBarColor(this);
 
         SharedPreferencesController.getInstance(this).updateBadgeNumber(0);
