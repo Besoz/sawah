@@ -226,38 +226,31 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mgplusLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(mGoogleApiClient == null) {
+                    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestEmail()
+                            .build();
 
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
+                    GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult result) {
+                            Log.d("onConnectionFailed", "onConnectionFailed");
+                            if (!result.hasResolution()) {
+                                GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), LoginActivity.this,
+                                        0).show();
+                                return;
+                            }
 
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(getString(R.string.google_app))
-//                .requestEmail()
-//                .build();
-
-                GoogleApiClient.OnConnectionFailedListener connectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult result) {
-                        Log.d("onConnectionFailed", "onConnectionFailed");
-                        if (!result.hasResolution()) {
-                            GooglePlayServicesUtil.getErrorDialog(result.getErrorCode(), LoginActivity.this,
-                                    0).show();
-                            return;
-                        }
-
-                    }
-                };
-
-                mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
-                        .enableAutoManage(LoginActivity.this, connectionFailedListener)
-                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                        .build();
-                mGoogleApiClient.connect();
+                            }
+                    };
+                    mGoogleApiClient = new GoogleApiClient.Builder(LoginActivity.this)
+                            .enableAutoManage(LoginActivity.this, connectionFailedListener)
+                            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                            .build();
+                    mGoogleApiClient.connect();
+                }
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
-
-
             }
         });
 
@@ -363,7 +356,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     public void onError(FacebookException exception) {
                         // App code
                         showProgress(false);
-
                         Log.d("facebook login", "onError");
 
                     }

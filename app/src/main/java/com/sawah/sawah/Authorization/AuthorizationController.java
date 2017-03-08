@@ -106,13 +106,13 @@ public class AuthorizationController implements LoginListener {
             saveUser(user);
 
             loginListener.loginSuccess(user);
-            loginListener = null;
+//            loginListener = null;
 
         }else{
 //        save user
             saveUser(user);
             loginListener.loginSuccess(user);
-            loginListener = null;
+//            loginListener = null;
         }
     }
 
@@ -121,14 +121,14 @@ public class AuthorizationController implements LoginListener {
 
         //        notify calling activity
         loginListener.loginFailed(message);
-        loginListener = null;
+//        loginListener = null;
     }
 
     @Override
     public void loginError() {
         //        notify calling activity
         loginListener.loginError();
-        loginListener = null;
+//        loginListener = null;
     }
 
     public void skipLogin(Context context){
