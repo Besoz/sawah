@@ -8,6 +8,7 @@ import android.graphics.RectF;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
@@ -32,6 +33,7 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.arasthel.asyncjob.AsyncJob;
 import com.bumptech.glide.Glide;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.sawah.sawah.BaseActivity;
@@ -118,6 +120,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Utils.getInstance().changeStatusBarColor(this);
         removeNavigationDrawer();
         String placeJSONObject = (String) getIntent().getSerializableExtra("PlaceJSONObject");
@@ -132,10 +135,29 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         setToolbarTitle(place.getPalceNameArb()                                                                                                     );
 
+        new AsyncJob.AsyncJobBuilder<Boolean>()
+                .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
+                    @Override
+                    public Boolean doAsync() {
+
+                        loadPlaceData();
+                        return true;
+                    }
+                })
+                .doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
+                    @Override
+                    public void onResult(Boolean result) {
+
+                    }
+        }).create().start();
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+    private void loadPlaceData()
+    {
         DataHandler.getInstance(this).loadPlaceFromDataBase(place);
-
-//       todo sperate view intialization in other methods
-
         bioTextView = (CustomTextView) findViewById(R.id.bio_text);
         bioTextView.setText(place.getBio());
 
@@ -181,7 +203,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             public void onClick(View v) {
                 SharingHandler.getInstance().share(PlaceDetailsActivity.this,
                         PlaceDetailsActivity.this.getString(R.string.share_msg_a)+" "+
-                        place.getPalceNameArb()+" "+
+                                place.getPalceNameArb()+" "+
                                 PlaceDetailsActivity.this.getString(R.string.share_msg_b) );
             }
         });
@@ -241,7 +263,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
                     }else{
                         NavigationHandler.getInstance().startCommentActivity(PlaceDetailsActivity.this,
-                            place.getPlaceID());
+                                place.getPlaceID());
                     }
                 }else{
                     new MaterialDialog.Builder(PlaceDetailsActivity.this)
@@ -386,11 +408,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             checkInButton.setImageResource(R.drawable.check_disabled);
         }
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
-
         final RelativeLayout arrow_layout = (RelativeLayout) findViewById(R.id.work_time);
         WorkTime[] workTimes = place.getWorkTimes();
 
@@ -403,7 +420,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         ProperRatingBar priceLevel = (ProperRatingBar) findViewById(R.id.price_level_bar);
         priceLevel.setRating(5 - (int) place.getPriceLevel());
-
     }
 
     private void initializeWorkTimeLayout(WorkTime[] workTimes, RelativeLayout arrow_layout) {
@@ -524,13 +540,13 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         }
 
-        List<Place> places = Place.find(Place.class, "point_id = ?", this.place.getPlaceID());
-        if(places.size() > 0){
-            likeButton.setChecked();
-        }else{
-            likeButton.setUnChecked();
-
-        }
+//        List<Place> places = Place.find(Place.class, "point_id = ?", this.place.getPlaceID());
+//        if(places.size() > 0){
+//            likeButton.setChecked();
+//        }else{
+//            likeButton.setUnChecked();
+//
+//        }
     }
 
     @Override

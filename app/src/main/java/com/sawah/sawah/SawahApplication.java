@@ -1,5 +1,9 @@
 package com.sawah.sawah;
 
+import android.content.pm.ApplicationInfo;
+import android.os.StrictMode;
+
+import com.google.firebase.crash.FirebaseCrash;
 import com.orm.SugarApp;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -16,6 +20,27 @@ public class SawahApplication extends SugarApp {
             return;
         }
         LeakCanary.install(this);
-        // Normal app init code...
+
+//        FirebaseCrash.log("Application start SAWAH");
+
+        boolean isDebuggable = ( 0 != ( getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE ) );
+        if(isDebuggable) {
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                    .detectAll()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()
+                    .detectAll() //for all detectable problems
+                    .penaltyLog()
+//                    .penaltyDeath()
+                    .build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .detectAll()// for all detectable problems
+                    .penaltyLog()
+//                    .penaltyDeath()
+                    .build());
+        }
     }
 }

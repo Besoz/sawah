@@ -1,25 +1,16 @@
 package com.sawah.sawah;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
-import com.google.firebase.crash.FirebaseCrash;
 import com.sawah.sawah.Authorization.AuthorizationController;
 import com.sawah.sawah.Authorization.LoginListener;
-import com.sawah.sawah.Handlers.ActivityCycleListener;
 import com.sawah.sawah.Handlers.DataHandler;
-import com.sawah.sawah.Handlers.Foreground;
 import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.models.User;
-import com.squareup.leakcanary.LeakCanary;
-import com.twitter.sdk.android.Twitter;
-import com.twitter.sdk.android.core.TwitterAuthConfig;
-import io.fabric.sdk.android.Fabric;
 
 public class LauncherActivity extends AppCompatActivity implements LoginListener {
 
@@ -32,31 +23,6 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_launcher);
-
-        FirebaseCrash.log("Activity created SAWAH");
-
-
-//        ActivityCycleListener listener = new ActivityCycleListener() {
-//            @Override
-//            public void onBecameForeground() {
-//                NavigationHandler.getInstance().startMainctivity(LauncherActivity.this);
-//            }
-//
-//            @Override
-//            public void onBecameBackground() {
-//
-//            }
-//        };
-//        Foreground f = Foreground.init(getApplication());
-//        f.addListener(listener);
-//        intializing view
-//        mSplashView = findViewById(R.id.splash_view);
-//        mProgressView = findViewById(R.id.progress_view);
-
-//        starting firebase cloud service
-//        Intent service = new Intent(this, FCMService.class);
-//        service.putExtra("serviceType", "register");
-//        this.startService(service);
 
         Utils.getInstance().changeStatusBarColor(this);
         new Handler().postDelayed(new Runnable()

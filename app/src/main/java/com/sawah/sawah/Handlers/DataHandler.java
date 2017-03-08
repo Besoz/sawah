@@ -396,7 +396,14 @@ public class DataHandler {
             File directory = cw.getDir("user_image", Context.MODE_PRIVATE);
 
             File f=new File(directory, "profile.png");
-            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            FileInputStream fis = new FileInputStream(f);
+            Bitmap b = BitmapFactory.decodeStream(fis);
+            try
+            {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return b;
         }
         catch (FileNotFoundException e)

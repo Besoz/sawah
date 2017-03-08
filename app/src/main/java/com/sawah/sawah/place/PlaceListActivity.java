@@ -75,6 +75,11 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
 //                SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    private void loadData()
+    {
+
+    }
+
     @Override
     public void onPause() {
         sensorManager.unregisterListener(this);
@@ -88,14 +93,25 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
         super.onResume();
     }
 
-    public void recievePlacesList(Place[] arr) {
+    public void recievePlacesList(final Place[] arr) {
 
-        places = DataHandler.getInstance(this)
-                .mergeWithFavouritePlaces(new ArrayList<Place>(Arrays.asList(arr)));
-//        show fragment
-        listFragment.setPlacesList(places);
+//        new AsyncJob.AsyncJobBuilder<Boolean>()
+//                .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
+//                    @Override
+//                    public Boolean doAsync() {
+                        places = DataHandler.getInstance(PlaceListActivity.this)
+                                .mergeWithFavouritePlaces(new ArrayList<Place>(Arrays.asList(arr)));
+                        listFragment.setPlacesList(places);
+                        showProgress(false);
+//                        return true;
+//                    }
+//                })
+//                .doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
+//                    @Override
+//                    public void onResult(Boolean result) {
 
-        showProgress(false);
+//                    }
+//                }).create().start();
     }
 
     public String getCityID() {

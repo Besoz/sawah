@@ -187,6 +187,9 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     {
         if (DataHandler.getInstance(this).userExist())
         {
+            navigationView = (NavigationView) findViewById(R.id.nav_view);
+            headerLayout = findViewById(R.id.nav_header_base);
+
             headerLayout.setVisibility(View.VISIBLE);
             navigationView.findViewById(R.id.nav_login).setVisibility(View.GONE);
 
@@ -489,7 +492,20 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
         {
             searchView.clearFocus();
         }
-        updateUserDrawer();
+//        new AsyncJob.AsyncJobBuilder<Boolean>()
+//                .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
+//                    @Override
+//                    public Boolean doAsync() {
+                        updateUserDrawer();
+//                        return true;
+//                    }
+//                })
+//                .doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
+//                    @Override
+//                    public void onResult(Boolean result) {
+//
+//                    }
+//        }).create().start();
     }
 
 
