@@ -3,12 +3,9 @@ package com.sawah.sawah.place;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.RectF;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
@@ -31,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
-import android.widget.Toast;
 
 import com.arasthel.asyncjob.AsyncJob;
 import com.bumptech.glide.Glide;
@@ -69,12 +65,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kennyc.bottomsheet.BottomSheet;
-import com.kennyc.bottomsheet.BottomSheetListener;
-import com.squareup.leakcanary.LeakCanary;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 import io.techery.properratingbar.ProperRatingBar;
 
@@ -84,6 +77,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     private static final int VIEW_COMMENTS_COUNT = 7, IMAGES_OFFSCREEN_COUNT= 4;
     private static final float CHECK_IN_MAX_DISTANCE_METER = 1000;
+    private static final float PIN_DIM = 35;
+    private static final float MAP_ZOOM = 15;
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
     private ImageView placeImage;
 
@@ -135,21 +130,23 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         setToolbarTitle(place.getPalceNameArb()                                                                                                     );
 
-        new AsyncJob.AsyncJobBuilder<Boolean>()
-                .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
-                    @Override
-                    public Boolean doAsync() {
+        loadPlaceData();
 
-                        loadPlaceData();
-                        return true;
-                    }
-                })
-                .doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
-                    @Override
-                    public void onResult(Boolean result) {
 
-                    }
-        }).create().start();
+//        new AsyncJob.AsyncJobBuilder<Boolean>()
+//                .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
+//                    @Override
+//                    public Boolean doAsync() {
+//
+//                        return true;
+//                    }
+//                })
+//                .doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
+//                    @Override
+//                    public void onResult(Boolean result) {
+//
+//                    }
+//        }).create().start();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -557,19 +554,26 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+
+        Log.d("Google Map", "Map ready");
 //        todo refactor this part
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
 
-        Matrix m = new Matrix();
-        m.setRectToRect(new RectF(0, 0, bitmap.getWidth(), bitmap.getHeight()), new RectF(0, 0, 100, 100), Matrix.ScaleToFit.CENTER);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), m, true);
 
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
+        int px = Utils.getInstance().dpToPx(PIN_DIM, getResources().getDisplayMetrics());
 
-        Marker marker = googleMap.addMarker(new MarkerOptions().position(place.getPosition()).icon(bitmapDescriptor));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(place.getPosition()));
-        googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
+        Bitmap pin = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
+        pin = Utils.getInstance().resizeBitmapInDp(pin, px, px, getResources().getDisplayMetrics());
+
+        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(pin);
+        Marker marker = googleMap.addMarker(new MarkerOptions()
+                .position(place.getPosition()).icon(bitmapDescriptor));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getPosition(), MAP_ZOOM));
+
         googleMap.getUiSettings().setAllGesturesEnabled(false);
+
+        Log.d("Google Map", "Marker added");
+
 
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
