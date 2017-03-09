@@ -66,7 +66,6 @@
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/textColor"
                 app:hintTextAppearance="@style/myTextAppearance.Design.Hint">
-
                 <AutoCompleteTextView
                     android:id="@+id/email"
                     android:layout_width="match_parent"

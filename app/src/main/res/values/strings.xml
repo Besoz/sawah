@@ -194,5 +194,5 @@
     <string name="app_version">1</string>
     <string name="search_in_places">ابحث عن مكان</string>
     <string name="places_search_service_url">/api/points/search</string>
-
+    <string name="tags">كلمات دلالية: </string>
 </resources>

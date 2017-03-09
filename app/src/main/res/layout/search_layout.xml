@@ -94,6 +94,7 @@
                 android:dropDownVerticalOffset="0dip"
                 android:ellipsize="end"
                 android:paddingRight="16dp"
+                android:paddingLeft="14dp"
                 android:imeOptions="actionSearch"
                 android:inputType="text|textAutoComplete|textNoSuggestions"
                 android:singleLine="true"

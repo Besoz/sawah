@@ -79,7 +79,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     private static final float CHECK_IN_MAX_DISTANCE_METER = 1000;
     private static final float PIN_DIM = 35;
     private static final float MAP_ZOOM = 15;
-    private CustomTextView bioTextView, titleArabic, titleEnglish, rating;
+    private CustomTextView bioTextView, titleArabic, titleEnglish, rating, tags;
     private ImageView placeImage;
 
     private ImageButton shareButtton, callButton, openSiteButton, checkInButton;
@@ -141,6 +141,14 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         DataHandler.getInstance(this).loadPlaceFromDataBase(place);
         bioTextView = (CustomTextView) findViewById(R.id.bio_text);
         bioTextView.setText(place.getBio());
+
+        if(place.getTags().length() > 0)
+        {
+            LinearLayout tags_layout = (LinearLayout)findViewById(R.id.tags_layout);
+            tags_layout.setVisibility(View.VISIBLE);
+            tags = (CustomTextView) findViewById(R.id.tags);
+            tags.setText(place.getTags());
+        }
 
         titleArabic = (CustomTextView) findViewById(R.id.title_ar);
         titleArabic.setText(place.getPalceNameArb());
