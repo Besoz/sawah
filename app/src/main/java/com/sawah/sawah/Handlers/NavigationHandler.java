@@ -54,7 +54,7 @@ public class NavigationHandler {
         Intent loginActivity = new Intent(context, LoginActivity.class);
         loginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.getApplicationContext().startActivity(loginActivity);
-        ((Activity)context).finish();
+        ((Activity)context).finishAffinity();
     }
 
 
@@ -98,7 +98,7 @@ public class NavigationHandler {
         Intent afterLoginActivity = getCategoriesListActivityIntent(context);
         afterLoginActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(afterLoginActivity);
-        ((Activity)context).finish();
+        ((Activity)context).finishAffinity();
     }
 
     private Intent getCategoriesListActivityIntent(Context context){
