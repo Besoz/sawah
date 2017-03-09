@@ -26,8 +26,7 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-        SharedPreferencesController.getInstance(this).updateBadgeNumber(0);
-        DataHandler.getInstance(this).updateAppNotification(this);
+        DataHandler.getInstance(this).clearBadgeCount(this);
 
     }
 

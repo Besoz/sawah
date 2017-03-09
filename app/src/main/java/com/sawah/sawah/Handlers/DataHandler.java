@@ -892,13 +892,19 @@ public class DataHandler {
         serviceHandler.getAppVersion(requestListener);
     }
 
-    public void updateAppNotification(Context activity) {
+    public void updateAppNotification(Context activity, int badgeCount) {
         if (activity != null)
         {
-            int badgeCount = sharedPreferences.getBadgeNumber();
+//            int badgeCount = sharedPreferences.getBadgeNumber();
             ShortcutBadger.applyCount(activity, badgeCount); //for 1.1.4+
 //        ShortcutBadger.with(getApplicationContext()).count(badgeCount); //for 1.1.3
         }
+
+    }
+
+    public void clearBadgeCount(Context context) {
+        SharedPreferencesController.getInstance(context).updateBadgeNumber(0);
+        DataHandler.getInstance(context).updateAppNotification(context, 0);
 
     }
 }
