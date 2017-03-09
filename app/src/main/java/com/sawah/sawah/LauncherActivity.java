@@ -14,6 +14,7 @@ import com.sawah.sawah.Authorization.LoginListener;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
+import com.sawah.sawah.Handlers.SharedPreferencesController;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.models.User;
 
@@ -27,7 +28,7 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-
+        DataHandler.getInstance(this).clearBadgeCount(this);
 
     }
 
@@ -64,6 +65,9 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
 
     public void continueLaunch() {
         Utils.getInstance().changeStatusBarColor(this);
+
+
+
         new Handler().postDelayed(new Runnable()
         {
             @Override

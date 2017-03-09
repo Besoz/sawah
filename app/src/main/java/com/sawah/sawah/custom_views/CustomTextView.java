@@ -46,9 +46,9 @@ public class CustomTextView extends TextView {
             else
             {
                 fontFilePath = getResources().getString(R.string.default_font);
-                if(this.getTypeface().isBold())
+                if(this.getTypeface() != null && this.getTypeface().isBold())
                     fontFilePath = getResources().getString(R.string.default_font_bold);
-                if(this.getTypeface().isItalic())
+                if(this.getTypeface() != null && this.getTypeface().isItalic())
                     fontFilePath = getResources().getString(R.string.default_font_light);
                 this.setTypeface(Typeface.createFromAsset(context.getAssets(),
                     fontFilePath));

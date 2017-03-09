@@ -45,7 +45,7 @@ public class CustomButton extends Button {
             else
             {
                 fontFilePath = getResources().getString(R.string.default_font);
-                if(this.getTypeface().isBold())
+                if(this.getTypeface() != null && this.getTypeface().isBold())
                     fontFilePath = getResources().getString(R.string.default_font_bold);
                 this.setTypeface(Typeface.createFromAsset(context.getAssets(),
                     fontFilePath));
