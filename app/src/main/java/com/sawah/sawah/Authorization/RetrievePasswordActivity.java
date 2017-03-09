@@ -9,6 +9,8 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
@@ -111,7 +113,7 @@ public class RetrievePasswordActivity extends AppCompatActivity {
                             showProgress(false);
                             MaterialDialog m = DialogHelper.getInstance().showSuccess
                                     (RetrievePasswordActivity.this,
-                                    getString(R.string.password_sent_to_mail_successfuly));
+                                            getString(R.string.password_sent_to_mail_successfuly));
                             m.setOnDismissListener(new DialogInterface.OnDismissListener() {
                                 @Override
                                 public void onDismiss(DialogInterface dialog) {
@@ -120,6 +122,11 @@ public class RetrievePasswordActivity extends AppCompatActivity {
                                                     .this);
                                 }
                             });
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            showProgress(false);
                         }
                     });
         }

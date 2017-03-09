@@ -26,6 +26,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
@@ -214,7 +216,12 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
             // perform the user signup attempt.
             showProgress(true);
             serviceHandler.signupUser(dataHandler.getUserSignupData(email, password),
-                    signupResponseListener);
+                    signupResponseListener, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            showProgress(false);
+                        }
+                    });
         }
     }
 
@@ -308,7 +315,17 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     public void signupSuccess(String userID) {
-        authorizationController.loginUser(userID);
+        authorizationController.loginUser(userID, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showProgress(false);
+                skipAutoLogin();
+            }
+        });
+    }
+
+    private void skipAutoLogin() {
+        NavigationHandler.getInstance().startLoginActivity(this);
     }
 
     public void signupFailed(String message) {
@@ -330,12 +347,14 @@ public class SignupActivity extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public void loginFailed(String message) {
-
+        showProgress(false);
+        skipAutoLogin();
     }
 
     @Override
     public void loginError() {
-
+        showProgress(false);
+        skipAutoLogin();
     }
 
 

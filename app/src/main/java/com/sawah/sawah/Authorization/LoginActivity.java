@@ -33,6 +33,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.DialogHelper;
@@ -116,6 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private static final int RC_SIGN_IN = 0;
     private BaseRequestStateListener baseRequestStateListener;
+    private Response.ErrorListener errorListener;
 
 //    private boolean mIntentInProgress;
 //
@@ -149,6 +152,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 showProgress(false);
                 startMainActivity();
 
+            }
+        };
+
+        errorListener = new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                showProgress(false);
             }
         };
 
@@ -280,7 +290,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         authorizationController.socialLogin(userName, "TW", "",
                                 result.data.name, "", Uri.parse(result.data.profileImageUrl),
-                                baseRequestStateListener, LoginActivity.this);
+                                baseRequestStateListener, LoginActivity.this, errorListener);
 
                     }
 
@@ -340,7 +350,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
                         showProgress(true);
                         authorizationController.socialLogin(Profile.getCurrentProfile().getId(), "FB",
-                                "", userName, "", pictureUri, baseRequestStateListener, LoginActivity.this);
+                                "", userName, "", pictureUri, baseRequestStateListener,
+                                LoginActivity.this, errorListener);
                     }
 
                     @Override
@@ -404,7 +415,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
 
             authorizationController .socialLogin(personName, "GO", "", personName, acct.getEmail(),
-                    acct.getPhotoUrl(), baseRequestStateListener, LoginActivity.this);
+                    acct.getPhotoUrl(), baseRequestStateListener, LoginActivity.this, errorListener);
 
         }
     }
@@ -501,13 +512,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            authorizationController.loginUser(email, password);
+            authorizationController.loginUser(email, password, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    showProgress(false);
+                }
+            });
         }
     }
 
-    private void attemptLogin(String userID) {
-        authorizationController.loginUser(userID);
-    }
+//    private void attemptLogin(String userID) {
+//        authorizationController.loginUser(userID);
+//    }
 
 
 

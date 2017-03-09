@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
+import com.android.volley.Response;
 import com.arasthel.asyncjob.AsyncJob;
 import com.sawah.sawah.ArrayRequestListener;
 import com.sawah.sawah.BaseArrayResponseListener;
@@ -183,18 +184,20 @@ public class DataHandler {
     }
 
 
-    public void requestCategoriesArray(CategoriesListActivity activity) {
-        serviceHandler.requestCategoriesList(this, activity);
+    public void requestCategoriesArray(CategoriesListActivity activity,
+                                       Response.ErrorListener errorListener) {
+        serviceHandler.requestCategoriesList(this, activity, errorListener);
         Log.d("gg", "requesting");
     }
 
-    public void requestCitiesArray(CitiesListActivity activity) {
-        serviceHandler.requestCitiesList(this, activity);
+    public void requestCitiesArray(CitiesListActivity activity, Response.ErrorListener errorListener) {
+        serviceHandler.requestCitiesList(this, activity, errorListener);
         Log.d("gg", "requesting");
     }
 
-    public void requestPlacesArray(PlaceListActivity basePlacesListActivity, String cityID, String catID) {
-        serviceHandler.requestPlacesArray(this, basePlacesListActivity, cityID, catID);
+    public void requestPlacesArray(PlaceListActivity basePlacesListActivity, String cityID,
+                                   String catID,Response.ErrorListener errorListener) {
+        serviceHandler.requestPlacesArray(this, basePlacesListActivity, cityID, catID, errorListener);
 
     }
 
@@ -216,12 +219,12 @@ public class DataHandler {
     }
 
     public void searchPlacesList(ArrayRequestListener<Place> respLstnr, String cityID,
-                                 String searchQuery){
+                                 String searchQuery, Response.ErrorListener errorListener){
 
         BaseArrayResponseListener baseArrayResponseListener = new BaseArrayResponseListener(Place.class);
         baseArrayResponseListener.setOnResponseListener(respLstnr);
 
-        serviceHandler.requestPlacesArray(baseArrayResponseListener, cityID, searchQuery);
+        serviceHandler.requestPlacesArray(baseArrayResponseListener, cityID, searchQuery, errorListener);
 
     }
 
@@ -326,7 +329,8 @@ public class DataHandler {
 
 // todo split the method getimage and and send to server
     public Bitmap requestUpdateUserImage(final BaseResponseListener listner,
-                                         Uri userSelectedImage, final Context context) throws IOException {
+                                         Uri userSelectedImage, final Context context,
+                                         Response.ErrorListener errorListener) throws IOException {
 
         final String imageName = getImageName(userSelectedImage, context);
 
@@ -350,7 +354,8 @@ public class DataHandler {
 
         String encodedUserImage = getBase64Encoding(userImage);
 
-        serviceHandler.updateUserImage(mResponseListner, user.getUserID(), encodedUserImage, imageName);
+        serviceHandler.updateUserImage(mResponseListner, user.getUserID(), encodedUserImage,
+                imageName, errorListener);
 
         return userImage;
     }
@@ -447,16 +452,20 @@ public class DataHandler {
         return b;
     }
 
-    public void requestUdpateUserPassword(BaseResponseListener response, String currentPasswordStr,
-                                          String newPasswordStr, String confirmPasswordStr){
+    public void requestUpdateUserPassword(BaseResponseListener response, String currentPasswordStr,
+                                          String newPasswordStr, String confirmPasswordStr,
+                                          Response.ErrorListener errorListener){
+
         serviceHandler.updatePassword(response, getUser().getUserID(), currentPasswordStr,
-                newPasswordStr, confirmPasswordStr);
+                newPasswordStr, confirmPasswordStr, errorListener);
     }
 
-    public void requestUdpateUser(final User user, final BaseRequestStateListener responseListner) {
+    public void requestUpdateUser(final User user, final BaseRequestStateListener responseListener,
+                                  Response.ErrorListener errorListener) {
 
         BaseResponseListener baseResponseListener = new BaseResponseListener();
         baseResponseListener.setOnResponseListner(new BaseRequestStateListener() {
+
             @Override
             public void failResponse(ServiceResponse response) {
                 Log.d("Update user", "fail");
@@ -467,8 +476,9 @@ public class DataHandler {
                 Log.d("update user", response.toString());
 
                 saveUser(response.getUser());
-                responseListner.successResponse(response);
+                responseListener.successResponse(response);
             }
+
         });
 
 
@@ -486,7 +496,7 @@ public class DataHandler {
         }
 
 
-        serviceHandler.requestUpdateUser(userData, baseResponseListener);
+        serviceHandler.requestUpdateUser(userData, baseResponseListener, errorListener);
     }
 
     public Bitmap getImage(Uri uri, Context context)
@@ -574,7 +584,8 @@ public class DataHandler {
 
 
     public void addNewPlace(final ArrayList<BitmapImage> bitmapImages, Place place,
-                            final BaseRequestStateListener listner) {
+                            final BaseRequestStateListener listner,
+                            final Response.ErrorListener errorListener) {
         Log.d("add new Place", "2");
 
         String cityID = getDefaultCityID(), userID = getUser().getUserID();
@@ -618,7 +629,7 @@ public class DataHandler {
                                 }
 
                                 serviceHandler.addPlaceImages(response.getDraftPointID(), bitmapsEndcoded,
-                                        placeImageResponseListener);
+                                        placeImageResponseListener, errorListener);
                                 return true;
                             }
                         })
@@ -633,7 +644,7 @@ public class DataHandler {
         });
 
 
-        serviceHandler.addNewPlace(userID, cityID, PlaceData, placeDataResponseListener);
+        serviceHandler.addNewPlace(userID, cityID, PlaceData, placeDataResponseListener, errorListener);
 
 
     }
@@ -837,12 +848,14 @@ public class DataHandler {
     }
 
 
-    public void checkInPlace(String placeID, String userID, BaseRequestStateListener requestStateListener) {
+    public void checkInPlace(String placeID, String userID,
+                             BaseRequestStateListener requestStateListener,
+                             Response.ErrorListener errorListener) {
 
         BaseResponseListener baseResponseListener = new BaseResponseListener();
         baseResponseListener.setOnResponseListner(requestStateListener);
 
-        serviceHandler.makeCheckin(placeID, userID, baseResponseListener);
+        serviceHandler.makeCheckin(placeID, userID, baseResponseListener, errorListener);
     }
 
     public void incrementPlaceVisits(String placeID) {
@@ -863,7 +876,8 @@ public class DataHandler {
         serviceHandler.notifyPlaceVisit(placeID, baseResponseListener);
     }
 
-    public void checkAppVersion(final RequestListener baseRequestStateListener) throws PackageManager.NameNotFoundException {
+    public void checkAppVersion(final RequestListener baseRequestStateListener,
+                                Response.ErrorListener errorListener) throws PackageManager.NameNotFoundException {
 
         PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         String version = pInfo.versionName;
@@ -874,13 +888,11 @@ public class DataHandler {
         RequestListener requestListener = new RequestListener() {
             @Override
             public void failResponse(Object response) {
-                Log.d("Visit", "Fail");
                 baseRequestStateListener.failResponse(response);
             }
 
             @Override
             public void successResponse(Object response) {
-                Log.d("Visit", "Success " + (String) response);
 
                 if (TextUtils.equals(appVersion, (String) response)) {
                     baseRequestStateListener.failResponse(response);
@@ -892,7 +904,7 @@ public class DataHandler {
             }
         };
 
-        serviceHandler.getAppVersion(requestListener);
+        serviceHandler.getAppVersion(requestListener, errorListener);
     }
 }
 

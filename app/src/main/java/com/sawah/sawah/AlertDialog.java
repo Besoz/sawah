@@ -15,6 +15,7 @@ public class AlertDialog extends AppCompatActivity {
 
     public static final int ADD_PLACE_DONE = 10;
     public static final int NEW_VERSION_DIALOG = 20;
+    public static final int NETWORK_ERROR = 30;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,22 @@ public class AlertDialog extends AppCompatActivity {
                         .show();
 
                 break;
-            case 3:
+            case NETWORK_ERROR:
+
+                new MaterialDialog.Builder(this)
+                        .title(R.string.alert_title)
+                        .content(R.string.check_internet_connection)
+                        .positiveText(R.string.agree)
+                        .autoDismiss(true)
+                        .dismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
+                                finish();
+                            }
+                        })
+                        .titleGravity(GravityEnum.CENTER)
+                        .contentGravity(GravityEnum.CENTER)
+                        .show();
                 break;
             case 4:
                 break;

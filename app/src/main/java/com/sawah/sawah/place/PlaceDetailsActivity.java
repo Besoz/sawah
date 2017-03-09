@@ -336,12 +336,14 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         checkInStateListner = new BaseRequestStateListener() {
             @Override
             public void failResponse(ServiceResponse response) {
+
+                showProgress(false);
                 showCheckInFail(response.getMessage());
             }
 
             @Override
             public void successResponse(ServiceResponse response) {
-
+                showProgress(false);
                 showCheckInSuccessful();
             }
         };
@@ -370,7 +372,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                                     DataHandler.getInstance(PlaceDetailsActivity.this).getUser().getUserID();
 
                             DataHandler.getInstance(PlaceDetailsActivity.this)
-                                    .checkInPlace(place.getPlaceID(), userID, checkInStateListner);
+                                    .checkInPlace(place.getPlaceID(), userID, checkInStateListner,
+                                            PlaceDetailsActivity.this);
                         }else {
                             showCheckAlert(dist);
                         }
@@ -755,10 +758,9 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                                 public void successResponse(ServiceResponse response) {
 
 
-                                    showProgress(false);
-
                                     DataHandler.getInstance(PlaceDetailsActivity.this)
-                                            .checkInPlace(place.getPlaceID(), userID, checkInStateListner);
+                                            .checkInPlace(place.getPlaceID(), userID,
+                                                    checkInStateListner, PlaceDetailsActivity.this);
 
                                 }
                             });

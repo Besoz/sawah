@@ -46,9 +46,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.arasthel.asyncjob.AsyncJob;
 import com.bumptech.glide.Glide;
 import com.sawah.sawah.Handlers.DataHandler;
+import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.SharingHandler;
 import com.sawah.sawah.custom_views.CustomTextView;
@@ -68,10 +71,14 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class BaseActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, View.OnClickListener {
+public class BaseActivity extends AppCompatActivity
+        implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener,
+        com.google.android.gms.location.LocationListener,
+        View.OnClickListener,
+        Response.ErrorListener {
 
     public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 1;
-    protected static final int PERISSION_ALLOWED = 10, PERMISSION_REQUESTED = 20, EXPLAINATION_NEEDED = 30;
     private static final int LOCATION_PERMISSION_REQUEST = 50;
     private int drawerGravity = Gravity.RIGHT;
 
@@ -635,8 +642,13 @@ public class BaseActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onDestroy() {
         Log.d("Memory", "Cleared isa ");
         Glide.get(BaseActivity.this).clearMemory();
-//        Toast.makeText(BaseActivity.this, "Clear Cache", Toast.LENGTH_SHORT).show();
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        DialogHelper.getInstance().showNetworkErrorDialog(this);
+        finish();
     }
 }

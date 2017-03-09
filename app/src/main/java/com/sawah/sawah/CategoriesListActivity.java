@@ -74,7 +74,7 @@ public class CategoriesListActivity extends BaseActivity implements RecycleAdapt
             mRequestingLocationUpdates = false;
         }
 
-        DataHandler.getInstance(getApplicationContext()).requestCategoriesArray(this);
+        DataHandler.getInstance(getApplicationContext()).requestCategoriesArray(this, this);
         showProgress(true);
     }
 

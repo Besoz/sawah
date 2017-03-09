@@ -145,7 +145,7 @@ public class CommentActivity extends BaseActivity {
     private void postComment() {
         ServiceHandler.getInstance(this).postComment(new CommentResposneListener(),
                 placeID, commentText.getText().toString(),
-                DataHandler.getInstance(this).getUser().getUserID(), ratingBar.getRating());
+                DataHandler.getInstance(this).getUser().getUserID(), ratingBar.getRating(), this);
     }
 
     @Override

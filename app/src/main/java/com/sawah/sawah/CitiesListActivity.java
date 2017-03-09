@@ -19,12 +19,14 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.android.volley.VolleyError;
 import com.sawah.sawah.Handlers.DataHandler;
+import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.models.City;
 
-public class CitiesListActivity extends BaseActivity implements RecycleAdapterListener {
+public class CitiesListActivity extends BaseActivity implements RecycleAdapterListener{
 
     private City[] cities;
 //    private CitiesAdapter citiesAdapter;
@@ -45,7 +47,7 @@ public class CitiesListActivity extends BaseActivity implements RecycleAdapterLi
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
 
-        DataHandler.getInstance(getApplicationContext()).requestCitiesArray(this);
+        DataHandler.getInstance(getApplicationContext()).requestCitiesArray(this,this);
         showProgress(true);
 
         setupSearch();
@@ -132,4 +134,10 @@ public class CitiesListActivity extends BaseActivity implements RecycleAdapterLi
     }
 
 
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        NavigationHandler.getInstance().startLoginActivity(this);
+        DialogHelper.getInstance().showNetworkErrorDialog(this);
+
+    }
 }

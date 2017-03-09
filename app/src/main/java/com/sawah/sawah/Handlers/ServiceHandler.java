@@ -75,70 +75,68 @@ public class ServiceHandler {
 
 
 
-    public void loginUser(String userName, String password, String deviceToken, LoginResponseListener loginResponseListener) {
+    public void loginUser(String userName, String password, String deviceToken,
+                          LoginResponseListener loginResponseListener,
+                          Response.ErrorListener errorListener) {
 
-        JsonObjectRequest jsonObjectRequest = getLoginRequest(userName, password, deviceToken, loginResponseListener);
+        JsonObjectRequest jsonObjectRequest = getLoginRequest(userName, password, deviceToken,
+                loginResponseListener,errorListener);
 
         // Add the request to the RequestQueue.
         mRequestQueue.add(jsonObjectRequest);
 
     }
 
-    private JsonObjectRequest getLoginRequest(String userName, String password, String deviceToken, LoginResponseListener loginResponseListener){
+    private JsonObjectRequest getLoginRequest(String userName, String password, String deviceToken,
+                                              LoginResponseListener loginResponseListener,
+                                              Response.ErrorListener errorListener){
 
         String loginUrl = urlHandler.getLoginUrl(userName, password, deviceToken);
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, loginUrl, null,
-               loginResponseListener, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+               loginResponseListener, errorListener);
 
         return jsonObjectRequest;
     }
 
-    public void signupUser(JSONObject userData, SignupResponseListener signupResponseListener) {
+    public void signupUser(JSONObject userData, SignupResponseListener signupResponseListener,
+                           Response.ErrorListener errorListener) {
 
-        JsonObjectRequest jsonObjectRequest = getSignupRequest(userData, signupResponseListener);
+        JsonObjectRequest jsonObjectRequest = getSignupRequest(userData, signupResponseListener,
+                errorListener);
         // Add the request to the RequestQueue.
         mRequestQueue.add(jsonObjectRequest);
     }
 
 
 
-    private JsonObjectRequest getSignupRequest(JSONObject userData, SignupResponseListener signupResponseListener){
+    private JsonObjectRequest getSignupRequest(JSONObject userData,
+                                               SignupResponseListener signupResponseListener,
+                                               Response.ErrorListener errorListener){
 
         String signupUrl = urlHandler.getSigupUrl();
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, signupUrl, userData,
-                signupResponseListener, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                signupResponseListener, errorListener);
 
         return jsonObjectRequest;
     }
 
-    public void loginUser(String userID, String deviceToken, LoginResponseListener loginResponseListener) {
+    public void loginUser(String userID, String deviceToken,
+                          LoginResponseListener loginResponseListener,
+                          Response.ErrorListener errorListener) {
 
         String loginUrl = urlHandler.getLoginUrl(userID, deviceToken);
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, loginUrl, null,
-                loginResponseListener, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                loginResponseListener, errorListener);
 
         mRequestQueue.add(jsonObjectRequest);
     }
 
-    public void requestCategoriesList(final DataHandler dataHandler, final CategoriesListActivity activity){
+    public void requestCategoriesList(final DataHandler dataHandler,
+                                      final CategoriesListActivity activity,
+                                      Response.ErrorListener errorListener){
         Log.d("gg", "requesting");
 
         String serviceUrl = urlHandler.getCategoriesServiceUrl(dataHandler.getDefaultCityID());
@@ -151,12 +149,7 @@ public class ServiceHandler {
                 Log.d("gg", response.toString());
                 dataHandler.recieveCategoriesList(response, activity);
             }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+        },errorListener);
 
         mRequestQueue.add(categoriesArrayRequest);
 
@@ -164,7 +157,7 @@ public class ServiceHandler {
 
     public void requestPlacesArray(final DataHandler dataHandler,
                                    final PlaceListActivity basePlacesListActivity, String cityID,
-                                   String categoryID) {
+                                   String categoryID, Response.ErrorListener errorListener) {
         Log.d("gg", "requesting");
 
         String serviceUrl = urlHandler.getPlacesServiceUrl(cityID, categoryID);
@@ -177,31 +170,21 @@ public class ServiceHandler {
                 Log.d("gg", response.toString());
                 dataHandler.recievePlacesList(response, basePlacesListActivity);
             }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+        },errorListener);
 
         mRequestQueue.add(categoriesArrayRequest);
 
     }
 
     public void requestPlacesArray(BaseArrayResponseListener baseResponseListener, String cityID,
-                                   String searchQuery) {
+                                   String searchQuery, Response.ErrorListener errorListener) {
         Log.d("gg", "requesting");
 
         String serviceUrl = urlHandler.getPlacesSearchServiceUrl(cityID, searchQuery);
         Log.d("gg", "requesting"+urlHandler);
 
         JsonArrayRequest placesArrayRequest = new JsonArrayRequest(Request.Method.GET,
-                serviceUrl, null, baseResponseListener,new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                serviceUrl, null, baseResponseListener,errorListener);
 
         mRequestQueue.add(placesArrayRequest);
 
@@ -214,7 +197,8 @@ public class ServiceHandler {
 
 
     public void requestCitiesList(final DataHandler dataHandler,
-                                  final CitiesListActivity citiesListActivity) {
+                                  final CitiesListActivity citiesListActivity,
+                                  Response.ErrorListener errorListener) {
 
         String serviceUrl = urlHandler.getCitiesServiceUrl();
         Log.d("gg", "requesting"+urlHandler);
@@ -226,30 +210,21 @@ public class ServiceHandler {
                 Log.d("gg", response.toString());
                 dataHandler.receiveCitiesList(response, citiesListActivity);
             }
-        },new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+        },errorListener);
 
         mRequestQueue.add(categoriesArrayRequest);
     }
 
     public void postComment(Response.Listener<JSONObject> commentResponseListner,
-                            String placeID, String text, String userID, float rating) {
+                            String placeID, String text, String userID, float rating,
+                            Response.ErrorListener errorListener) {
         Log.d("comment", placeID+" "+text+" "+userID+" "+rating);
 
         String addCommentUrl = urlHandler.getAddCommentUrl();
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 addCommentUrl, getPostCommentRequest(placeID, text, userID, rating),
-                commentResponseListner, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                commentResponseListner, errorListener);
 
         mRequestQueue.add(jsonObjectRequest);
 
@@ -276,7 +251,9 @@ public class ServiceHandler {
 
 
 
-    public void updateUserImage(Response.Listener<JSONObject> listener, String userID, String userImage, String imageName) {
+    public void updateUserImage(Response.Listener<JSONObject> listener, String userID,
+                                String userImage, String imageName,
+                                Response.ErrorListener errorListener) {
 
         String signupUrl = urlHandler.getUpdateUserImageUrl();
 
@@ -292,17 +269,14 @@ public class ServiceHandler {
 
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, signupUrl, request,
-                listener, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                listener, errorListener);
 
         mRequestQueue.add(jsonObjectRequest);
     }
 
-    public void updatePassword(BaseResponseListener listener, String userID, String currentPasswordStr, String newPasswordStr, String confirmPasswordStr) {
+    public void updatePassword(BaseResponseListener listener, String userID,
+                               String currentPasswordStr, String newPasswordStr,
+                               String confirmPasswordStr, Response.ErrorListener errorListener) {
 
         String url = urlHandler.getChangePasswordUrl();
 
@@ -319,28 +293,19 @@ public class ServiceHandler {
         Log.d("change password", request.toString());
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, request,
-                listener, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                listener, errorListener);
 
         mRequestQueue.add(jsonObjectRequest);
     }
 
-    public void requestUpdateUser(JSONObject userData, BaseResponseListener mResponseListner) {
+    public void requestUpdateUser(JSONObject userData, BaseResponseListener mResponseListner,
+                                  Response.ErrorListener errorListener) {
 
         String url = urlHandler.getUpdateUserDataUrl();
 
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, userData,
-                mResponseListner, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                mResponseListner, errorListener);
 
         Log.d("update user", userData.toString());
         mRequestQueue.add(jsonObjectRequest);
@@ -348,7 +313,9 @@ public class ServiceHandler {
 
     }
 
-    public void addNewPlace(String userID, String cityID, JSONObject placeData, BaseResponseListener placeDataResponseListner) {
+    public void addNewPlace(String userID, String cityID, JSONObject placeData,
+                            BaseResponseListener placeDataResponseListner,
+                            Response.ErrorListener errorListener) {
 
         String url = urlHandler.getAddNewPlaceUrl();
 
@@ -361,23 +328,18 @@ public class ServiceHandler {
             e.printStackTrace();
         }
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, placeData,
-                placeDataResponseListner, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                placeDataResponseListner,errorListener);
 
         Log.d("update user", placeData.toString());
         mRequestQueue.add(jsonObjectRequest);
 
     }
 
-    public void addPlaceImages(String draftPointID, String[] bitmapsEndcoded, BaseResponseListener placeImageResponseListner) {
+    public void addPlaceImages(String draftPointID, String[] bitmapsEndcoded,
+                               BaseResponseListener placeImageResponseListner,
+                               Response.ErrorListener errorListener) {
 
         String url = urlHandler.getAddPlaceImagesUrl();
-
-
         JSONObject request = new JSONObject();
         JSONObject images = new JSONObject();
 
@@ -397,21 +359,14 @@ public class ServiceHandler {
             e.printStackTrace();
         }
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, request,
-                placeImageResponseListner, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
-
+                placeImageResponseListner, errorListener);
 
         mRequestQueue.add(jsonObjectRequest);
-
-
-
     }
 
-    public void requestRetrievePassword(String email, BaseRequestStateListener baseRequestStateListener) {
+    public void requestRetrievePassword(String email,
+                                        BaseRequestStateListener baseRequestStateListener,
+                                        Response.ErrorListener errorListener) {
 
         BaseResponseListener baseResponseListener1 = new BaseResponseListener();
         baseResponseListener1.setOnResponseListner(baseRequestStateListener);
@@ -420,19 +375,15 @@ public class ServiceHandler {
         String url = urlHandler.getRetrievePasswordUrl(email);
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                baseResponseListener1, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                baseResponseListener1, errorListener);
 
         mRequestQueue.add(jsonObjectRequest);
     }
 
     public void signupUser(String socialUserID, String socialType, String OS,
                            String deviceToken, String DOB,
-                           BaseResponseListener baseResponseListener) {
+                           BaseResponseListener baseResponseListener,
+                           Response.ErrorListener errorListener) {
 
         String url = urlHandler.getSocialLoginUrl();
 
@@ -440,12 +391,7 @@ public class ServiceHandler {
                 deviceToken, DOB);
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, payload, baseResponseListener, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                url, payload, baseResponseListener, errorListener);
 
         mRequestQueue.add(jsonObjectRequest);
     }
@@ -468,19 +414,16 @@ public class ServiceHandler {
         return request;
     }
 
-    public void makeCheckin(String placeID, String userID, BaseResponseListener baseResponseListener) {
+    public void makeCheckin(String placeID, String userID,
+                            BaseResponseListener baseResponseListener,
+                            Response.ErrorListener errorListener) {
 
         String url = urlHandler.getCheckinUrl();
 
         JSONObject payload = getCheckinPayload(placeID, userID);
 
         JsonObjectRequest  jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, payload, baseResponseListener, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-//                mTextView.setText("That didn't work!");
-            }
-        });
+                url, payload, baseResponseListener, errorListener);
 
         mRequestQueue.add(jsonObjectRequest);
     }
@@ -558,7 +501,8 @@ public class ServiceHandler {
 
     }
 
-    public void getAppVersion(final RequestListener requestListener) {
+    public void getAppVersion(final RequestListener requestListener,
+                              Response.ErrorListener errorListener) {
 
         final String url = urlHandler.getAppVersionUrl();
 
@@ -573,14 +517,7 @@ public class ServiceHandler {
                             e.printStackTrace();
                         }
                     }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        requestListener.failResponse(null);
-
-                    }
-                });
+                }, errorListener);
 
         mRequestQueue.add(jsObjRequest);
     }

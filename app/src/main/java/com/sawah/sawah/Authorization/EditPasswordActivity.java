@@ -2,14 +2,10 @@ package com.sawah.sawah.Authorization;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TableRow;
 
@@ -166,8 +162,8 @@ public class EditPasswordActivity extends BaseActivity {
             }
         };
         showProgress(true);
-        DataHandler.getInstance(this).requestUdpateUserPassword(mResponseListner, currentPasswordStr,
-                newPasswordStr, confirmPasswordStr);
+        DataHandler.getInstance(this).requestUpdateUserPassword(mResponseListner, currentPasswordStr,
+                newPasswordStr, confirmPasswordStr, this);
     }
 
     public void updatePasswordSuccess() {

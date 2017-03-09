@@ -67,7 +67,8 @@ public class PlaceListActivity extends BasePlacesListActivity implements SensorE
         Utils.getInstance().changeStatusBarColor(this);
 
         if(cityID != null && catID != null){
-            DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID);
+            DataHandler.getInstance(getApplicationContext()).requestPlacesArray(this, cityID, catID,
+                    this);
             showProgress(true);
         }
 

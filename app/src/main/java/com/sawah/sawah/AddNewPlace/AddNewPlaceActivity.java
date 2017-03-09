@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
+import com.android.volley.Response;
 import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BitmapImage;
 import com.sawah.sawah.Handlers.DataHandler;
@@ -90,7 +91,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
 
             }
 
-        });
+        }, this);
     }
 
     @Override

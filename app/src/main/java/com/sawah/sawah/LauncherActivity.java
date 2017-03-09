@@ -7,6 +7,8 @@ import android.support.v7.app.*;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.sawah.sawah.Authorization.AuthorizationController;
 import com.sawah.sawah.Authorization.LoginListener;
 import com.sawah.sawah.Handlers.DataHandler;
@@ -49,6 +51,11 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
                     Log.d("Version", "Success");
 
                 }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    continueLaunch();
+                }
             });
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -65,16 +72,28 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
                 //        login user if exist else show login activity
                 if(DataHandler.getInstance(LauncherActivity.this).userExist()){
                     String userID = DataHandler.getInstance(LauncherActivity.this).getUser().getUserID();
+
                     AuthorizationController authorizationController =
                             new AuthorizationController(LauncherActivity.this.getApplicationContext(),
                                     LauncherActivity.this);
-//            showProgress(true);
-                    authorizationController.loginUser(userID);
+
+
+                    authorizationController.loginUser(userID, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            skipAutoLogin();
+                        }
+                    });
                 }else{
                     NavigationHandler.getInstance().startLoginActivity(LauncherActivity.this);
                 }
             }
         }, SPLASH_DISPLAY_LENGTH);
+    }
+
+    private void skipAutoLogin() {
+        NavigationHandler.getInstance().startLoginActivity(LauncherActivity.this);
+
     }
 
     @Override
@@ -85,7 +104,7 @@ public class LauncherActivity extends AppCompatActivity implements LoginListener
 
     @Override
     public void loginFailed(String message) {
-//        todo handle saved user login failer
+        skipAutoLogin();
     }
 
     @Override

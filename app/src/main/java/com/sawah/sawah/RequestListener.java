@@ -9,5 +9,4 @@ public interface RequestListener {
 
     void successResponse(Object response);
 
-
 }

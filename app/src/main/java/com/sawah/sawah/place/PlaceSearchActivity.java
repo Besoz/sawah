@@ -6,6 +6,7 @@ import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.android.volley.Response;
 import com.sawah.sawah.ArrayRequestListener;
 import com.sawah.sawah.BaseArrayResponseListener;
 import com.sawah.sawah.Handlers.DataHandler;
@@ -59,7 +60,7 @@ public class PlaceSearchActivity extends PlaceListActivity {
 
                 };
                 DataHandler.getInstance(PlaceSearchActivity.this)
-                        .searchPlacesList(arrayRequestListener, cityID, query);
+                        .searchPlacesList(arrayRequestListener, cityID, query, PlaceSearchActivity.this);
                 showProgress(true);
 
                 return true;

@@ -9,5 +9,4 @@ public interface BaseRequestStateListener {
 
     void successResponse(ServiceResponse response);
 
-
 }

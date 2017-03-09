@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -15,17 +14,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
-import com.darsh.multipleimageselect.helpers.Constants;
 import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.BaseResponseListener;
-import com.sawah.sawah.BitmapImage;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
@@ -309,7 +304,7 @@ public class EditProfileActivity extends BaseActivity {
                 };
                 showProgress(true);
                 DataHandler.getInstance(this).requestUpdateUserImage(mResponseListner,
-                        data.getData(), this);
+                        data.getData(), this, this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -373,7 +368,7 @@ public class EditProfileActivity extends BaseActivity {
         };
 
         showProgress(true);
-        DataHandler.getInstance(this).requestUdpateUser(user, baseRequestStateListener);
+        DataHandler.getInstance(this).requestUpdateUser(user, baseRequestStateListener, this);
     }
 
 

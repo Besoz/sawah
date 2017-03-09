@@ -69,7 +69,15 @@
         <activity
             android:name=".CitiesListActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+            <receiver android:name=".UpdateReceiver" >
+                <intent-filter>
+                    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                </intent-filter>
+            </receiver>
+
+        </activity>>
         <activity
             android:name=".LauncherActivity"
             android:screenOrientation="portrait"
@@ -176,7 +184,11 @@
             android:name=".place.PlaceSearchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            ></activity>
+            >
+
+        </activity>
+
+
     </application>
 
 </manifest>

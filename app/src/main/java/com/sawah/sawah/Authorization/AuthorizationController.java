@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.BaseResponseListener;
 import com.sawah.sawah.Handlers.DataHandler;
@@ -41,26 +43,30 @@ public class AuthorizationController implements LoginListener {
     }
 
 
-    public void loginUser(String userID) {
+    public void loginUser(String userID, Response.ErrorListener errorListener) {
         Log.d("After login", "iiiiiiiiiii");
 
-        serviceHandler.loginUser(userID, dataHandler.getDeviceToken(), loginResponseListener);
+        serviceHandler.loginUser(userID, dataHandler.getDeviceToken(), loginResponseListener,
+                errorListener);
     }
-    public void loginUser(String userID, BaseRequestStateListener baseRequestStateListener) {
+    public void loginUser(String userID, BaseRequestStateListener baseRequestStateListener,
+                          Response.ErrorListener errorListener) {
         Log.d("After login", "iiiiiiiiiii");
 
-        serviceHandler.loginUser(userID, dataHandler.getDeviceToken(), loginResponseListener);
+        serviceHandler.loginUser(userID, dataHandler.getDeviceToken(), loginResponseListener,
+                errorListener);
     }
 
 
-    public void loginUser(String email, String password) {
-        serviceHandler.loginUser(email, password, dataHandler.getDeviceToken(), loginResponseListener);
+    public void loginUser(String email, String password, Response.ErrorListener errorListener) {
+        serviceHandler.loginUser(email, password, dataHandler.getDeviceToken(),
+                loginResponseListener, errorListener);
     }
 
     public void socialLogin(String socialUserID, String socialType, String DOB,
                             final String fullName, final String email, final Uri image,
                             final BaseRequestStateListener origionListener,
-                            final Context context){
+                            final Context context, final Response.ErrorListener errorListener){
 
 
         BaseRequestStateListener socialSignupListener = new BaseRequestStateListener() {
@@ -78,14 +84,16 @@ public class AuthorizationController implements LoginListener {
                 final User user = response.getUser();
                 user.setEmail(email);
                 user.setFullName(fullName);
-                DataHandler.getInstance(context).requestUdpateUser(user, updateUserListener);
+
+                DataHandler.getInstance(context).requestUpdateUser(user, updateUserListener,
+                        errorListener);
             }
         };
         BaseResponseListener baseResponseListener = new BaseResponseListener();
         baseResponseListener.setOnResponseListner(socialSignupListener);
 
         serviceHandler.signupUser(socialUserID, socialType, DOB, dataHandler.OS,
-                dataHandler.getDeviceToken(), baseResponseListener);
+                dataHandler.getDeviceToken(), baseResponseListener, errorListener);
 
     }
 

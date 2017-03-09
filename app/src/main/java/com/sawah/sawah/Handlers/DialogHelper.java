@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import com.sawah.sawah.AddNewPlace.AddNewPlaceActivity;
 import com.sawah.sawah.AlertDialog;
 import com.sawah.sawah.Authorization.LoginActivity;
+import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.LauncherActivity;
 import com.sawah.sawah.R;
@@ -139,4 +140,9 @@ public class DialogHelper {
                 .show();
     }
 
+    public void showNetworkErrorDialog(Context context) {
+        Intent intent = new Intent(context, AlertDialog.class);
+        intent.putExtra("DialogID", AlertDialog.NETWORK_ERROR);
+        context.startActivity(intent);
+    }
 }
