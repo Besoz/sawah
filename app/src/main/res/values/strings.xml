@@ -184,7 +184,205 @@
 
     <string name="edit_your_profile">تعديل البيانات</string>
     <string name="cancel">إلغاء</string>
+    <string name="search_in">ابحث في </string><resources>
+    <string name="app_name">سواح</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">الإيميل</string>
+    <string name="prompt_user_name">اسم المستخدم</string>
+    <string name="prompt_password">كلمة المرور</string>
+    <string name="action_sign_up">تسجيل</string>
+    <string name="action_sign_in_short">دخول</string>
+    <string name="error_invalid_email">الإيميل غير صحيح</string>
+    <string name="error_invalid_password">كلمة المرور قصيرة</string>
+    <string name="error_incorrect_password">كلمة مرور غير صحيحة</string>
+    <string name="error_not_equal_password">كلمة مرور غير مطابقة</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="skip_login_text">تخطي</string>
+    <string name="forget_password_text">نسيت كلمة المرور؟</string>
+    <string name="new_user_text">مستخـدم جديـد</string>
+    <string name="sperator">   |   </string>
+    <string name="social_login_text">او سجل الدخول بــ :</string>
+
+    <!--connection Scheme-->
+    <string name="connection_scheme">http</string>
+
+    <!-- Host name-->
+    <string name="host_name">sawahapp.com</string>
+
+    <!--services urls-->
+    <string name="register_service_url">/api/users/AddByEmail</string>
+    <string name="login_service_url">/api/users/login</string>
+    <string name="categories_list_service_url">/api/Categories/get</string>
+    <string name="places_list_service_url">/api/points/GetByCategoryID</string>
+    <string name="cities_service_url">/api/cities/get</string>
+    <string name="add_comment_url">/api/comments/add</string>
+
+    <string name="update_user_data_url">/api/users/update</string>
+    <string name="update_user_image_url">/api/users/changeImage</string>
+    <string name="change_password_url">/api/users/ChangePassword</string>
+    <string name="add_new_place_url">/api/draftpoints/add</string>
+    <string name="upload_place_images_url">/api/draftpoints/uploadImages</string>
+    <string name="retreive_assword_url">/api/users/ResetPassword</string>
+    <string name="social_login_url">/api/users/AddOrLoginBySocialMedia</string>
+    <string name="add_check_in_url">/api/points/AddCheckIn</string>
+    <string name="change_city_url">/api/users/ChangeCity</string>
+
+    <string name="title_activity_base">BaseActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="contact_us">اتصل بنا | Contact us</string>
+    <string name="searh_city">ابحث عن مدينة</string>
+    <string name="searh_category">ابحث عن تصنيف</string>
+    <string name="search_places">ابحث عن مكان</string>
+    <string name="change_city">تغيير المدينة</string>
+    <string name="add_place">إضافة مكان</string>
+    <string name="place_name">اسم المكان</string>
+    <string name="favourites">المفضلة</string>
+    <string name="user_guide">إرشادات عامة</string>
+    <string name="notifications">التنبيهات</string>
+    <string name="about_sawah">عن تطبيق سواح</string>
+    <string name="about_sawah_app">عن التطبيق</string>
+    <string name="dashboard">الرئيسية</string>
+    <string name="place_site">الموقع</string>
+    <string name="palce_calling">الاتصال</string>
+    <string name="place_share">مشاركة</string>
+    <string name="place_checkin">تسجيل زيارة</string>
+    <string name="share_msg_a">قم بالإطلاع على</string>
+    <string name="share_msg_b">في تطبيق سواح</string>
+    <string name="share_msg_subject">تطبيق سواح</string>
+
+    <string name="default_font">fonts/TheSansArabic-Plain.otf</string>
+    <string name="default_font_bold">fonts/TheSansArabic-Bold.otf</string>
+    <string name="default_font_light">fonts/TheSansArabic-Light.otf</string>
+    <string name="default_english_font">fonts/SanFranciscoDisplay-Light.otf</string>
+
+    <string name="title_activity_launcher">LauncherActivity</string>
+    <string name="add_new_comment">إضافة تعليق</string>
+    <string name="add_comment_hint">أكتب تعليقك..</string>
+    <string name="terms_of_use_notation">بضغطك على زر النشر بالأسفل تكون قد وافقت على شروط النشر والاستخدام والخصوصية الخاصة بتطبيق سوّاح.</string>
+    <string name="max_comment_char_text">الحد الأقصى 300 حرف</string>
+    <string name="comment_post_button_text">نشر</string>
+
+
+    <string name="comment_in_review_text">نم إضافة تعليق\nسيتم نشر التعليق بعد مراجعته</string>
+    <string name="agree">موافق</string>
+    <string name="done_text">تم</string>
+    <string name="more_comments_text">المزيد من التعليقات</string>
+    <string name="commments">التعليقات</string>
+    <string name="google_maps_text">خرائط جوجل</string>
+    <string name="request_uber_text">اطلب اوبر</string>
+    <string name="open_map_with_text">افتح الموقع باستخدام</string>
+    <string name="close">إغلاق</string>
+    <string name="delete">حذف</string>
+    <string name="about_text">نتطلع في تطبيق سوّاح إلى تغطية أبرز المناطق السياحية في مدينة لندن،  إذ يعمل فريق سوّاح لزيارة الأماكن المهمة في مدينة لندن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدينة العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
+    <string name="version_text">الإصدار الرسمي 2.0</string>
+    <string name="happy_to_contact_us">نسعد بكم وبتواصلكم:</string>
+    <string name="share_app">شارك التطبيق مع من تحب:</string>
+    <string name="twitter_sawah_name">\@Sawah_app</string>
+    <string name="sawah_website">www.sawahapp.com</string>
+    <string name="twitter_app_page_uri">twitter://user?user_id=762229045732007937</string>
+    <string name="twitter_page_url">https://twitter.com/Sawah_app</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="view_list">استعراض بالقائمة</string>
+    <string name="view_map">استعراض بالخريطة</string>
+    <string name="edit">تعديل</string>
+    <string name="personal_information">المعلومات الشخصية:</string>
+    <string name="save">حفظ</string>
+    <string name="name">الاسم</string>
+    <string name="gender">الجنس</string>
+    <string name="birth_date">تاريخ الميلاد</string>
+    <string name="password">الرمز السري</string>
+    <string name="phone">الهاتف</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="new_password">كلمة المرور الجديدة:</string>
+    <string name="current_password">كلمة المرور الحالية</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="title_activity_add_new_place">AddNewPlaceActivity</string>
+    <string name="next">التالي</string>
+    <string name="send">إرسال</string>
+    <string name="error_must_select_one_image">يجب اختيار صورة على الاقل</string>
+
+    <string name="search_for_city">ابحث عن مدينة</string>
+
+    <string name="align_justify_icon">\ue9ad</string>
+    <string name="cities">المدن</string>
+
+    <string name="delete_text">اضغط علي علامة X لإزالة المادة من المفضلة</string>
+    <string name="facebook_app_id">314025735620741</string> <!--1759744457614418</string>-->
+    <string name="fb_login_protocol_scheme">fbAPP_ID</string>
+    <string name="google_app">AIzaSyDQVH24VD6t76UIc0KyqOcsMCsYpVVRWBg</string>
+    <string name="TWITTER_KEY">dJDWsHrAaYXqnxPXDmMEZlfga</string>
+    <string name="TWITTER_SECRET">2OaBpdyNXWascnYtPe1WLmoqATJukf6IfVx1gqsQO1roYyo3zX</string>
+    <string name="change_password">تغيير كلمة السر</string>
+    <string name="sat_day">السبت</string>
+    <string name="sun_day">الأحد</string>
+    <string name="mon_day">الإثنين</string>
+    <string name="tue_day">الثلاثاء</string>
+    <string name="wen_day">الأربعاء</string>
+    <string name="thu_day">الخميس</string>
+    <string name="fri_day">الجمعة</string>
+    <string name="work_time_today">اوقات العمل اليوم:</string>
+    <string name="work_time"> اوقات العمل</string>
+    <string name="retreive_password">إستعادة كلمة المرور</string>
+    <string name="password_sent_to_mail_successfuly">تم اسعادة كلمة المرور إلى ايميلك بنجاح</string>
+
+    <string name="log_out">خروج</string>
+    <string name="settings">ألإعدادات</string>
+    <string name="must_sign_in_to_add_comment">يجب تسجيل الدخول لإضافة تعليق</string>
+    <string name="user_data">البيانات الشخصية</string>
+    <string name="must_user_data_add_comment">لتتمكن من إضافة تعليق يجب عليك اكمال بياناتك في ملفك الشخصي\n البيانات المطلوبة هي: \n الاسم وتاريخ الميلاد والجنس</string>
+    <string name="general_instructions_text">نتطلع في تطبيق سواح إلى تغطية أبرز المناطق السياحية في مدن العالم، إذ يعمل فريق سواح لزيارة الأماكن المهمة في هذه المدن وتقديم كافة التفاصيل الخاصة بها للراغبين في زيارة هذه المدن العريقة، إلى جانب الكشف عن أماكن نادرة لا يعرفها كثير من السياح مع تقديم الإرشادات المناسبة لهم من أجل قضاء جولة سياحية لا تنسى.</string>
+    >
+    <string name="general_instructions_title">أرقام تهمك:</string>
+    <string name="login_button">تسجيل الدخول</string>
+    <string name="empty_fav_list">لا توجد عناصر في مفضلتك</string>
+    <string name="check_in_fail_title_text">فشل تسجيل الزيارة</string>
+    <string name="check_in_done_title_text">تم تسجيل الزيارة</string>
+    <string name="check_in_done_text">تم تسجيل الزيارة</string>
+    <string name="permission_request_title">Turn On Location Service</string>
+    <string name="permission_request_message">Turn On Location Service to Determine Your Location</string>
+    <string name="cancel_text">الغاء</string>
+    <string name="enable_gps_title">فعل الGPS</string>
+    <string name="enable_gps_message">قم بتفعيل الGPS لنتمكن من تحديد مكانك</string>
+
+    <string name="enter_user_name">ادخل اسم المستخدم</string>
+    <string name="enter_place_name">ادخل اسم المكان</string>
+    <string name="enter_password">ادخل كلمة المرور</string>
+    <string name="choose_place_image_message"> تأكد من إضافة صورة على الأقل للمكان</string>
+    <string name="alert_title">تنبيه!</string>
+    <string name="add_new_place_request_sent"> تم إرسال طلب إضافة المكان \n سيتم إضافة المكان بعد مراجعة البيانات \n نشكركم على المساهمه في بناء تطبيق سواح</string>
+    <string name="please_add_place_description">يرجو إضافة وصف للمكان</string>
+
+    <string name="error">خطأ</string>
+    <string name="password_update_success">تم تعديل كلمة المرور بنجاح</string>
+    <string name="profile_update_success">تم تعديل بياناتك بنجاح</string>
+
+    <string name="edit_your_profile">تعديل البيانات</string>
+    <string name="cancel">إلغاء</string>
     <string name="search_in">ابحث في </string>
+    <string name="no_uber">تأكد من تحميل تطبيق أوبر</string>
+    <string name="cant_checkin">لا يمكنك تسجيل زيارة أنت تبعد عن هذه النقطة</string>
+    <string name="add_visit_url">/api/Points/AddVisit</string>
+    <string name="get_application_version">/api/settings/GetApplicationVersion</string>
+    <string name="app_version_title">التحديثات</string>
+    <string name="app_version_message">برجاء تحديث التطبيق</string>
+    <string name="app_version">1</string>
+    <string name="search_in_places">ابحث عن مكان</string>
+    <string name="places_search_service_url">/api/points/search</string>
+    <string name="check_internet_connection">تحقق من اتصالك بالانترنت</string>
+    <string name="tags">كلمات دلالية: </string>
+</resources>
     <string name="no_uber">تأكد من تحميل تطبيق أوبر</string>
     <string name="cant_checkin">لا يمكنك تسجيل زيارة أنت تبعد عن هذه النقطة</string>
     <string name="add_visit_url">/api/Points/AddVisit</string>

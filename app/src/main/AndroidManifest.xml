@@ -56,6 +56,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name=".UpdateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".Authorization.LoginActivity"
             android:screenOrientation="portrait"
@@ -88,14 +94,8 @@
             android:name=".CitiesListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" >
-
-            <receiver android:name=".UpdateReceiver" >
-                <intent-filter>
-                    <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-                </intent-filter>
-            </receiver>
-
         </activity>>
+
         <activity
             android:name=".LauncherActivity"
             android:screenOrientation="portrait"
