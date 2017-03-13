@@ -110,7 +110,7 @@ public class DataHandler {
 
 
         dayMap.put(7, context.getString(R.string.sat_day));
-        dayMap.put(1, context.getString(R.string.sun_day));
+        dayMap.put(1, context.getString(R .string.sun_day));
         dayMap.put(2, context.getString(R.string.mon_day));
         dayMap.put(3, context.getString(R.string.tue_day));
         dayMap.put(4, context.getString(R.string.wen_day));

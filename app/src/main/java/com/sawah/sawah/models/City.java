@@ -31,7 +31,14 @@ public class City {
     @JsonProperty("Categories")
     private Category[] categories;
 
+
     public City() {
+        this.cityID = "";
+        CityNameAR = "";
+        this.cityNameEN = "";
+        this.imageLocation = "";
+        this.advices = "";
+        this.numbers = "";
     }
 
 

@@ -134,6 +134,20 @@ public class ServiceHandler {
         mRequestQueue.add(jsonObjectRequest);
     }
 
+    public void requestCategoriesList(BaseArrayResponseListener baseResponseListener, String cityID,
+                                      Response.ErrorListener errorListener){
+        Log.d("gg", "requesting");
+
+        String serviceUrl = urlHandler.getCategoriesServiceUrl(cityID);
+        Log.d("gg", "requesting"+urlHandler);
+
+        JsonArrayRequest categoriesArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                serviceUrl, null, baseResponseListener,errorListener);
+
+        mRequestQueue.add(categoriesArrayRequest);
+
+    }
+
     public void requestCategoriesList(final DataHandler dataHandler,
                                       final CategoriesListActivity activity,
                                       Response.ErrorListener errorListener){
@@ -193,6 +207,19 @@ public class ServiceHandler {
 
     public ImageLoader getImageLoader() {
         return mImageLoader;
+    }
+
+
+    public void requestCitiesList(BaseArrayResponseListener baseResponseListener,
+                                  Response.ErrorListener errorListener) {
+
+        String serviceUrl = urlHandler.getCitiesServiceUrl();
+        Log.d("gg", "requesting"+urlHandler);
+
+        JsonArrayRequest categoriesArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                serviceUrl, null, baseResponseListener,errorListener);
+
+        mRequestQueue.add(categoriesArrayRequest);
     }
 
 

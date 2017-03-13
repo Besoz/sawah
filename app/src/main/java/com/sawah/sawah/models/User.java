@@ -70,6 +70,20 @@ public class User {
         this.date = date;
     }
 
+    public User() {
+        this.email = "";
+        this.userName = "";
+        this.password = "";
+        this.fullName = "";
+        this.sex = MALE;
+        this.birthDate = "";
+        this.mobileNumber = "";
+        this.userID = "";
+        this.imageLocation = "";
+        this.localImagePath = "";
+        this.date = new Date();
+    }
+
     public String getLocalImagePath() {
         return localImagePath;
     }
@@ -95,20 +109,6 @@ public class User {
 
     }
 
-    public User(){
-
-        this.email = "";
-        this.userName = "";
-        this.password = "";
-        this.fullName = "";
-        this.sex = MALE;
-        this.birthDate = "";
-        this.mobileNumber = "";
-        this.userID = "";
-        this.imageLocation = "";
-        this.localImagePath = "";
-        date = new Date();
-    }
 
     public String getUserID() {
         return this.userID;

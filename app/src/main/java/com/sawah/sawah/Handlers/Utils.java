@@ -2,6 +2,8 @@ package com.sawah.sawah.Handlers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -26,6 +28,8 @@ import com.squareup.picasso.Picasso;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.orm.util.ContextUtil.getPackageManager;
 
 /**
  * Created by root on 25/02/17.
@@ -161,5 +165,18 @@ public class Utils {
         distance = Math.pow(distance, 2);
 
         return Math.sqrt(distance);
+    }
+
+    public boolean isGoogleMapsInstalled()
+    {
+        try
+        {
+            ApplicationInfo info = getPackageManager().getApplicationInfo("com.google.android.apps.maps", 0 );
+            return true;
+        }
+        catch(PackageManager.NameNotFoundException e)
+        {
+            return false;
+        }
     }
 }

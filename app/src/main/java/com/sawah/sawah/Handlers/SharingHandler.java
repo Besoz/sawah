@@ -104,19 +104,28 @@ public class SharingHandler {
     }
 
     public void callNumber(Context context, String phoneNumber){
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:"+phoneNumber));
-        context.startActivity(intent);
+        try{
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:"+phoneNumber));
+            context.startActivity(intent);
+        }catch (Exception e){
+            DialogHelper.getInstance().showAlert(context,context.getString(R.string.no_phone_dialer));
+        }
+
     }
 
 
 
     public void openMapIntent(Context context, double placeLat, double placLong){
 
-        Uri gmmIntentUri = Uri.parse("geo:"+placeLat+","+placLong+"?q="+placeLat+","+placLong);
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        mapIntent.setPackage("com.google.android.apps.maps");
-        context.startActivity(mapIntent);
+        if(Utils.getInstance().isGoogleMapsInstalled()){
+            Uri gmmIntentUri = Uri.parse("geo:"+placeLat+","+placLong+"?q="+placeLat+","+placLong);
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            context.startActivity(mapIntent);
+        }else{
+            DialogHelper.getInstance().showAlert(context,context.getString(R.string.no_google_map_app));
+        }
     }
 
     public void requestUberRide(Context context, double dropLat, double dropLong, String name){

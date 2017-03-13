@@ -21,6 +21,7 @@ public class Category {
 
 
     public Category() {
+        name = CategoryID = imageLocation = "";
     }
 
     public void setName(String name) {

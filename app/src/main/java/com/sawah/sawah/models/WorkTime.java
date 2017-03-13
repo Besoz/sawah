@@ -20,9 +20,19 @@ public class WorkTime extends SugarRecord implements Comparable<WorkTime>{
     private boolean isNow;
     private Place place;
 
+    public WorkTime() {
+        this.day = 0;
+        this.time = "";
+        this.isNow = false;
+    }
 
-    private static HashMap<String, Integer> hm=new HashMap<String, Integer>();
 
+    public WorkTime(Place place, String day, String time, boolean isNow) {
+        this.day = Utils.getInstance().mapDay(day);
+        this.time = time;
+        this.isNow = isNow;
+        this.place = place;
+    }
 
     public void setTime(String time) {
         this.time = time;
@@ -39,16 +49,6 @@ public class WorkTime extends SugarRecord implements Comparable<WorkTime>{
 
     public Place getPlace() {
         return place;
-    }
-
-    public WorkTime(Place place, String day, String time, boolean isNow) {
-        this.day = Utils.getInstance().mapDay(day);
-        this.time = time;
-        this.isNow = isNow;
-        this.place = place;
-    }
-
-    public WorkTime() {
     }
 
     public int getDay() {

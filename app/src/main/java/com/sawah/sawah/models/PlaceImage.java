@@ -11,6 +11,7 @@ public class PlaceImage extends SugarRecord{
     private String imageURL;
 
     public PlaceImage() {
+        imageURL = "";
     }
 
     public PlaceImage(Place place, String s) {

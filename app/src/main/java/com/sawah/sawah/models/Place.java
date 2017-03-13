@@ -110,8 +110,18 @@ public class Place extends SugarRecord implements ClusterItem {
     private WorkTime[] workTimes;
 
     public Place() {
+
         images = new PlaceImage[0];
         comments =  new PlaceComment[0];
+        workTimes = new WorkTime[0];
+        appointments = new HashMap<>();
+        position =  new LatLng(lattitude, longitude);
+        commentsCount = 0;
+        lattitude = longitude = priceLevel = 0;
+        favourite = isOpen = isSpecial = false;
+        palceName= palceNameEng= palceNameArb = webSite = ratingID = biography= pointID = tags =
+                contactNumber = "";
+
         Log.d("Default Constructor", this.getId()+"");
     }
 

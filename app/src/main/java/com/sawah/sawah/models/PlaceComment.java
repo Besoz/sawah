@@ -31,6 +31,11 @@ public class PlaceComment extends SugarRecord implements Serializable{
     private float rateValue;
 
     public PlaceComment() {
+        this.imageLocation = "";
+        this.fullName = "";
+        this.commentDate = "";
+        this.description = "";
+        this.rateValue = 0;
     }
 
     public String getImageLocation() {
