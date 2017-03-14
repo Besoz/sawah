@@ -108,11 +108,11 @@
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".CommentActivity"
+            android:name=".comment.CommentActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".CommentsListActivity"
+            android:name=".comment.CommentsListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 

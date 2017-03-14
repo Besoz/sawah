@@ -29,6 +29,7 @@ import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.R;
 import com.sawah.sawah.RequestListener;
 import com.sawah.sawah.ServiceResponse;
+import com.sawah.sawah.comment.CommentsListActivity;
 import com.sawah.sawah.models.PlaceComment;
 import com.sawah.sawah.models.PlaceImage;
 import com.sawah.sawah.models.WorkTime;
@@ -799,9 +800,11 @@ public class DataHandler {
                 f.delete();
         }
 //        remove fav places
-        Place.deleteAll(Place.class);
-        PlaceComment.deleteAll(PlaceComment.class);
-        WorkTime.deleteAll(WorkTime.class);
+        Place.deleteAll();
+//        PlaceComment.deleteAll(PlaceComment.class);
+//        WorkTime.deleteAll(WorkTime.class);
+//        PlaceImage.deleteAll(PlaceImage.class);
+
     }
 
     public City getDefaultCity() {
@@ -921,6 +924,16 @@ public class DataHandler {
     public void clearBadgeCount(Context context) {
         SharedPreferencesController.getInstance(context).updateBadgeNumber(0);
         DataHandler.getInstance(context).updateAppNotification(context, 0);
+
+    }
+
+    public void requestPlaceComments(String placeID, Response.ErrorListener errorListener,
+                                     ArrayRequestListener<PlaceComment> requestListener){
+
+        BaseArrayResponseListener listener = new BaseArrayResponseListener(PlaceComment.class);
+        listener.setOnResponseListener(requestListener);
+
+        serviceHandler.requestCommentsList(listener, errorListener, placeID);
 
     }
 }

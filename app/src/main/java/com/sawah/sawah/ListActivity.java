@@ -16,14 +16,12 @@ public class ListActivity extends BaseActivity {
     protected GridView mListView;
     Context context = this;
 
-    private LinearLayout mProgressView;
     private View gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mProgressView = (LinearLayout) findViewById(R.id.progress_bar);
         gridView = (View) findViewById(R.id.list);
     }
 

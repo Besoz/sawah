@@ -16,8 +16,7 @@ public class URLHandler {
             addCommentPath, updateUserDataPath, updateUserImagePath, changePasswordPath;
     private String checkinUrl, changeCityUrl;
     private String addNewPlacePath, retrievePassword, addPlaceImagesUrl, socialLoginUrl;
-    private String addVisitUrl, appVersionUrl;
-    private String placeSearchPath;
+    private String addVisitUrl, appVersionUrl, placeSearchPath, commentListPath;
 
 //    private DataHandler dataHandler;
 
@@ -52,6 +51,7 @@ public class URLHandler {
         addVisitUrl = context.getString(R.string.add_visit_url);
         appVersionUrl = context.getString(R.string.get_application_version);
         placeSearchPath = context.getString(R.string.places_search_service_url);
+        commentListPath = context.getString(R.string.comments_list_url);
 
 
         Uri.Builder builder = new Uri.Builder();
@@ -188,4 +188,13 @@ public class URLHandler {
     }
 
 
+    public String getCommentsListURL(String placeID) {
+
+        Uri.Builder params = new Uri.Builder();
+        params.appendQueryParameter("pointid", placeID);
+        String commentListParams = params.build().toString();
+
+
+        return Serverpath + commentListPath+ commentListParams;
+    }
 }

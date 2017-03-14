@@ -1,10 +1,7 @@
-package com.sawah.sawah;
+package com.sawah.sawah.comment;
 
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Build;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
@@ -13,11 +10,14 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RatingBar;
 
+import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.Handlers.DataHandler;
+import com.sawah.sawah.Handlers.NavigationHandler;
 import com.sawah.sawah.Handlers.ServiceHandler;
 import com.sawah.sawah.Handlers.Utils;
+import com.sawah.sawah.R;
+import com.sawah.sawah.ServiceResponse;
 import com.sawah.sawah.custom_views.CustomEditText;
 import com.sawah.sawah.custom_views.CustomTextView;
 import com.sawah.sawah.models.User;
@@ -27,10 +27,8 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iarcuschin.simpleratingbar.SimpleRatingBar;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -54,7 +52,7 @@ public class CommentActivity extends BaseActivity {
         Utils.getInstance().changeStatusBarColor(this);
         removeNavigationDrawer();
 
-        placeID = (String) getIntent().getSerializableExtra("PlaceID");
+        placeID = (String) getIntent().getSerializableExtra(NavigationHandler.PLACE_ID_K);
 
         intializeCommentPostButton();
         intializeRatingBar();

@@ -344,6 +344,13 @@ public class Place extends SugarRecord implements ClusterItem {
         return false;
     }
 
+    public static int deleteAll() {
+        PlaceComment.deleteAll(PlaceComment.class);
+        WorkTime.deleteAll(WorkTime.class);
+        PlaceImage.deleteAll(PlaceImage.class);
+        return Place.deleteAll(Place.class);
+    }
+
     @Override
     public long save() {
 
@@ -377,4 +384,6 @@ public class Place extends SugarRecord implements ClusterItem {
     public void setWorkTimes(WorkTime[] workTimes) {
         this.workTimes = workTimes;
     }
+
+
 }

@@ -29,12 +29,11 @@ import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
 
-import com.arasthel.asyncjob.AsyncJob;
 import com.bumptech.glide.Glide;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
 import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BaseRequestStateListener;
-import com.sawah.sawah.CommentsAdapter;
+import com.sawah.sawah.comment.CommentsAdapter;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
@@ -302,8 +301,10 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                     @Override
                     public void onClick(View v) {
                         DataHandler dataHandler = DataHandler.getInstance(PlaceDetailsActivity.this);
-                        NavigationHandler.getInstance().startCommentsListActivity(PlaceDetailsActivity.this,
-                                PlaceDetailsActivity.this.place.getComments());
+                        NavigationHandler.getInstance()
+                                .startCommentsListActivity(PlaceDetailsActivity.this,
+                                        place.getCommentsCount(), place.getPlaceID(),
+                                        PlaceDetailsActivity.this.place.getComments());
                     }
                 });
             }else{

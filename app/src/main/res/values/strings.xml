@@ -45,6 +45,11 @@
     <string name="add_check_in_url">/api/points/AddCheckIn</string>
     <string name="change_city_url">/api/users/ChangeCity</string>
 
+
+    <string name="add_visit_url">/api/Points/AddVisit</string>
+    <string name="get_application_version">/api/settings/GetApplicationVersion</string>
+    <string name="comments_list_url">/api/comments/get</string>
+
     <string name="title_activity_base">BaseActivity</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -187,8 +192,6 @@
     <string name="search_in">ابحث في </string>
     <string name="no_uber">تأكد من تحميل تطبيق أوبر</string>
     <string name="cant_checkin">لا يمكنك تسجيل زيارة أنت تبعد عن هذه النقطة</string>
-    <string name="add_visit_url">/api/Points/AddVisit</string>
-    <string name="get_application_version">/api/settings/GetApplicationVersion</string>
     <string name="app_version_title">التحديثات</string>
     <string name="app_version_message">برجاء تحديث التطبيق</string>
     <string name="app_version">1</string>

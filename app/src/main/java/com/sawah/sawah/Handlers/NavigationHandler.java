@@ -11,8 +11,8 @@ import com.sawah.sawah.Authorization.EditProfileActivity;
 import com.sawah.sawah.Authorization.RetrievePasswordActivity;
 import com.sawah.sawah.CategoriesListActivity;
 import com.sawah.sawah.CitiesListActivity;
-import com.sawah.sawah.CommentActivity;
-import com.sawah.sawah.CommentsListActivity;
+import com.sawah.sawah.comment.CommentActivity;
+import com.sawah.sawah.comment.CommentsListActivity;
 import com.sawah.sawah.GeneralInstructionActivity;
 import com.sawah.sawah.Authorization.LoginActivity;
 import com.sawah.sawah.models.PlaceComment;
@@ -35,6 +35,8 @@ import org.json.JSONObject;
  * Created by Bassem on 14/01/17.
  */
 public class NavigationHandler {
+    public static final String COMMENT_COUNTS_K = "TotalCommentsCount", PLACE_ID_K = "PlaceID";
+
     private static NavigationHandler ourInstance = new NavigationHandler();
 
     public static NavigationHandler getInstance() {
@@ -140,11 +142,12 @@ public class NavigationHandler {
 
     public void startCommentActivity(Context context, String placeID) {
         Intent commentActivity = new Intent(context, CommentActivity.class);
-        commentActivity.putExtra("PlaceID", placeID);
+        commentActivity.putExtra(PLACE_ID_K, placeID);
         context.startActivity(commentActivity);
     }
 
-    public void startCommentsListActivity(Context context, PlaceComment[] comments) {
+    public void startCommentsListActivity(Context context, int totalCommentsCount, String placeID,
+                                          PlaceComment[] comments) {
 
         Intent commentListActivity = new Intent(context, CommentsListActivity.class);
         String JsonArr = "";
@@ -154,6 +157,9 @@ public class NavigationHandler {
             e.printStackTrace();
         }
         commentListActivity.putExtra("PlaceCommentsArray", JsonArr);
+        commentListActivity.putExtra(COMMENT_COUNTS_K, totalCommentsCount);
+        commentListActivity.putExtra(PLACE_ID_K, placeID);
+
         context.startActivity(commentListActivity);
 
     }

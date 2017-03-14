@@ -82,8 +82,8 @@ public class BaseActivity extends AppCompatActivity
     private static final int LOCATION_PERMISSION_REQUEST = 50;
     private int drawerGravity = Gravity.RIGHT;
 
-    private LinearLayout mProgressView;
-    private ViewGroup mainLayout;
+    protected LinearLayout mProgressView;
+    protected ViewGroup mainLayout;
 
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;

@@ -1,4 +1,4 @@
-package com.sawah.sawah;
+package com.sawah.sawah.comment;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -6,10 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sawah.sawah.Handlers.ServiceHandler;
+import com.sawah.sawah.R;
 import com.sawah.sawah.models.PlaceComment;
 import com.squareup.picasso.Picasso;
 
@@ -92,6 +91,11 @@ public class CommentsAdapter extends BaseAdapter{
 //        holder.userPhotoImageView.setImageUrl(imageUrl, mImageLoader);
 
         return convertView;
+    }
+
+    public void setDataSource(PlaceComment[] dataSource) {
+        this.mDataSource = dataSource;
+        notifyDataSetChanged();
     }
 
     public static class CommentView{

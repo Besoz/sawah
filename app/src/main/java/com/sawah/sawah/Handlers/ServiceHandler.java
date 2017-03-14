@@ -550,6 +550,18 @@ public class ServiceHandler {
     }
 
 
+    public void requestCommentsList(final BaseArrayResponseListener listener,
+                                    Response.ErrorListener errorListener, String placeID) {
+
+
+        String serviceUrl = urlHandler.getCommentsListURL(placeID);
+
+        JsonArrayRequest commentsArrayRequest = new JsonArrayRequest(Request.Method.GET,
+                serviceUrl, null, listener, errorListener);
+
+        mRequestQueue.add(commentsArrayRequest);
+
+    }
 }
 
 
