@@ -13,7 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -143,10 +146,19 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         if(place.getTags().length() > 0)
         {
-            LinearLayout tags_layout = (LinearLayout)findViewById(R.id.tags_layout);
-            tags_layout.setVisibility(View.VISIBLE);
-            tags = (CustomTextView) findViewById(R.id.tags);
-            tags.setText(place.getTags());
+            String tagsTitle = getString(R.string.tags);
+            String tagsText = tagsTitle +  place.getTags();
+
+            SpannableString sstagsText=  new SpannableString(tagsText);
+
+            sstagsText.setSpan(new RelativeSizeSpan(1.2f), 0, tagsTitle.length(), 0); // set size
+
+            sstagsText.setSpan(new ForegroundColorSpan(getResources()
+                    .getColor(R.color.colorPrimary)), 0, tagsTitle.length(), 0);// set color
+
+            tags = (CustomTextView) findViewById(R.id.tags_layout);
+            tags.setVisibility(View.VISIBLE);
+            tags.setText(sstagsText);
         }
 
         titleArabic = (CustomTextView) findViewById(R.id.title_ar);
