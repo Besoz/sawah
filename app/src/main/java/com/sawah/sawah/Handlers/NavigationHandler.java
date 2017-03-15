@@ -190,17 +190,17 @@ public class NavigationHandler {
 
 
 
-        if(maxNo > 1){
+//        if(maxNo > 1){
             Intent intent = new Intent(activity, AlbumSelectActivity.class);
 //set limit on number of images that can be selected, default is 10
             intent.putExtra(Constants.INTENT_EXTRA_LIMIT, maxNo);
-            activity.startActivityForResult(intent, Constants.REQUEST_CODE);
-            return;
-        }
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImageRequest);
+            activity.startActivityForResult(intent, pickImageRequest);
+//            return;
+//        }
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        activity.startActivityForResult(Intent.createChooser(intent, "Select Picture"), pickImageRequest);
     }
 
     public void AddNewPlace(Context context) {

@@ -29,4 +29,15 @@
     <color name="edit_profile_titles">#b4b4b4</color>
     <color name="delete_red">#fc0055</color>
 
+
+    <color name="multiple_image_select_primary">#247ba0</color>
+    <color name="multiple_image_select_primaryDark">#247ba0</color>
+    <color name="multiple_image_select_primaryLight">#247ba0</color>
+    <color name="multiple_image_select_accent">#ffffff</color>
+    <color name="multiple_image_select_primaryText">#ffffff</color>
+    <color name="multiple_image_select_secondaryText">#727272</color>
+    <color name="multiple_image_select_divider">#B6B6B6</color>
+    <color name="multiple_image_select_toolbarPrimaryText">#FFFFFF</color>
+    <color name="multiple_image_select_albumTextBackground">#99FFFFFF</color>
+
 </resources>

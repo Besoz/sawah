@@ -67,7 +67,7 @@ public class AddNewPlaceActivity extends BaseActivity implements MapAllocationFr
     @Override
     public void selectPlaceImages() {
         NavigationHandler.getInstance().startImagePickerForResult(AddNewPlaceActivity.this,
-                PICK_IMAGE_REQUEST, MAX_NO_IMAGE);
+                Constants.REQUEST_CODE, MAX_NO_IMAGE);
     }
 
     @Override

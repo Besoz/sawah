@@ -120,6 +120,14 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    compile 'com.library.tangxiaolv:telegramgallery:1.0.3'
+
+
+    compile 'me.iwf.photopicker:PhotoPicker:0.9.5@aar'
+
+
+    compile 'com.nineoldandroids:library:2.4.0'
+
 
 }
 

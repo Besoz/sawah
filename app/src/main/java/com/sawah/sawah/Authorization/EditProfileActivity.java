@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -18,9 +19,13 @@ import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.darsh.multipleimageselect.helpers.Constants;
+import com.darsh.multipleimageselect.models.Image;
+import com.sawah.sawah.AddNewPlace.AddNewPlaceActivity;
 import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.BaseResponseListener;
+import com.sawah.sawah.BitmapImage;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
@@ -44,6 +49,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import me.iwf.photopicker.PhotoPicker;
 
 public class EditProfileActivity extends BaseActivity {
 
@@ -283,33 +289,77 @@ public class EditProfileActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null &&
-                data.getData() != null) {
-            try {
+//        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null &&
+//                data.getData() != null) {
+//            try {
+//
+//                final Bitmap bitmap = DataHandler.getInstance(this).getImage(data.getData(), this);
+//                BaseResponseListener mResponseListner = new BaseResponseListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        super.onResponse(response);
+//                        if(isStatusSuccess()){
+//                            setNavBarUserImage(bitmap);
+//                            user.setLocalImagePath(data.getDataString());
+//                            profileImage.setImageBitmap(bitmap);
+//                        }else{
+//                            Log.d("Update user", "fail");
+//                        }
+//                        showProgress(false);
+//                    }
+//                };
+//                showProgress(true);
+//                DataHandler.getInstance(this).requestUpdateUserImage(mResponseListner,
+//                        data.getData(), this, this);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        if (resultCode == RESULT_OK && requestCode == PhotoPicker.REQUEST_CODE) {
+//            if (data != null) {
+//                ArrayList<String> photos =
+//                        data.getStringArrayListExtra(PhotoPicker.KEY_SELECTED_PHOTOS);
+//            }
+//        }
 
-                final Bitmap bitmap = DataHandler.getInstance(this).getImage(data.getData(), this);
-                BaseResponseListener mResponseListner = new BaseResponseListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        super.onResponse(response);
-                        if(isStatusSuccess()){
-                            setNavBarUserImage(bitmap);
-                            user.setLocalImagePath(data.getDataString());
-                            profileImage.setImageBitmap(bitmap);
-                        }else{
-                            Log.d("Update user", "fail");
-                        }
-                        showProgress(false);
+        if (requestCode == Constants.REQUEST_CODE && resultCode == RESULT_OK && data != null ) {
+
+            final ArrayList<Image> bitmapImages = data
+                    .getParcelableArrayListExtra(Constants.INTENT_EXTRA_IMAGES);
+
+//            DataHandler.getInstance(this).loadImageBitmaps(bitmapImages);
+
+            BaseResponseListener mResponseListner = new BaseResponseListener() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    super.onResponse(response);
+                    if(isStatusSuccess()){
+
+                        user.setLocalImagePath(data.getDataString());
+
+                        Bitmap b = DataHandler.getInstance(EditProfileActivity.this)
+                                .loadProfileImage(EditProfileActivity.this);
+
+                        profileImage.setImageBitmap(b);
+                        setNavBarUserImage(b);
+                    }else{
+                        Log.d("Update user", "fail");
                     }
-                };
-                showProgress(true);
+                    showProgress(false);
+                }
+            };
+            showProgress(true);
+            try {
                 DataHandler.getInstance(this).requestUpdateUserImage(mResponseListner,
-                        data.getData(), this, this);
+                        bitmapImages.get(0), this, this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
 
+        }else{
+            Log.d("add new Place", "big error");
         }
     }
 
@@ -319,8 +369,19 @@ public class EditProfileActivity extends BaseActivity {
     }
 
     public void selectImage() {
-        NavigationHandler.getInstance().startImagePickerForResult(EditProfileActivity.this,
-                PICK_IMAGE_REQUEST, 1);
+
+//        PhotoPicker.builder()
+//                .setPhotoCount(1)
+//                .setShowCamera(true)
+//                .setShowGif(true)
+//                .setPreviewEnabled(false)
+//                .start(this, PhotoPicker.REQUEST_CODE);
+
+//        NavigationHandler.getInstance().startImagePickerForResult(EditProfileActivity.this,
+//                PICK_IMAGE_REQUEST, 1);
+
+        NavigationHandler.getInstance().startImagePickerForResult(this,
+                Constants.REQUEST_CODE, 1);
     }
 
     public Bitmap getProfileImage() {
@@ -371,18 +432,6 @@ public class EditProfileActivity extends BaseActivity {
         DataHandler.getInstance(this).requestUpdateUser(user, baseRequestStateListener, this);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     public void setImageBitmap(Bitmap imageBitmap) {
         profileImage.setImageBitmap(imageBitmap);
     }
@@ -417,21 +466,6 @@ public class EditProfileActivity extends BaseActivity {
             updateUser();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     protected String getToolbarTitle() {

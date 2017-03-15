@@ -19,6 +19,7 @@ import android.util.Log;
 
 import com.android.volley.Response;
 import com.arasthel.asyncjob.AsyncJob;
+import com.darsh.multipleimageselect.models.Image;
 import com.sawah.sawah.ArrayRequestListener;
 import com.sawah.sawah.BaseArrayResponseListener;
 import com.sawah.sawah.BaseResponseListener;
@@ -332,12 +333,12 @@ public class DataHandler {
 
 // todo split the method getimage and and send to server
     public Bitmap requestUpdateUserImage(final BaseResponseListener listner,
-                                         Uri userSelectedImage, final Context context,
+                                         Image userSelectedImage, final Context context,
                                          Response.ErrorListener errorListener) throws IOException {
 
-        final String imageName = getImageName(userSelectedImage, context);
+        final String imageName = userSelectedImage.name;
 
-        final Bitmap userImage = getImage(userSelectedImage, context);
+        final Bitmap userImage = getImage(userSelectedImage.path);
 
         final User user = getUser();
 
@@ -364,11 +365,15 @@ public class DataHandler {
     }
 
     private String getImageName(Uri userSelectedImage, Context context) {
-        Cursor returnCursor =
-                context.getContentResolver().query(userSelectedImage, null, null, null, null);
-        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-        returnCursor.moveToFirst();
-        return returnCursor.getString(nameIndex);
+
+
+        File file = new File(userSelectedImage.getPath());
+        return file.getName();
+//        Cursor returnCursor =
+//                context.getContentResolver().query(userSelectedImage, null, null, null, null);
+//        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+//        returnCursor.moveToFirst();
+//        return returnCursor.getString(nameIndex);
     }
 
     private String getBase64Encoding(Bitmap userImage) {
@@ -500,6 +505,19 @@ public class DataHandler {
 
 
         serviceHandler.requestUpdateUser(userData, baseResponseListener, errorListener);
+    }
+
+    public Bitmap getImage(String path){
+
+        File f = new File(path);
+        float size  = f.length()/1024; // KB
+
+        float scale = 1;
+        if(size > IMAGE_MAX_SIZE){
+            scale = IMAGE_MAX_SIZE/ size;
+        }
+        Log.d("SAWAH","scale: " + String.valueOf(scale));
+        return BitmapDecoder.from(path).scaleBy(scale).decode();
     }
 
     public Bitmap getImage(Uri uri, Context context)
@@ -659,21 +677,13 @@ public class DataHandler {
             BitmapImage bitmapImage = new BitmapImage(images.get(i));
             String s = bitmapImage.path;
 
-            File f = new File(s);
-            float size  = f.length()/1024; // KB
-
-            float scale = 1;
-            if(size > IMAGE_MAX_SIZE){
-                scale = IMAGE_MAX_SIZE/ size;
-            }
-            Log.d("SAWAH","scale: " + String.valueOf(scale));
-            Bitmap b = BitmapDecoder.from(s).scaleBy(scale).decode();
-            bitmapImage.setBitmap(b);
+            bitmapImage.setBitmap(getImage(s));
 
             images.set(i, bitmapImage);
         }
 
     }
+
 
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
