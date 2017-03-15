@@ -2,6 +2,7 @@ package com.sawah.sawah.models;
 
 import android.icu.text.DateFormatSymbols;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.models.Place;
 import com.orm.SugarRecord;
@@ -12,9 +13,10 @@ import java.util.HashMap;
 /**
  * Created by root on 25/02/17.
  */
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class WorkTime extends SugarRecord implements Comparable<WorkTime>{
 
-//    todo jackson notation for saving
     private int day;
     private String time;
     private boolean isNow;
@@ -62,6 +64,7 @@ public class WorkTime extends SugarRecord implements Comparable<WorkTime>{
     public String getTime() {
         return time;
     }
+
     public void setPlace(Place place) {
         this.place = place;
     }
@@ -69,7 +72,6 @@ public class WorkTime extends SugarRecord implements Comparable<WorkTime>{
 
     @Override
     public int compareTo(WorkTime o) {
-
         return this.day - o.getDay();
     }
 }

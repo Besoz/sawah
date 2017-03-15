@@ -4,7 +4,9 @@ import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 import com.orm.SugarRecord;
@@ -18,6 +20,7 @@ import java.util.Map;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Place extends SugarRecord implements ClusterItem {
 
     public boolean isFavourite() {
@@ -101,6 +104,10 @@ public class Place extends SugarRecord implements ClusterItem {
     @JsonProperty("Comments")
     private PlaceComment[] comments;
 
+    @Ignore
+    @JsonProperty("Locations")
+    private PlaceLocation[] locations;
+
     @JsonIgnore
     @Ignore
     private LatLng position;
@@ -114,6 +121,8 @@ public class Place extends SugarRecord implements ClusterItem {
         images = new PlaceImage[0];
         comments =  new PlaceComment[0];
         workTimes = new WorkTime[0];
+        locations = new PlaceLocation[0];
+
         appointments = new HashMap<>();
         position =  new LatLng(lattitude, longitude);
         commentsCount = 0;
@@ -295,6 +304,45 @@ public class Place extends SugarRecord implements ClusterItem {
 
     }
 
+    public void setLocations(String[] locationsArr) {
+        if(locationsArr !=  null){
+
+            this.locations = new PlaceLocation[locationsArr.length];
+
+            for (int i = 0; i < locationsArr.length; i++) {
+//                parsing the pepe of the api puffffff noobs
+                String[] latlong = locationsArr[i].split(",");
+                double lat  = Double.parseDouble(latlong[0]);
+                double lng = Double.parseDouble(latlong[1]);
+
+                locations[i] =  new PlaceLocation(this, lat, lng);
+            }
+        }
+    }
+
+    public String[] getLocations(){
+
+        if(locations !=  null){
+
+            String[] locations = new String[this.locations.length];
+
+            for (int i = 0; i < this.locations.length; i++) {
+//                parsing the pepe of the api puffffff noobs
+                locations[i] =  this.locations[i].getLat()+","+ this.locations[i].getLng();
+            }
+
+            return locations;
+        }else{
+            return new String[0];
+        }
+    }
+
+    @JsonIgnore
+    public PlaceLocation[] getPlaceLocations(){
+        return locations;
+    }
+
+
     public WorkTime[] getWorkTimes(){
         return workTimes;
     }
@@ -348,6 +396,7 @@ public class Place extends SugarRecord implements ClusterItem {
         PlaceComment.deleteAll(PlaceComment.class);
         WorkTime.deleteAll(WorkTime.class);
         PlaceImage.deleteAll(PlaceImage.class);
+        PlaceLocation.deleteAll(PlaceLocation.class);
         return Place.deleteAll(Place.class);
     }
 
@@ -359,6 +408,7 @@ public class Place extends SugarRecord implements ClusterItem {
         SugarRecord.saveInTx(this.getComments());
         SugarRecord.saveInTx(this.getPlaceImages());
         SugarRecord.saveInTx(this.getWorkTimes());
+        SugarRecord.saveInTx(this.locations);
         return x;
     }
 
@@ -368,6 +418,7 @@ public class Place extends SugarRecord implements ClusterItem {
         SugarRecord.deleteInTx(this.getComments());
         SugarRecord.deleteInTx(this.getPlaceImages());
         SugarRecord.deleteInTx(this.getWorkTimes());
+        SugarRecord.deleteInTx(this.locations);
 
         return super.delete();
     }
@@ -386,4 +437,7 @@ public class Place extends SugarRecord implements ClusterItem {
     }
 
 
+    public void setPlaceLocations(PlaceLocation[] placeLocations) {
+        this.locations = placeLocations;
+    }
 }

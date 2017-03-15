@@ -121,7 +121,7 @@
             android:value="sawah.db" />
         <meta-data
             android:name="VERSION"
-            android:value="10" />
+            android:value="12" />
         <meta-data
             android:name="QUERY_LOG"
             android:value="false" />

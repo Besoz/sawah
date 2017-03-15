@@ -32,6 +32,7 @@ import com.sawah.sawah.ServiceResponse;
 import com.sawah.sawah.comment.CommentsListActivity;
 import com.sawah.sawah.models.PlaceComment;
 import com.sawah.sawah.models.PlaceImage;
+import com.sawah.sawah.models.PlaceLocation;
 import com.sawah.sawah.models.WorkTime;
 import com.sawah.sawah.models.Category;
 import com.sawah.sawah.models.City;
@@ -743,6 +744,9 @@ public class DataHandler {
             List<WorkTime> workTimes = WorkTime.find(WorkTime.class, "place = ?",
                     place.getId()+"");
 
+            List<PlaceLocation> placeLocations = PlaceLocation.find(PlaceLocation.class, "place = ?",
+                    place.getId()+"");
+
             Log.d("work yyyyyyyyyy", workTimes.size()+"");
 
             place.setPlaceImages(images.toArray(new PlaceImage[images.size()]));
@@ -750,6 +754,9 @@ public class DataHandler {
             place.setComments(comments.toArray(new PlaceComment[comments.size()]));
 
             place.setWorkTimes(workTimes.toArray(new WorkTime[workTimes.size()]));
+
+            place.setPlaceLocations(placeLocations.toArray(new PlaceLocation[placeLocations.size()]));
+
         }
 
         return place;

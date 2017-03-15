@@ -34,6 +34,7 @@ import android.widget.TableLayout;
 
 import com.bumptech.glide.Glide;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BaseRequestStateListener;
 import com.sawah.sawah.comment.CommentsAdapter;
@@ -79,7 +80,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     private static final int VIEW_COMMENTS_COUNT = 7, IMAGES_OFFSCREEN_COUNT= 4;
     private static final float CHECK_IN_MAX_DISTANCE_METER = 1000;
-    private static final float PIN_DIM = 35;
+    private static final float PIN_DIM = 60;
     private static final float MAP_ZOOM = 15;
     private CustomTextView bioTextView, titleArabic, titleEnglish, rating, tags;
     private ImageView placeImage;
@@ -134,10 +135,14 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         loadPlaceData();
 
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
+
+
     private void loadPlaceData()
     {
         DataHandler.getInstance(this).loadPlaceFromDataBase(place);
@@ -565,47 +570,84 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
 
 
         Log.d("Google Map", "Map ready");
 //        todo refactor this part
-
-
-        int px = Utils.getInstance().dpToPx(PIN_DIM, getResources().getDisplayMetrics());
-
         Bitmap pin = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
-        pin = Utils.getInstance().resizeBitmapInDp(pin, px, px, getResources().getDisplayMetrics());
+        pin = Utils.getInstance().resizeBitmapInDp(pin, PIN_DIM, PIN_DIM, getResources().getDisplayMetrics());
+        final BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(pin);
 
-        BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(pin);
-        Marker marker = googleMap.addMarker(new MarkerOptions()
-                .position(place.getPosition()).icon(bitmapDescriptor));
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getPosition(), MAP_ZOOM));
+        if(place.getPlaceLocations().length < 2){
+            Marker marker = googleMap.addMarker(new MarkerOptions()
+                    .position(place.getPosition()).icon(bitmapDescriptor));
 
-        googleMap.getUiSettings().setAllGesturesEnabled(false);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getPosition(), MAP_ZOOM));
+        }else{
 
-        Log.d("Google Map", "Marker added");
+//           todo wait on OnGlobalLayoutListener
+//            Note that this does not guarantee that the map has undergone layout. Therefore, the map's size may not have been determined by the time the callback method is called. If you need to know the dimensions or call a method in the API that needs to know the dimensions, get the map's View and register an ViewTreeObserver.OnGlobalLayoutListener as well.
+//
+//                    Do not chain the OnMapReadyCallback and OnGlobalLayoutListener listeners, but instead register and wait for both callbacks independently, since the callbacks can be fired in any order.
+//
+//            As an example, if you want to update the map's camera using a LatLngBounds without dimensions, you should wait until both OnMapReadyCallback and OnGlobalLayoutListener have completed. Otherwise there is a race condition that could trigger an IllegalStateException.
 
+            final Bitmap finalPin = pin;
+            googleMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                @Override
+                public void onMapLoaded() {
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+                    for (int i = 0; i < place.getPlaceLocations().length; i++) {
+
+                        LatLng placeLatLng = place.getPlaceLocations()[i].getLaLng();
+
+                        Marker marker = googleMap.addMarker(new MarkerOptions()
+                                .position(placeLatLng).icon(bitmapDescriptor));
+
+                        builder.include(placeLatLng);
+                    }
+
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
+                            finalPin.getHeight()));
+                }
+            });
+        }
 
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                openSheet();
-                return false;
+                openSheet(marker.getPosition());
+                return true;
             }
         });
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
 
-                openSheet();
+                openSheet(null);
             }
         });
+
+        googleMap.getUiSettings().setMapToolbarEnabled(false);
+
+        googleMap.getUiSettings().setAllGesturesEnabled(false);
+
+
+        Log.d("Google Map", "Marker added");
+
     }
 
-    protected void openSheet()
+    protected void openSheet(LatLng position)
     {
+        double lat = place.getLattitude(), lng = place.getLongitude();
+        if(position != null){
+            lat = position.latitude;
+            lng = position.longitude;
+        }
+
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView;
         try {
@@ -617,11 +659,13 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                     .setNegativeButton(R.string.close)
                     .show();
             CustomButton map = (CustomButton) contentView.findViewById(R.id.open_maps);
+            final double finalLng = lng;
+            final double finalLat = lat;
             map.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     SharingHandler.getInstance().openMapIntent(PlaceDetailsActivity.this,
-                            place.getLattitude(), place.getLongitude());
+                            finalLat, finalLng);
                 }
             });
             CustomButton uber = (CustomButton) contentView.findViewById(R.id.open_uber);
@@ -629,7 +673,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                 @Override
                 public void onClick(View v) {
                     SharingHandler.getInstance().requestUberRide(PlaceDetailsActivity.this,
-                            place.getLattitude(), place.getLongitude(), place.getPalceNameEng());
+                           finalLat, finalLng, place.getPalceNameEng());
                 }
             });
         }
@@ -637,24 +681,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         {
             System.out.println(e.getMessage());
         }
-
-//                .setListener(new BottomSheetListener() {
-//                    @Override
-//                    public void onSheetShown(@NonNull BottomSheet bottomSheet) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSheetItemSelected(@NonNull BottomSheet bottomSheet, MenuItem menuItem) {
-//                        onMenuItemClick(menuItem);
-//                    }
-//
-//                    @Override
-//                    public void onSheetDismissed(@NonNull BottomSheet bottomSheet, @DismissEvent int i) {
-//
-//                    }
-//                }).setStyle(R.style.MyBottomSheetStyle)
-//                .show();
     }
     @Override
     public void onClick(View v) {
@@ -705,6 +731,16 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             default:
                 return false;
         }
+    }
+
+    public BitmapDescriptor getMakerBitmapDescriptor() {
+
+//        int px = Utils.getInstance().dpToPx(PIN_DIM, getResources().getDisplayMetrics());
+
+        Bitmap pin = BitmapFactory.decodeResource(getResources(), R.drawable.pin);
+        pin = Utils.getInstance().resizeBitmapInDp(pin, PIN_DIM, PIN_DIM, getResources().getDisplayMetrics());
+
+        return  BitmapDescriptorFactory.fromBitmap(pin);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentPagerAdapter {

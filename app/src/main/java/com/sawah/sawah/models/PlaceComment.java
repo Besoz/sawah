@@ -1,6 +1,7 @@
 package com.sawah.sawah.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.orm.SugarRecord;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PlaceComment extends SugarRecord implements Serializable{
 
     private Place place;

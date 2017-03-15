@@ -154,26 +154,12 @@
             android:layout_marginRight="@dimen/listview_margin"
             android:textSize="14dp"
             android:textStyle="italic"/>
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/bio_text"-->
-            <!--android:gravity="right"-->
-            <!--android:id="@+id/tags_layout"-->
-            <!--android:visibility="visible"-->
-            <!--android:layout_margin="@dimen/listview_margin"-->
-            <!--android:layout_marginTop="10dp">-->
-            <!--<com.sawah.sawah.custom_views.CustomTextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:text="@string/tags"-->
-                <!--android:textColor="@color/colorPrimary"-->
-                <!--android:textSize="16dp"/>-->
+
         <com.sawah.sawah.custom_views.CustomTextView
             android:layout_below="@id/bio_text"
             android:gravity="right"
             android:id="@+id/tags_layout"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
             android:layout_width="wrap_content"
@@ -182,7 +168,8 @@
             android:textColor="@color/comments_gray"
             android:layout_marginRight="@dimen/listview_margin"
             android:textSize="16dp"/>
-        <!--</LinearLayout>-->
+
+
         <android.support.v7.widget.LinearLayoutCompat
             android:layout_width="match_parent"
             android:id="@+id/media_bar"
