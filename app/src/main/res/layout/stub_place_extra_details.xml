@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.sawah.sawah.custom_views.CustomTextView
+        android:gravity="right"
+        android:id="@+id/tags_layout"
+        android:visibility="gone"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="koko wawawa"
+        android:textColor="@color/comments_gray"
+        android:layout_marginRight="@dimen/listview_margin"
+        android:textSize="16dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/media_bar"
+        android:layout_below="@+id/tags_layout"
+        android:background="@color/button_bar_grey"
+        android:weightSum="4"
+        android:layout_height="70dp"
+        android:padding="10dp"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/website_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/globe"
+        android:background="@android:color/transparent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center" />
+        <com.sawah.sawah.custom_views.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/place_site"
+        android:textSize="14dp"
+        android:textStyle="italic"
+        android:textColor="@color/dark_text_color"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="4dp"/>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/call_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/call"
+        android:background="@android:color/transparent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center" />
+        <com.sawah.sawah.custom_views.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/palce_calling"
+        android:textStyle="italic"
+        android:textSize="14dp"
+        android:textColor="@color/dark_text_color"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="4dp"/>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/checkin_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/check_disabled"
+        android:background="@android:color/transparent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center" />
+        <com.sawah.sawah.custom_views.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/place_checkin"
+        android:textStyle="italic"
+        android:textSize="14dp"
+        android:textColor="@color/dark_text_color"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="4dp"/>
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+    <android.support.v7.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/share_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/share"
+        android:background="@android:color/transparent"
+        android:layout_weight="1"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center" />
+        <com.sawah.sawah.custom_views.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/place_share"
+        android:textStyle="italic"
+        android:textSize="14dp"
+        android:textColor="@color/dark_text_color"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="4dp" />
+
+    </android.support.v7.widget.LinearLayoutCompat>
+
+
+    </LinearLayout>
+
+
+    <fragment
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/media_bar"
+        android:layout_height="150dp"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="8dp" />
+
+    <RelativeLayout
+        android:id="@+id/work_time"
+        android:layout_below="@id/map"
+        android:background="@color/button_bar_grey"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/listview_margin">
+
+        <com.sawah.sawah.custom_views.CustomRotatingButton
+            android:id="@+id/arrow"
+            android:background="@drawable/expand_arrow_48"
+            android:layout_width="20dp"
+            android:layout_height="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="5dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/header"
+            android:layout_alignParentRight="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="right">
+
+        <com.sawah.sawah.custom_views.CustomTextView
+            android:id="@+id/work_time_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorPrimary"
+            android:text="sdsss"
+            android:textSize="16sp" />
+
+        <com.sawah.sawah.custom_views.CustomTextView
+            android:id="@+id/work_time_title_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/black_85"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"/>
+
+        </LinearLayout>
+
+
+        <com.github.aakira.expandablelayout.ExpandableLinearLayout
+            android:id="@+id/body"
+            android:layout_alignParentRight="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:ael_expanded="false"
+            app:ael_duration="200"
+            app:ael_interpolator="accelerate"
+            app:ael_orientation="vertical"
+            android:gravity="right">
+
+            <TableLayout
+                android:id="@+id/work_time_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right">
+
+        </TableLayout>
+    </com.github.aakira.expandablelayout.ExpandableLinearLayout >
+
+    </RelativeLayout>
+
+    <ViewStub android:id="@+id/comments_view"
+        android:layout="@layout/stub_comments_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
+    <com.sawah.sawah.custom_views.CustomButton
+        android:id="@+id/add_comment_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/comments_view"
+        style="?android:textAppearanceMedium"
+        android:text="@string/add_new_comment"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/frame_rounded_primary_color"
+        android:layout_margin="10dp" />
+
+
+</LinearLayout>

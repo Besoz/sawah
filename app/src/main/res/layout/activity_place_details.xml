@@ -14,16 +14,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.sawah.sawah.place.PlaceDetailsActivity"
         android:padding="0dp">
-
-
-        <!--<com.android.volley.toolbox.NetworkImageView-->
-            <!--android:layout_width="match_parent"-->
-            <!--app:srcCompat="@drawable/afa1b00e92014675b365903d8d133857"-->
-            <!--android:id="@+id/imagePager"-->
-            <!--android:scaleType="centerCrop"-->
-            <!--android:layout_height="300dp" />-->
 
         <android.support.v4.view.ViewPager
             android:id="@+id/imagePager"
@@ -66,32 +57,6 @@
             android:background="@drawable/gradiant_black_background_90"
             android:layout_alignBottom="@+id/imagePager">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true">
-
-                <com.sawah.sawah.custom_views.CustomTextView
-                    android:id="@+id/rating_static"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10/"
-                    android:layout_gravity="left"
-                    android:textColor="@color/textColor"
-                    android:textSize="20dp"
-                    android:paddingTop="@dimen/padding"
-                    android:layout_marginLeft="@dimen/padding" />
-
-                <com.sawah.sawah.custom_views.CustomTextView
-                    android:id="@+id/rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="9"
-                    android:textSize="22dp"
-                    android:layout_gravity="left"
-                    android:textColor="@color/sub_yellow"/>
-            </LinearLayout>
-
             <com.sawah.sawah.custom_views.CustomCheckBox
                 android:id="@+id/like_button"
                 android:background="@drawable/heart"
@@ -100,6 +65,15 @@
                 android:layout_width="wrap_content"
                 android:layout_centerVertical="true"/>
         </RelativeLayout>
+
+        <ViewStub
+            android:id="@+id/rating_stub"
+            android:layout="@layout/stub_place_details_rating"
+            android:inflatedId="@id/rating_stub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imagePager"
+            android:layout_alignLeft="@+id/imagePager" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -136,412 +110,34 @@
                 app:prb_tickSpacing="2dp"/>
         </RelativeLayout>
 
-        <com.sawah.sawah.custom_views.CustomTextView
-            android:id="@+id/bio_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="متاز مطعم غولشان تندوري بمطبخه الهندي والبنغلاديشي والباكستاني الذي يقدم وجبات متنوعة في أجواء هادئة وودية. وقد أوصى به موقع تايم أوت لندن بين أفضل مطاعم التندوري. خدمتهجيّدة وأسعاره معقولة تتراوح بين 10-35 دول"
-            android:layout_gravity="right"
-            android:textColor="@android:color/black"
-            android:layout_alignParentBottom="false"
-            android:layout_alignParentEnd="false"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentRight="false"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="false"
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container"
             android:layout_below="@id/price_level_layout"
-            android:layout_marginLeft="@dimen/listview_margin"
-            android:layout_marginRight="@dimen/listview_margin"
-            android:textSize="14dp"
-            android:textStyle="italic"/>
-
-        <com.sawah.sawah.custom_views.CustomTextView
-            android:layout_below="@id/bio_text"
-            android:gravity="right"
-            android:id="@+id/tags_layout"
-            android:visibility="gone"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="koko wawawa"
-            android:textColor="@color/comments_gray"
-            android:layout_marginRight="@dimen/listview_margin"
-            android:textSize="16dp"/>
-
-
-        <android.support.v7.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:id="@+id/media_bar"
-            android:layout_below="@+id/tags_layout"
-            android:background="@color/button_bar_grey"
-            android:weightSum="4"
-            android:layout_height="70dp"
-            android:padding="10dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="@dimen/activity_vertical_margin">
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/website_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/globe"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center" />
-                <com.sawah.sawah.custom_views.CustomTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/place_site"
-                    android:textSize="14dp"
-                    android:textStyle="italic"
-                    android:textColor="@color/dark_text_color"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="4dp"/>
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/call_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/call"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center" />
-                <com.sawah.sawah.custom_views.CustomTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/palce_calling"
-                    android:textStyle="italic"
-                    android:textSize="14dp"
-                    android:textColor="@color/dark_text_color"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="4dp"/>
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/checkin_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/check_disabled"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center" />
-                <com.sawah.sawah.custom_views.CustomTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/place_checkin"
-                    android:textStyle="italic"
-                    android:textSize="14dp"
-                    android:textColor="@color/dark_text_color"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="4dp"/>
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-            <android.support.v7.widget.LinearLayoutCompat
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/share_button"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/share"
-                    android:background="@android:color/transparent"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:layout_gravity="center" />
-                <com.sawah.sawah.custom_views.CustomTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/place_share"
-                    android:textStyle="italic"
-                    android:textSize="14dp"
-                    android:textColor="@color/dark_text_color"
-                    android:gravity="center_horizontal"
-                    android:layout_marginTop="4dp" />
-
-            </android.support.v7.widget.LinearLayoutCompat>
-
-
-        </android.support.v7.widget.LinearLayoutCompat>
-
-
-        <fragment
-            android:id="@+id/map"
-            class="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/media_bar"
-            android:layout_height="150dp"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginTop="8dp" />
-
-        <RelativeLayout
-            android:id="@+id/work_time"
-            android:layout_below="@id/map"
-            android:background="@color/button_bar_grey"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="@dimen/listview_margin">
-
-            <com.sawah.sawah.custom_views.CustomRotatingButton
-                android:id="@+id/arrow"
-                android:background="@drawable/expand_arrow_48"
-                android:layout_width="20dp"
-                android:layout_height="10dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginTop="5dp"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:orientation="vertical"
-                android:layout_toRightOf="@id/arrow"
-                android:gravity="right|center_vertical">
-
-                <LinearLayout
-                    android:id="@+id/header"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="right">
-                    <com.sawah.sawah.custom_views.CustomTextView
-                        android:id="@+id/work_time_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/colorPrimary"
-                        android:text="sdsss"
-                        android:textSize="16sp" />
-                    <com.sawah.sawah.custom_views.CustomTextView
-                        android:id="@+id/work_time_title_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textColor="@color/black_85"
-                        android:layout_marginRight="10dp"
-                        android:textSize="16sp"/>
-                </LinearLayout>
-
-
-                <com.github.aakira.expandablelayout.ExpandableLinearLayout
-                    android:id="@+id/body"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:ael_expanded="false"
-                    app:ael_duration="200"
-                    app:ael_interpolator="accelerate"
-                    app:ael_orientation="vertical"
-                    android:gravity="right">
-
-                    <TableLayout
-                        android:id="@+id/work_time_table"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right">
-
-                    </TableLayout>
-                </com.github.aakira.expandablelayout.ExpandableLinearLayout >
-
-            </LinearLayout>
-
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/comments_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@+id/work_time"
-            android:visibility="gone"
-            android:gravity="right"
-            android:layout_marginTop="10dp">
+            android:layout_height="wrap_content">
 
             <com.sawah.sawah.custom_views.CustomTextView
-                android:layout_width="match_parent"
+                android:id="@+id/bio_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/commments"
-                android:textAlignment="center"
-                android:textColor="@color/comments_gray"
-                android:textSize="18sp" />
-
-            <LinearLayout
-                android:id="@+id/comments_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-            </LinearLayout>
-
-            <com.sawah.sawah.custom_views.CustomButton
-                android:id="@+id/more_comments_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/map"
-                android:text="@string/more_comments_text"
-                android:textColor="@color/colorPrimary"
-                style="?android:textAppearanceMedium"
-                android:background="@drawable/frame_rounded_primary_color"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="0dp"/>
-        </LinearLayout>
+                android:layout_gravity="right"
+                android:text="متاز مطعم غولشان تندوري بمطبخه الهندي والبنغلاديشي والباكستاني الذي يقدم وجبات متنوعة في أجواء هادئة وودية. وقد أوصى به موقع تايم أوت لندن بين أفضل مطاعم التندوري. خدمتهجيّدة وأسعاره معقولة تتراوح بين 10-35 دول"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="@dimen/listview_margin"
+                android:layout_marginRight="@dimen/listview_margin"
+                android:textSize="14dp"
+                android:textStyle="italic"/>
 
 
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
-        <com.sawah.sawah.custom_views.CustomButton
-            android:id="@+id/add_comment_button"
+        <ViewStub
+            android:layout_below="@id/shimmer_view_container"
+            android:id="@+id/extra_details"
+            android:inflatedId="@id/extra_details"
+            android:layout="@layout/stub_place_extra_details"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/comments_view"
-            style="?android:textAppearanceMedium"
-            android:text="@string/add_new_comment"
-            android:textColor="@color/colorPrimary"
-            android:background="@drawable/frame_rounded_primary_color"
-            android:layout_margin="10dp" />
-
-        <!--<LinearLayout-->
-            <!--android:id="@+id/column1"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@color/project_green"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:padding="1dp"-->
-            <!--android:layout_below="@+id/expandableLayout">-->
-
-            <!--<Button-->
-                <!--android:id="@+id/expandButton"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginRight="1dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@color/textColor"-->
-                <!--android:text="Toggle" />-->
-
-            <!--<Button-->
-                <!--android:id="@+id/moveChildButton"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginRight="1dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@color/textColor"-->
-                <!--android:text="Move child1" />-->
-
-            <!--<Button-->
-                <!--android:id="@+id/moveChildButton2"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@color/textColor"-->
-                <!--android:text="Move child2" />-->
-        <!--</LinearLayout>-->
-
-        <!--<LinearLayout-->
-            <!--android:id="@+id/column2"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/column1"-->
-            <!--android:background="@color/project_green"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:paddingBottom="1dp"-->
-            <!--android:paddingLeft="1dp"-->
-            <!--android:paddingRight="1dp">-->
-
-            <!--<Button-->
-                <!--android:id="@+id/moveTopButton"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginRight="1dp"-->
-                <!--android:layout_weight="1"-->
-                <!--android:background="@color/textColor"-->
-                <!--android:text="Top" />-->
-
-            <!--<Button-->
-                <!--android:id="@+id/setCloseHeightButton"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="2"-->
-                <!--android:background="@color/textColor"-->
-                <!--android:text="Set close height" />-->
-        <!--</LinearLayout>-->
-
-
-        <!--<com.github.aakira.expandablelayout.ExpandableLinearLayout-->
-            <!--android:id="@+id/expandableLayout"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@id/map"-->
-            <!--android:background="@color/colorPrimary"-->
-            <!--app:ael_duration="500"-->
-            <!--app:ael_interpolator="bounce"-->
-            <!--app:ael_orientation="vertical">-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/one"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@color/project_green"-->
-                <!--android:padding="@dimen/smallpadding"-->
-                <!--android:text="-->
-    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
-    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
-    <!--"-->
-                <!--android:textColor="@color/textColor" />-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/two"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@id/one"-->
-                <!--android:background="@color/buttonColor"-->
-                <!--android:padding="@dimen/smallpadding"-->
-                <!--android:text="-->
-    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
-    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
-    <!--"-->
-                <!--android:textColor="@color/textColor" />-->
-
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@id/two"-->
-                <!--android:background="@color/buttonColor"-->
-                <!--android:padding="@dimen/smallpadding"-->
-                <!--android:text="-->
-    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
-    <!--sample.sample.sample.sample.sample.sample.sample.sample.sample.sample.\n-->
-    <!--"-->
-                <!--android:textColor="@color/textColor" />-->
-
-        <!--</com.github.aakira.expandablelayout.ExpandableLinearLayout>-->
+            android:layout_height="wrap_content" />
 
     </RelativeLayout>
 </ScrollView>

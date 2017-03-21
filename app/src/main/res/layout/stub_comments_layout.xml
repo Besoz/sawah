@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/comments_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@+id/work_time"
+    android:visibility="gone"
+    android:gravity="right"
+    android:layout_marginTop="10dp">
+
+    <com.sawah.sawah.custom_views.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/commments"
+        android:textAlignment="center"
+        android:textColor="@color/comments_gray"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/comments_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <com.sawah.sawah.custom_views.CustomButton
+        android:id="@+id/more_comments_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/more_comments_text"
+        android:textColor="@color/colorPrimary"
+        style="?android:textAppearanceMedium"
+        android:background="@drawable/frame_rounded_primary_color"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="0dp"/>
+</LinearLayout>

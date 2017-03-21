@@ -3,18 +3,21 @@ package com.sawah.sawah.place;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.util.Log;
@@ -23,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.webkit.URLUtil;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -31,13 +35,21 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TableLayout;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.arasthel.asyncjob.AsyncJob;
 import com.bumptech.glide.Glide;
+//import com.facebook.shimmer.ShimmerFrameLayout;
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.github.aakira.expandablelayout.ExpandableLayoutListener;
 import com.github.aakira.expandablelayout.ExpandableLinearLayout;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLngBounds;
+//import com.nikitakozlov.pury.Pury;
+import com.nikitakozlov.pury.Pury;
 import com.sawah.sawah.BaseActivity;
 import com.sawah.sawah.BaseRequestStateListener;
-import com.sawah.sawah.comment.CommentsAdapter;
 import com.sawah.sawah.Handlers.DataHandler;
 import com.sawah.sawah.Handlers.DialogHelper;
 import com.sawah.sawah.Handlers.NavigationHandler;
@@ -45,29 +57,27 @@ import com.sawah.sawah.Handlers.SharingHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.R;
 import com.sawah.sawah.ServiceResponse;
+import com.sawah.sawah.comment.CommentsAdapter;
 import com.sawah.sawah.custom_views.CustomButton;
 import com.sawah.sawah.custom_views.CustomCheckBox;
 import com.sawah.sawah.custom_views.CustomRotatingButton;
 import com.sawah.sawah.custom_views.CustomTextView;
 import com.sawah.sawah.models.Place;
-import com.sawah.sawah.models.PlaceComment;
-import com.sawah.sawah.models.WorkTime;
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.GravityEnum;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.aakira.expandablelayout.ExpandableLayoutListener;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.kennyc.bottomsheet.BottomSheet;
+import com.sawah.sawah.models.PlaceComment;
+import com.sawah.sawah.models.WorkTime;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -98,7 +108,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     private SimpleExpandableListAdapter mAdapter;
     ExpandableListView simpleExpandableListView;
-    
+
     private Place place;
 
     private static final String NAME = "NAME";
@@ -114,40 +124,86 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
     private LinearLayout header;
     private BaseRequestStateListener checkInStateListner;
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+
+    private ShimmerFrameLayout container;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Pury.startProfiling( "Place details", "on Create", 0, 1);
+
+        Pury.startProfiling( "Place details", "supercreate", 1, 1);
+
         super.onCreate(savedInstanceState);
+
+        Pury.stopProfiling( "Place details", "supercreate", 1);
+
+
+        Pury.startProfiling( "Place details", "extras", 1, 1);
 
         Utils.getInstance().changeStatusBarColor(this);
         removeNavigationDrawer();
+
         String placeJSONObject = (String) getIntent().getSerializableExtra("PlaceJSONObject");
+        Pury.stopProfiling( "Place details", "extras", 1);
 
-        ObjectMapper mapper = new ObjectMapper();
+        Pury.startProfiling( "Place details", "parse", 1, 1);
+        place = parseJSONPlace(placeJSONObject);
+        Pury.stopProfiling( "Place details", "parse", 1);
 
-        try {
-            place = mapper.readValue(placeJSONObject, Place.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        setToolbarTitle(place.getPalceNameArb()                                                                                                     );
+        setToolbarTitle(place.getPalceNameArb());
 
-        loadPlaceData();
+        Pury.startProfiling( "Place details", "view", 1, 1);
 
+        initializeViewPart1();
+
+        Pury.stopProfiling( "Place details", "view", 1);
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run() {
+                lazyLoadHeavyView();
+                container.stopShimmerAnimation();
+            }
+        }, 50);
+
+
+        Pury.stopProfiling( "Place details", "on Create", 1);
+    }
+
+    private void lazyLoadHeavyView() {
+
+        Pury.startProfiling( "lazy loading", "lazyLoadHeavyView", 0, 1);
+        inflatePart2ViewStubs();
+
+        initializeViewPart2();
+
+        Pury.stopProfiling( "lazy loading", "lazyLoadHeavyView", 1);
+
+    }
+
+    private void inflatePart2ViewStubs() {
+
+        ViewStub stub = (ViewStub) findViewById(R.id.extra_details);
+        View part2 = stub.inflate();
+        part2.setVisibility(View.VISIBLE);
+
+        ViewStub frameStub = (ViewStub) findViewById(R.id.rating_stub);
+        View frameView = frameStub.inflate();
+        frameView.setVisibility(View.VISIBLE);
+
+    }
+
+    private void initializeViewPart2() {
+
+        bioTextView.setText(place.getBio());
+        bioTextView.setTextColor(Color.BLACK);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-    }
-
-
-    private void loadPlaceData()
-    {
-        DataHandler.getInstance(this).loadPlaceFromDataBase(place);
-        bioTextView = (CustomTextView) findViewById(R.id.bio_text);
-        bioTextView.setText(place.getBio());
 
         if(place.getTags().length() > 0)
         {
@@ -166,12 +222,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             tags.setText(sstagsText);
         }
 
-        titleArabic = (CustomTextView) findViewById(R.id.title_ar);
-        titleArabic.setText(place.getPalceNameArb());
-
-        titleEnglish = (CustomTextView) findViewById(R.id.title_en);
-        titleEnglish.setText(place.getPalceNameEng());
-
         rating = (CustomTextView) findViewById(R.id.rating);
         rating.setText(place.getRatingID());
 
@@ -180,13 +230,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 //        placeImage.setImageUrl(imageUrl,
 //                ServiceHandler.getInstance(this.getApplicationContext()).getImageLoader());
 
-        imagesFragments = new Fragment[place.getPlaceImages().length];
-
-        for (int i = 0; i < imagesFragments.length; i++){
-            imagesFragments[i] = new ScreenSlideImageFragment(place.getPlaceImages()[i].getImageURL());
-        }
-
-        mPager = (ViewPager) findViewById(R.id.imagePager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mPager, true);
@@ -198,9 +241,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
             mPager.setBackgroundResource(R.drawable.demoitem);
         }
 
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
-//        mPager.setOffscreenPageLimit(IMAGES_OFFSCREEN_COUNT);
+
+        mPager.setOffscreenPageLimit(IMAGES_OFFSCREEN_COUNT);
 
         shareButtton = (ImageButton) findViewById(R.id.share_button);
         shareButtton.setOnClickListener(new View.OnClickListener() {
@@ -294,7 +336,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
         if(place.getCommentsCount() != 0){
 
-            commentsView = findViewById(R.id.comments_view);
+            ViewStub stub = (ViewStub) findViewById(R.id.comments_view);
+            commentsView = stub.inflate();
             commentsView.setVisibility(View.VISIBLE);
 
             linearLayout = (LinearLayout) findViewById(R.id.comments_list);
@@ -433,6 +476,59 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     }
 
+    private Place parseJSONPlace(String placeJSONObject) {
+
+        Log.d("PlaceJson", placeJSONObject);
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        Place place = null;
+        try {
+            place = mapper.readValue(placeJSONObject, Place.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return place;
+    }
+
+
+    private void initializeViewPart1()
+    {
+        DataHandler.getInstance(this).loadPlaceFromDataBase(place);
+
+        titleArabic = (CustomTextView) findViewById(R.id.title_ar);
+        titleArabic.setText(place.getPalceNameArb());
+
+        titleEnglish = (CustomTextView) findViewById(R.id.title_en);
+        titleEnglish.setText(place.getPalceNameEng());
+
+        bioTextView = (CustomTextView) findViewById(R.id.bio_text);
+
+        bioTextView.setTextColor(ContextCompat.getColor(this, R.color.grey));
+
+        container =
+                (ShimmerFrameLayout) findViewById(R.id.shimmer_view_container);
+        container.startShimmerAnimation();
+
+        SpannableString str = new SpannableString(bioTextView.getText());
+        str.setSpan(new BackgroundColorSpan(ContextCompat.getColor(this, R.color.grey)), 0, str.length(), 0);
+        bioTextView.setText(str);
+
+        imagesFragments = new Fragment[place.getPlaceImages().length];
+
+        for (int i = 0; i < imagesFragments.length; i++){
+            imagesFragments[i] = new ScreenSlideImageFragment(place.getPlaceImages()[i].getImageURL());
+        }
+
+        mPager = (ViewPager) findViewById(R.id.imagePager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+
+//
+
+    }
+
     private void initializeWorkTimeLayout(WorkTime[] workTimes, RelativeLayout arrow_layout) {
 
         final CustomRotatingButton arrow = (CustomRotatingButton) findViewById(R.id.arrow);
@@ -535,7 +631,6 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 
     }
 
-
     @Override
     public void onResume() {
         Log.d("Request location", "onResume 2");
@@ -559,8 +654,8 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
 //
 //        }
 
-
         DataHandler.getInstance(this).incrementPlaceVisits(place.getPlaceID());
+
 
     }
 
@@ -673,7 +768,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
                 @Override
                 public void onClick(View v) {
                     SharingHandler.getInstance().requestUberRide(PlaceDetailsActivity.this,
-                           finalLat, finalLng, place.getPalceNameEng());
+                            finalLat, finalLng, place.getPalceNameEng());
                 }
             });
         }

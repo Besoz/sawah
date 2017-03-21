@@ -1,0 +1,27 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+
+    <com.sawah.sawah.custom_views.CustomTextView
+        android:id="@+id/rating_static"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10/"
+        android:layout_gravity="left"
+        android:textColor="@color/textColor"
+        android:textSize="20dp"
+        android:paddingTop="@dimen/padding"
+        android:layout_marginLeft="@dimen/padding" />
+
+    <com.sawah.sawah.custom_views.CustomTextView
+        android:id="@+id/rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="9"
+        android:textSize="22dp"
+        android:layout_gravity="left"
+        android:textColor="@color/sub_yellow"/>
+</LinearLayout>

@@ -120,6 +120,9 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    compile 'com.nikitakozlov.pury:annotations:1.0.1'
+    debugCompile 'com.nikitakozlov.pury:pury:1.1.0'
+    compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
 
 }
 
