@@ -57,6 +57,7 @@ import com.sawah.sawah.Handlers.SharingHandler;
 import com.sawah.sawah.Handlers.Utils;
 import com.sawah.sawah.R;
 import com.sawah.sawah.ServiceResponse;
+import com.sawah.sawah.ToolBarActivity;
 import com.sawah.sawah.comment.CommentsAdapter;
 import com.sawah.sawah.custom_views.CustomButton;
 import com.sawah.sawah.custom_views.CustomCheckBox;
@@ -85,7 +86,7 @@ import java.util.Arrays;
 import io.techery.properratingbar.ProperRatingBar;
 
 
-public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCallback, View.OnClickListener{
+public class PlaceDetailsActivity extends ToolBarActivity implements OnMapReadyCallback, View.OnClickListener{
 
 
     private static final int VIEW_COMMENTS_COUNT = 7, IMAGES_OFFSCREEN_COUNT= 4;
@@ -142,7 +143,7 @@ public class PlaceDetailsActivity extends BaseActivity implements OnMapReadyCall
         Pury.startProfiling( "Place details", "extras", 1, 1);
 
         Utils.getInstance().changeStatusBarColor(this);
-        removeNavigationDrawer();
+//        removeNavigationDrawer();
 
         String placeJSONObject = (String) getIntent().getSerializableExtra("PlaceJSONObject");
         Pury.stopProfiling( "Place details", "extras", 1);

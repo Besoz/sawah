@@ -68,6 +68,12 @@
             android:name=".BaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity
+            android:name=".ToolBarActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
         <activity
             android:name=".CategoriesListActivity"
             android:screenOrientation="portrait"
