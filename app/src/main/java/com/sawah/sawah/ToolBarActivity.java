@@ -57,18 +57,12 @@ public class ToolBarActivity extends AppCompatActivity
 
     public static final int PERMISSIONS_REQUEST_FINE_LOCATION = 1;
     private static final int LOCATION_PERMISSION_REQUEST = 50;
-//    private int drawerGravity = Gravity.RIGHT;
 
     protected LinearLayout mProgressView;
     protected ViewGroup mainLayout;
 
-//    private DrawerLayout drawer;
-//    private ActionBarDrawerToggle toggle;
     private CustomTextView toolbarTitle;
-//    private CircleImageView userImage;
-//    private NavigationView navigationView;
-//    private View headerLayout;
-//
+
     protected boolean mRequestingLocationUpdates;
     protected GoogleApiClient mGoogleApiClient;
     protected LocationRequest mLocationRequest;
@@ -76,10 +70,9 @@ public class ToolBarActivity extends AppCompatActivity
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        setLocle();
+
         getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
         Glide.get(ToolBarActivity.this).clearMemory();
-//        Toast.makeText(BaseActivity.this, "Clear Cache", Toast.LENGTH_SHORT).show();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_bar_base);
@@ -87,58 +80,10 @@ public class ToolBarActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbarTitle = (CustomTextView) findViewById(R.id.toolbar_title);
 
-//        toolbarToggle = (CustomTextView) findViewById(R.id.toolbar_toggle);
-
         toolbarTitle.setText(getToolbarTitle());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
-// final View navView = findViewById(R.id.nav_view);
-//        toolbarToggle.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                if (drawer.isDrawerOpen(navView)) {
-//                    drawer.closeDrawer(navView);
-//                } else {
-//                    drawer.openDrawer(navView);
-//                }
-//            }
-//        });
-
-
-//        toggle.setDrawerIndicatorEnabled(false);
-
-//        navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-
-//        version 23.1.0 switches NavigationView to using a RecyclerView This means it is not
-//        instantly available to call findViewById() -a layout pass is needed before it is attached to the
-//        headerLayout = findViewById(R.id.nav_header_base);
-//        updateUserDrawer();
-
-//        ImageButton settingsButton = (ImageButton) headerLayout.findViewById(R.id.settings_button);
-//        settingsButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                NavigationHandler.getInstance().startEditProfileActivity(ToolBarActivity.this);
-//            }
-//        });
-//        Menu nav_Menu = navigationView.getMenu();
-
-//        if (DataHandler.getInstance(this).userExist()) {
-////            updateUserDrawer();
-//        } else {
-//            navigationView.findViewById(R.id.nav_fav_list).setVisibility(View.GONE);
-//            navigationView.findViewById(R.id.nav_add_place).setVisibility(View.GONE);
-//            navigationView.findViewById(R.id.nav_logout).setVisibility(View.GONE);
-//        }
 
         mainLayout = (ViewGroup) findViewById(R.id.content_base);
         mProgressView = (LinearLayout) findViewById(R.id.base_progress_bar);
@@ -167,52 +112,6 @@ public class ToolBarActivity extends AppCompatActivity
         }
     }
 
-//    protected void updateUserDrawer()
-//    {
-//        if (DataHandler.getInstance(this).userExist())
-//        {
-//            navigationView = (NavigationView) findViewById(R.id.nav_view);
-//            headerLayout = findViewById(R.id.nav_header_base);
-//
-//            headerLayout.setVisibility(View.VISIBLE);
-//            navigationView.findViewById(R.id.nav_login).setVisibility(View.GONE);
-//
-//            final User user = DataHandler.getInstance(this).getUser();
-//
-//            CustomTextView userNameText = (CustomTextView) headerLayout.findViewById(R.id.user_name);
-//            userNameText.setText(user.getFullName());
-//
-//            userImage = (CircleImageView) headerLayout.findViewById(R.id.profile_image);
-//            if (!TextUtils.isEmpty((user.getLocalImagePath()))) {
-//                Log.d("local image path", user.getLocalImagePath());
-//
-//                Bitmap b = DataHandler.getInstance(this)
-//                        .loadImageFromStorage(user.getLocalImagePath(), this);
-//                setNavBarUserImage(b);
-//
-//            }else if(!TextUtils.isEmpty((user.getImageLocation()))){
-//
-//                DataHandler.getInstance(this).loadAndSaveUserNetworkImage(Uri.parse(user.getImageLocation()), new BaseRequestStateListener() {
-//                    @Override
-//                    public void failResponse(ServiceResponse response) {
-//                        Log.d("Image load", "Fail");
-//                    }
-//
-//                    @Override
-//                    public void successResponse(ServiceResponse response) {
-//                        Log.d("Image load", "Success");
-//
-//                        Bitmap b = DataHandler.getInstance(ToolBarActivity.this)
-//                                .loadImageFromStorage(user.getLocalImagePath(),ToolBarActivity.this);
-//
-//                        setNavBarUserImage(b);
-//
-//
-//                    }
-//                },ToolBarActivity.this);
-//            }
-//        }
-//    }
 
     @Override
     public void onBackPressed() {
@@ -252,52 +151,12 @@ public class ToolBarActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-//    @SuppressWarnings("StatementWithEmptyBody")
-//    @Override
-//    public void onClick(View v) {
-//        // Handle navigation view item clicks here.
-//        int id = v.getId();
-//
-//        if (id == R.id.nav_change_city) {
-//            // Handle the camera action
-//            NavigationHandler.getInstance().startCityActivity(this, Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//        } else if (id == R.id.nav_home) {
-//            NavigationHandler.getInstance().startCityActivity(this, Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        } else if (id == R.id.nav_fav_list) {
-//            NavigationHandler.getInstance().startFavouritePlacesList(this);
-//        } else if (id == R.id.nav_about_sawah) {
-//            NavigationHandler.getInstance().startAboutSawah(this);
-//        } else if (id == R.id.nav_general_inst) {
-//            NavigationHandler.getInstance().startGeneralInstruction(this);
-//        } else if (id == R.id.nav_contact_us) {
-//            SharingHandler.getInstance().contactSawah(this);
-//        } else if (id == R.id.nav_add_place) {
-//            NavigationHandler.getInstance().AddNewPlace(this);
-//        } else if (id == R.id.nav_login) {
-//            NavigationHandler.getInstance().startLoginActivity(this);
-//        } else if (id == R.id.nav_logout) {
-//            DataHandler.getInstance(this).eraseCurrentUser(this);
-//            NavigationHandler.getInstance().startLoginActivity(this);
-//        }
-////        else if (id == R.id.nav_settings) {
-////            NavigationHandler.getInstance().startEditProfileActivity(BaseActivity.this);
-////        }
-//
-//
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(drawerGravity);
-////        return true;
-//
-//
-//    }
 
     protected int getLayoutResourceId() {
         return R.layout.content_base;
     }
 
     public void setLocle() {
-// Log.e("setLocle", lang);
 
         Locale locale = new Locale("ar");
         Locale.setDefault(locale);
@@ -319,12 +178,6 @@ public class ToolBarActivity extends AppCompatActivity
 
     }
 
-//    protected void removeNavigationDrawer() {
-//        toggle.setDrawerIndicatorEnabled(false);
-//        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-//
-//    }
-
     protected void hideToolbarTitle() {
         toolbarTitle.setVisibility(View.GONE);
     }
@@ -337,10 +190,6 @@ public class ToolBarActivity extends AppCompatActivity
         toolbarTitle.setText(s);
     }
 
-//    protected void setNavBarUserImage(Bitmap navBarUserImage) {
-//        if (userImage != null && navBarUserImage != null)
-//            userImage.setImageBitmap(navBarUserImage);
-//    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -471,20 +320,6 @@ public class ToolBarActivity extends AppCompatActivity
         {
             searchView.clearFocus();
         }
-//        new AsyncJob.AsyncJobBuilder<Boolean>()
-//                .doInBackground(new AsyncJob.AsyncAction<Boolean>() {
-//                    @Override
-//                    public Boolean doAsync() {
-//                        updateUserDrawer();
-//                        return true;
-//                    }
-//                })
-//                .doWhenFinished(new AsyncJob.AsyncResultAction<Boolean>() {
-//                    @Override
-//                    public void onResult(Boolean result) {
-//
-//                    }
-//        }).create().start();
     }
 
 
@@ -580,34 +415,6 @@ public class ToolBarActivity extends AppCompatActivity
 
             }
         }
-    }
-
-    public SearchView styleSearch()
-    {
-        findViewById(R.id.toolbar_title).setVisibility(View.GONE);
-        findViewById(R.id.customSeatch).setVisibility(View.VISIBLE);
-        SearchView searchView = (SearchView)findViewById(R.id.customSeatch);
-        searchView.setIconified(false);
-        searchView.clearFocus();
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
-
-        searchView.setSearchableInfo(searchableInfo);
-        searchView.setIconifiedByDefault(true);
-
-        EditText searchEditText = (EditText)searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        ImageView close = (ImageView)searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
-        close.setImageDrawable(null);
-        close.setMaxWidth(0);
-        searchEditText.setBackgroundResource(R.drawable.search_background);
-        searchEditText.setTextColor(getResources().getColor(R.color.symbolic_grey));
-        searchEditText.setHintTextColor(getResources().getColor(R.color.symbolic_grey));
-
-        Typeface myCustomFont = Typeface.createFromAsset(getAssets(),getString(R.string.default_font));
-        searchEditText.setTypeface(myCustomFont);
-
-        return searchView;
     }
 
     @Override

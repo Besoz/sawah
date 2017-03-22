@@ -161,15 +161,24 @@ public class PlaceDetailsActivity extends ToolBarActivity implements OnMapReadyC
 
         Pury.stopProfiling( "Place details", "view", 1);
 
+
+        Pury.startProfiling( "lazy loading begin", "lazy loading begin", 0, 1);
+
         new Handler().postDelayed(new Runnable()
         {
             @Override
             public void run() {
+                Log.d("Pury", "on postDelayed start");
+
+                Pury.stopProfiling( "lazy loading begin", "lazy loading begin", 1);
+
                 lazyLoadHeavyView();
                 container.stopShimmerAnimation();
+
             }
         }, 50);
 
+        Log.d("Pury", "on create end");
 
         Pury.stopProfiling( "Place details", "on Create", 1);
     }
